@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".counting.CountingActivity"></activity>
+
+        <activity android:name=".putaway.PutAwayActivity"></activity>
         <activity android:name=".dashboard.DashBoardAcivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".splash.SplashActivity">

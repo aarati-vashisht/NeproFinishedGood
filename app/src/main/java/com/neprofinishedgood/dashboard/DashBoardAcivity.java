@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.counting.CountingActivity;
+import com.neprofinishedgood.putaway.PutAwayActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,6 +27,10 @@ public class DashBoardAcivity extends AppCompatActivity {
     @OnClick(R.id.linearLayoutCounting)
     public void setlinearLayoutCountingClick() {
         startActivity(new Intent(this, CountingActivity.class));
+    }
 
+    @OnClick(R.id.linearLayoutPutAway)
+    public void onLinearLayouPutAwayClick(){
+        startActivity(new Intent(this, PutAwayActivity.class));
     }
 }
