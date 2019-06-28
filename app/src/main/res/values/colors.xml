@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#26a59a</color>
+    <color name="colorPrimaryDark">#26a59a</color>
+    <color name="colorAccent">#26a59a</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="gray">#eeeeee</color>
+    <color name="background_color">#f1f5f8</color>
+    <color name="buttonColor">#26a59a</color>
+    <color name="transparentbuttonColor">#9026a59a</color>>
+
+</resources>
