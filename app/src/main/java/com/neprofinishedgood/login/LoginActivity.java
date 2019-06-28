@@ -9,13 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.chaos.view.PinView;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     @BindView(R.id.buttonLogin)
     Button buttonLogin;
     @BindView(R.id.pinViewLogin)
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         } else if (pinViewLogin.getText().toString().equals("1234")) {
             Toast.makeText(this, getString(R.string.login_successfully), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, DashBoardAcivity.class));
-            finish();
+            finishAffinity();
             overridePendingTransition(0, 0);
         }
     }

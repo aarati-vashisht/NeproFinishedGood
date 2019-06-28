@@ -1,5 +1,6 @@
 package com.neprofinishedgood.putaway;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,12 +10,15 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.neprofinishedgood.R;
-
+import com.neprofinishedgood.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PutAwayActivity extends AppCompatActivity {
+public class PutAwayActivity extends BaseActivity {
+
+
+
 
     @BindView(R.id.frameEnterQuantity)
     FrameLayout frameEnterQuantity;
