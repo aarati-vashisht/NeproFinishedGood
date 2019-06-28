@@ -2,11 +2,11 @@ package com.neprofinishedgood.counting;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.model.StillageDatum;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CountingActivity extends AppCompatActivity {
+public class CountingActivity extends BaseActivity {
     @BindView(R.id.recyclerViewStillage)
     RecyclerView recyclerViewStillage;
 
@@ -24,6 +24,7 @@ public class CountingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_counting);
         ButterKnife.bind(this);
+        setTitle("Counting");
         setAdapter();
     }
 

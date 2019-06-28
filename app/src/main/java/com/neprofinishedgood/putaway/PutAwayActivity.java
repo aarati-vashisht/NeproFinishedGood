@@ -1,12 +1,11 @@
 package com.neprofinishedgood.putaway;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.base.BaseActivity;
 
-public class PutAwayActivity extends AppCompatActivity {
+public class PutAwayActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
