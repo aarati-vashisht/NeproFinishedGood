@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NeproFinishedGood</string>
+    <string name="app_name">FinishedGood</string>
     <string name="enter_pin">Enter Pin:</string>
     <string name="login">Login</string>
     <string name="plz_enter_pin">Please Enter Login Pin</string>
@@ -14,6 +14,12 @@
     <string name="return_stillage">Return Stillage</string>
     <string name="recieve_return_stillage">Recieve Return Stillage</string>
     <string name="scan_stillage">Scan Stillage</string>
+    <string name="stillage_number">Stillage Number:</string>
+    <string name="stillage_quantity">Stillage Quantity:</string>
+    <string name="stillage_name">Stillage Name:</string>
+    <string name="stillage_stdquantity">Stillage Std Quantity:</string>
+    <string name="item">Item:</string>
+    <string name="dashbord">Dashboard</string>
     <string name="enter_quantity">Enter Quantity</string>
     <string name="quantity">Quantity</string>
     <string name="reason">Reason</string>

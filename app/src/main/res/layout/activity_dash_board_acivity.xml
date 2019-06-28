@@ -42,11 +42,11 @@
                         android:layout_height="wrap_content"
                         android:text="@string/put_away"
                         android:textColor="@color/black"
-
-                        android:textSize="10dp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutCounting"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
