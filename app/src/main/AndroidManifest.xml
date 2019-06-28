@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".dashboard.DashBoardAcivity"></activity>
+        <activity android:name=".putaway.PutAwayActivity"></activity>
+        <activity android:name=".dashboard.DashBoardAcivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".splash.SplashActivity">
             <intent-filter>
