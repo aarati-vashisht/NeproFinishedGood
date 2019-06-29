@@ -1,5 +1,6 @@
 package com.neprofinishedgood.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +10,20 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.neprofinishedgood.R;
-
-import butterknife.ButterKnife;
+import com.neprofinishedgood.utils.Utils;
 
 public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     String title;
     TextView textViewTitle;
     ImageButton imageButtonBack;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_base);
         setActionBarData();
+
 
     }
 
@@ -41,6 +44,9 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         textViewTitle.setText(this.title);
 
     }
+
+
+
 
     public void imageButtonBackClick(View view) {
         finish();

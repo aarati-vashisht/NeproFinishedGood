@@ -1,15 +1,19 @@
 package com.neprofinishedgood.putaway;
 
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -17,13 +21,17 @@ import android.widget.TextView;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
+
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class PutAwayActivity extends BaseActivity {
+
+
 
     @BindView(R.id.frameEnterQuantity)
     FrameLayout frameEnterQuantity;
@@ -72,9 +80,9 @@ public class PutAwayActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_put_away);
-
         ButterKnife.bind(this);
         setTitle(getString(R.string.put_away));
+
 
         initData();
     }
@@ -155,10 +163,12 @@ public class PutAwayActivity extends BaseActivity {
         String[] assignFltList = {"Select FLT", "option 1", "option 2", "option 3"};
         ArrayAdapter<String> assignFltAdapter = new ArrayAdapter(this, R.layout.spinner_layout, assignFltList);
         spinnerAssignFlt.setAdapter(assignFltAdapter);
+
     }
 
     @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
+
         if (editQtyNo < stillageQtyNo) {
             if (!spinnerReason.getSelectedItem().toString().equals("Select Reason")) {
                 frameEnterQuantity.animate()

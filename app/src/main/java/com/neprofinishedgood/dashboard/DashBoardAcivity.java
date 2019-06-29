@@ -19,7 +19,7 @@ public class DashBoardAcivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board_acivity);
         ButterKnife.bind(this);
-        setTitle("Dashboard");
+        setTitle(getString(R.string.dashbord));
     }
 
 
