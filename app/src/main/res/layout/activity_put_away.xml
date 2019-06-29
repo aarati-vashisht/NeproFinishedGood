@@ -9,7 +9,6 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
         android:layout_margin="5dp"
         android:orientation="vertical">
@@ -17,8 +16,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -29,6 +26,7 @@
                 android:textSize="12sp" />
 
             <EditText
+                android:id="@+id/editTextScanStillage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -40,18 +38,21 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayoutScanDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <include layout="@layout/stillage_layout" />
-
 
             <FrameLayout
                 android:id="@+id/frameEnterQuantity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:animateLayoutChanges="true">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -80,19 +81,21 @@
                         android:padding="5dp">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".3"
+                            android:layout_weight="1"
                             android:text="@string/quantity"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
 
                         <EditText
-                            android:layout_width="match_parent"
+                            android:id="@+id/editTextQuantity"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:layout_weight=".1"
+                            android:layout_weight="3"
                             android:background="@drawable/editext_drawable"
+                            android:inputType="numberDecimal"
                             android:padding="5dp"
                             android:textSize="10sp" />
 
@@ -105,23 +108,28 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/linearLayoutQuantity"
                         android:orientation="horizontal"
-                        android:padding="5dp">
+                        android:padding="5dp"
+                        android:visibility="gone">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="3"
+
+                            android:layout_weight="1"
+
                             android:text="@string/reason"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
 
                         <Spinner
-                            android:layout_width="match_parent"
+                            android:id="@+id/spinnerReason"
+                            style="@style/AppTheme"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/editext_drawable" />
 
+                            android:layout_weight="3"
+                            android:background="@drawable/spinner_background" />
 
                     </LinearLayout>
 
@@ -155,6 +163,7 @@
                                 android:textAllCaps="false"
                                 android:textColor="@color/white"
                                 android:textSize="12sp" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -191,7 +200,8 @@
                 android:id="@+id/frameAssignFlt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:animateLayoutChanges="true">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -228,11 +238,12 @@
                             android:textSize="12sp" />
 
                         <Spinner
+                            android:id="@+id/spinnerAssignFlt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_weight=".1"
-                            android:background="@drawable/editext_drawable" />
+                            android:background="@drawable/spinner_background" />
 
 
                     </LinearLayout>
@@ -258,6 +269,7 @@
                             <!--android:src="@drawable/button_ripple_effect" />-->
 
                             <Button
+                                android:id="@+id/buttonAssign"
                                 android:layout_width="70dp"
                                 android:layout_height="30dp"
                                 android:background="@drawable/button_ripple_effect"
@@ -281,6 +293,7 @@
                             <!--android:src="@drawable/button_ripple_effect" />-->
 
                             <Button
+                                android:id="@+id/buttonUnAssign"
                                 android:layout_width="70dp"
                                 android:layout_height="30dp"
                                 android:background="@drawable/button_ripple_effect"
