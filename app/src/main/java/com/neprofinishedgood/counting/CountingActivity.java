@@ -1,6 +1,8 @@
 package com.neprofinishedgood.counting;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.widget.EditText;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,24 +10,36 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnTextChanged;
 
 public class CountingActivity extends BaseActivity {
     @BindView(R.id.recyclerViewStillage)
     RecyclerView recyclerViewStillage;
+    @BindView(R.id.editTextScanStillage)
+    EditText editTextScanStillage;
+    ContingAdapter contingAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_counting);
         ButterKnife.bind(this);
-        setTitle("Counting");
+        Utils.hideSoftKeyboard(this);
+        setTitle(getString(R.string.counting));
         setAdapter();
+    }
+
+    @OnTextChanged(value = R.id.editTextScanStillage,
+            callback = OnTextChanged.Callback.TEXT_CHANGED)
+    protected void afterEditTextChanged(Editable editable) {
+        contingAdapter.getFilter().filter(editable);
     }
 
     private void setAdapter() {
@@ -40,7 +54,8 @@ public class CountingActivity extends BaseActivity {
             formDatum.setQuantity("20");
             getFormResponseList.add(formDatum);
         }
-        recyclerViewStillage.setAdapter(new ContingAdapter(getFormResponseList));
+        contingAdapter = new ContingAdapter(getFormResponseList);
+        recyclerViewStillage.setAdapter(contingAdapter);
         recyclerViewStillage.setHasFixedSize(true);
 
     }

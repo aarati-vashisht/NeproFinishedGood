@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,74 +8,86 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
+    android:id="@+id/coordinateLayout"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".login.LoginActivity">
 
-    <ImageView
-        android:id="@+id/imageViewAppLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        android:background="@mipmap/app_logo" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context=".login.LoginActivity">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageViewAppLogo"
-        android:layout_centerInParent="true"
-
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/enter_pin"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-
-        <com.chaos.view.PinView
-            android:id="@+id/pinViewLogin"
-            style="@style/PinWidget.PinView"
+        <ImageView
+            android:id="@+id/imageViewAppLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:cursorVisible="true"
-            android:gravity="center"
-            android:hint=""
-            android:inputType="number"
-            android:itemBackground="@drawable/left_side_drawable"
-            android:padding="3dp"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:cursorColor="@color/colorPrimary"
-            app:cursorWidth="2dp"
-            app:hideLineWhenFilled="true"
-            app:itemCount="4"
-            app:itemHeight="30dp"
-            app:itemRadius="4dp"
-            app:itemSpacing="2dp"
-            app:itemWidth="30dp"
-            app:lineColor="@color/transparentbuttonColor"
-            app:lineWidth="2dp"
-            app:viewType="rectangle" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="150dp"
+            android:background="@mipmap/app_logo" />
 
-        <Button
-            android:id="@+id/buttonLogin"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button_ripple_effect"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageViewAppLogo"
+            android:layout_centerInParent="true"
+
+            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@string/login"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
-    </LinearLayout>
-</RelativeLayout>
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/enter_pin"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <com.chaos.view.PinView
+                android:id="@+id/pinViewLogin"
+                style="@style/PinWidget.PinView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:cursorVisible="true"
+                android:gravity="center"
+                android:hint=""
+                android:inputType="number"
+                android:itemBackground="@drawable/left_side_drawable"
+                android:padding="3dp"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:cursorColor="@color/colorPrimary"
+                app:cursorWidth="2dp"
+                app:hideLineWhenFilled="true"
+                app:itemCount="4"
+                app:itemHeight="30dp"
+                app:itemRadius="4dp"
+                app:itemSpacing="2dp"
+                app:itemWidth="30dp"
+                app:lineColor="@color/transparentbuttonColor"
+                app:lineWidth="2dp"
+                app:viewType="rectangle" />
+
+            <Button
+                android:id="@+id/buttonLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_ripple_effect"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/login"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
