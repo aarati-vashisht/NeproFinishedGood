@@ -45,8 +45,6 @@ public class PutAwayActivity extends BaseActivity {
     Animation fadeOut;
     Animation fadeIn;
 
-    ArrayList<Reason> reasons;
-    ArrayList<Reason> fltList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,31 +60,6 @@ public class PutAwayActivity extends BaseActivity {
         fadeIn = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_in);
     }
 
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    public void onEditTextScanStillageChanged(Editable text) {
-        if (text.toString().equalsIgnoreCase("S000001")) {
-            linearLayoutScanDetail.setVisibility(View.VISIBLE);
-            linearLayoutScanDetail.setAnimation(fadeIn);
-            setData();
-        }
-        else{
-            linearLayoutScanDetail.setVisibility(View.GONE);
-            linearLayoutScanDetail.setAnimation(fadeOut);
-        }
-    }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String str = editTextScanStillage.getText().toString();
-                if (str.equals("S000001")) {
-                    linearLayoutScanDetail.setVisibility(View.VISIBLE);
-                    linearLayoutScanDetail.setAnimation(fadeIn);
-                } else if (str.equals("S000002")) {
-
-                }
-            }
-        });
-    }
 
 
     @OnClick(R.id.buttonPutAway)
