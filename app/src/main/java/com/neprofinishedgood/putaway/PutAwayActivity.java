@@ -1,8 +1,6 @@
 package com.neprofinishedgood.putaway;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -24,16 +22,21 @@ import android.widget.TextView;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 
+import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
-import com.neprofinishedgood.utils.Utils;
+import com.neprofinishedgood.putaway.Adapter.SpinnerAdapter;
+import com.neprofinishedgood.putaway.model.Reason;
 
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
+import butterknife.OnTextChanged;
 
 public class PutAwayActivity extends BaseActivity {
-
 
     @BindView(R.id.frameEnterQuantity)
     FrameLayout frameEnterQuantity;
@@ -80,6 +83,8 @@ public class PutAwayActivity extends BaseActivity {
     Animation fadeOut;
     Animation fadeIn;
 
+    ArrayList<Reason> reasons;
+    ArrayList<Reason> fltList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,121 +92,108 @@ public class PutAwayActivity extends BaseActivity {
         setContentView(R.layout.activity_put_away);
         ButterKnife.bind(this);
         setTitle(getString(R.string.put_away));
-
-
         initData();
     }
 
     void initData() {
-
         fadeOut = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_out);
         fadeIn = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_in);
+    }
 
-        editTextScanStillage.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onEditTextScanStillageChanged(Editable text) {
+        if (text.toString().equalsIgnoreCase("S000001")) {
+            linearLayoutScanDetail.setVisibility(View.VISIBLE);
+            linearLayoutScanDetail.setAnimation(fadeIn);
+            setData();
+        }
+        else{
+            linearLayoutScanDetail.setVisibility(View.GONE);
+            linearLayoutScanDetail.setAnimation(fadeOut);
+        }
+    }
 
+    @OnTextChanged(value = R.id.editTextQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onEditTextQuantityChanged(Editable text){
+        String stillageQty, editQty;
+        stillageQty = textViewQuantity.getText().toString();
+        editQty = text.toString();
+
+        stillageQtyNo = Float.parseFloat(stillageQty);
+
+        if (!editQty.equals("")) {
+            editQtyNo = Float.parseFloat(editQty);
+
+            if (editQtyNo < stillageQtyNo) {
+                linearLayoutReason.setVisibility(View.VISIBLE);
+                buttonConfirm.setEnabled(true);
+            } else if (editQtyNo > stillageQtyNo) {
+                linearLayoutReason.setVisibility(View.GONE);
+                editTextQuantity.setError("Quantity must not greater than stillage quantity!");
+                editTextQuantity.requestFocus();
+                buttonConfirm.setEnabled(false);
+            } else {
+                linearLayoutReason.setVisibility(View.GONE);
+                buttonConfirm.setEnabled(true);
             }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String str = editTextScanStillage.getText().toString();
-                if (str.equals("S000001")) {
-                    linearLayoutScanDetail.setVisibility(View.VISIBLE);
-                    linearLayoutScanDetail.setAnimation(fadeIn);
-                    setData();
-                }
-            }
-        });
+        } else {
+            editTextQuantity.setError("Quantity must not blank!");
+            editTextQuantity.requestFocus();
+            buttonConfirm.setEnabled(false);
+        }
     }
 
     void setData() {
 
         editTextQuantity.setText(textViewQuantity.getText().toString());
 
-        editTextQuantity.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        reasons = new ArrayList<>();
+        for(int i = 0; i<5; i++){
+            reasons.add(new Reason("Reason "+i,i+""));
+        }
+        reasons.add(0,new Reason("Select Reason","0"));
+        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(PutAwayActivity.this, R.layout.spinner_layout, reasons );
+        spinnerReason.setAdapter(reasonListAdapter);
 
-            }
+        fltList = new ArrayList<>();
+        for(int i = 0; i<5; i++){
+            fltList.add(new Reason("Flt "+i,i+""));
+        }
+        fltList.add(0,new Reason("Select Flt","0"));
+        SpinnerAdapter fltLitAdapter = new SpinnerAdapter(PutAwayActivity.this, R.layout.spinner_layout, fltList );
+        spinnerAssignFlt.setAdapter(fltLitAdapter);
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    }
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String stillageQty, editQty;
-                stillageQty = textViewQuantity.getText().toString();
-                editQty = editTextQuantity.getText().toString();
-
-                stillageQtyNo = Float.parseFloat(stillageQty);
-
-                if (!editQty.equals("")) {
-                    editQtyNo = Float.parseFloat(editQty);
-
-                    if (editQtyNo < stillageQtyNo) {
-                        linearLayoutReason.setVisibility(View.VISIBLE);
-                        buttonConfirm.setEnabled(true);
-                    } else if (editQtyNo > stillageQtyNo) {
-                        linearLayoutReason.setVisibility(View.GONE);
-                        editTextQuantity.setError("Quantity must not greater than stillage quantity!");
-                        editTextQuantity.requestFocus();
-                        buttonConfirm.setEnabled(false);
-                    } else {
-                        linearLayoutReason.setVisibility(View.GONE);
-                        buttonConfirm.setEnabled(true);
-                    }
-                } else {
-                    editTextQuantity.setError("Quantity must not blank!");
-                    editTextQuantity.requestFocus();
-                    buttonConfirm.setEnabled(false);
-                }
-            }
-        });
-
-        String[] reasonsList = {"Select Reason", "Wrong Product", "Product Damaged", "Other"};
-        ArrayAdapter<String> reasonAdapter = new ArrayAdapter(this, R.layout.spinner_layout, reasonsList);
-        spinnerReason.setAdapter(reasonAdapter);
-
-        String[] assignFltList = {"Select FLT", "option 1", "option 2", "option 3"};
-        ArrayAdapter<String> assignFltAdapter = new ArrayAdapter(this, R.layout.spinner_layout, assignFltList);
-        spinnerAssignFlt.setAdapter(assignFltAdapter);
-
+    @OnItemSelected(R.id.spinnerAssignFlt)
+    void onItemSelected(int position) {
+        if(position == 0){
+            buttonAssign.setEnabled(false);
+        }
+        else {
+            buttonAssign.setEnabled(true);
+        }
     }
 
     @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
 
         if (editQtyNo < stillageQtyNo) {
-            if (!spinnerReason.getSelectedItem().toString().equals("Select Reason")) {
+            if (spinnerReason.getSelectedItemPosition() != 0) {
 
                 frameEnterQuantity.setVisibility(View.GONE);
-                frameEnterQuantity.setAnimation(fadeOut);
                 frameAssignFlt.setVisibility(View.VISIBLE);
-                frameAssignFlt.setAnimation(fadeIn);
 
 //                Utils.animateFadeOut(frameEnterQuantity, 500);
 //                Utils.animateFadeIn(frameAssignFlt, 500);
-
-
             } else {
                 TextView textView = (TextView) spinnerReason.getSelectedView();
-                textView.setError("Select reason");
+                textView.setError(getString(R.string.select_reason));
                 textView.requestFocus();
             }
         } else {
             frameEnterQuantity.setVisibility(View.GONE);
-            frameEnterQuantity.setAnimation(fadeOut);
             frameAssignFlt.setVisibility(View.VISIBLE);
-            frameAssignFlt.setAnimation(fadeIn);
-
 //            frameEnterQuantity.animate()
 //                    .alpha(0.0f)
 //                    .setDuration(500)
@@ -228,17 +220,18 @@ public class PutAwayActivity extends BaseActivity {
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
-        startActivity(new Intent(PutAwayActivity.this, DashBoardAcivity.class));
         finish();
     }
 
     @OnClick(R.id.buttonAssign)
     public void onButtonAssignClick() {
-
+        CustomToast.showTOast(PutAwayActivity.this, getString(R.string.data_saved_successfully));
+        finish();
     }
 
     @OnClick(R.id.buttonUnAssign)
     public void onButtonUnAssignClick() {
-
+        CustomToast.showTOast(PutAwayActivity.this, getString(R.string.data_saved_successfully));
+        finish();
     }
 }
