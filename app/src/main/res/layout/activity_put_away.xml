@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="5dp"
     android:background="@color/background_color"
     android:orientation="vertical"
     tools:context=".putaway.PutAwayActivity">
@@ -10,8 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,271 +49,60 @@
 
             <include layout="@layout/stillage_layout" />
 
-            <FrameLayout
-                android:id="@+id/frameEnterQuantity"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible"
-                android:animateLayoutChanges="true">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:animateLayoutChanges="true"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:id="@+id/textViewEnterQuantity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/title_background_gradient"
-                        android:padding="5dp"
-                        android:text="@string/enter_quantity"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-                        android:id="@+id/linearLayoutQuantity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textViewEnterQuantity"
-                        android:layout_marginTop="0dp"
-                        android:orientation="horizontal"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/quantity"
-                            android:textColor="@color/black"
-                            android:textSize="12sp" />
-
-                        <EditText
-                            android:id="@+id/editTextQuantity"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="3"
-                            android:background="@drawable/editext_drawable"
-                            android:inputType="numberDecimal"
-                            android:padding="5dp"
-                            android:textSize="10sp" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayoutReason"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/linearLayoutQuantity"
-                        android:orientation="horizontal"
-                        android:padding="5dp"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-
-                            android:layout_weight="1"
-
-                            android:text="@string/reason"
-                            android:textColor="@color/black"
-                            android:textSize="12sp" />
-
-                        <Spinner
-                            android:id="@+id/spinnerReason"
-                            style="@style/AppTheme"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-
-                            android:layout_weight="3"
-                            android:background="@drawable/spinner_background" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayoutEnterQtyButtons"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="10dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <!--<ImageView-->
-                            <!--android:layout_width="60dp"-->
-                            <!--android:layout_height="60dp"-->
-                            <!--android:src="@drawable/button_ripple_effect" />-->
-
-                            <Button
-                                android:id="@+id/buttonConfirm"
-                                android:layout_width="70dp"
-                                android:layout_height="30dp"
-                                android:background="@drawable/button_ripple_effect"
-                                android:gravity="center"
-                                android:text="@string/confirm"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <!--<ImageView-->
-                            <!--android:layout_width="60dp"-->
-                            <!--android:layout_height="60dp"-->
-                            <!--android:src="@drawable/button_ripple_effect" />-->
-
-                            <Button
-                                android:id="@+id/buttonCancel"
-                                android:layout_width="70dp"
-                                android:layout_height="30dp"
-                                android:background="@drawable/button_ripple_effect"
-                                android:gravity="center"
-                                android:text="@string/cancel"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/frameAssignFlt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:animateLayoutChanges="true">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:id="@+id/textViewAssignFLT"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/title_background_gradient"
-                        android:padding="5dp"
-                        android:text="@string/assignFlt"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
-
-
-                    <LinearLayout
-                        android:id="@+id/linearLayoutAssignFlt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textViewAssignFLT"
-                        android:layout_marginTop="0dp"
-                        android:orientation="horizontal"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".3"
-                            android:text="@string/assignFlt"
-                            android:textColor="@color/black"
-                            android:textSize="12sp" />
-
-                        <Spinner
-                            android:id="@+id/spinnerAssignFlt"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight=".1"
-                            android:background="@drawable/spinner_background" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayoutAssingFltButtons"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="10dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <!--<ImageView-->
-                            <!--android:layout_width="60dp"-->
-                            <!--android:layout_height="60dp"-->
-                            <!--android:src="@drawable/button_ripple_effect" />-->
-
-                            <Button
-                                android:id="@+id/buttonAssign"
-                                android:layout_width="70dp"
-                                android:layout_height="30dp"
-                                android:background="@drawable/button_ripple_effect"
-                                android:gravity="center"
-                                android:text="@string/assign"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <!--<ImageView-->
-                            <!--android:layout_width="60dp"-->
-                            <!--android:layout_height="60dp"-->
-                            <!--android:src="@drawable/button_ripple_effect" />-->
-
-                            <Button
-                                android:id="@+id/buttonUnAssign"
-                                android:layout_width="70dp"
-                                android:layout_height="30dp"
-                                android:background="@drawable/button_ripple_effect"
-                                android:gravity="center"
-                                android:text="@string/unassign"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-            </FrameLayout>
 
         </LinearLayout>
 
+
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayoutEnterQtyButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonPutAway"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:background="@drawable/button_ripple_effect"
+                android:gravity="center"
+                android:text="@string/put_away"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:background="@drawable/button_ripple_effect"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
+

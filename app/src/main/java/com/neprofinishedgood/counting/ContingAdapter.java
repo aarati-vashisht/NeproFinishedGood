@@ -1,6 +1,7 @@
 package com.neprofinishedgood.counting;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,10 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.counting.model.StillageDatum;
-import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +91,9 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
         @Override
         public void onClick(View v) {
             if (v == mView) {
-                CustomToast.showTOast(context, "Clicked on " + getAdapterPosition());
+                Gson gson = new Gson();
+                String putExtraData = gson.toJson(stillageDatumListFiltered.get(getAdapterPosition()));
+                context.startActivity(new Intent(context, CountingStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
             }
 
         }
@@ -109,12 +113,16 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
                         if (row.getNumber().toLowerCase().equals(charSequence.toString().toLowerCase())) {
                             filteredList.add(row);
                             stillageDatumListFiltered.remove(row);
+                            Gson gson = new Gson();
+                            String putExtraData = gson.toJson(filteredList.get(0));
+                            context.startActivity(new Intent(context, CountingStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
                         }
                     }
                     filteredList.addAll(stillageDatumListFiltered);
                     stillageDatumListFiltered = filteredList;
+
                 }
-                //notifyDataSetChanged();
+
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = stillageDatumListFiltered;
                 return filterResults;
@@ -124,6 +132,7 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 stillageDatumListFiltered = (ArrayList<StillageDatum>) filterResults.values;
                 notifyDataSetChanged();
+
             }
         };
     }
