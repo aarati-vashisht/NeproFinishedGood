@@ -6,15 +6,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class StillageDatum {
 
-@SerializedName("number")
-@Expose
-private String number;
-@SerializedName("quantity")
-@Expose
-private String quantity;
-@SerializedName("stdQuantity")
-@Expose
-private String stdQuantity;
+    @SerializedName("number")
+    @Expose
+    private String number;
+    @SerializedName("quantity")
+    @Expose
+    private String quantity;
+    @SerializedName("stdQuantity")
+    @Expose
+    private String stdQuantity;
 
     public String getNumber() {
         return number;
@@ -57,13 +57,23 @@ private String stdQuantity;
     }
 
     @SerializedName("name")
-@Expose
-private String name;
-@SerializedName("item")
-@Expose
-private String item;
+    @Expose
+    private String name;
+    @SerializedName("item")
+    @Expose
+    private String item;
 
+    public String getStillageId() {
+        return stillageId;
+    }
 
+    public void setStillageId(String stillageId) {
+        this.stillageId = stillageId;
+    }
+
+    @SerializedName("stillageId")
+    @Expose
+    private String stillageId;
 
 }
 
