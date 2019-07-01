@@ -1,6 +1,9 @@
 package com.neprofinishedgood.putaway;
 
 
+
+import android.content.Intent;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,15 +17,19 @@ import android.widget.LinearLayout;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 
+
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
+import butterknife.OnTextChanged;
 
 public class PutAwayActivity extends BaseActivity {
 
     @BindView(R.id.buttonPutAway)
     Button buttonPutAway;
-
+  
     @BindView(R.id.buttonCancel)
     Button buttonCancel;
 
@@ -38,6 +45,8 @@ public class PutAwayActivity extends BaseActivity {
     Animation fadeOut;
     Animation fadeIn;
 
+    ArrayList<Reason> reasons;
+    ArrayList<Reason> fltList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +60,20 @@ public class PutAwayActivity extends BaseActivity {
     void initData() {
         fadeOut = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_out);
         fadeIn = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_in);
+    }
 
-        editTextScanStillage.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onEditTextScanStillageChanged(Editable text) {
+        if (text.toString().equalsIgnoreCase("S000001")) {
+            linearLayoutScanDetail.setVisibility(View.VISIBLE);
+            linearLayoutScanDetail.setAnimation(fadeIn);
+            setData();
+        }
+        else{
+            linearLayoutScanDetail.setVisibility(View.GONE);
+            linearLayoutScanDetail.setAnimation(fadeOut);
+        }
+    }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -83,6 +95,7 @@ public class PutAwayActivity extends BaseActivity {
             finish();
         } else {
             editTextScanStillage.setError(getResources().getString(R.string.please_scan_stillage));
+
         }
 
 
@@ -94,6 +107,7 @@ public class PutAwayActivity extends BaseActivity {
         linearLayoutScanDetail.setAnimation(fadeOut);
         editTextScanStillage.setText("");
     }
+
 
 
 }

@@ -31,4 +31,6 @@
     <string name="quantity_must_not_greater_than_stillage_qty">Quantity Must Not Greater Than Stillage Quantity!</string>
     <string name="quantiy_must_not_be_blank">Quantity Must Not Blank!</string>
     <string name="please_scan_stillage">Please Scan Stillage</string>
+    <string name="data_saved_successfully">Data Saved Successfully</string>
+    <string name="select_reason">Select Reason!</string>
 </resources>
