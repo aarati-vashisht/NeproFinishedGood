@@ -10,6 +10,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +25,7 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
+import com.neprofinishedgood.utils.Utils;
 
 
 import butterknife.BindView;
@@ -30,7 +33,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class PutAwayActivity extends BaseActivity {
-
 
 
     @BindView(R.id.frameEnterQuantity)
@@ -75,6 +77,9 @@ public class PutAwayActivity extends BaseActivity {
     float stillageQtyNo = 0;
     float editQtyNo = 0;
 
+    Animation fadeOut;
+    Animation fadeIn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,10 @@ public class PutAwayActivity extends BaseActivity {
     }
 
     void initData() {
+
+        fadeOut = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_out);
+        fadeIn = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_in);
+
         editTextScanStillage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -104,6 +113,7 @@ public class PutAwayActivity extends BaseActivity {
                 String str = editTextScanStillage.getText().toString();
                 if (str.equals("S000001")) {
                     linearLayoutScanDetail.setVisibility(View.VISIBLE);
+                    linearLayoutScanDetail.setAnimation(fadeIn);
                     setData();
                 }
             }
@@ -171,54 +181,48 @@ public class PutAwayActivity extends BaseActivity {
 
         if (editQtyNo < stillageQtyNo) {
             if (!spinnerReason.getSelectedItem().toString().equals("Select Reason")) {
-                frameEnterQuantity.animate()
-                        .alpha(0.0f)
-                        .setDuration(500)
-                        .setListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                frameEnterQuantity.setVisibility(View.GONE);
-                                frameAssignFlt.setAlpha(0.0f);
-                                frameAssignFlt.animate()
-                                        .alpha(1.0f)
-                                        .setDuration(500)
-                                        .setListener(new AnimatorListenerAdapter() {
-                                            @Override
-                                            public void onAnimationEnd(Animator animation) {
-                                                super.onAnimationEnd(animation);
-                                                frameAssignFlt.setVisibility(View.VISIBLE);
-                                            }
-                                        });
-                            }
-                        });
+
+                frameEnterQuantity.setVisibility(View.GONE);
+                frameEnterQuantity.setAnimation(fadeOut);
+                frameAssignFlt.setVisibility(View.VISIBLE);
+                frameAssignFlt.setAnimation(fadeIn);
+
+//                Utils.animateFadeOut(frameEnterQuantity, 500);
+//                Utils.animateFadeIn(frameAssignFlt, 500);
+
+
             } else {
                 TextView textView = (TextView) spinnerReason.getSelectedView();
                 textView.setError("Select reason");
                 textView.requestFocus();
             }
         } else {
-            frameEnterQuantity.animate()
-                    .alpha(0.0f)
-                    .setDuration(500)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            frameEnterQuantity.setVisibility(View.GONE);
-                            frameAssignFlt.setAlpha(0.0f);
-                            frameAssignFlt.animate()
-                                    .alpha(1.0f)
-                                    .setDuration(500)
-                                    .setListener(new AnimatorListenerAdapter() {
-                                        @Override
-                                        public void onAnimationEnd(Animator animation) {
-                                            super.onAnimationEnd(animation);
-                                            frameAssignFlt.setVisibility(View.VISIBLE);
-                                        }
-                                    });
-                        }
-                    });
+            frameEnterQuantity.setVisibility(View.GONE);
+            frameEnterQuantity.setAnimation(fadeOut);
+            frameAssignFlt.setVisibility(View.VISIBLE);
+            frameAssignFlt.setAnimation(fadeIn);
+
+//            frameEnterQuantity.animate()
+//                    .alpha(0.0f)
+//                    .setDuration(500)
+//                    .setListener(new AnimatorListenerAdapter() {
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            super.onAnimationEnd(animation);
+//                            frameEnterQuantity.setVisibility(View.GONE);
+//                            frameAssignFlt.setAlpha(0.0f);
+//                            frameAssignFlt.animate()
+//                                    .alpha(1.0f)
+//                                    .setDuration(500)
+//                                    .setListener(new AnimatorListenerAdapter() {
+//                                        @Override
+//                                        public void onAnimationEnd(Animator animation) {
+//                                            super.onAnimationEnd(animation);
+//                                            frameAssignFlt.setVisibility(View.VISIBLE);
+//                                        }
+//                                    });
+//                        }
+//                    });
         }
     }
 
