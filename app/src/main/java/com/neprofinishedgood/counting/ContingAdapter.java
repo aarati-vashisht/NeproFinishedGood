@@ -123,7 +123,6 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 stillageDatumListFiltered = (ArrayList<StillageDatum>) filterResults.values;
-                ViewHolder viewHolder = new ViewHolder(view);
                 notifyDataSetChanged();
             }
         };
