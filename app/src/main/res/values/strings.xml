@@ -28,4 +28,6 @@
     <string name="assignFlt">Assign FLT</string>
     <string name="assign">Assign</string>
     <string name="unassign">UnAssign</string>
+    <string name="data_saved_successfully">Data Saved Successfully</string>
+    <string name="select_reason">Select Reason!</string>
 </resources>
