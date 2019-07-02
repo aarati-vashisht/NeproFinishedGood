@@ -44,6 +44,7 @@
     <string name="button_reject">Reject</string>
     <string name="enter_reject_quantity">Enter Reject Quantity</string>
     <string name="reason">Reason</string>
+
     <string name="items_rejected_successfully"> Items Rejected Successfully</string>
     <string name="enter_reason">Enter Reason</string>
     <string name="mark">Mark</string>
@@ -60,4 +61,5 @@
     <string name="enter_merge_quantity">Enter Merge Quantity</string>
     <string name="merge">Merge</string>
     <string name="merge_stillage">Merge Stillage</string>
+
 </resources>
