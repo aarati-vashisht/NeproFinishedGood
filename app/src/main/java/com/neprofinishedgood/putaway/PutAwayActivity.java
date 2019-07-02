@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -14,6 +13,7 @@ import android.widget.Spinner;
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.putaway.model.LocationData;
 import com.neprofinishedgood.utils.Utils;
 
@@ -25,9 +25,9 @@ import butterknife.OnTextChanged;
 public class PutAwayActivity extends BaseActivity {
 
     @BindView(R.id.buttonPutAway)
-    Button buttonPutAway;
+    CustomButton buttonPutAway;
     @BindView(R.id.buttonCancel)
-    Button buttonCancel;
+    CustomButton buttonCancel;
     @BindView(R.id.linearLayoutScanDetail)
     LinearLayout linearLayoutScanDetail;
     @BindView(R.id.linearLayoutPutAwayLocation)
