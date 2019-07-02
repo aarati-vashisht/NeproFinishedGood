@@ -1,13 +1,13 @@
 package com.neprofinishedgood.qualitycheck;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.rejectquantity.RejectQuantityActivity;
+import com.neprofinishedgood.qualitycheck.qualityholdandmove.QualityHoldAndMove;
+import com.neprofinishedgood.qualitycheck.rejectcompletestillage.RejectCompleteStillage;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -29,11 +29,11 @@ public class QualityCheckDashboardActivity extends BaseActivity {
 
     @OnClick(R.id.linearLayoutRejectCompleteStillage)
     public void onLinearLayoutRejectCompleteStillageClick() {
-
+        startActivity(new Intent(QualityCheckDashboardActivity.this, RejectCompleteStillage.class));
     }
 
     @OnClick(R.id.linearLayoutQualityHoldAndMove)
     public void onLinearLayoutQualityHoldAndMoveClick() {
-
+        startActivity(new Intent(QualityCheckDashboardActivity.this, QualityHoldAndMove.class));
     }
 }

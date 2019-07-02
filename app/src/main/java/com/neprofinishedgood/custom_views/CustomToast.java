@@ -11,7 +11,7 @@ import com.neprofinishedgood.R;
 public class CustomToast {
     static Toast toast;
 
-    public static void showTOast(Context context, String text) {
+    public static void showToast(Context context, String text) {
         if (toast != null) {
             toast.cancel();
             toast = null;
