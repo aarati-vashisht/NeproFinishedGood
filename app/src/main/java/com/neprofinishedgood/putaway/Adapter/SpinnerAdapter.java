@@ -6,40 +6,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.putaway.model.Reason;
+import com.neprofinishedgood.base.model.UniversalSpinner;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class SpinnerAdapter extends ArrayAdapter<Reason> {
+public class SpinnerAdapter extends ArrayAdapter<UniversalSpinner> {
 
         LayoutInflater inflater;
-        ArrayList<Reason> reason;
+        ArrayList<UniversalSpinner> universalSpinner;
 
         Context context;
-        public SpinnerAdapter(Activity context, int resouceId, ArrayList<Reason> list){
+        public SpinnerAdapter(Activity context, int resouceId, ArrayList<UniversalSpinner> list){
             super(context,resouceId, list);
             inflater = context.getLayoutInflater();
 
-            this.reason = list;
+            this.universalSpinner = list;
             this.context = context;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            Reason reason = getItem(position);
+            UniversalSpinner universalSpinner = getItem(position);
 
             //View rowview = inflater.inflate(R.layout.spinner_layout,null,true);
 
             View view =  View.inflate(context, R.layout.spinner_layout, null);
 
             TextView txtTitle = view.findViewById(R.id.text1);
-            txtTitle.setText(reason.getName());
+            txtTitle.setText(universalSpinner.getName());
 
             return view;
         }
@@ -49,8 +47,8 @@ public class SpinnerAdapter extends ArrayAdapter<Reason> {
 
         View view;
         view =  View.inflate(context, R.layout.spinner_layout, null);
-        final TextView textView = (TextView) view.findViewById(R.id.text1);
-        textView.setText(reason.get(position).getName());
+        final TextView textView = view.findViewById(R.id.text1);
+        textView.setText(universalSpinner.get(position).getName());
 
 
         return view;
