@@ -1,9 +1,9 @@
-package com.neprofinishedgood.putaway.model;
+package com.neprofinishedgood.base.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Reason {
+public class UniversalSpinner {
 
     @SerializedName("name")
     @Expose
@@ -12,7 +12,7 @@ public class Reason {
     @Expose
     private String id;
 
-    public Reason(String name, String id) {
+    public UniversalSpinner(String name, String id) {
         this.name = name;
         this.id = id;
     }

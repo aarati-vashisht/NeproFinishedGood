@@ -142,7 +142,7 @@ public class CountingStillageActivity extends BaseActivity {
     }
 
     void setData() {
-        String[] reasonsList = {"Select Reason", "Wrong Product", "Product Damaged", "Other"};
+        String[] reasonsList = {"Select UniversalSpinner", "Wrong Product", "Product Damaged", "Other"};
         ArrayAdapter<String> reasonAdapter = new ArrayAdapter(this, R.layout.spinner_layout, reasonsList);
         spinnerReason.setAdapter(reasonAdapter);
 
@@ -156,7 +156,7 @@ public class CountingStillageActivity extends BaseActivity {
     public void onButtonConfirmClick() {
 
         if (editQtyNo < stillageQtyNo) {
-            if (!spinnerReason.getSelectedItem().toString().equals("Select Reason")) {
+            if (!spinnerReason.getSelectedItem().toString().equals("Select UniversalSpinner")) {
 
                 frameEnterQuantity.setVisibility(View.GONE);
                 frameEnterQuantity.setAnimation(fadeOut);

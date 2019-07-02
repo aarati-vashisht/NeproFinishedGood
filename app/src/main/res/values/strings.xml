@@ -22,7 +22,7 @@
     <string name="dashbord">Dashboard</string>
     <string name="enter_quantity">Enter Quantity</string>
     <string name="quantity">Quantity</string>
-    <string name="reason">Reason</string>
+    <string name="universalSpinner">Reason</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="assignFlt">Assign FLT</string>
@@ -33,6 +33,11 @@
     <string name="please_scan_stillage">Please Scan Stillage</string>
     <string name="data_saved_successfully">Data Saved Successfully</string>
     <string name="select_reason">Select Reason!</string>
+    <string name="drop_location">Drop Location</string>
+    <string name="enter_drop_location">Enter Drop Location</string>
+    <string name="aisle">Aisle</string>
+    <string name="bin">Bin</string>
+    <string name="rack">Rack</string>
     <string name="reject_quantity">Reject Qty</string>
     <string name="reject_complete_stillage">Reject Complete Stillage</string>
     <string name="quality_hold_and_move"><![CDATA[Quality Hold & Move]]></string>
