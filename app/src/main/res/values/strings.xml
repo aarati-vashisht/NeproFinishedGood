@@ -10,7 +10,6 @@
     <string name="quality_check">Quality Check</string>
     <string name="assignlocation_flt"><![CDATA[Asign Location & FLT]]></string>
     <string name="pickload"><![CDATA[Pick & Load]]></string>
-    <string name="merge_stillage">Merge Stillage</string>
     <string name="return_stillage">Return Stillage</string>
     <string name="recieve_return_stillage">Recieve Return Stillage</string>
     <string name="scan_stillage">Scan Stillage</string>
@@ -38,11 +37,29 @@
     <string name="aisle">Aisle</string>
     <string name="bin">Bin</string>
     <string name="rack">Rack</string>
-    <string name="reject_quantity">Reject Qty</string>
+    <string name="reject_quantity">Reject Quantity</string>
     <string name="reject_complete_stillage">Reject Complete Stillage</string>
     <string name="quality_hold_and_move"><![CDATA[Quality Hold & Move]]></string>
     <string name="select_quality_check_operation">Select Quality Check Operation</string>
     <string name="button_reject">Reject</string>
     <string name="enter_reject_quantity">Enter Reject Quantity</string>
     <string name="reason">Reason</string>
+
+    <string name="items_rejected_successfully"> Items Rejected Successfully</string>
+    <string name="enter_reason">Enter Reason</string>
+    <string name="mark">Mark</string>
+    <string name="button_hold">Hold</string>
+    <string name="unhold">Unhold</string>
+    <string name="items_hold">Items Hold</string>
+    <string name="items_unhold">Items Unhold</string>
+    <string name="assign_location">Assign Location</string>
+    <string name="scan_location">Scan Location</string>
+    <string name="assign_location_and_flt"><![CDATA[Assign Location & FLT]]></string>
+    <string name="scan_parent_stillage">Scan Parent Stillage</string>
+    <string name="scan_child_stillage">Scan Child Stillage</string>
+    <string name="merge_quantity">Merge Quantity</string>
+    <string name="enter_merge_quantity">Enter Merge Quantity</string>
+    <string name="merge">Merge</string>
+    <string name="merge_stillage">Merge Stillage</string>
+
 </resources>

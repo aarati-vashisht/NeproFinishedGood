@@ -37,11 +37,11 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.buttonLogin)
     public void onLoginButtonClick() {
         if (pinViewLogin.getText().toString().equals("")) {
-            CustomToast.showTOast(this, getString(R.string.plz_enter_pin));
+            CustomToast.showToast(this, getString(R.string.plz_enter_pin));
         } else if (!pinViewLogin.getText().toString().equals("1234")) {
-            CustomToast.showTOast(this, getString(R.string.invalid_pin));
+            CustomToast.showToast(this, getString(R.string.invalid_pin));
         } else if (pinViewLogin.getText().toString().equals("1234")) {
-            CustomToast.showTOast(this, getString(R.string.login_successfully));
+            CustomToast.showToast(this, getString(R.string.login_successfully));
             startActivity(new Intent(this, DashBoardAcivity.class));
             finishAffinity();
             overridePendingTransition(0, 0);

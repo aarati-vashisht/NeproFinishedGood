@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.assignlocationandflt.AssignLocationAndFltActivity;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.CountingActivity;
+import com.neprofinishedgood.mergestillage.MergeStillageActivity;
 import com.neprofinishedgood.putaway.PutAwayActivity;
 import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
 
@@ -37,5 +39,15 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutQualityCheck)
     public void onlinearLayoutQualityCheckClick() {
         startActivity(new Intent(this, QualityCheckDashboardActivity.class));
+    }
+
+    @OnClick(R.id.linearLayoutAssignLocationAndFlt)
+    public void onlinearLayoutAssignLocationAndFltClick() {
+        startActivity(new Intent(this, AssignLocationAndFltActivity.class));
+    }
+
+    @OnClick(R.id.linearLayoutMergeStillage)
+    public void onlinearLayoutMergeStillageClick() {
+        startActivity(new Intent(this, MergeStillageActivity.class));
     }
 }

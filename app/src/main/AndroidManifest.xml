@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".rejectquantity.RejectQuantityActivity"></activity>
+        <activity android:name=".mergestillage.MergeStillageActivity"></activity>
+        <activity android:name=".assignlocationandflt.AssignLocationAndFltActivity" />
+        <activity android:name=".qualitycheck.qualityholdandmove.QualityHoldAndMove" />
+        <activity android:name=".qualitycheck.rejectcompletestillage.RejectCompleteStillage" />
+        <activity android:name=".qualitycheck.rejectquantity.RejectQuantityActivity" />
         <activity android:name=".qualitycheck.QualityCheckDashboardActivity" />
         <activity android:name=".counting.CountingStillageActivity" />
         <activity android:name=".base.BaseActivity" />
