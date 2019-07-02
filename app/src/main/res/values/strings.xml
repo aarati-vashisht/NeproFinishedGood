@@ -38,4 +38,10 @@
     <string name="aisle">Aisle</string>
     <string name="bin">Bin</string>
     <string name="rack">Rack</string>
+    <string name="reject_quantity">Reject Qty</string>
+    <string name="reject_complete_stillage">Reject Complete Stillage</string>
+    <string name="quality_hold_and_move"><![CDATA[Quality Hold & Move]]></string>
+    <string name="select_quality_check_operation">Select Quality Check Operation</string>
+    <string name="button_reject">Reject</string>
+    <string name="enter_reject_quantity">Enter Reject Quantity</string>
 </resources>

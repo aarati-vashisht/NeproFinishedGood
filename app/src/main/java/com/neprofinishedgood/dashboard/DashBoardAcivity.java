@@ -7,6 +7,7 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.CountingActivity;
 import com.neprofinishedgood.putaway.PutAwayActivity;
+import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,5 +32,10 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutPutAway)
     public void onLinearLayouPutAwayClick() {
         startActivity(new Intent(this, PutAwayActivity.class));
+    }
+
+    @OnClick(R.id.linearLayoutQualityCheck)
+    public void onlinearLayoutQualityCheckClick() {
+        startActivity(new Intent(this, QualityCheckDashboardActivity.class));
     }
 }
