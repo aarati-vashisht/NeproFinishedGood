@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".counting.CountingStillageActivity"></activity>
+        <activity android:name=".rejectquantity.RejectQuantityActivity"></activity>
+        <activity android:name=".qualitycheck.QualityCheckDashboardActivity" />
+        <activity android:name=".counting.CountingStillageActivity" />
         <activity android:name=".base.BaseActivity" />
         <activity android:name=".counting.CountingActivity" />
         <activity android:name=".putaway.PutAwayActivity" />
