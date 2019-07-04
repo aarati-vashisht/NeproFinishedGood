@@ -10,10 +10,9 @@ import com.neprofinishedgood.R;
 public class CustomButton extends AppCompatButton {
     public CustomButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setBackground(getResources().getDrawable(R.drawable.button_ripple_effect));
-        if (isEnabled() || !isPressed()) {
+        if (isEnabled() ) {
             setBackground(getResources().getDrawable(R.drawable.button_enable));
-        } else if (!isEnabled() || isPressed()) {
+        } else if (!isEnabled() ) {
             setBackground(getResources().getDrawable(R.drawable.button_disable));
         }
     }

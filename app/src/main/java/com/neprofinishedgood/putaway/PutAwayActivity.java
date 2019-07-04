@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import androidx.appcompat.widget.AppCompatButton;
+
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
@@ -25,9 +27,9 @@ import butterknife.OnTextChanged;
 public class PutAwayActivity extends BaseActivity {
 
     @BindView(R.id.buttonPutAway)
-    CustomButton buttonPutAway;
+    AppCompatButton buttonPutAway;
     @BindView(R.id.buttonCancel)
-    CustomButton buttonCancel;
+    AppCompatButton buttonCancel;
     @BindView(R.id.linearLayoutScanDetail)
     LinearLayout linearLayoutScanDetail;
     @BindView(R.id.linearLayoutPutAwayLocation)
@@ -61,6 +63,8 @@ public class PutAwayActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.put_away));
         initData();
+        buttonPutAway.setEnabled(false);
+
     }
 
     void initData() {
