@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 
 import butterknife.BindView;
@@ -41,10 +42,10 @@ public class QualityHoldAndMove extends BaseActivity {
     TextView textViewStdQuatity;
 
     @BindView(R.id.buttonHold)
-    Button buttonHold;
+    CustomButton buttonHold;
 
     @BindView(R.id.buttonUnhold)
-    Button buttonUnhold;
+    CustomButton buttonUnhold;
 
     @BindView(R.id.editTextScanStillage)
     EditText editTextScanStillage;
