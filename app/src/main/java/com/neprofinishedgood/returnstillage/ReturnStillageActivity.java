@@ -11,10 +11,13 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.putaway.Adapter.SpinnerAdapter;
 import com.neprofinishedgood.utils.StillageLayout;
@@ -32,7 +35,7 @@ public class ReturnStillageActivity extends BaseActivity {
     RelativeLayout relativeLayoutScanDetail;
 
     @BindView(R.id.editTextScanLocation)
-    EditText editTextScanLocation;
+    AppCompatEditText editTextScanLocation;
 
     @BindView(R.id.spinnerAisle)
     Spinner spinnerAisle;
@@ -44,10 +47,10 @@ public class ReturnStillageActivity extends BaseActivity {
     Spinner spinnerBin;
 
     @BindView(R.id.buttonDrop)
-    Button buttonDrop;
+    CustomButton buttonDrop;
 
     @BindView(R.id.editTextScanStillage)
-    EditText editTextScanStillage;
+    AppCompatEditText editTextScanStillage;
 
     @BindView(R.id.stillageDetail)
     View stillageDetail;
@@ -88,6 +91,7 @@ public class ReturnStillageActivity extends BaseActivity {
             relativeLayoutScanDetail.setAnimation(fadeIn);
             setData();
             editTextScanLocation.requestFocus();
+            editTextScanStillage.setEnabled(false);
         } else {
             relativeLayoutScanDetail.setVisibility(View.GONE);
             relativeLayoutScanDetail.setAnimation(fadeOut);

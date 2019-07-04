@@ -10,6 +10,7 @@ import com.neprofinishedgood.counting.CountingActivity;
 import com.neprofinishedgood.mergestillage.MergeStillageActivity;
 import com.neprofinishedgood.putaway.PutAwayActivity;
 import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
+import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
 import com.neprofinishedgood.returnstillage.ReturnStillageActivity;
 
 import butterknife.ButterKnife;
@@ -55,5 +56,10 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutReturnStillage)
     public void onlinearLayoutReturnStillageClick() {
         startActivity(new Intent(this, ReturnStillageActivity.class));
+    }
+
+    @OnClick(R.id.linearLayoutReceiveReturnStillage)
+    public void onlinearLayoutReceiveReturnStillageClick() {
+        startActivity(new Intent(this, ReceiveReturnStillageActivity.class));
     }
 }

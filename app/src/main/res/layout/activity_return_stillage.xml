@@ -86,7 +86,7 @@
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
-                    <EditText
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editTextScanLocation"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
-                    <EditText
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editTextScanAisle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
-                    <EditText
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editTextRack"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -195,7 +195,7 @@
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
-                    <EditText
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/editTextBin"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <Button
+                <com.neprofinishedgood.custom_views.CustomButton
                     android:id="@+id/buttonDrop"
                     android:layout_width="70dp"
                     android:layout_height="30dp"
@@ -242,7 +242,7 @@
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 
-                <Button
+                <com.neprofinishedgood.custom_views.CustomButton
                     android:id="@+id/buttonCancel"
                     android:layout_width="70dp"
                     android:layout_height="30dp"

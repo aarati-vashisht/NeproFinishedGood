@@ -23,9 +23,9 @@
                 android:layout_weight="1.3"
                 android:text="@string/scan_stillage"
                 android:textColor="@color/black"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
-            <EditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/editTextScanStillage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -46,7 +46,9 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <include layout="@layout/stillage_layout" />
+            <include
+                android:id="@+id/stillageDetail"
+                layout="@layout/stillage_layout" />
 
             <FrameLayout
                 android:id="@+id/frameEnterReason"
@@ -125,8 +127,8 @@
                             android:id="@+id/buttonCancel"
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:background="@drawable/button_ripple_effect"
                             android:layout_marginStart="20dp"
+                            android:background="@drawable/button_ripple_effect"
                             android:gravity="center"
                             android:text="@string/cancel"
                             android:textAllCaps="false"

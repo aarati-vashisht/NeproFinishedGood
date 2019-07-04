@@ -12,12 +12,16 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.putaway.Adapter.SpinnerAdapter;
+import com.neprofinishedgood.utils.StillageLayout;
 
 import java.util.ArrayList;
 
@@ -32,23 +36,13 @@ public class AssignLocationAndFltActivity extends BaseActivity {
     @BindView(R.id.relativeLayoutScanDetail)
     RelativeLayout relativeLayoutScanDetail;
 
-    @BindView(R.id.textViewName)
-    TextView textViewName;
+    @BindView(R.id.stillageDetail)
+    View stillageDetail;
 
-    @BindView(R.id.textViewitem)
-    TextView textViewitem;
-
-    @BindView(R.id.textViewNumber)
-    TextView textViewNumber;
-
-    @BindView(R.id.textViewQuantity)
-    TextView textViewQuantity;
-
-    @BindView(R.id.textViewStdQuatity)
-    TextView textViewStdQuatity;
+    StillageLayout stillageLayout;
 
     @BindView(R.id.editTextScanLocation)
-    EditText editTextScanLocation;
+    AppCompatEditText editTextScanLocation;
 
     @BindView(R.id.spinnerAssignFlt)
     Spinner spinnerAssignFlt;
@@ -63,13 +57,13 @@ public class AssignLocationAndFltActivity extends BaseActivity {
     Spinner spinnerBin;
 
     @BindView(R.id.buttonAssign)
-    Button buttonAssign;
+    CustomButton buttonAssign;
 
     @BindView(R.id.buttonUnAssign)
-    Button buttonUnAssign;
+    CustomButton buttonUnAssign;
 
     @BindView(R.id.editTextScanStillage)
-    EditText editTextScanStillage;
+    AppCompatEditText editTextScanStillage;
 
     @BindView(R.id.frameAssignFlt)
     FrameLayout frameAssignFlt;
@@ -100,6 +94,9 @@ public class AssignLocationAndFltActivity extends BaseActivity {
     }
 
     void initData() {
+        stillageLayout = new StillageLayout();
+        ButterKnife.bind(stillageLayout, stillageDetail);
+
         fadeOut = AnimationUtils.loadAnimation(AssignLocationAndFltActivity.this, R.anim.animate_fade_out);
         fadeIn = AnimationUtils.loadAnimation(AssignLocationAndFltActivity.this, R.anim.animate_fade_in);
     }
@@ -109,6 +106,8 @@ public class AssignLocationAndFltActivity extends BaseActivity {
         if (text.toString().equalsIgnoreCase("S000001")) {
             relativeLayoutScanDetail.setVisibility(View.VISIBLE);
             relativeLayoutScanDetail.setAnimation(fadeIn);
+            editTextScanStillage.setEnabled(false);
+            editTextScanLocation.requestFocus();
             setData();
         } else {
             relativeLayoutScanDetail.setVisibility(View.GONE);
@@ -131,6 +130,7 @@ public class AssignLocationAndFltActivity extends BaseActivity {
 
         } else {
             buttonAssign.setEnabled(false);
+            clearAllSpinnerData();
         }
     }
 
@@ -145,11 +145,11 @@ public class AssignLocationAndFltActivity extends BaseActivity {
         stillageDatum.setStdQuantity("100");
         stillageDatum.setStillageId("");
 
-        textViewitem.setText(stillageDatum.getItem());
-        textViewName.setText(stillageDatum.getName());
-        textViewNumber.setText(stillageDatum.getNumber());
-        textViewQuantity.setText(stillageDatum.getQuantity());
-        textViewStdQuatity.setText(stillageDatum.getStdQuantity());
+        stillageLayout.textViewitem.setText(stillageDatum.getItem());
+        stillageLayout.textViewName.setText(stillageDatum.getName());
+        stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
+        stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
+        stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
 
     }
 
@@ -256,6 +256,12 @@ public class AssignLocationAndFltActivity extends BaseActivity {
             return false;
         }
         return true;
+    }
+
+    void clearAllSpinnerData() {
+        spinnerAisle.setAdapter(null);
+        spinnerRack.setAdapter(null);
+        spinnerBin.setAdapter(null);
     }
 
 }
