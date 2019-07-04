@@ -61,5 +61,26 @@
     <string name="enter_merge_quantity">Enter Merge Quantity</string>
     <string name="merge">Merge</string>
     <string name="merge_stillage">Merge Stillage</string>
+    <string name="enter_scan_location">Enter Scan Location</string>
+    <string name="select_aisle">Select Aisle</string>
+    <string name="select_rack">Select Rack</string>
+    <string name="select_bin">Select Bin</string>
+    <string name="item_location_assigned_successfully">Item Location Assigned Successfully</string>
+    <string name="item_location_unassigned_successfully">Item Location Unassigned Successfully</string>
+    <string name="item_flt_assigned_successfully">Item FLT Assigned Successfully</string>
+    <string name="item_flt_unassigned_successfully">Item FLT Unassigned Successfully</string>
+    <string name="assign_flt">Assign FLT</string>
+    <string name="invalid_merge_quantity">Invalid Merge Quantity</string>
+    <string name="item_merged_successfully">Item Merged Successfully</string>
+    <string name="drop">Drop</string>
+    <string name="item_droped_successfully">Item Dropped Successfully</string>
+    <string name="work_number">Work Order</string>
+    <string name="site">Site</string>
+    <string name="warehouse">Warehouse</string>
+    <string name="asile">Asile</string>
+    <string name="confirm_loading_quantity">Confirm Loading Quantity</string>
+    <string name="load_quantity">Load Quantity</string>
+    <string name="button_confirm">Confirm</string>
+    <string name="change_quantity">Change Quantity</string>
 
 </resources>

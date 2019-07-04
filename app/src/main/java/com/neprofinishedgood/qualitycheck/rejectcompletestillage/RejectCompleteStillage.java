@@ -15,6 +15,7 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.putaway.Adapter.SpinnerAdapter;
 
@@ -49,7 +50,7 @@ public class RejectCompleteStillage extends BaseActivity {
     Spinner spinnerRejectReason;
 
     @BindView(R.id.buttonReject)
-    Button buttonReject;
+    CustomButton buttonReject;
 
     @BindView(R.id.editTextScanStillage)
     EditText editTextScanStillage;

@@ -82,22 +82,20 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <Button
+                        <com.neprofinishedgood.custom_views.CustomButton
                             android:id="@+id/buttonHold"
-                            android:layout_width="70dp"
-                            android:layout_height="30dp"
-                            android:background="@drawable/button_ripple_effect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
                             android:gravity="center"
                             android:text="@string/button_hold"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
-                        <Button
+                        <com.neprofinishedgood.custom_views.CustomButton
                             android:id="@+id/buttonUnhold"
-                            android:layout_width="70dp"
-                            android:layout_height="30dp"
-                            android:background="@drawable/button_ripple_effect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
                             android:layout_marginStart="20dp"
                             android:gravity="center"
                             android:text="@string/unhold"
