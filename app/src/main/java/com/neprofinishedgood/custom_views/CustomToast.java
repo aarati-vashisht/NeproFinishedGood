@@ -22,6 +22,7 @@ public class CustomToast {
         TextView textViewTitle = view.findViewById(R.id.textViewTitle);
         textViewTitle.setText(text);
         toast.setView(view);
+        toast.setDuration(Toast.LENGTH_SHORT);
         toast.show();
     }
 
