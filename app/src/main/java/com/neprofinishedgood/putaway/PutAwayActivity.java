@@ -15,7 +15,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.putaway.model.LocationData;
 import com.neprofinishedgood.utils.Utils;
 

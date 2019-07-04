@@ -1,19 +1,26 @@
 package com.neprofinishedgood.custom_views;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.neprofinishedgood.R;
 
+import static androidx.core.content.ContextCompat.getDrawable;
+
 public class CustomButton extends AppCompatButton {
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public CustomButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (isEnabled()) {
-            setBackground(getResources().getDrawable(R.drawable.button_enable));
-        } else if (!isEnabled()) {
-            setBackground(getResources().getDrawable(R.drawable.button_disable));
-        }
+        setBackground(getResources().getDrawable(R.drawable.button_ripple_effect));
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(
+                android.R.attr.selectableItemBackground, outValue, true);
+        setForeground(getDrawable(context, outValue.resourceId));
+
     }
 }
