@@ -116,7 +116,7 @@
                         android:textSize="12sp" />
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/editTextScanAisle"
+                        android:id="@+id/textViewScanAisle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -156,7 +156,7 @@
                         android:textSize="12sp" />
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/editTextRack"
+                        android:id="@+id/textViewtRack"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -196,7 +196,7 @@
                         android:textSize="12sp" />
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/editTextBin"
+                        android:id="@+id/textViewBin"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
