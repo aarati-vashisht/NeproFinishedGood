@@ -20,7 +20,9 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <include layout="@layout/stillage_layout" />
+            <include
+                android:id="@+id/stillageDetail"
+                layout="@layout/stillage_layout" />
 
             <FrameLayout
                 android:id="@+id/frameEnterQuantity"
@@ -65,7 +67,7 @@
                             android:textColor="@color/black"
                             android:textSize="12sp" />
 
-                        <EditText
+                        <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/editTextQuantity"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -123,7 +125,7 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <Button
+                            <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonPutAway"
                                 android:layout_width="70dp"
                                 android:layout_height="30dp"
@@ -143,7 +145,7 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <Button
+                            <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonCancel"
                                 android:layout_width="70dp"
                                 android:layout_height="30dp"
@@ -233,7 +235,7 @@
                             <!--android:layout_height="60dp"-->
                             <!--android:src="@drawable/button_ripple_effect" />-->
 
-                            <Button
+                            <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonAssign"
                                 android:layout_width="70dp"
                                 android:layout_height="30dp"
@@ -257,7 +259,7 @@
                             <!--android:layout_height="60dp"-->
                             <!--android:src="@drawable/button_ripple_effect" />-->
 
-                            <Button
+                            <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonUnAssign"
                                 android:layout_width="70dp"
                                 android:layout_height="30dp"
