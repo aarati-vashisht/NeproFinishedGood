@@ -83,5 +83,5 @@
     <string name="button_confirm">Confirm</string>
     <string name="change_quantity">Change Quantity</string>
     <string name="button_receive">Receive</string>
-
+    <string name="item_received_successfully">Item Received Successfully</string>
 </resources>

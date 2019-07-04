@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.model.StillageDatum;
@@ -36,14 +38,13 @@ public class MergeStillageActivity extends BaseActivity {
     View childStillageDetail;
 
     @BindView(R.id.editTextScanChildStillage)
-    EditText editTextScanChildStillage;
+    AppCompatEditText editTextScanChildStillage;
 
     @BindView(R.id.editTextMergeQuantity)
-    EditText editTextMergeQuantity;
+    AppCompatEditText editTextMergeQuantity;
 
     @BindView(R.id.editTextScanParentStillage)
-    EditText editTextScanParentStillage;
-
+    AppCompatEditText editTextScanParentStillage;
 
     StillageLayout parentStillageLayout;
     StillageLayout childStillageLayout;
@@ -83,6 +84,7 @@ public class MergeStillageActivity extends BaseActivity {
             linearLayoutScanParentDetail.setVisibility(View.VISIBLE);
             linearLayoutScanParentDetail.setAnimation(fadeIn);
             setParentData();
+            editTextScanParentStillage.setEnabled(false);
             editTextScanChildStillage.requestFocus();
         } else {
             linearLayoutScanParentDetail.setVisibility(View.GONE);
@@ -112,6 +114,7 @@ public class MergeStillageActivity extends BaseActivity {
             relativeLayoutScanChildDetail.setVisibility(View.VISIBLE);
             relativeLayoutScanChildDetail.setAnimation(fadeIn);
             setChildData();
+            editTextScanChildStillage.setEnabled(false);
             editTextMergeQuantity.requestFocus();
         } else {
             relativeLayoutScanChildDetail.setVisibility(View.GONE);
@@ -171,6 +174,8 @@ public class MergeStillageActivity extends BaseActivity {
         if (isValidated()) {
             CustomToast.showToast(MergeStillageActivity.this, getString(R.string.item_merged_successfully));
             finish();
+        }else{
+            editTextMergeQuantity.setError(getString(R.string.enter_merge_quantity));
         }
     }
 
@@ -181,6 +186,10 @@ public class MergeStillageActivity extends BaseActivity {
 
         editTextScanParentStillage.setText("");
         editTextScanChildStillage.setText("");
+        editTextMergeQuantity.setText("");
+
+        editTextScanParentStillage.setEnabled(true);
+        editTextScanChildStillage.setEnabled(true);
 
         linearLayoutScanParentDetail.setVisibility(View.GONE);
         linearLayoutScanParentDetail.setAnimation(fadeOut);

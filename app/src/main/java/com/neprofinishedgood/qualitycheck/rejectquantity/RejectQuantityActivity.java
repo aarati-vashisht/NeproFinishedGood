@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
@@ -18,6 +20,7 @@ import com.neprofinishedgood.counting.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.putaway.Adapter.SpinnerAdapter;
+import com.neprofinishedgood.utils.StillageLayout;
 
 import java.util.ArrayList;
 
@@ -31,23 +34,13 @@ public class RejectQuantityActivity extends BaseActivity {
     @BindView(R.id.linearLayoutScanDetail)
     LinearLayout linearLayoutScanDetail;
 
-    @BindView(R.id.textViewName)
-    TextView textViewName;
+    @BindView(R.id.stillageDetail)
+    View stillageDetail;
 
-    @BindView(R.id.textViewitem)
-    TextView textViewitem;
-
-    @BindView(R.id.textViewNumber)
-    TextView textViewNumber;
-
-    @BindView(R.id.textViewQuantity)
-    TextView textViewQuantity;
-
-    @BindView(R.id.textViewStdQuatity)
-    TextView textViewStdQuatity;
+    StillageLayout stillageLayout;
 
     @BindView(R.id.editTextRejectQuantity)
-    EditText editTextRejectQuantity;
+    AppCompatEditText editTextRejectQuantity;
 
     @BindView(R.id.spinnerRejectReason)
     Spinner spinnerRejectReason;
@@ -56,7 +49,7 @@ public class RejectQuantityActivity extends BaseActivity {
     CustomButton buttonReject;
 
     @BindView(R.id.editTextScanStillage)
-    EditText editTextScanStillage;
+    AppCompatEditText editTextScanStillage;
 
     Animation fadeOut;
     Animation fadeIn;
@@ -79,6 +72,9 @@ public class RejectQuantityActivity extends BaseActivity {
     }
 
     void initData() {
+        stillageLayout = new StillageLayout();
+        ButterKnife.bind(stillageLayout, stillageDetail);
+
         fadeOut = AnimationUtils.loadAnimation(RejectQuantityActivity.this, R.anim.animate_fade_out);
         fadeIn = AnimationUtils.loadAnimation(RejectQuantityActivity.this, R.anim.animate_fade_in);
     }
@@ -89,6 +85,7 @@ public class RejectQuantityActivity extends BaseActivity {
             linearLayoutScanDetail.setVisibility(View.VISIBLE);
             linearLayoutScanDetail.setAnimation(fadeIn);
             setData();
+            editTextScanStillage.setEnabled(false);
         } else {
             linearLayoutScanDetail.setVisibility(View.GONE);
             linearLayoutScanDetail.setAnimation(fadeOut);
@@ -98,7 +95,7 @@ public class RejectQuantityActivity extends BaseActivity {
     @OnTextChanged(value = R.id.editTextRejectQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextRejectQuantityChanged(Editable text) {
         String stillageQty, editQty;
-        stillageQty = textViewQuantity.getText().toString();
+        stillageQty = stillageLayout.textViewQuantity.getText().toString();
         editQty = text.toString();
 
         stillageQtyNo = Float.parseFloat(stillageQty);
@@ -133,11 +130,11 @@ public class RejectQuantityActivity extends BaseActivity {
         stillageDatum.setStdQuantity("100");
         stillageDatum.setStillageId("");
 
-        textViewitem.setText(stillageDatum.getItem());
-        textViewName.setText(stillageDatum.getName());
-        textViewNumber.setText(stillageDatum.getNumber());
-        textViewQuantity.setText(stillageDatum.getQuantity());
-        textViewStdQuatity.setText(stillageDatum.getStdQuantity());
+        stillageLayout.textViewitem.setText(stillageDatum.getItem());
+        stillageLayout.textViewName.setText(stillageDatum.getName());
+        stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
+        stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
+        stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
 
 
         reasons = new ArrayList<>();
@@ -163,6 +160,7 @@ public class RejectQuantityActivity extends BaseActivity {
         linearLayoutScanDetail.setAnimation(fadeOut);
         editTextScanStillage.setText("");
         stillageDatum = new StillageDatum();
+        editTextScanStillage.setEnabled(true);
     }
 
     boolean isValidated() {

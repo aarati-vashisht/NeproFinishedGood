@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".receivereturnstillage.ReceiveReturnStillage"></activity>
+        <activity android:name=".receivereturnstillage.ReceiveReturnStillageActivity"></activity>
         <activity android:name=".returnstillage.ReturnStillageActivity" />
         <activity android:name=".mergestillage.MergeStillageActivity" />
         <activity android:name=".assignlocationandflt.AssignLocationAndFltActivity" />
