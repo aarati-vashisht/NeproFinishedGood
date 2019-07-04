@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="3"
-                android:background="@drawable/editext_drawable"
+                android:background="@drawable/edittext_drawable"
                 android:maxLines="1"
                 android:padding="5dp"
                 android:textSize="10sp" />
@@ -97,7 +97,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_weight="3"
-                            android:background="@drawable/editext_drawable"
+                            android:background="@drawable/edittext_drawable"
                             android:inputType="numberDecimal"
                             android:padding="5dp"
                             android:text="0"
