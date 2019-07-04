@@ -229,13 +229,11 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.neprofinishedgood.custom_views.CustomButton
                 android:id="@+id/buttonPutAway"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                android:background="@drawable/button_ripple_effect"
                 android:gravity="center"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:text="@string/put_away"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
@@ -250,12 +248,10 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.neprofinishedgood.custom_views.CustomButton
                 android:id="@+id/buttonCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                android:background="@drawable/button_ripple_effect"
-                android:foreground="?android:attr/selectable"
                 android:gravity="center"
                 android:text="@string/cancel"
                 android:textAllCaps="false"
