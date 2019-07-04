@@ -17,16 +17,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/load_quantity"
-            android:textSize="10sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="10sp" />
 
         <EditText
             android:id="@+id/editTextLoadQuantity"
@@ -37,7 +37,7 @@
             android:background="@drawable/editext_drawable"
             android:inputType="numberDecimal"
             android:padding="5dp"
-            android:textSize="10sp"/>
+            android:textSize="10sp" />
 
     </LinearLayout>
 
@@ -68,11 +68,11 @@
             android:layout_marginStart="20dp"
             android:background="@drawable/button_ripple_effect"
             android:gravity="center"
+            android:padding="5dp"
             android:text="@string/change_quantity"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="12sp"
-            android:padding="5dp"/>
+            android:textSize="12sp" />
 
     </LinearLayout>
 </LinearLayout>
