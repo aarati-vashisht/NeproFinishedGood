@@ -128,9 +128,6 @@ public class ReturnStillageActivity extends BaseActivity {
         stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
         stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
         stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
-
-        stillageLayout.cardView.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_dark));
-
     }
 
     @OnClick(R.id.buttonDrop)
@@ -145,6 +142,7 @@ public class ReturnStillageActivity extends BaseActivity {
     public void onButtonCancelClick() {
         editTextScanStillage.setText("");
         editTextScanLocation.setText("");
+        editTextScanStillage.setEnabled(true);
         relativeLayoutScanDetail.setVisibility(View.GONE);
         relativeLayoutScanDetail.setAnimation(fadeOut);
         stillageDatum = new StillageDatum();

@@ -14,14 +14,18 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.cardview.widget.CardView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.utils.Constants;
+import com.neprofinishedgood.utils.StillageLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +46,7 @@ public class CountingStillageActivity extends BaseActivity {
     Spinner spinnerAssignFlt;
 
     @BindView(R.id.editTextQuantity)
-    EditText editTextQuantity;
+    AppCompatEditText editTextQuantity;
 
     @BindView(R.id.cardView)
     CardView cardView;
@@ -51,34 +55,24 @@ public class CountingStillageActivity extends BaseActivity {
     LinearLayout linearLayoutReason;
 
     @BindView(R.id.buttonPutAway)
-    Button buttonConfirm;
+    CustomButton buttonConfirm;
 
     @BindView(R.id.buttonCancel)
-    Button buttonCancel;
+    CustomButton buttonCancel;
 
     @BindView(R.id.buttonAssign)
-    Button buttonAssign;
+    CustomButton buttonAssign;
 
     @BindView(R.id.buttonUnAssign)
-    Button buttonUnAssign;
+    CustomButton buttonUnAssign;
 
     @BindView(R.id.linearLayoutScanDetail)
     LinearLayout linearLayoutScanDetail;
 
-    @BindView(R.id.textViewName)
-    TextView textViewName;
+    @BindView(R.id.stillageDetail)
+    View stillageDetail;
 
-    @BindView(R.id.textViewitem)
-    TextView textViewitem;
-
-    @BindView(R.id.textViewNumber)
-    TextView textViewNumber;
-
-    @BindView(R.id.textViewQuantity)
-    TextView textViewQuantity;
-
-    @BindView(R.id.textViewStdQuatity)
-    TextView textViewStdQuatity;
+    StillageLayout stillageLayout;
 
     float stillageQtyNo = 0;
     float editQtyNo = 0;
@@ -96,6 +90,9 @@ public class CountingStillageActivity extends BaseActivity {
     }
 
     void initData() {
+        stillageLayout = new StillageLayout();
+        ButterKnife.bind(stillageLayout, stillageDetail);
+
         fadeOut = AnimationUtils.loadAnimation(CountingStillageActivity.this, R.anim.animate_fade_out);
         fadeIn = AnimationUtils.loadAnimation(CountingStillageActivity.this, R.anim.animate_fade_in);
         SELECTED_STILLAGE = getIntent().getStringExtra(Constants.SELECTED_STILLAGE);
@@ -103,11 +100,11 @@ public class CountingStillageActivity extends BaseActivity {
         StillageDatum stillageDatum = gson.fromJson(SELECTED_STILLAGE, StillageDatum.class);
         setTitle(stillageDatum.getName());
 
-        textViewitem.setText(stillageDatum.getItem());
-        textViewName.setText(stillageDatum.getName());
-        textViewNumber.setText(stillageDatum.getNumber());
-        textViewQuantity.setText(stillageDatum.getQuantity());
-        textViewStdQuatity.setText(stillageDatum.getStdQuantity());
+        stillageLayout.textViewitem.setText(stillageDatum.getItem());
+        stillageLayout.textViewName.setText(stillageDatum.getName());
+        stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
+        stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
+        stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
         editTextQuantity.setText(stillageDatum.getQuantity());
         editTextQuantity.setSelection(stillageDatum.getQuantity().length());
     }
@@ -116,7 +113,7 @@ public class CountingStillageActivity extends BaseActivity {
             callback = OnTextChanged.Callback.TEXT_CHANGED)
     protected void afterEditTextChanged(Editable editable) {
         String stillageQty, editQty;
-        stillageQty = textViewQuantity.getText().toString();
+        stillageQty = stillageLayout.textViewQuantity.getText().toString();
         editQty = editable.toString();
         stillageQtyNo = Float.parseFloat(stillageQty);
         if (!editQty.equals("")) {

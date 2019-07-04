@@ -8,6 +8,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.model.StillageDatum;
@@ -29,7 +31,7 @@ public class ReceiveReturnStillageActivity extends BaseActivity {
     View stillageDetail;
 
     @BindView(R.id.editTextScanStillage)
-    EditText editTextScanStillage;
+    AppCompatEditText editTextScanStillage;
 
     StillageLayout stillageLayout;
 
@@ -62,6 +64,7 @@ public class ReceiveReturnStillageActivity extends BaseActivity {
             relativeLayoutScanDetail.setVisibility(View.VISIBLE);
             relativeLayoutScanDetail.setAnimation(fadeIn);
             setData();
+            editTextScanStillage.setEnabled(false);
         } else {
             relativeLayoutScanDetail.setVisibility(View.GONE);
             relativeLayoutScanDetail.setAnimation(fadeOut);
@@ -85,8 +88,6 @@ public class ReceiveReturnStillageActivity extends BaseActivity {
         stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
         stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
 
-        stillageLayout.cardView.setBackgroundColor(getResources().getColor(android.R.color.holo_purple));
-
     }
 
     @OnClick(R.id.buttonReceive)
@@ -98,6 +99,7 @@ public class ReceiveReturnStillageActivity extends BaseActivity {
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
         editTextScanStillage.setText("");
+        editTextScanStillage.setEnabled(true);
         relativeLayoutScanDetail.setVisibility(View.GONE);
         relativeLayoutScanDetail.setAnimation(fadeOut);
         stillageDatum = new StillageDatum();

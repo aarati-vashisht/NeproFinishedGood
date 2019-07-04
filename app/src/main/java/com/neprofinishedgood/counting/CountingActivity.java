@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.widget.EditText;
 
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,10 +21,13 @@ import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
 
 public class CountingActivity extends BaseActivity {
+
     @BindView(R.id.recyclerViewStillage)
     RecyclerView recyclerViewStillage;
+
     @BindView(R.id.editTextScanStillage)
-    EditText editTextScanStillage;
+    AppCompatEditText editTextScanStillage;
+
     ContingAdapter contingAdapter;
 
     @Override
