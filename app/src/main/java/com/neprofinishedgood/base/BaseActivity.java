@@ -1,16 +1,18 @@
 package com.neprofinishedgood.base;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.utils.Utils;
+import com.neprofinishedgood.custom_views.CustomToast;
 
 public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     String title;
@@ -35,6 +37,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setCustomView(view);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
+
     }
 
 
@@ -46,9 +49,28 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     }
 
 
-
-
     public void imageButtonBackClick(View view) {
         finish();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.setting_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings_menu:
+                CustomToast.showToast(this, "Clicked On Settings");
+                return true;
+            case R.id.logout_menu:
+                CustomToast.showToast(this, "Clicked On LogOut");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

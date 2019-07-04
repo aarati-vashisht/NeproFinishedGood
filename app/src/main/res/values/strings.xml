@@ -83,5 +83,7 @@
     <string name="button_confirm">Confirm</string>
     <string name="change_quantity">Change Quantity</string>
     <string name="button_receive">Receive</string>
+    <string name="logout">LogOut</string>
+    <string name="settings">Settings</string>
 
 </resources>
