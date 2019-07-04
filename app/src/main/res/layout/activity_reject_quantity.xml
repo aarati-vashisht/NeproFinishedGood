@@ -23,8 +23,7 @@
                 android:layout_weight="1.3"
                 android:text="@string/scan_stillage"
                 android:textColor="@color/black"
-                android:textSize="12sp"
-                />
+                android:textSize="12sp" />
 
             <EditText
                 android:id="@+id/editTextScanStillage"
@@ -45,7 +44,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <include layout="@layout/stillage_layout" />
 
@@ -98,10 +97,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_weight="3"
-                            android:text="0"
                             android:background="@drawable/editext_drawable"
                             android:inputType="numberDecimal"
                             android:padding="5dp"
+                            android:text="0"
                             android:textSize="10sp" />
 
 
@@ -144,28 +143,28 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                            <com.neprofinishedgood.custom_views.CustomButton
-                                android:id="@+id/buttonReject"
-                                android:layout_width="wrap_content"
-                                android:layout_height="35dp"
-                                android:background="@drawable/button_ripple_effect"
-                                android:gravity="center"
-                                android:text="@string/button_reject"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
+                        <com.neprofinishedgood.custom_views.CustomButton
+                            android:id="@+id/buttonReject"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:background="@drawable/button_ripple_effect"
+                            android:gravity="center"
+                            android:text="@string/button_reject"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
 
-                            <com.neprofinishedgood.custom_views.CustomButton
-                                android:id="@+id/buttonCancel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="35dp"
-                                android:background="@drawable/button_ripple_effect"
-                                android:layout_marginStart="20dp"
-                                android:gravity="center"
-                                android:text="@string/cancel"
-                                android:textAllCaps="false"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
+                        <com.neprofinishedgood.custom_views.CustomButton
+                            android:id="@+id/buttonCancel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_marginStart="20dp"
+                            android:background="@drawable/button_ripple_effect"
+                            android:gravity="center"
+                            android:text="@string/cancel"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 

@@ -21,5 +21,6 @@ public class CustomButton extends AppCompatButton {
         context.getTheme().resolveAttribute(
                 android.R.attr.selectableItemBackground, outValue, true);
         setForeground(getDrawable(context, outValue.resourceId));
+
     }
 }
