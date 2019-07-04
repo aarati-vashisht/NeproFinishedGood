@@ -105,7 +105,6 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1.25"
                     android:singleLine="true"
-
                     android:text="@string/stillage_stdquantity"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
