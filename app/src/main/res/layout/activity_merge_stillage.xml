@@ -178,7 +178,7 @@
             android:layout_height="30dp"
             android:background="@drawable/button_ripple_effect"
             android:gravity="center"
-            android:text="@string/add_more"
+            android:text="@string/merge"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="12sp" />

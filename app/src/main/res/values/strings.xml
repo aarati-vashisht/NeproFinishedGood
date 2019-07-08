@@ -99,5 +99,8 @@
     <string name="truckdriver">Truck Driver:</string>
     <string name="gatenumber">Gate Number:</string>
     <string name="dialog_message">Are you sure to pick?</string>
+    <string name="stillage_merge_message">Stillage Merged Successfully</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="exit">Exit</string>
 
 </resources>
