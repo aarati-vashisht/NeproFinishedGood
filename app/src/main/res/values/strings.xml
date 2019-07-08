@@ -105,5 +105,6 @@
     <string name="stillage_merge_message">Stillage Merged Successfully</string>
     <string name="confirmation">Confirmation</string>
     <string name="exit">Exit</string>
+    <string name="stillage_not_exits_in_this_loading_plan">This Stillage Does Not Exist In This Loading Plan</string>
 
 </resources>
