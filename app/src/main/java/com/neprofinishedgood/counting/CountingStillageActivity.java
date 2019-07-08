@@ -267,6 +267,7 @@ public class CountingStillageActivity extends BaseActivity {
     @OnClick(R.id.buttonUnAssign)
     public void onButtonUnAssignClick() {
         CustomToast.showToast(this, getString(R.string.item_flt_unassigned_successfully));
+        finish();
 
     }
 
