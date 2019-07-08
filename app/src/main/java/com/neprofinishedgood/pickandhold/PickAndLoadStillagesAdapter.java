@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.counting.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
+import com.neprofinishedgood.custom_views.CustomToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
 
 public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoadStillagesAdapter.ViewHolder> implements Filterable {
 
-    private final List<StillageDatum> stillageDatumList;
+    private List<StillageDatum> stillageDatumList;
     private List<StillageDatum> stillageDatumListFiltered;
     private Context context;
     private View view;
@@ -51,7 +52,6 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        viewHolder = new ViewHolder(view);
         holder.textViewWorkOrder.setText(stillageDatumListFiltered.get(position).getNumber());
         holder.textViewitem.setText("Item" + position + 1);
         holder.textViewSite.setText("Site" + position + 1);
@@ -72,7 +72,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.white));
         } else if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("-1")) {
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorAccent));
-        } else if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("2")) {
+        } else if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("-2")) {
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorAccent));
         }
 
@@ -137,12 +137,14 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
+                StillageDatum beforFilerRow;
                 charString = charSequence.toString();
                 if (charString.isEmpty()) {
                     stillageDatumListFiltered = stillageDatumList;
                 } else {
                     List<StillageDatum> filteredList = new ArrayList<>();
                     for (StillageDatum row : stillageDatumList) {
+                        beforFilerRow = row;
                         if (row.getNumber().equalsIgnoreCase(charSequence.toString())) {
                             if (row.getStatus().equalsIgnoreCase("")) {
                                 row.setStatus("1");
@@ -150,7 +152,10 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                                 row.setStatus("2");
                             }
                             filteredList.add(row);
+                            stillageDatumList.remove(beforFilerRow);
+                            stillageDatumList.add(0, row);
                             stillageDatumListFiltered.remove(row);
+                            break;
                         }
                     }
                     filteredList.addAll(stillageDatumListFiltered);
@@ -187,6 +192,9 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+                        stillageDatumListFiltered.get(position).setStatus("");
+                        notifyDataSetChanged();
+                        PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
 
                     }
                 });
@@ -229,6 +237,8 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                stillageDatumListFiltered.get(position).setStatus("-1");
+                PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
             }
         });
         dialog.show();

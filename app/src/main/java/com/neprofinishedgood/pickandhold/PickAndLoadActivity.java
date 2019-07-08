@@ -29,14 +29,6 @@ public class PickAndLoadActivity extends BaseActivity {
     @BindView(R.id.editTextScanLoadingPlan)
     AppCompatEditText editTextScanLoadingPlan;
 
-    @BindView(R.id.textViewGateNumber)
-    TextView textViewGateNumber;
-    @BindView(R.id.textViewTruckDriver)
-    TextView textViewTruckDriver;
-    @BindView(R.id.textViewTruckNumber)
-    TextView textViewTruckNumber;
-    @BindView(R.id.linearLayoutLoadingPlanNumber)
-    LinearLayout linearLayoutLoadingPlanNumber;
 
     private PickAndLoadAdapter loadingPlanAdapter;
 
@@ -47,7 +39,6 @@ public class PickAndLoadActivity extends BaseActivity {
         ButterKnife.bind(this);
         Utils.hideSoftKeyboard(this);
         setTitle(getString(R.string.pickload));
-        linearLayoutLoadingPlanNumber.setVisibility(View.INVISIBLE);
         setAdapter();
     }
 
