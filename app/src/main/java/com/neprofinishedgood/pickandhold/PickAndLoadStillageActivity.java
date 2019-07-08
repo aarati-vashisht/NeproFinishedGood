@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
 
 public class PickAndLoadStillageActivity extends BaseActivity {
+    private static PickAndLoadStillageActivity instance;
     @BindView(R.id.recyclerViewLoadingPlansStillage)
     RecyclerView recyclerViewLoadingPlansStillage;
 
@@ -42,16 +43,21 @@ public class PickAndLoadStillageActivity extends BaseActivity {
     @BindView(R.id.linearLayoutLoadingPlanNumber)
     LinearLayout linearLayoutLoadingPlanNumber;
 
-    private LoadingPlanStillagesAdapter loadingPlanStillagesAdapter;
+    private PickAndLoadStillagesAdapter loadingPlanStillagesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_and_load_stillage);
         ButterKnife.bind(this);
+        instance = this;
         Utils.hideSoftKeyboard(this);
         setTitle(getString(R.string.pickload));
         setAdapter();
+    }
+
+    public static PickAndLoadStillageActivity getInstance() {
+        return instance;
     }
 
     @OnTextChanged(value = R.id.editTextScanLoadingPlan,
@@ -77,7 +83,7 @@ public class PickAndLoadStillageActivity extends BaseActivity {
             formDatum.setQuantity("20");
             getFormResponseList.add(formDatum);
         }
-        loadingPlanStillagesAdapter = new LoadingPlanStillagesAdapter(getFormResponseList);
+        loadingPlanStillagesAdapter = new PickAndLoadStillagesAdapter(getFormResponseList);
         recyclerViewLoadingPlansStillage.setAdapter(loadingPlanStillagesAdapter);
         recyclerViewLoadingPlansStillage.setHasFixedSize(true);
 

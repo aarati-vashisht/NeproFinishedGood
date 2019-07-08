@@ -23,14 +23,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LoadingPlanAdapter extends RecyclerView.Adapter<LoadingPlanAdapter.ViewHolder> implements Filterable {
+public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.ViewHolder> implements Filterable {
 
     private final List<LoadingPlanDatum> stillageDatumList;
     private List<LoadingPlanDatum> stillageDatumListFiltered;
     private Context context;
     private View view;
 
-    public LoadingPlanAdapter(List<LoadingPlanDatum> stillageDatumList) {
+    public PickAndLoadAdapter(List<LoadingPlanDatum> stillageDatumList) {
         this.stillageDatumList = stillageDatumList;
         this.stillageDatumListFiltered = stillageDatumList;
     }

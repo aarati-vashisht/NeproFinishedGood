@@ -123,7 +123,7 @@ public class CountingStillageActivity extends BaseActivity {
         SELECTED_STILLAGE = getIntent().getStringExtra(Constants.SELECTED_STILLAGE);
         Gson gson = new Gson();
         StillageDatum stillageDatum = gson.fromJson(SELECTED_STILLAGE, StillageDatum.class);
-        setTitle(stillageDatum.getName());
+        setTitle(stillageDatum.getNumber());
 
         stillageLayout.textViewitem.setText(stillageDatum.getItem());
         stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
@@ -163,11 +163,11 @@ public class CountingStillageActivity extends BaseActivity {
     }
 
     void setData() {
-        String[] reasonsList = {"Select UniversalSpinner", "Wrong Product", "Product Damaged", "Other"};
+        String[] reasonsList = {"Select Reason", "Wrong Product", "Product Damaged", "Other"};
         ArrayAdapter<String> reasonAdapter = new ArrayAdapter(this, R.layout.spinner_layout, reasonsList);
         spinnerReason.setAdapter(reasonAdapter);
 
-        String[] assignFltList = {"Select FLT", "option 1", "option 2", "option 3"};
+        String[] assignFltList = {"Select FLT", "FLT 1", "FLT 2", "FLT 3"};
         ArrayAdapter<String> assignFltAdapter = new ArrayAdapter(this, R.layout.spinner_layout, assignFltList);
         spinnerAssignFlt.setAdapter(assignFltAdapter);
 
@@ -176,7 +176,7 @@ public class CountingStillageActivity extends BaseActivity {
     @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
         if (editQtyNo < stillageQtyNo) {
-            if (!spinnerReason.getSelectedItem().toString().equals("Select UniversalSpinner")) {
+            if (!spinnerReason.getSelectedItem().toString().equals("Select Reason")) {
                 frameEnterQuantity.setVisibility(View.GONE);
                 frameEnterQuantity.setAnimation(fadeOut);
                 frameEnterLocation.setVisibility(View.VISIBLE);
