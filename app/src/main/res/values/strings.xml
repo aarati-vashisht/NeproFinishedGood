@@ -101,5 +101,9 @@
     <string name="dialog_message">Are You Sure To Pick?</string>
     <string name="please_add_load_quantity">Please Add Load Quantity</string>
     <string name="location">Location:</string>
+    <string nae="dialog_message">Are you sure to pick?</string>
+    <string name="stillage_merge_message">Stillage Merged Successfully</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="exit">Exit</string>
 
 </resources>
