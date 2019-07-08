@@ -105,5 +105,7 @@
     <string name="stillage_merge_message">Stillage Merged Successfully</string>
     <string name="confirmation">Confirmation</string>
     <string name="exit">Exit</string>
+    <string name="scan_t_a_r">Scan Truck Assignment Report</string>
+    <string name="scan_report">Scan Report</string>
 
 </resources>
