@@ -16,6 +16,17 @@ public class StillageDatum {
     @Expose
     private String stdQuantity;
 
+    public String getLoadingPlan() {
+        return loadingPlan;
+    }
+
+    public void setLoadingPlan(String loadingPlan) {
+        this.loadingPlan = loadingPlan;
+    }
+
+    @SerializedName("loadingPlan")
+    @Expose
+    private String loadingPlan;
     public String getStatus() {
         return status;
     }

@@ -108,5 +108,8 @@
     <string name="stillage_not_exits_in_this_loading_plan">This Stillage Does Not Exist In This Loading Plan</string>
     <string name="scan_t_a_r">Scan Truck Assignment Report</string>
     <string name="scan_report">Scan Report</string>
+    <string name="please_scan_t_a_r">Please Scan Truck Assignment Report</string>
+    <string name="stillage_loading_plan_doesnt_match_with_tar">Stillage Loading Plan Doesn\'t Match With Truck Assignment Report</string>
+    <string name="do_you_want_to_pick_this_stillage">Do you want to pick this stillage ?</string>
 
 </resources>

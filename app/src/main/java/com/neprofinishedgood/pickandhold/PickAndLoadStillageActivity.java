@@ -80,6 +80,7 @@ public class PickAndLoadStillageActivity extends BaseActivity {
             formDatum.setName("S" + i);
             formDatum.setItem("Item" + i);
             formDatum.setStdQuantity("20");
+            formDatum.setLoadingPlan(stillageDatum.getloadingPlan());
             formDatum.setQuantity("20");
             getFormResponseList.add(formDatum);
         }
