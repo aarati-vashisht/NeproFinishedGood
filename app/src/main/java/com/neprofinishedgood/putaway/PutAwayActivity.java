@@ -78,6 +78,9 @@ public class PutAwayActivity extends BaseActivity {
     void initData() {
         fadeOut = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_out);
         fadeIn = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_in);
+        setSpinnerAisleData();
+        setSpinnerRackData();
+        setSpinnerBinData();
     }
 
 
@@ -116,6 +119,7 @@ public class PutAwayActivity extends BaseActivity {
             editTextScanStillage.setEnabled(false);
             buttonPutAway.setVisibility(View.VISIBLE);
             buttonCancel.setVisibility(View.VISIBLE);
+            editTextDropLocation.requestFocus();
         }
 
 
@@ -137,14 +141,6 @@ public class PutAwayActivity extends BaseActivity {
             textViewtRack.setVisibility(View.GONE);
             spinnerBin.setVisibility(View.VISIBLE);
             textViewBin.setVisibility(View.GONE);
-            if (editTextDropLocation.getText().toString().trim().equalsIgnoreCase("ABC")) {
-                setSpinnerAisleData();
-                setSpinnerRackData();
-                setSpinnerBinData();
-                buttonPutAway.setEnabled(true);
-            } else {
-                buttonPutAway.setEnabled(false);
-            }
         } else {
             Utils.hideSoftKeyboard(this);
             spinnerAisle.setVisibility(View.GONE);
@@ -210,30 +206,34 @@ public class PutAwayActivity extends BaseActivity {
     }
 
     boolean isValidated() {
-        if (editTextDropLocation.getText().toString().equals("")) {
-            editTextDropLocation.setError(getResources().getString(R.string.enter_scan_location));
-            editTextDropLocation.requestFocus();
-            return false;
-        }
-        if (spinnerAisle.getSelectedItemPosition() == 0) {
-            TextView textView = (TextView) spinnerAisle.getSelectedView();
-            textView.setError(getString(R.string.select_aisle));
-            textView.requestFocus();
-            return false;
-        }
+        if (linearLayoutPutAwayLocation.getVisibility() == View.VISIBLE) {
+            if (editTextDropLocation.getText().toString().equals("")) {
+                editTextDropLocation.setError(getResources().getString(R.string.enter_scan_location));
+                editTextDropLocation.requestFocus();
+                return false;
+            }
+            if (spinnerAisle.getSelectedItemPosition() == 0) {
+                TextView textView = (TextView) spinnerAisle.getSelectedView();
+                textView.setError(getString(R.string.select_aisle));
+                textView.requestFocus();
+                return false;
+            }
 
-        if (spinnerRack.getSelectedItemPosition() == 0) {
-            TextView textView = (TextView) spinnerRack.getSelectedView();
-            textView.setError(getString(R.string.select_rack));
-            textView.requestFocus();
-            return false;
+            if (spinnerRack.getSelectedItemPosition() == 0) {
+                TextView textView = (TextView) spinnerRack.getSelectedView();
+                textView.setError(getString(R.string.select_rack));
+                textView.requestFocus();
+                return false;
+            }
+            if (spinnerBin.getSelectedItemPosition() == 0) {
+                TextView textView = (TextView) spinnerBin.getSelectedView();
+                textView.setError(getString(R.string.select_bin));
+                textView.requestFocus();
+                return false;
+            }
+            return true;
+        } else {
+            return true;
         }
-        if (spinnerBin.getSelectedItemPosition() == 0) {
-            TextView textView = (TextView) spinnerBin.getSelectedView();
-            textView.setError(getString(R.string.select_bin));
-            textView.requestFocus();
-            return false;
-        }
-        return true;
     }
 }

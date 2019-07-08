@@ -38,7 +38,7 @@ public class PickAndLoadActivity extends BaseActivity {
     @BindView(R.id.linearLayoutLoadingPlanNumber)
     LinearLayout linearLayoutLoadingPlanNumber;
 
-    private LoadingPlanAdapter loadingPlanAdapter;
+    private PickAndLoadAdapter loadingPlanAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class PickAndLoadActivity extends BaseActivity {
             loadingPlanDatum.setloadingPlanId("Id" + i);
             loadingPlanDataList.add(loadingPlanDatum);
         }
-        loadingPlanAdapter = new LoadingPlanAdapter(loadingPlanDataList);
+        loadingPlanAdapter = new PickAndLoadAdapter(loadingPlanDataList);
         recyclerViewLoadingPlans.setAdapter(loadingPlanAdapter);
         recyclerViewLoadingPlans.setHasFixedSize(true);
 

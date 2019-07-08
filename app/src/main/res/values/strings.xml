@@ -35,9 +35,9 @@
     <string name="drop_location">Drop Location</string>
     <string name="enter_drop_location">Enter Drop Location</string>
     <string name="enter_putaway_location">Enter Put Away Location</string>
-    <string name="aisle">Aisle</string>
-    <string name="bin">Bin</string>
-    <string name="rack">Rack</string>
+    <string name="aisle">Aisle:</string>
+    <string name="bin">Bin:</string>
+    <string name="rack">Rack:</string>
     <string name="reject_quantity">Reject Quantity</string>
     <string name="reject_complete_stillage">Reject Complete Stillage</string>
     <string name="quality_hold_and_move"><![CDATA[Quality Hold & Move]]></string>
@@ -98,6 +98,8 @@
     <string name="trucknumber">Truck Number:</string>
     <string name="truckdriver">Truck Driver:</string>
     <string name="gatenumber">Gate Number:</string>
-    <string name="dialog_message">Are you sure to pick?</string>
+    <string name="dialog_message">Are You Sure To Pick?</string>
+    <string name="please_add_load_quantity">Please Add Load Quantity</string>
+    <string name="location">Location:</string>
 
 </resources>
