@@ -16,6 +16,16 @@ public class StillageDatum {
     @Expose
     private String stdQuantity;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String status = "";
+
     public String getNumber() {
         return number;
     }

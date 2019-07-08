@@ -60,7 +60,7 @@ public class ReceiveReturnStillageActivity extends BaseActivity {
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
-        if (text.toString().equalsIgnoreCase("S000001")) {
+        if (text.toString().equalsIgnoreCase("S00001")) {
             relativeLayoutScanDetail.setVisibility(View.VISIBLE);
             relativeLayoutScanDetail.setAnimation(fadeIn);
             setData();
@@ -73,17 +73,16 @@ public class ReceiveReturnStillageActivity extends BaseActivity {
 
     void setData() {
 //        Gson gson = new Gson();
-//        StillageDatum stillageDatum = gson.fromJson(JsonString, StillageDatum.class);
+//        LoadingPlanDatum stillageDatum = gson.fromJson(JsonString, LoadingPlanDatum.class);
         stillageDatum = new StillageDatum();
         stillageDatum.setItem("1");
-        stillageDatum.setName("S000001");
-        stillageDatum.setNumber("S000001");
+        stillageDatum.setName("S00001");
+        stillageDatum.setNumber("S00001");
         stillageDatum.setQuantity("100");
         stillageDatum.setStdQuantity("100");
         stillageDatum.setStillageId("");
 
         stillageLayout.textViewitem.setText(stillageDatum.getItem());
-        stillageLayout.textViewName.setText(stillageDatum.getName());
         stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
         stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
         stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());

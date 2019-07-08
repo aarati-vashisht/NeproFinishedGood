@@ -1,12 +1,11 @@
 package com.neprofinishedgood.qualitycheck.rejectquantity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,6 +19,7 @@ import com.neprofinishedgood.counting.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.putaway.Adapter.SpinnerAdapter;
+import com.neprofinishedgood.qualitycheck.qualityholdandmove.QualityHoldAndMove;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import java.util.ArrayList;
@@ -81,7 +81,12 @@ public class RejectQuantityActivity extends BaseActivity {
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
-        if (text.toString().equalsIgnoreCase("S000001")) {
+        if (text.toString().equalsIgnoreCase("S00001")) {
+            linearLayoutScanDetail.setVisibility(View.VISIBLE);
+            linearLayoutScanDetail.setAnimation(fadeIn);
+            setData();
+            editTextScanStillage.setEnabled(false);
+        } else if (text.toString().equalsIgnoreCase("S00003")) {
             linearLayoutScanDetail.setVisibility(View.VISIBLE);
             linearLayoutScanDetail.setAnimation(fadeIn);
             setData();
@@ -121,17 +126,16 @@ public class RejectQuantityActivity extends BaseActivity {
 
     void setData() {
 //        Gson gson = new Gson();
-//        StillageDatum stillageDatum = gson.fromJson(JsonString, StillageDatum.class);
+//        LoadingPlanDatum stillageDatum = gson.fromJson(JsonString, LoadingPlanDatum.class);
         stillageDatum = new StillageDatum();
         stillageDatum.setItem("1");
-        stillageDatum.setName("S000001");
-        stillageDatum.setNumber("S000001");
+        stillageDatum.setName("S00001");
+        stillageDatum.setNumber("S00001");
         stillageDatum.setQuantity("100");
         stillageDatum.setStdQuantity("100");
         stillageDatum.setStillageId("");
 
         stillageLayout.textViewitem.setText(stillageDatum.getItem());
-        stillageLayout.textViewName.setText(stillageDatum.getName());
         stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
         stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
         stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
@@ -149,9 +153,16 @@ public class RejectQuantityActivity extends BaseActivity {
     @OnClick(R.id.buttonReject)
     public void onButtonRejectClick() {
         if (isValidated()) {
-            CustomToast.showToast(RejectQuantityActivity.this, getResources().getString(R.string.items_rejected_successfully));
-            finish();
+            if (editTextScanStillage.getText().toString().equalsIgnoreCase("s00003")) {
+                CustomToast.showToast(RejectQuantityActivity.this, getResources().getString(R.string.items_rejected_successfully));
+                startActivity(new Intent(this, QualityHoldAndMove.class).putExtra("DATA", "DATA"));
+                finish();
+            } else {
+                CustomToast.showToast(RejectQuantityActivity.this, getResources().getString(R.string.items_rejected_successfully));
+                finish();
+            }
         }
+
     }
 
     @OnClick(R.id.buttonCancel)
