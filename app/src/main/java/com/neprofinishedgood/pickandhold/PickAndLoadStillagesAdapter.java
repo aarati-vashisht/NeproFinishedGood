@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.counting.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
-import com.neprofinishedgood.custom_views.CustomToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,17 +62,16 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         holder.textViewRack.setText("R" + position + 1);
         if (charString.equalsIgnoreCase(stillageDatumListFiltered.get(position).getNumber())) {
             if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("1")) {
+                stillageDatumListFiltered.get(position).setStatus("");
                 showCustomAlert(context, position);
             } else if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("2")) {
-                showDialog(context, position);
+                alertDialogForScanTAR(context, position);
             }
         }
-        if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("")) {
+        if (stillageDatumListFiltered.get(position).getStatus().equals("")) {
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.white));
-        } else if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("-1")) {
-            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorAccent));
-        } else if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("-2")) {
-            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+        } else if (stillageDatumListFiltered.get(position).getStatus().equals("-1")) {
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
         }
 
 
@@ -179,7 +177,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(context);
         builder.setMessage(context.getString(R.string.dialog_message));
-        builder.setMessage("Do you want to pick this stillage ?")
+        builder.setMessage(context.getString(R.string.do_you_want_to_pick_this_stillage))
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -204,7 +202,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
     int quatityToLoad, stdQuantity;
 
-    public void showDialog(Context context, int position) {
+    public void alertDialogForQuantity(Context context, int position) {
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -244,4 +242,41 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         dialog.show();
 
     }
+
+    public void alertDialogForScanTAR(Context context, int position) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.custom_alert_scan_t_a_r);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        EditText editTextScanReport = dialog.findViewById(R.id.editTextScanReport);
+        CustomButton buttonConfirm = dialog.findViewById(R.id.buttonConfirm);
+        CustomButton buttonCancel = dialog.findViewById(R.id.buttonCancel);
+        buttonConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editTextScanReport.getText().toString().trim().length() == 0) {
+                    editTextScanReport.setError(context.getResources().getString(R.string.please_scan_t_a_r));
+                    editTextScanReport.requestFocus();
+                } else if (!stillageDatumListFiltered.get(position).getLoadingPlan().equalsIgnoreCase(editTextScanReport.getText().toString().trim())) {
+                    editTextScanReport.setError(context.getResources().getString(R.string.stillage_loading_plan_doesnt_match_with_tar));
+                    editTextScanReport.requestFocus();
+                } else {
+                    dialog.cancel();
+                    alertDialogForQuantity(context, position);
+                }
+            }
+        });
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                stillageDatumListFiltered.get(position).setStatus("-1");
+                PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
+            }
+        });
+        dialog.show();
+
+    }
+
 }
