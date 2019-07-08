@@ -8,6 +8,7 @@ import com.neprofinishedgood.assignlocationandflt.AssignLocationAndFltActivity;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.CountingActivity;
 import com.neprofinishedgood.mergestillage.MergeStillageActivity;
+import com.neprofinishedgood.pickandhold.PickAndLoadActivity;
 import com.neprofinishedgood.putaway.PutAwayActivity;
 import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
 import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
@@ -27,12 +28,6 @@ public class DashBoardAcivity extends BaseActivity {
         setTitle(getString(R.string.dashbord));
     }
 
-
-    @OnClick(R.id.linearLayoutCounting)
-    public void setlinearLayoutCountingClick() {
-        startActivity(new Intent(this, CountingActivity.class));
-    }
-
     @OnClick(R.id.linearLayoutPutAway)
     public void onLinearLayouPutAwayClick() {
         startActivity(new Intent(this, PutAwayActivity.class));
@@ -48,9 +43,9 @@ public class DashBoardAcivity extends BaseActivity {
         startActivity(new Intent(this, AssignLocationAndFltActivity.class));
     }
 
-    @OnClick(R.id.linearLayoutMergeStillage)
-    public void onlinearLayoutMergeStillageClick() {
-        startActivity(new Intent(this, MergeStillageActivity.class));
+    @OnClick(R.id.linearLayoutPutAndHold)
+    public void onlinearLayoutPutAndHoldClick() {
+        startActivity(new Intent(this, PickAndLoadActivity.class));
     }
 
     @OnClick(R.id.linearLayoutReturnStillage)
@@ -61,5 +56,15 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutReceiveReturnStillage)
     public void onlinearLayoutReceiveReturnStillageClick() {
         startActivity(new Intent(this, ReceiveReturnStillageActivity.class));
+    }
+
+    @OnClick(R.id.linearLayoutMergeStillage)
+    public void onlinearLayoutMergeStillageClick() {
+        startActivity(new Intent(this, MergeStillageActivity.class));
+    }
+
+    @OnClick(R.id.linearLayoutCounting)
+    public void setlinearLayoutCountingClick() {
+        startActivity(new Intent(this, CountingActivity.class));
     }
 }

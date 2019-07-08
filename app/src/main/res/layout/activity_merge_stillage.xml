@@ -52,38 +52,42 @@
                 android:id="@+id/parentStillageDetail"
                 layout="@layout/stillage_layout" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutScanChild"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:layout_weight="1.9"
+                android:text="@string/scan_child_stillage"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.9"
-                    android:text="@string/scan_child_stillage"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/editTextScanChildStillage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="3"
+                android:background="@drawable/edittext_drawable"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="10sp" />
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/editTextScanChildStillage"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="3"
-                    android:background="@drawable/edittext_drawable"
-                    android:maxLines="1"
-                    android:padding="5dp"
-                    android:textSize="10sp" />
-
-            </LinearLayout>
         </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/relativeLayoutScanChildDetail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -101,6 +105,16 @@
 
 
             </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutMergeStillage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textViewMergeQuantity"
@@ -142,44 +156,44 @@
                     android:textSize="10sp" />
 
             </LinearLayout>
+        </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/linearLayoutAssignLocationButtons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.neprofinishedgood.custom_views.CustomButton
-                    android:id="@+id/buttonMerge"
-                    android:layout_width="70dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/button_ripple_effect"
-                    android:gravity="center"
-                    android:text="@string/merge"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-                <com.neprofinishedgood.custom_views.CustomButton
-                    android:id="@+id/buttonCancel"
-                    android:layout_width="70dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="20dp"
-                    android:background="@drawable/button_ripple_effect"
-                    android:gravity="center"
-                    android:text="@string/cancel"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayoutAssignLocationButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.neprofinishedgood.custom_views.CustomButton
+            android:id="@+id/buttonMerge"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="@drawable/button_ripple_effect"
+            android:gravity="center"
+            android:text="@string/add_more"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <com.neprofinishedgood.custom_views.CustomButton
+            android:id="@+id/buttonCancel"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/button_ripple_effect"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 </RelativeLayout>

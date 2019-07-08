@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
+import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.putaway.Adapter.SpinnerAdapter;
 import com.neprofinishedgood.putaway.model.LocationData;
 import com.neprofinishedgood.utils.Utils;
@@ -32,7 +33,7 @@ import butterknife.OnTextChanged;
 
 public class PutAwayActivity extends BaseActivity {
 
-    @BindView(R.id.buttonPutAway)
+    @BindView(R.id.buttonConfirm)
     AppCompatButton buttonPutAway;
     @BindView(R.id.buttonCancel)
     AppCompatButton buttonCancel;
@@ -80,12 +81,16 @@ public class PutAwayActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.buttonPutAway)
+    @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
-        if (editTextScanStillage.getText().toString().trim().length() > 0) {
+        if (editTextScanStillage.getText().toString().trim().equalsIgnoreCase("s000001")) {
+            CustomToast.showToast(PutAwayActivity.this, getResources().getString(R.string.data_saved_successfully));
             finish();
         } else {
-            editTextScanStillage.setError(getResources().getString(R.string.please_scan_stillage));
+            if (isValidated()) {
+                CustomToast.showToast(PutAwayActivity.this, getResources().getString(R.string.data_saved_successfully));
+                finish();
+            }
         }
 
 
@@ -93,7 +98,7 @@ public class PutAwayActivity extends BaseActivity {
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
-        if (text.toString().equalsIgnoreCase("S000001")) {
+        if (text.toString().equalsIgnoreCase("S00001")) {
             if (linearLayoutPutAwayLocation.getVisibility() == View.VISIBLE) {
                 linearLayoutPutAwayLocation.setVisibility(View.GONE);
                 linearLayoutPutAwayLocation.startAnimation(fadeOut);
@@ -103,7 +108,7 @@ public class PutAwayActivity extends BaseActivity {
             editTextScanStillage.setEnabled(false);
             buttonPutAway.setVisibility(View.VISIBLE);
             buttonCancel.setVisibility(View.VISIBLE);
-        } else if (text.toString().equalsIgnoreCase("S000002")) {
+        } else if (text.toString().equalsIgnoreCase("S00002")) {
             linearLayoutScanDetail.setVisibility(View.VISIBLE);
             linearLayoutPutAwayLocation.setVisibility(View.VISIBLE);
             linearLayoutScanDetail.startAnimation(fadeIn);

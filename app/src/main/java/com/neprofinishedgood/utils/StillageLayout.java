@@ -13,8 +13,6 @@ public class StillageLayout {
     @BindView(R.id.cardView)
     public CardView cardView;
 
-    @BindView(R.id.textViewName)
-    public TextView textViewName;
 
     @BindView(R.id.textViewitem)
     public TextView textViewitem;

@@ -1,5 +1,6 @@
 package com.neprofinishedgood.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.login.LoginActivity;
 
 public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     String title;
@@ -33,7 +35,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         LayoutInflater mInflater = LayoutInflater.from(this);
         View view = mInflater.inflate(R.layout.action_bar_layout, null);
         textViewTitle = view.findViewById(R.id.textViewTitle);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setCustomView(view);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -67,7 +69,9 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                 CustomToast.showToast(this, "Clicked On Settings");
                 return true;
             case R.id.logout_menu:
-                CustomToast.showToast(this, "Clicked On LogOut");
+                CustomToast.showToast(this, getResources().getString(R.string.logout_successfully));
+                startActivity(new Intent(this, LoginActivity.class));
+                finishAffinity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

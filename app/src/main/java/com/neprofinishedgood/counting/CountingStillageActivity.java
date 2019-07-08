@@ -7,29 +7,32 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.cardview.widget.CardView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.counting.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
+import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
+import com.neprofinishedgood.putaway.Adapter.SpinnerAdapter;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.StillageLayout;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
 
 public class CountingStillageActivity extends BaseActivity {
@@ -39,9 +42,20 @@ public class CountingStillageActivity extends BaseActivity {
     @BindView(R.id.frameAssignFlt)
     FrameLayout frameAssignFlt;
 
+    @BindView(R.id.frameEnterLocation)
+    FrameLayout frameEnterLocation;
+
     @BindView(R.id.spinnerReason)
     Spinner spinnerReason;
 
+    @BindView(R.id.spinnerAisle)
+    Spinner spinnerAisle;
+
+    @BindView(R.id.spinnerRack)
+    Spinner spinnerRack;
+
+    @BindView(R.id.spinnerBin)
+    Spinner spinnerBin;
     @BindView(R.id.spinnerAssignFlt)
     Spinner spinnerAssignFlt;
 
@@ -54,7 +68,15 @@ public class CountingStillageActivity extends BaseActivity {
     @BindView(R.id.linearLayoutReason)
     LinearLayout linearLayoutReason;
 
-    @BindView(R.id.buttonPutAway)
+    @BindView(R.id.linearLayoutEnterLocationButtons)
+    LinearLayout linearLayoutEnterLocationButtons;
+    @BindView(R.id.buttonLocationConfirm)
+    CustomButton buttonLocationConfirm;
+    @BindView(R.id.editTextScanLocation)
+    AppCompatEditText editTextScanLocation;
+    @BindView(R.id.buttonLocationCancel)
+    CustomButton buttonLocationCancel;
+    @BindView(R.id.buttonConfirm)
     CustomButton buttonConfirm;
 
     @BindView(R.id.buttonCancel)
@@ -80,6 +102,9 @@ public class CountingStillageActivity extends BaseActivity {
     Animation fadeOut;
     Animation fadeIn;
     String SELECTED_STILLAGE;
+    ArrayList<UniversalSpinner> aisleList;
+    ArrayList<UniversalSpinner> rackList;
+    ArrayList<UniversalSpinner> binList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +126,6 @@ public class CountingStillageActivity extends BaseActivity {
         setTitle(stillageDatum.getName());
 
         stillageLayout.textViewitem.setText(stillageDatum.getItem());
-        stillageLayout.textViewName.setText(stillageDatum.getName());
         stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
         stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
         stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
@@ -149,20 +173,14 @@ public class CountingStillageActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.buttonPutAway)
+    @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
-
         if (editQtyNo < stillageQtyNo) {
             if (!spinnerReason.getSelectedItem().toString().equals("Select UniversalSpinner")) {
-
                 frameEnterQuantity.setVisibility(View.GONE);
                 frameEnterQuantity.setAnimation(fadeOut);
-                frameAssignFlt.setVisibility(View.VISIBLE);
-                frameAssignFlt.setAnimation(fadeIn);
-
-//                Utils.animateFadeOut(frameEnterQuantity, 500);
-//                Utils.animateFadeIn(frameAssignFlt, 500);
-
+                frameEnterLocation.setVisibility(View.VISIBLE);
+                frameEnterLocation.setAnimation(fadeIn);
 
             } else {
                 TextView textView = (TextView) spinnerReason.getSelectedView();
@@ -172,30 +190,65 @@ public class CountingStillageActivity extends BaseActivity {
         } else {
             frameEnterQuantity.setVisibility(View.GONE);
             frameEnterQuantity.setAnimation(fadeOut);
-            frameAssignFlt.setVisibility(View.VISIBLE);
-            frameAssignFlt.setAnimation(fadeIn);
+            frameEnterLocation.setVisibility(View.VISIBLE);
+            frameEnterLocation.setAnimation(fadeIn);
 
-//            frameEnterQuantity.animate()
-//                    .alpha(0.0f)
-//                    .setDuration(500)
-//                    .setListener(new AnimatorListenerAdapter() {
-//                        @Override
-//                        public void onAnimationEnd(Animator animation) {
-//                            super.onAnimationEnd(animation);
-//                            frameEnterQuantity.setVisibility(View.GONE);
-//                            frameAssignFlt.setAlpha(0.0f);
-//                            frameAssignFlt.animate()
-//                                    .alpha(1.0f)
-//                                    .setDuration(500)
-//                                    .setListener(new AnimatorListenerAdapter() {
-//                                        @Override
-//                                        public void onAnimationEnd(Animator animation) {
-//                                            super.onAnimationEnd(animation);
-//                                            frameAssignFlt.setVisibility(View.VISIBLE);
-//                                        }
-//                                    });
-//                        }
-//                    });
+
+        }
+
+    }
+
+    @OnClick(R.id.buttonLocationConfirm)
+    public void onbuttonLocationConfirmClick() {
+        if (isValidated()) {
+            CustomToast.showToast(CountingStillageActivity.this, getResources().getString(R.string.item_location_assigned_successfully));
+            frameAssignFlt.setVisibility(View.VISIBLE);
+            frameEnterLocation.setVisibility(View.GONE);
+            buttonAssign.setEnabled(false);
+        }
+    }
+
+    boolean isValidated() {
+        if (editTextScanLocation.getText().toString().equals("")) {
+            editTextScanLocation.setError(getResources().getString(R.string.enter_scan_location));
+            editTextScanLocation.requestFocus();
+            return false;
+        }
+        if (spinnerAisle.getSelectedItemPosition() == 0) {
+            TextView textView = (TextView) spinnerAisle.getSelectedView();
+            textView.setError(getString(R.string.select_aisle));
+            textView.requestFocus();
+            return false;
+        }
+
+        if (spinnerRack.getSelectedItemPosition() == 0) {
+            TextView textView = (TextView) spinnerRack.getSelectedView();
+            textView.setError(getString(R.string.select_rack));
+            textView.requestFocus();
+            return false;
+        }
+        if (spinnerBin.getSelectedItemPosition() == 0) {
+            TextView textView = (TextView) spinnerBin.getSelectedView();
+            textView.setError(getString(R.string.select_bin));
+            textView.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    @OnClick(R.id.buttonLocationCancel)
+    public void onbuttonLocationCancelClick() {
+        CustomToast.showToast(CountingStillageActivity.this, getResources().getString(R.string.item_location_unassigned_successfully));
+        frameAssignFlt.setVisibility(View.VISIBLE);
+        frameEnterLocation.setVisibility(View.GONE);
+        buttonAssign.setEnabled(false);
+
+    }
+
+    @OnItemSelected(R.id.spinnerAssignFlt)
+    void onItemSelected(int position) {
+        if (position > 0) {
+            buttonAssign.setEnabled(true);
         }
     }
 
@@ -207,11 +260,68 @@ public class CountingStillageActivity extends BaseActivity {
 
     @OnClick(R.id.buttonAssign)
     public void onButtonAssignClick() {
-
+        CustomToast.showToast(this, getString(R.string.item_flt_assigned_successfully));
+        finish();
     }
 
     @OnClick(R.id.buttonUnAssign)
     public void onButtonUnAssignClick() {
+        CustomToast.showToast(this, getString(R.string.item_flt_unassigned_successfully));
 
     }
+
+    @OnTextChanged(value = R.id.editTextScanLocation, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onEditTextScanLocationChanged(Editable text) {
+        String editQty;
+        editQty = text.toString();
+
+        if (editQty.equalsIgnoreCase("ABC")) {
+            setSpinnerAisleData();
+            setSpinnerRackData();
+            setSpinnerBinData();
+
+            buttonAssign.setEnabled(true);
+
+        } else {
+            buttonAssign.setEnabled(false);
+            clearAllSpinnerData();
+        }
+    }
+
+    void setSpinnerAisleData() {
+        aisleList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            aisleList.add(new UniversalSpinner("Aisle " + i, i + ""));
+        }
+        aisleList.add(0, new UniversalSpinner("Select Aisle", "0"));
+        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(CountingStillageActivity.this, R.layout.spinner_layout, aisleList);
+        spinnerAisle.setAdapter(aisleListAdapter);
+    }
+
+    void setSpinnerRackData() {
+        rackList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            rackList.add(new UniversalSpinner("Rack " + i, i + ""));
+        }
+        rackList.add(0, new UniversalSpinner("Select Rack", "0"));
+        SpinnerAdapter rackListAdapter = new SpinnerAdapter(CountingStillageActivity.this, R.layout.spinner_layout, rackList);
+        spinnerRack.setAdapter(rackListAdapter);
+    }
+
+    void setSpinnerBinData() {
+        binList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            binList.add(new UniversalSpinner("Bin " + i, i + ""));
+        }
+        binList.add(0, new UniversalSpinner("Select Bin", "0"));
+        SpinnerAdapter binListAdapter = new SpinnerAdapter(CountingStillageActivity.this, R.layout.spinner_layout, binList);
+        spinnerBin.setAdapter(binListAdapter);
+    }
+
+    void clearAllSpinnerData() {
+        spinnerAisle.setAdapter(null);
+        spinnerRack.setAdapter(null);
+        spinnerBin.setAdapter(null);
+    }
+
 }

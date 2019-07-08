@@ -1,4 +1,4 @@
-package com.neprofinishedgood.counting;
+package com.neprofinishedgood.pickandhold;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.pickandhold.model.LoadingPlanDatum;
 import com.neprofinishedgood.utils.Constants;
 
 import java.util.ArrayList;
@@ -23,14 +23,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHolder> implements Filterable {
+public class LoadingPlanAdapter extends RecyclerView.Adapter<LoadingPlanAdapter.ViewHolder> implements Filterable {
 
-    private final List<StillageDatum> stillageDatumList;
-    private List<StillageDatum> stillageDatumListFiltered;
+    private final List<LoadingPlanDatum> stillageDatumList;
+    private List<LoadingPlanDatum> stillageDatumListFiltered;
     private Context context;
     private View view;
 
-    public ContingAdapter(List<StillageDatum> stillageDatumList) {
+    public LoadingPlanAdapter(List<LoadingPlanDatum> stillageDatumList) {
         this.stillageDatumList = stillageDatumList;
         this.stillageDatumListFiltered = stillageDatumList;
     }
@@ -39,17 +39,14 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.stillage_layout, parent, false);
+                .inflate(R.layout.loading_layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.textViewitem.setText(stillageDatumListFiltered.get(position).getItem());
-        holder.textViewNumber.setText(stillageDatumListFiltered.get(position).getNumber());
-        holder.textViewQuantity.setText(stillageDatumListFiltered.get(position).getQuantity());
-        holder.textViewStdQuatity.setText(stillageDatumListFiltered.get(position).getStdQuantity());
-
+        holder.textViewLoadingPlan.setText(stillageDatumListFiltered.get(position).getloadingPlan());
+        holder.textViewCustomer.setText(stillageDatumListFiltered.get(position).getcustomer());
 
     }
 
@@ -62,14 +59,11 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
 
-        @BindView(R.id.textViewitem)
-        TextView textViewitem;
-        @BindView(R.id.textViewNumber)
-        TextView textViewNumber;
-        @BindView(R.id.textViewQuantity)
-        TextView textViewQuantity;
-        @BindView(R.id.textViewStdQuatity)
-        TextView textViewStdQuatity;
+        @BindView(R.id.textViewLoadingPlan)
+        TextView textViewLoadingPlan;
+        @BindView(R.id.textViewCustomer)
+        TextView textViewCustomer;
+
         @BindView(R.id.cardView)
         CardView cardView;
 
@@ -91,7 +85,7 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
             if (v == mView) {
                 Gson gson = new Gson();
                 String putExtraData = gson.toJson(stillageDatumListFiltered.get(getAdapterPosition()));
-                context.startActivity(new Intent(context, CountingStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+                context.startActivity(new Intent(context, PickAndLoadStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
             }
 
         }
@@ -106,14 +100,14 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
                 if (charString.isEmpty()) {
                     stillageDatumListFiltered = stillageDatumList;
                 } else {
-                    List<StillageDatum> filteredList = new ArrayList<>();
-                    for (StillageDatum row : stillageDatumList) {
-                        if (row.getNumber().toLowerCase().equals(charSequence.toString().toLowerCase())) {
+                    List<LoadingPlanDatum> filteredList = new ArrayList<>();
+                    for (LoadingPlanDatum row : stillageDatumList) {
+                        if (row.getloadingPlan().equalsIgnoreCase(charSequence.toString())) {
                             filteredList.add(row);
                             stillageDatumListFiltered.remove(row);
                             Gson gson = new Gson();
                             String putExtraData = gson.toJson(filteredList.get(0));
-                            context.startActivity(new Intent(context, CountingStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+                            context.startActivity(new Intent(context, PickAndLoadStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
                         }
                     }
                     filteredList.addAll(stillageDatumListFiltered);
@@ -128,7 +122,7 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                stillageDatumListFiltered = (ArrayList<StillageDatum>) filterResults.values;
+                stillageDatumListFiltered = (ArrayList<LoadingPlanDatum>) filterResults.values;
                 notifyDataSetChanged();
 
             }

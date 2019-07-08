@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
@@ -45,6 +44,8 @@ public class QualityHoldAndMove extends BaseActivity {
     Animation fadeIn;
 
     StillageDatum stillageDatum;
+    private String data = "";
+    private String str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +60,17 @@ public class QualityHoldAndMove extends BaseActivity {
     void initData() {
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
+        data = getIntent().getStringExtra("DATA");
+        if (data == null) data = "";
 
+        setData();
         fadeOut = AnimationUtils.loadAnimation(QualityHoldAndMove.this, R.anim.animate_fade_out);
         fadeIn = AnimationUtils.loadAnimation(QualityHoldAndMove.this, R.anim.animate_fade_in);
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
-        if (text.toString().equalsIgnoreCase("S000001") || text.toString().equalsIgnoreCase("S000002")) {
+        if (text.toString().equalsIgnoreCase("S00001") || text.toString().equalsIgnoreCase("S00002")) {
             linearLayoutScanDetail.setVisibility(View.VISIBLE);
             linearLayoutScanDetail.setAnimation(fadeIn);
             setData();
@@ -78,27 +82,41 @@ public class QualityHoldAndMove extends BaseActivity {
     }
 
     void setData() {
-//        Gson gson = new Gson();
-//        StillageDatum stillageDatum = gson.fromJson(JsonString, StillageDatum.class);
-        stillageDatum = new StillageDatum();
-        String str = editTextScanStillage.getText().toString();
-        stillageDatum.setItem("1");
-        stillageDatum.setName(str);
-        stillageDatum.setNumber(str);
-        stillageDatum.setQuantity("100");
-        stillageDatum.setStdQuantity("100");
-        stillageDatum.setStillageId("");
+        if (data.equalsIgnoreCase("DATA")) {
+            str = "S00003";
+            editTextScanStillage.setText(str);
+            stillageDatum = new StillageDatum();
+            stillageDatum.setItem("1");
+            stillageDatum.setName(str);
+            stillageDatum.setNumber(str);
+            stillageDatum.setQuantity("100");
+            stillageDatum.setStdQuantity("100");
+            stillageDatum.setStillageId("");
+            linearLayoutScanDetail.setVisibility(View.VISIBLE);
+            linearLayoutScanDetail.setAnimation(fadeIn);
 
+        } else {
+            str = editTextScanStillage.getText().toString();
+            stillageDatum = new StillageDatum();
+            stillageDatum.setItem("1");
+            stillageDatum.setName(str);
+            stillageDatum.setNumber(str);
+            stillageDatum.setQuantity("100");
+            stillageDatum.setStdQuantity("100");
+            stillageDatum.setStillageId("");
+        }
         stillageLayout.textViewitem.setText(stillageDatum.getItem());
-        stillageLayout.textViewName.setText(stillageDatum.getName());
         stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
         stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
         stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
 
-        if(str.equalsIgnoreCase("S000001")){
+        if (str.equalsIgnoreCase("S00001")) {
             buttonHold.setEnabled(true);
             buttonUnhold.setEnabled(false);
-        }else if(str.equalsIgnoreCase("S000002")){
+        } else if (str.equalsIgnoreCase("S00002")) {
+            buttonHold.setEnabled(false);
+            buttonUnhold.setEnabled(true);
+        } else if (str.equalsIgnoreCase("S00003")) {
             buttonHold.setEnabled(false);
             buttonUnhold.setEnabled(true);
         }
@@ -106,8 +124,8 @@ public class QualityHoldAndMove extends BaseActivity {
 
     @OnClick(R.id.buttonHold)
     public void onButtonHoldClick() {
-       CustomToast.showToast(QualityHoldAndMove.this, getResources().getString(R.string.items_hold));
-       finish();
+        CustomToast.showToast(QualityHoldAndMove.this, getResources().getString(R.string.items_hold));
+        finish();
     }
 
     @OnClick(R.id.buttonUnhold)
