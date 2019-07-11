@@ -114,5 +114,6 @@
     <string name="picked_successfullt">Is Picked Successfully</string>
     <string name="itemDesc">Item Description:</string>
     <string name="lookUp">Look Up</string>
+    <string name="update_quantity">Update Quantity</string>
 
 </resources>

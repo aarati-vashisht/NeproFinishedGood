@@ -5,8 +5,6 @@ import android.text.Editable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -148,7 +146,7 @@ public class AssignLocationAndFltActivity extends BaseActivity {
         stillageLayout.textViewitem.setText(stillageDatum.getItem());
         stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
         stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
-        stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
+        stillageLayout.textViewStdQuantity.setText(stillageDatum.getStdQuantity());
 
     }
 
