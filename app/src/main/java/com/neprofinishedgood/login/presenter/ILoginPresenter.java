@@ -1,23 +1,47 @@
 package com.neprofinishedgood.login.presenter;
 
+import com.neprofinishedgood.api.Api;
+import com.neprofinishedgood.api.ApiInterface;
+import com.neprofinishedgood.login.model.LoginResponse;
+import com.neprofinishedgood.login.model.LoginUser;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ILoginPresenter implements ILoginInterface {
-    @Override
-    public void setLoginUser() {
+    ILoginView iLoginView;
 
+    public ILoginPresenter(ILoginView iLoginView) {
+        this.iLoginView = iLoginView;
     }
 
     @Override
-    public void getLoginSuccess() {
-
+    public void getLoginResponse(LoginResponse body) {
+        if (body == null) {
+            iLoginView.onFailure();
+        } else {
+            iLoginView.onSuccess(body);
+        }
     }
 
-    @Override
-    public void getLoginFailure() {
-
-    }
 
     @Override
-    public void callLoginService() {
+    public void callLoginService(LoginUser loginUser) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<LoginResponse> call = apiInterface.loginUser(loginUser);
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                getLoginResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                getLoginResponse(null);
+
+            }
+        });
 
     }
 }

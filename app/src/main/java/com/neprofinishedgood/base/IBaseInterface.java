@@ -1,10 +1,11 @@
 package com.neprofinishedgood.base;
 
-import android.content.Context;
-import android.view.View;
-import android.widget.EditText;
+import android.app.Activity;
 
 public interface IBaseInterface {
     void setTitle(String title);
 
+    void showProgress(Activity activity);
+
+    void hideProgress();
 }

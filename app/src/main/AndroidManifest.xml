@@ -1,32 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.neprofinishedgood">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".lookup.LookUpActivity"></activity>
-        <activity android:name=".pickandload.PickAndLoadStillageActivity" />
-        <activity android:name=".pickandload.PickAndLoadActivity" />
-        <activity android:name=".receivereturnstillage.ReceiveReturnStillageActivity" />
-        <activity android:name=".returnstillage.ReturnStillageActivity" />
-        <activity android:name=".mergestillage.MergeStillageActivity" />
-        <activity android:name=".assignlocationandflt.AssignLocationAndFltActivity" />
-        <activity android:name=".qualitycheck.qualityholdandmove.QualityHoldAndMove" />
-        <activity android:name=".qualitycheck.rejectcompletestillage.RejectCompleteStillage" />
-        <activity android:name=".qualitycheck.rejectquantity.RejectQuantityActivity" />
-        <activity android:name=".qualitycheck.QualityCheckDashboardActivity" />
-        <activity android:name=".counting.CountingStillageActivity" />
-        <activity android:name=".base.BaseActivity" />
-        <activity android:name=".counting.CountingActivity" />
-        <activity android:name=".putaway.PutAwayActivity" />
-        <activity android:name=".dashboard.DashBoardAcivity" />
-        <activity android:name=".login.LoginActivity" />
-        <activity android:name=".splash.SplashActivity">
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity
+            android:name=".lookup.LookUpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pickandload.PickAndLoadStillageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pickandload.PickAndLoadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".receivereturnstillage.ReceiveReturnStillageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".returnstillage.ReturnStillageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mergestillage.MergeStillageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".assignlocationandflt.AssignLocationAndFltActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".qualitycheck.qualityholdandmove.QualityHoldAndMove"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".qualitycheck.rejectcompletestillage.RejectCompleteStillage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".qualitycheck.rejectquantity.RejectQuantityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".qualitycheck.QualityCheckDashboardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".counting.CountingStillageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".base.BaseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".counting.CountingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".putaway.PutAwayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dashboard.DashBoardAcivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".splash.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

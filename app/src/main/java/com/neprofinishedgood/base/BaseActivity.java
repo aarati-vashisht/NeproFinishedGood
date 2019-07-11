@@ -1,5 +1,6 @@
 package com.neprofinishedgood.base;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,14 +13,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.login.LoginActivity;
+import com.neprofinishedgood.utils.SharedPref;
 
 public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     String title;
     TextView textViewTitle;
     ImageButton imageButtonBack;
+    Gson gson = new Gson();
+    private KProgressHUD kProgressHUD;
 
 
     @Override
@@ -51,6 +57,30 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     }
 
 
+    @Override
+    public void showProgress(Activity activity) {
+        if (kProgressHUD != null) {
+            kProgressHUD = null;
+        }
+        if (!activity.isFinishing()) {
+            kProgressHUD = KProgressHUD.create(activity)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setLabel("Please wait")
+                    .setCancellable(true)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f);
+            kProgressHUD.show();
+        }
+
+    }
+
+    @Override
+    public void hideProgress() {
+        if (kProgressHUD != null) {
+            kProgressHUD.dismiss();
+        }
+    }
+
     public void imageButtonBackClick(View view) {
         finish();
     }
@@ -69,6 +99,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                 CustomToast.showToast(this, "Clicked On Settings");
                 return true;
             case R.id.logout_menu:
+                SharedPref.clearPrefs();
                 CustomToast.showToast(this, getResources().getString(R.string.logout_successfully));
                 startActivity(new Intent(this, LoginActivity.class));
                 finishAffinity();

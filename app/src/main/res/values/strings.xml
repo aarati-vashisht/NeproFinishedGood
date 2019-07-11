@@ -5,8 +5,8 @@
     <string name="plz_enter_pin">Please Enter Login Pin</string>
     <string name="invalid_pin">Invalid Pin</string>
     <string name="login_successfully">Logged In Successfully</string>
-    <string name="move">Move</string>
-    <string name="reportasfinished">Report As Finished</string>
+    <string name="move"><![CDATA[Planned & Unplanned Move]]></string>
+    <string name="reportasfinished">RAF</string>
     <string name="quality_check">Quality Check</string>
     <string name="assignlocation_flt"><![CDATA[Assign Planned & Unplanned]]></string>
     <string name="pickload"><![CDATA[Pick & Load]]></string>
@@ -24,9 +24,9 @@
     <string name="universalSpinner">Reason</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
-    <string name="assignFlt">Assign FLT</string>
+    <string name="assignFlt">Assign FLT?</string>
     <string name="assign">Assign</string>
-    <string name="unassign">UnAssign</string>
+    <string name="unassign">Don\'t Assign</string>
     <string name="quantity_must_not_greater_than_stillage_qty">Quantity Must Not Greater Than Stillage Quantity!</string>
     <string name="quantiy_must_not_be_blank">Quantity Must Not Blank!</string>
     <string name="please_scan_stillage">Please Scan Stillage</string>
@@ -53,7 +53,7 @@
     <string name="unhold">Unhold</string>
     <string name="items_hold">Item Hold</string>
     <string name="items_unhold">Item Unhold</string>
-    <string name="assign_location">Assign Location</string>
+    <string name="assign_location">Assign Location?</string>
     <string name="scan_location">Scan Location</string>
     <string name="assign_location_and_flt"><![CDATA[Assign Planned & Unplanned]]></string>
     <string name="scan_parent_stillage">Scan Parent Stillage</string>
@@ -70,7 +70,7 @@
     <string name="item_location_unassigned_successfully">Item Location Unassigned Successfully</string>
     <string name="item_flt_assigned_successfully">FLT User Assigned Successfully</string>
     <string name="item_flt_unassigned_successfully">FLT User Unassigned Successfully</string>
-    <string name="assign_flt">Assign FLT</string>
+    <string name="assign_flt">Assign FLT?</string>
     <string name="invalid_merge_quantity">Invalid Merge Quantity</string>
     <string name="item_merged_successfully">Item Merged Successfully</string>
     <string name="drop">Drop</string>
@@ -115,5 +115,6 @@
     <string name="itemDesc">Item Description:</string>
     <string name="lookUp">Look Up</string>
     <string name="update_quantity">Update Quantity</string>
+    <string name="success">success</string>
 
 </resources>
