@@ -1,11 +1,12 @@
 package com.neprofinishedgood.login.presenter;
 
+import com.neprofinishedgood.login.model.LoginResponse;
+import com.neprofinishedgood.login.model.LoginUser;
+
 public interface ILoginInterface {
-    void setLoginUser();
 
-    void getLoginSuccess();
+    void getLoginResponse(LoginResponse body);
 
-    void getLoginFailure();
 
-    void callLoginService();
+    void callLoginService(LoginUser loginUser);
 }

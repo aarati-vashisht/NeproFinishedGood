@@ -3,10 +3,13 @@ package com.neprofinishedgood.dashboard;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.assignlocationandflt.AssignLocationAndFltActivity;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.CountingActivity;
+import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.lookup.LookUpActivity;
 import com.neprofinishedgood.mergestillage.MergeStillageActivity;
 import com.neprofinishedgood.pickandload.PickAndLoadActivity;
@@ -14,6 +17,7 @@ import com.neprofinishedgood.putaway.PutAwayActivity;
 import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
 import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
 import com.neprofinishedgood.returnstillage.ReturnStillageActivity;
+import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 
 import butterknife.ButterKnife;
@@ -22,57 +26,102 @@ import butterknife.OnClick;
 public class DashBoardAcivity extends BaseActivity {
 
 
+    private LoginResponse loginResponse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dash_board_acivity);
+        setContentView(R.layout.activity_dash_board);
         ButterKnife.bind(this);
         setTitle(getString(R.string.dashbord));
+        initData();
+    }
+
+    private void initData() {
+        Gson gson = new Gson();
+        loginResponse = gson.fromJson(SharedPref.getLoginUser(), LoginResponse.class);
+
     }
 
     @OnClick(R.id.linearLayoutPutAway)
     public void onLinearLayouPutAwayClick() {
-        startActivity(new Intent(this, PutAwayActivity.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsMove() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, PutAwayActivity.class));
+        }
     }
 
     @OnClick(R.id.linearLayoutLookUp)
     public void onlinearLayoutLookUpClick() {
-        startActivity(new Intent(this, LookUpActivity.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsLookUp() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, LookUpActivity.class));
+        }
     }
 
     @OnClick(R.id.linearLayoutQualityCheck)
     public void onlinearLayoutQualityCheckClick() {
-        startActivity(new Intent(this, QualityCheckDashboardActivity.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsQualityCheck() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, QualityCheckDashboardActivity.class));
+        }
     }
 
     @OnClick(R.id.linearLayoutAssignLocationAndFlt)
     public void onlinearLayoutAssignLocationAndFltClick() {
-        startActivity(new Intent(this, AssignLocationAndFltActivity.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsAssignedPlannedAndUnplanned() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, AssignLocationAndFltActivity.class));
+        }
     }
 
     @OnClick(R.id.linearLayoutPutAndHold)
     public void onlinearLayoutPutAndHoldClick() {
-        startActivity(new Intent(this, PickAndLoadActivity.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsPickAndCount() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, PickAndLoadActivity.class));
+        }
     }
 
     @OnClick(R.id.linearLayoutReturnStillage)
     public void onlinearLayoutReturnStillageClick() {
-        startActivity(new Intent(this, ReturnStillageActivity.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsReturnStillage() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, ReturnStillageActivity.class));
+        }
     }
 
     @OnClick(R.id.linearLayoutReceiveReturnStillage)
     public void onlinearLayoutReceiveReturnStillageClick() {
-        startActivity(new Intent(this, ReceiveReturnStillageActivity.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsRecieveReturnStillage() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, ReceiveReturnStillageActivity.class));
+        }
     }
 
     @OnClick(R.id.linearLayoutMergeStillage)
     public void onlinearLayoutMergeStillageClick() {
-        startActivity(new Intent(this, MergeStillageActivity.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsMergeStillage() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, MergeStillageActivity.class));
+        }
     }
 
     @OnClick(R.id.linearLayoutCounting)
     public void setlinearLayoutCountingClick() {
-        startActivity(new Intent(this, CountingActivity.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsReportAsFinished() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, CountingActivity.class));
+        }
     }
 
     @OnClick(R.id.linearLayoutUpdateQuantity)

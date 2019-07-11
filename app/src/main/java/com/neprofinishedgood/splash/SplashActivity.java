@@ -8,8 +8,12 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.login.LoginActivity;
+import com.neprofinishedgood.login.model.LoginResponse;
+import com.neprofinishedgood.utils.SharedPref;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,10 +42,24 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                Gson gson = new Gson();
+                LoginResponse loginResponse = gson.fromJson(SharedPref.getLoginUser(), LoginResponse.class);
                 imageViewAppLogo.clearAnimation();
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                if (loginResponse != null) {
+                    if (Integer.parseInt(loginResponse.getUserLoginResponse().get(0).getUserId()) > 0) {
+                        Intent intent = new Intent(SplashActivity.this, DashBoardAcivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
 
             @Override
