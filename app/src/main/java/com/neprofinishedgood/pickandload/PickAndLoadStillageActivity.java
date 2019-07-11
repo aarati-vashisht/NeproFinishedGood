@@ -1,4 +1,4 @@
-package com.neprofinishedgood.pickandhold;
+package com.neprofinishedgood.pickandload;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.model.StillageDatum;
-import com.neprofinishedgood.pickandhold.model.LoadingPlanDatum;
+import com.neprofinishedgood.pickandload.model.LoadingPlanDatum;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.Utils;
 

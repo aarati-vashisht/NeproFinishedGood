@@ -70,7 +70,7 @@ public class PutAwayActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_put_away);
         ButterKnife.bind(this);
-        setTitle(getString(R.string.put_away));
+        setTitle(getString(R.string.move));
         initData();
 
     }
