@@ -219,7 +219,6 @@ public class MergeStillageActivity extends BaseActivity {
                 childStillageDatum.setQuantity(changeChildQty);
                 childStillageLayout.textViewQuantity.setText(changeChildQty);
 
-
                 if ((mergeQty + parentQty) == parentStdQty) {
                     linearLayoutScanChild.setVisibility(View.GONE);
                     relativeLayoutScanChildDetail.setVisibility(View.GONE);
@@ -261,14 +260,10 @@ public class MergeStillageActivity extends BaseActivity {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
-
-
             } else {
                 editTextMergeQuantity.setError(getString(R.string.enter_merge_quantity));
             }
         }
-
-
     }
 
     @OnClick(R.id.buttonCancel)

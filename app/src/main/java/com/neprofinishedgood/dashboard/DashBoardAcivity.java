@@ -14,6 +14,7 @@ import com.neprofinishedgood.putaway.PutAwayActivity;
 import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
 import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
 import com.neprofinishedgood.returnstillage.ReturnStillageActivity;
+import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -72,5 +73,10 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutCounting)
     public void setlinearLayoutCountingClick() {
         startActivity(new Intent(this, CountingActivity.class));
+    }
+
+    @OnClick(R.id.linearLayoutUpdateQuantity)
+    public void setlinearLayoutUpdateQuantityClick() {
+        startActivity(new Intent(this, UpdateQuantityActivity.class));
     }
 }
