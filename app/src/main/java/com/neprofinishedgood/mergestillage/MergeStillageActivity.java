@@ -1,7 +1,6 @@
 package com.neprofinishedgood.mergestillage;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -116,7 +115,7 @@ public class MergeStillageActivity extends BaseActivity {
         parentStillageLayout.textViewitem.setText(parentStillageDatum.getItem());
         parentStillageLayout.textViewNumber.setText(parentStillageDatum.getNumber());
         parentStillageLayout.textViewQuantity.setText(parentStillageDatum.getQuantity());
-        parentStillageLayout.textViewStdQuatity.setText(parentStillageDatum.getStdQuantity());
+        parentStillageLayout.textViewStdQuantity.setText(parentStillageDatum.getStdQuantity());
     }
 
     @OnTextChanged(value = R.id.editTextScanChildStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -132,7 +131,18 @@ public class MergeStillageActivity extends BaseActivity {
             editTextScanChildStillage.setEnabled(false);
             editTextMergeQuantity.requestFocus();
 
-            editTextMergeQuantity.setText(childStillageLayout.textViewQuantity.getText().toString());
+            int parentRemainQty, childQty;
+
+            parentRemainQty = Integer.parseInt(parentStillageLayout.textViewStdQuantity.getText().toString())
+                    - Integer.parseInt(parentStillageLayout.textViewQuantity.getText().toString());
+
+            childQty = Integer.parseInt(childStillageLayout.textViewQuantity.getText().toString());
+
+            if (childQty <= parentRemainQty) {
+                editTextMergeQuantity.setText(childQty + "");
+            } else if (childQty > parentRemainQty) {
+                editTextMergeQuantity.setText(parentRemainQty + "");
+            }
             editTextMergeQuantity.setSelection(editTextMergeQuantity.getText().toString().length());
         } else {
             relativeLayoutScanChildDetail.setVisibility(View.GONE);
@@ -152,7 +162,7 @@ public class MergeStillageActivity extends BaseActivity {
         childStillageLayout.textViewitem.setText(childStillageDatum.getItem());
         childStillageLayout.textViewNumber.setText(childStillageDatum.getNumber());
         childStillageLayout.textViewQuantity.setText(childStillageDatum.getQuantity());
-        childStillageLayout.textViewStdQuatity.setText(childStillageDatum.getStdQuantity());
+        childStillageLayout.textViewStdQuantity.setText(childStillageDatum.getStdQuantity());
     }
 
 
@@ -162,7 +172,7 @@ public class MergeStillageActivity extends BaseActivity {
             mergeQty = Integer.parseInt(text.toString());
             childQty = Integer.parseInt(childStillageLayout.textViewQuantity.getText().toString());
             parentQty = Integer.parseInt(parentStillageLayout.textViewQuantity.getText().toString());
-            parentStdQty = Integer.parseInt(parentStillageLayout.textViewStdQuatity.getText().toString());
+            parentStdQty = Integer.parseInt(parentStillageLayout.textViewStdQuantity.getText().toString());
             if (mergeQty > childQty || mergeQty == 0) {
                 editTextMergeQuantity.setError(getString(R.string.invalid_merge_quantity));
                 editTextMergeQuantity.requestFocus();
@@ -201,7 +211,15 @@ public class MergeStillageActivity extends BaseActivity {
             relativeLayoutScanChildDetail.setAnimation(fadeOut);
         } else {
             if (isValidated()) {
-                parentStillageLayout.textViewQuantity.setText(mergeQty + parentQty + "");
+                String changeParentQty = mergeQty + parentQty + "";
+                parentStillageDatum.setQuantity(changeParentQty);
+                parentStillageLayout.textViewQuantity.setText(changeParentQty);
+
+                String changeChildQty = Integer.parseInt(childStillageLayout.textViewQuantity.getText().toString()) - mergeQty + "";
+                childStillageDatum.setQuantity(changeChildQty);
+                childStillageLayout.textViewQuantity.setText(changeChildQty);
+
+
                 if ((mergeQty + parentQty) == parentStdQty) {
                     linearLayoutScanChild.setVisibility(View.GONE);
                     relativeLayoutScanChildDetail.setVisibility(View.GONE);

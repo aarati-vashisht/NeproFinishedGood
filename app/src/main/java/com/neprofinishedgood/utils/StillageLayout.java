@@ -24,6 +24,6 @@ public class StillageLayout {
     public TextView textViewQuantity;
 
     @BindView(R.id.textViewStdQuatity)
-    public TextView textViewStdQuatity;
+    public TextView textViewStdQuantity;
 
 }

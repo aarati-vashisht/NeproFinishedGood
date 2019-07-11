@@ -5,7 +5,6 @@ import android.text.Editable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.widget.AppCompatEditText;
@@ -14,7 +13,6 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.returnstillage.ReturnStillageActivity;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import butterknife.BindView;
@@ -85,7 +83,7 @@ public class ReceiveReturnStillageActivity extends BaseActivity {
         stillageLayout.textViewitem.setText(stillageDatum.getItem());
         stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
         stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
-        stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
+        stillageLayout.textViewStdQuantity.setText(stillageDatum.getStdQuantity());
 
     }
 

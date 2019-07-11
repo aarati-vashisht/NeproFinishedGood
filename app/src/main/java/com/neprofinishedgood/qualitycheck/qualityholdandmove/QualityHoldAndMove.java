@@ -108,7 +108,7 @@ public class QualityHoldAndMove extends BaseActivity {
         stillageLayout.textViewitem.setText(stillageDatum.getItem());
         stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
         stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
-        stillageLayout.textViewStdQuatity.setText(stillageDatum.getStdQuantity());
+        stillageLayout.textViewStdQuantity.setText(stillageDatum.getStdQuantity());
 
         if (str.equalsIgnoreCase("S00001")) {
             buttonHold.setEnabled(true);
