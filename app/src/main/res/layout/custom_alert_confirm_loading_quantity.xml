@@ -36,6 +36,8 @@
             android:layout_weight="3"
             android:background="@drawable/edittext_drawable"
             android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:nextFocusDown="@id/buttonConfirm"
             android:padding="5dp"
             android:textSize="10sp" />
 
@@ -56,6 +58,7 @@
             android:layout_height="35dp"
             android:background="@drawable/button_ripple_effect"
             android:gravity="center"
+            android:nextFocusDown="@id/buttonCancel"
             android:text="@string/button_confirm"
             android:textAllCaps="false"
             android:textColor="@color/white"

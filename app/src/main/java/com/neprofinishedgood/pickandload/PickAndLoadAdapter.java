@@ -1,4 +1,4 @@
-package com.neprofinishedgood.pickandhold;
+package com.neprofinishedgood.pickandload;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.pickandhold.model.LoadingPlanDatum;
+import com.neprofinishedgood.pickandload.model.LoadingPlanDatum;
 import com.neprofinishedgood.utils.Constants;
 
 import java.util.ArrayList;

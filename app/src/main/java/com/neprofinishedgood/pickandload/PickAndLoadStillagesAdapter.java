@@ -1,4 +1,4 @@
-package com.neprofinishedgood.pickandhold;
+package com.neprofinishedgood.pickandload;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.counting.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
+import com.neprofinishedgood.custom_views.CustomToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,14 +53,14 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.textViewWorkOrder.setText(stillageDatumListFiltered.get(position).getNumber());
-        holder.textViewitem.setText("Item" + position + 1);
-        holder.textViewSite.setText("Site" + position + 1);
-        holder.textViewAisle.setText("A" + position + 1);
-        holder.textViewBin.setText("B" + position + 1);
+        holder.textViewitem.setText("Item" + (position + 1));
+        holder.textViewSite.setText("Site" + (position + 1));
+        holder.textViewAisle.setText("A" + (position + 1));
+        holder.textViewBin.setText("B" + (position + 1));
         holder.textViewQuantity.setText(stillageDatumListFiltered.get(position).getQuantity());
         holder.textViewStdQuatity.setText(stillageDatumListFiltered.get(position).getStdQuantity());
-        holder.textViewWarehouse.setText("W" + position + 1);
-        holder.textViewRack.setText("R" + position + 1);
+        holder.textViewWarehouse.setText("W" + (position + 1));
+        holder.textViewRack.setText("R" + (position + 1));
         if (charString.equalsIgnoreCase(stillageDatumListFiltered.get(position).getNumber())) {
             if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("1")) {
                 stillageDatumListFiltered.get(position).setStatus("");
@@ -185,6 +186,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                         stillageDatumListFiltered.get(position).setStatus("-1");
                         notifyDataSetChanged();
                         PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
+                        CustomToast.showToast(context, stillageDatumListFiltered.get(position).getNumber() + " " + context.getString(R.string.picked_successfullt));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -214,7 +216,12 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int quatityToLoad = Integer.parseInt(editTextLoadQuantity.getText().toString().trim());
+                int quatityToLoad;
+                if (editTextLoadQuantity.getText().toString().trim().equals("")) {
+                    quatityToLoad = 0;
+                } else {
+                    quatityToLoad = Integer.parseInt(editTextLoadQuantity.getText().toString().trim());
+                }
                 int stdQuantity = Integer.parseInt(stillageDatumListFiltered.get(position).getQuantity());
                 if (editTextLoadQuantity.getText().toString().trim().length() == 0) {
                     editTextLoadQuantity.setError(context.getResources().getString(R.string.please_add_load_quantity));
@@ -228,6 +235,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                     stillageDatumList.remove(stillageDatumList.get(position));
                     notifyDataSetChanged();
                     PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
+                    CustomToast.showToast(context, context.getString(R.string.stillage_loaded_successfully));
                 }
             }
         });

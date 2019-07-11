@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".pickandhold.PickAndLoadStillageActivity"></activity>
-        <activity android:name=".pickandhold.PickAndLoadActivity" />
+        <activity android:name=".lookup.LookUpActivity"></activity>
+        <activity android:name=".pickandload.PickAndLoadStillageActivity" />
+        <activity android:name=".pickandload.PickAndLoadActivity" />
         <activity android:name=".receivereturnstillage.ReceiveReturnStillageActivity" />
         <activity android:name=".returnstillage.ReturnStillageActivity" />
         <activity android:name=".mergestillage.MergeStillageActivity" />

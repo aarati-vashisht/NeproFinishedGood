@@ -1,4 +1,4 @@
-package com.neprofinishedgood.pickandhold.model;
+package com.neprofinishedgood.pickandload.model;
 
 
 import com.google.gson.annotations.Expose;

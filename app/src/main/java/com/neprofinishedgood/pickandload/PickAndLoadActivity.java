@@ -1,10 +1,7 @@
-package com.neprofinishedgood.pickandhold;
+package com.neprofinishedgood.pickandload;
 
 import android.os.Bundle;
 import android.text.Editable;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.pickandhold.model.LoadingPlanDatum;
+import com.neprofinishedgood.pickandload.model.LoadingPlanDatum;
 import com.neprofinishedgood.utils.Utils;
 
 import java.util.ArrayList;

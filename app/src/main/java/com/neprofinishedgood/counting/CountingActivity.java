@@ -2,7 +2,6 @@ package com.neprofinishedgood.counting;
 
 import android.os.Bundle;
 import android.text.Editable;
-import android.widget.EditText;
 
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,7 +35,7 @@ public class CountingActivity extends BaseActivity {
         setContentView(R.layout.activity_counting);
         ButterKnife.bind(this);
         Utils.hideSoftKeyboard(this);
-        setTitle(getString(R.string.counting));
+        setTitle(getString(R.string.reportasfinished));
         setAdapter();
     }
 

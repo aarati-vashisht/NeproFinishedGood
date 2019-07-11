@@ -7,8 +7,9 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.assignlocationandflt.AssignLocationAndFltActivity;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.counting.CountingActivity;
+import com.neprofinishedgood.lookup.LookUpActivity;
 import com.neprofinishedgood.mergestillage.MergeStillageActivity;
-import com.neprofinishedgood.pickandhold.PickAndLoadActivity;
+import com.neprofinishedgood.pickandload.PickAndLoadActivity;
 import com.neprofinishedgood.putaway.PutAwayActivity;
 import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
 import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
@@ -31,6 +32,11 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutPutAway)
     public void onLinearLayouPutAwayClick() {
         startActivity(new Intent(this, PutAwayActivity.class));
+    }
+
+    @OnClick(R.id.linearLayoutLookUp)
+    public void onlinearLayoutLookUpClick() {
+        startActivity(new Intent(this, LookUpActivity.class));
     }
 
     @OnClick(R.id.linearLayoutQualityCheck)
