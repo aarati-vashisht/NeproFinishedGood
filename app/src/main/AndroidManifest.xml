@@ -64,9 +64,14 @@
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait" />
+              <activity android:name=".updatequantity.UpdateQuantityActivity" 
+                        android:screenOrientation="portrait" />
+
         <activity
             android:name=".splash.SplashActivity"
             android:screenOrientation="portrait">
+
+      
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
