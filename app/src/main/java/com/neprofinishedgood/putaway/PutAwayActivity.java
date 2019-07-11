@@ -86,7 +86,7 @@ public class PutAwayActivity extends BaseActivity {
 
     @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
-        if (editTextScanStillage.getText().toString().trim().equalsIgnoreCase("s000001")) {
+        if (editTextScanStillage.getText().toString().trim().equalsIgnoreCase("s00001")) {
             CustomToast.showToast(PutAwayActivity.this, getResources().getString(R.string.data_saved_successfully));
             finish();
         } else {
