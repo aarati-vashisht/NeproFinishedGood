@@ -121,5 +121,8 @@
     <string name="quantity_updated_successfully">Quantity Updated Successfully</string>
     <string name="something_went_wrong_please_try_again">Something Went Wrong. Please Try Again</string>
     <string name="move_">Move</string>
+    <string name="shift">Shift</string>
+    <string name="confirm_r_a_f_quantity">Confirm RAF Quantity</string>
+    <string name="select_shift">Select Shift</string>
 
 </resources>

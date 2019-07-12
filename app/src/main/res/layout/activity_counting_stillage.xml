@@ -37,15 +37,56 @@
                     android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/textViewSelectShift"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/buttonColor"
+                        android:elevation="5dp"
+                        android:padding="5dp"
+                        android:text="@string/select_shift"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutShift"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewSelectShift"
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/shift"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center_vertical"
+                            android:textSize="12sp" />
+
+                        <Spinner
+                            android:id="@+id/spinnerShift"
+                            style="@style/AppTheme"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="3"
+                            android:background="@drawable/spinner_background" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/textViewEnterQuantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/buttonColor"
+                        android:layout_below="@+id/linearLayoutShift"
                         android:elevation="5dp"
                         android:padding="5dp"
-                        android:text="@string/enter_quantity"
+                        android:text="@string/confirm_r_a_f_quantity"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -127,8 +168,8 @@
 
                             <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonConfirm"
-                                android:layout_width="70dp"
-                                android:layout_height="30dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
                                 android:background="@drawable/button_ripple_effect"
                                 android:gravity="center"
                                 android:text="@string/confirm"
@@ -147,8 +188,8 @@
 
                             <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonCancel"
-                                android:layout_width="70dp"
-                                android:layout_height="30dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
                                 android:background="@drawable/button_ripple_effect"
                                 android:gravity="center"
                                 android:text="@string/cancel"
@@ -351,8 +392,8 @@
 
                             <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonLocationConfirm"
-                                android:layout_width="70dp"
-                                android:layout_height="30dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
                                 android:background="@drawable/button_ripple_effect"
                                 android:gravity="center"
                                 android:text="@string/assign"
@@ -371,12 +412,13 @@
 
                             <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonLocationCancel"
-                                android:layout_width="70dp"
-                                android:layout_height="30dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
                                 android:background="@drawable/button_ripple_effect"
                                 android:gravity="center"
                                 android:text="@string/unassign"
                                 android:textAllCaps="false"
+                                android:paddingHorizontal="10dp"
                                 android:textColor="@color/white"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -458,7 +500,7 @@
                             <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonAssign"
                                 android:layout_width="wrap_content"
-                                android:layout_height="30dp"
+                                android:layout_height="35dp"
                                 android:background="@drawable/button_ripple_effect"
                                 android:gravity="center"
                                 android:paddingStart="10dp"
@@ -485,13 +527,14 @@
                             <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonUnAssign"
                                 android:layout_width="wrap_content"
-                                android:layout_height="30dp"
+                                android:layout_height="35dp"
                                 android:background="@drawable/button_ripple_effect"
                                 android:gravity="center"
                                 android:paddingStart="10dp"
                                 android:paddingEnd="10dp"
                                 android:text="@string/unassign"
                                 android:textAllCaps="false"
+                                android:paddingHorizontal="10dp"
                                 android:textColor="@color/white"
                                 android:textSize="12sp" />
                         </LinearLayout>
