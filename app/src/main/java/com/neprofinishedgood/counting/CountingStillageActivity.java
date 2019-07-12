@@ -45,6 +45,9 @@ public class CountingStillageActivity extends BaseActivity {
     @BindView(R.id.frameEnterLocation)
     FrameLayout frameEnterLocation;
 
+    @BindView(R.id.spinnerShift)
+    Spinner spinnerShift;
+
     @BindView(R.id.spinnerReason)
     Spinner spinnerReason;
 
@@ -163,6 +166,11 @@ public class CountingStillageActivity extends BaseActivity {
     }
 
     void setData() {
+
+        String[] shiftList = {"Select Shift", "A", "B", "C"};
+        ArrayAdapter<String> shiftAdapter = new ArrayAdapter(this, R.layout.spinner_layout, shiftList);
+        spinnerShift.setAdapter(shiftAdapter);
+
         String[] reasonsList = {"Select Reason", "Wrong Product", "Product Damaged", "Other"};
         ArrayAdapter<String> reasonAdapter = new ArrayAdapter(this, R.layout.spinner_layout, reasonsList);
         spinnerReason.setAdapter(reasonAdapter);
