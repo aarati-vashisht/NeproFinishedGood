@@ -23,7 +23,7 @@ import com.neprofinishedgood.counting.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
-import com.neprofinishedgood.putaway.Adapter.SpinnerAdapter;
+import com.neprofinishedgood.plannedandunplannedmove.Adapter.SpinnerAdapter;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.StillageLayout;
 

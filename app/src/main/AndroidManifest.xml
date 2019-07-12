@@ -56,7 +56,7 @@
             android:name=".counting.CountingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".putaway.PutAwayActivity"
+            android:name=".plannedandunplannedmove.PlannedAndUnPlannedMoveActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".dashboard.DashBoardAcivity"

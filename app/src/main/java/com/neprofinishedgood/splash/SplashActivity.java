@@ -47,18 +47,33 @@ public class SplashActivity extends AppCompatActivity {
                 imageViewAppLogo.clearAnimation();
                 if (loginResponse != null) {
                     if (Integer.parseInt(loginResponse.getUserLoginResponse().get(0).getUserId()) > 0) {
-                        Intent intent = new Intent(SplashActivity.this, DashBoardAcivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (DashBoardAcivity.getInstance() != null) {
+                            DashBoardAcivity.getInstance().finish();
+                            DashBoardAcivity.instance = null;
+                        } else {
+                            Intent intent = new Intent(SplashActivity.this, DashBoardAcivity.class);
+                            startActivity(intent);
+                            finishAffinity();
+                        }
+                    } else {
+                        if (LoginActivity.getInstance() != null) {
+                            LoginActivity.getInstance().finish();
+                            LoginActivity.instance = null;
+                        } else {
+                            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finishAffinity();
+                        }
+                    }
+                } else {
+                    if (LoginActivity.getInstance() != null) {
+                        LoginActivity.getInstance().finish();
+                        LoginActivity.instance = null;
                     } else {
                         Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                         startActivity(intent);
-                        finish();
+                        finishAffinity();
                     }
-                } else {
-                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
                 }
             }
 

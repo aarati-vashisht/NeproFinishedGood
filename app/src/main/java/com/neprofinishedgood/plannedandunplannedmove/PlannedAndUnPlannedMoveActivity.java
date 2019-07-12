@@ -1,4 +1,4 @@
-package com.neprofinishedgood.putaway;
+package com.neprofinishedgood.plannedandunplannedmove;
 
 
 import android.os.Bundle;
@@ -20,8 +20,12 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.putaway.Adapter.SpinnerAdapter;
-import com.neprofinishedgood.putaway.model.LocationData;
+import com.neprofinishedgood.plannedandunplannedmove.Adapter.SpinnerAdapter;
+import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
+import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
+import com.neprofinishedgood.plannedandunplannedmove.model.MoveResponse;
+import com.neprofinishedgood.plannedandunplannedmove.presenter.IMovePresenter;
+import com.neprofinishedgood.plannedandunplannedmove.presenter.IMoveView;
 import com.neprofinishedgood.utils.Utils;
 
 import java.util.ArrayList;
@@ -31,7 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public class PutAwayActivity extends BaseActivity {
+public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IMoveView {
 
     @BindView(R.id.buttonConfirm)
     AppCompatButton buttonPutAway;
@@ -63,21 +67,23 @@ public class PutAwayActivity extends BaseActivity {
     ArrayList<UniversalSpinner> aisleList;
     ArrayList<UniversalSpinner> rackList;
     ArrayList<UniversalSpinner> binList;
+    private IMovePresenter movePresenter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_put_away);
+        setContentView(R.layout.activity_planned_unplanned_move);
         ButterKnife.bind(this);
         setTitle(getString(R.string.move));
         initData();
+        movePresenter = new IMovePresenter(this);
 
     }
 
     void initData() {
-        fadeOut = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_out);
-        fadeIn = AnimationUtils.loadAnimation(PutAwayActivity.this, R.anim.animate_fade_in);
+        fadeOut = AnimationUtils.loadAnimation(PlannedAndUnPlannedMoveActivity.this, R.anim.animate_fade_out);
+        fadeIn = AnimationUtils.loadAnimation(PlannedAndUnPlannedMoveActivity.this, R.anim.animate_fade_in);
         setSpinnerAisleData();
         setSpinnerRackData();
         setSpinnerBinData();
@@ -87,11 +93,11 @@ public class PutAwayActivity extends BaseActivity {
     @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
         if (editTextScanStillage.getText().toString().trim().equalsIgnoreCase("s00001")) {
-            CustomToast.showToast(PutAwayActivity.this, getResources().getString(R.string.data_saved_successfully));
+            CustomToast.showToast(PlannedAndUnPlannedMoveActivity.this, getResources().getString(R.string.data_saved_successfully));
             finish();
         } else {
             if (isValidated()) {
-                CustomToast.showToast(PutAwayActivity.this, getResources().getString(R.string.data_saved_successfully));
+                CustomToast.showToast(PlannedAndUnPlannedMoveActivity.this, getResources().getString(R.string.data_saved_successfully));
                 finish();
             }
         }
@@ -101,27 +107,9 @@ public class PutAwayActivity extends BaseActivity {
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
-        if (text.toString().equalsIgnoreCase("S00001")) {
-            if (linearLayoutPutAwayLocation.getVisibility() == View.VISIBLE) {
-                linearLayoutPutAwayLocation.setVisibility(View.GONE);
-                linearLayoutPutAwayLocation.startAnimation(fadeOut);
-            }
-            linearLayoutScanDetail.setVisibility(View.VISIBLE);
-            linearLayoutScanDetail.startAnimation(fadeIn);
-            editTextScanStillage.setEnabled(false);
-            buttonPutAway.setVisibility(View.VISIBLE);
-            buttonCancel.setVisibility(View.VISIBLE);
-        } else if (text.toString().equalsIgnoreCase("S00002")) {
-            linearLayoutScanDetail.setVisibility(View.VISIBLE);
-            linearLayoutPutAwayLocation.setVisibility(View.VISIBLE);
-            linearLayoutScanDetail.startAnimation(fadeIn);
-            linearLayoutPutAwayLocation.startAnimation(fadeIn);
-            editTextScanStillage.setEnabled(false);
-            buttonPutAway.setVisibility(View.VISIBLE);
-            buttonCancel.setVisibility(View.VISIBLE);
-            editTextDropLocation.requestFocus();
+        if (!text.toString().trim().equals("")) {
+            movePresenter.callMoveService(new MoveInput(text.toString().trim()));
         }
-
 
     }
 
@@ -175,7 +163,7 @@ public class PutAwayActivity extends BaseActivity {
             aisleList.add(new UniversalSpinner("Aisle " + i, i + ""));
         }
         aisleList.add(0, new UniversalSpinner("Select Aisle", "0"));
-        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(PutAwayActivity.this, R.layout.spinner_layout, aisleList);
+        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(PlannedAndUnPlannedMoveActivity.this, R.layout.spinner_layout, aisleList);
         spinnerAisle.setAdapter(aisleListAdapter);
     }
 
@@ -185,7 +173,7 @@ public class PutAwayActivity extends BaseActivity {
             rackList.add(new UniversalSpinner("Rack " + i, i + ""));
         }
         rackList.add(0, new UniversalSpinner("Select Rack", "0"));
-        SpinnerAdapter rackListAdapter = new SpinnerAdapter(PutAwayActivity.this, R.layout.spinner_layout, rackList);
+        SpinnerAdapter rackListAdapter = new SpinnerAdapter(PlannedAndUnPlannedMoveActivity.this, R.layout.spinner_layout, rackList);
         spinnerRack.setAdapter(rackListAdapter);
     }
 
@@ -195,7 +183,7 @@ public class PutAwayActivity extends BaseActivity {
             binList.add(new UniversalSpinner("Bin " + i, i + ""));
         }
         binList.add(0, new UniversalSpinner("Select Bin", "0"));
-        SpinnerAdapter binListAdapter = new SpinnerAdapter(PutAwayActivity.this, R.layout.spinner_layout, binList);
+        SpinnerAdapter binListAdapter = new SpinnerAdapter(PlannedAndUnPlannedMoveActivity.this, R.layout.spinner_layout, binList);
         spinnerBin.setAdapter(binListAdapter);
     }
 
@@ -235,5 +223,42 @@ public class PutAwayActivity extends BaseActivity {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public void onSuccess(MoveResponse body) {
+        hideProgress();
+        if (body.getStatus().equals(getResources().getString(R.string.success))) {
+            if (body.getIsMovedFromProdLine() == 0) {
+                if (linearLayoutPutAwayLocation.getVisibility() == View.VISIBLE) {
+                    linearLayoutPutAwayLocation.setVisibility(View.GONE);
+                    linearLayoutPutAwayLocation.startAnimation(fadeOut);
+                }
+                linearLayoutScanDetail.setVisibility(View.VISIBLE);
+                linearLayoutScanDetail.startAnimation(fadeIn);
+                editTextScanStillage.setEnabled(false);
+                buttonPutAway.setVisibility(View.VISIBLE);
+                buttonCancel.setVisibility(View.VISIBLE);
+            } else {
+                linearLayoutScanDetail.setVisibility(View.VISIBLE);
+                linearLayoutPutAwayLocation.setVisibility(View.VISIBLE);
+                linearLayoutScanDetail.startAnimation(fadeIn);
+                linearLayoutPutAwayLocation.startAnimation(fadeIn);
+                editTextScanStillage.setEnabled(false);
+                buttonPutAway.setVisibility(View.VISIBLE);
+                buttonCancel.setVisibility(View.VISIBLE);
+                editTextDropLocation.requestFocus();
+            }
+        } else {
+            CustomToast.showToast(getApplicationContext(), getString(R.string.something_went_wrong_please_try_again));
+
+        }
+
+    }
+
+    @Override
+    public void onFailure() {
+        hideProgress();
+        CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
     }
 }

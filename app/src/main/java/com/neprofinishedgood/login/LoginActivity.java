@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements ILoginView {
+    public static LoginActivity instance;
     @BindView(R.id.buttonLogin)
     Button buttonLogin;
     @BindView(R.id.pinViewLogin)
@@ -32,11 +33,16 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     CoordinatorLayout coordinateLayout;
     ILoginInterface iLoginInterface;
 
+    public static LoginActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        instance = this;
         getSupportActionBar().hide();
         overridePendingTransition(0, 0);
         iLoginInterface = new ILoginPresenter(this);
@@ -74,6 +80,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
             finishAffinity();
         } else {
             CustomToast.showToast(this, getString(R.string.invalid_pin));
+            pinViewLogin.requestFocus(3);
         }
 
     }

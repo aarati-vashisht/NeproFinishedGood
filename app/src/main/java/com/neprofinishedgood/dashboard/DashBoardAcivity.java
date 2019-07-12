@@ -13,12 +13,12 @@ import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.lookup.LookUpActivity;
 import com.neprofinishedgood.mergestillage.MergeStillageActivity;
 import com.neprofinishedgood.pickandload.PickAndLoadActivity;
-import com.neprofinishedgood.putaway.PutAwayActivity;
+import com.neprofinishedgood.plannedandunplannedmove.PlannedAndUnPlannedMoveActivity;
 import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
 import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
 import com.neprofinishedgood.returnstillage.ReturnStillageActivity;
-import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
+import com.neprofinishedgood.utils.SharedPref;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,13 +26,19 @@ import butterknife.OnClick;
 public class DashBoardAcivity extends BaseActivity {
 
 
+    public static DashBoardAcivity instance;
     private LoginResponse loginResponse;
+
+    public static DashBoardAcivity getInstance() {
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
         ButterKnife.bind(this);
+        instance = this;
         setTitle(getString(R.string.dashbord));
         initData();
     }
@@ -48,7 +54,7 @@ public class DashBoardAcivity extends BaseActivity {
         if (loginResponse.getUserLoginResponse().get(0).getIsMove() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
-            startActivity(new Intent(this, PutAwayActivity.class));
+            startActivity(new Intent(this, PlannedAndUnPlannedMoveActivity.class));
         }
     }
 
