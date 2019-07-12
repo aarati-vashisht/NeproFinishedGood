@@ -2,6 +2,7 @@ package com.neprofinishedgood.plannedandunplannedmove;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
+import com.neprofinishedgood.counting.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.plannedandunplannedmove.Adapter.SpinnerAdapter;
 import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
@@ -26,6 +28,7 @@ import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveResponse;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IMovePresenter;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IMoveView;
+import com.neprofinishedgood.utils.StillageLayout;
 import com.neprofinishedgood.utils.Utils;
 
 import java.util.ArrayList;
@@ -62,12 +65,20 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IMo
     @BindView(R.id.spinnerBin)
     Spinner spinnerBin;
 
+    @BindView(R.id.stillageDetail)
+    View stillageDetail;
+
+    StillageLayout stillageLayout;
+
+
     Animation fadeOut;
     Animation fadeIn;
     ArrayList<UniversalSpinner> aisleList;
     ArrayList<UniversalSpinner> rackList;
     ArrayList<UniversalSpinner> binList;
     private IMovePresenter movePresenter;
+    private Thread background;
+    private Handler mhandler;
 
 
     @Override
@@ -82,6 +93,9 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IMo
     }
 
     void initData() {
+        stillageLayout = new StillageLayout();
+        ButterKnife.bind(stillageLayout, stillageDetail);
+
         fadeOut = AnimationUtils.loadAnimation(PlannedAndUnPlannedMoveActivity.this, R.anim.animate_fade_out);
         fadeIn = AnimationUtils.loadAnimation(PlannedAndUnPlannedMoveActivity.this, R.anim.animate_fade_in);
         setSpinnerAisleData();
@@ -239,6 +253,7 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IMo
                 editTextScanStillage.setEnabled(false);
                 buttonPutAway.setVisibility(View.VISIBLE);
                 buttonCancel.setVisibility(View.VISIBLE);
+                setData(body);
             } else {
                 linearLayoutScanDetail.setVisibility(View.VISIBLE);
                 linearLayoutPutAwayLocation.setVisibility(View.VISIBLE);
@@ -260,5 +275,11 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IMo
     public void onFailure() {
         hideProgress();
         CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
+    }
+
+    void setData(MoveResponse body) {
+
+        stillageLayout.textViewitem.setText(body.getItemId());
+        stillageLayout.textViewQuantity.setText(body.getItemStdQty());
     }
 }
