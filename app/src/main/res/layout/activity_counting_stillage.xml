@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -168,7 +168,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
-                android:visibility="visible">
+                android:visibility="gone">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -332,6 +333,7 @@
                             android:textSize="10sp" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/linearLayoutEnterLocationButtons"
                         android:layout_width="match_parent"
@@ -391,7 +393,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -453,17 +455,15 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <!--<ImageView-->
-                            <!--android:layout_width="60dp"-->
-                            <!--android:layout_height="60dp"-->
-                            <!--android:src="@drawable/button_ripple_effect" />-->
-
                             <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonAssign"
-                                android:layout_width="70dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:background="@drawable/button_ripple_effect"
                                 android:gravity="center"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
+                                android:paddingHorizontal="5dp"
                                 android:text="@string/assign"
                                 android:textAllCaps="false"
                                 android:textColor="@color/white"
@@ -484,10 +484,12 @@
 
                             <com.neprofinishedgood.custom_views.CustomButton
                                 android:id="@+id/buttonUnAssign"
-                                android:layout_width="70dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:background="@drawable/button_ripple_effect"
                                 android:gravity="center"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
                                 android:text="@string/unassign"
                                 android:textAllCaps="false"
                                 android:textColor="@color/white"

@@ -1,4 +1,4 @@
-package com.neprofinishedgood.putaway.model;
+package com.neprofinishedgood.plannedandunplannedmove.model;
 
 
 import com.google.gson.annotations.Expose;

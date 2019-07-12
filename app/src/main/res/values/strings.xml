@@ -116,8 +116,10 @@
     <string name="itemDesc">Item Description:</string>
     <string name="lookUp">Look Up</string>
     <string name="update_quantity">Update Quantity</string>
-    <string name="success">success</string>
+    <string name="success">Success</string>
     <string name="quantity_must_not_be_zero">Quantity Must Not Be Zero!</string>
     <string name="quantity_updated_successfully">Quantity Updated Successfully</string>
+    <string name="something_went_wrong_please_try_again">Something Went Wrong. Please Try Again</string>
+    <string name="move_">Move</string>
 
 </resources>
