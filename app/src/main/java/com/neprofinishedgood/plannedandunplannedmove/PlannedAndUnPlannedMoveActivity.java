@@ -2,6 +2,7 @@ package com.neprofinishedgood.plannedandunplannedmove;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
 import android.view.animation.Animation;
@@ -68,7 +69,8 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IMo
     ArrayList<UniversalSpinner> rackList;
     ArrayList<UniversalSpinner> binList;
     private IMovePresenter movePresenter;
-
+    long delay = 1000;
+    long last_text_edit = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IMo
 
     }
 
+    //data initiallization
     void initData() {
         fadeOut = AnimationUtils.loadAnimation(PlannedAndUnPlannedMoveActivity.this, R.anim.animate_fade_out);
         fadeIn = AnimationUtils.loadAnimation(PlannedAndUnPlannedMoveActivity.this, R.anim.animate_fade_in);
@@ -101,17 +104,33 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IMo
                 finish();
             }
         }
-
-
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            movePresenter.callMoveService(new MoveInput(text.toString().trim()));
+            handler.postDelayed(input_finish_checker, delay);
         }
 
     }
+
+    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+        handler.removeCallbacks(input_finish_checker);
+
+    }
+
+    //for call service on text change
+    Handler handler = new Handler();
+    private Runnable input_finish_checker = new Runnable() {
+        public void run() {
+            if (System.currentTimeMillis() > (last_text_edit + delay - 500)) {
+                showProgress(PlannedAndUnPlannedMoveActivity.this);
+                movePresenter.callMoveService(new MoveInput(editTextScanStillage.getText().toString().trim()));
+
+            }
+        }
+    };
 
     @OnTextChanged(value = R.id.editTextDropLocation, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void oneditTextDropLocationChanged(Editable text) {
@@ -255,6 +274,7 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IMo
         }
 
     }
+
 
     @Override
     public void onFailure() {
