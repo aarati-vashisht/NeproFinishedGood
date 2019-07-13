@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,9 +18,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.base.model.MasterData;
+import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.login.LoginActivity;
+import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.utils.SharedPref;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     String title;
@@ -26,14 +34,53 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     ImageButton imageButtonBack;
     Gson gson = new Gson();
     private KProgressHUD kProgressHUD;
-
+    public String userId;
+    public Animation fadeOut;
+    public Animation fadeIn;
+    public List<UniversalSpinner> aisleList = new ArrayList<>();
+    public List<UniversalSpinner> rackList = new ArrayList<>();
+    public List<UniversalSpinner> binList = new ArrayList<>();
+    public List<UniversalSpinner> reasonList = new ArrayList<>();
+    public List<UniversalSpinner> fltList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         setActionBarData();
+        gson = new Gson();
+        LoginResponse loginResponse = gson.fromJson(SharedPref.getLoginUser(), LoginResponse.class);
+        if (loginResponse != null) {
+            userId = loginResponse.getUserLoginResponse().get(0).getUserId();
+        } else {
+            userId = "";
+        }
+        fadeOut = AnimationUtils.loadAnimation(BaseActivity.this, R.anim.animate_fade_out);
+        fadeIn = AnimationUtils.loadAnimation(BaseActivity.this, R.anim.animate_fade_in);
+        getMAsterData(gson);
 
+    }
+
+    private void getMAsterData(Gson gson) {
+        MasterData masterData = gson.fromJson(SharedPref.getMasterData(), MasterData.class);
+        if (masterData != null) {
+            aisleList = masterData.getAisleList();
+            aisleList.add(0, new UniversalSpinner("Select Aisle", "000"));
+            rackList = masterData.getRackList();
+            rackList.add(0, new UniversalSpinner("Select Rack", "000"));
+            binList = masterData.getBinList();
+            binList.add(0, new UniversalSpinner("Select Bin", "000"));
+            reasonList = masterData.getReasonList();
+            reasonList.add(0, new UniversalSpinner("Select Reason", "000"));
+            fltList = masterData.getFLTList();
+            fltList.add(0, new UniversalSpinner("Select FLT", "000"));
+        } else {
+            aisleList = new ArrayList<>();
+            rackList = new ArrayList<>();
+            binList = new ArrayList<>();
+            reasonList = new ArrayList<>();
+            fltList = new ArrayList<>();
+        }
 
     }
 

@@ -5,17 +5,15 @@ import android.text.Editable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import butterknife.BindView;

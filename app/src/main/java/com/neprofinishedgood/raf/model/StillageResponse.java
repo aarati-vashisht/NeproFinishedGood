@@ -1,4 +1,4 @@
-package com.neprofinishedgood.counting.model;
+package com.neprofinishedgood.raf.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

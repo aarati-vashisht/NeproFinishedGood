@@ -11,42 +11,43 @@ import android.widget.TextView;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SpinnerAdapter extends ArrayAdapter<UniversalSpinner> {
 
-        LayoutInflater inflater;
-        ArrayList<UniversalSpinner> universalSpinner;
+    LayoutInflater inflater;
+    List<UniversalSpinner> universalSpinner;
 
-        Context context;
-        public SpinnerAdapter(Activity context, int resouceId, ArrayList<UniversalSpinner> list){
-            super(context,resouceId, list);
-            inflater = context.getLayoutInflater();
+    Context context;
 
-            this.universalSpinner = list;
-            this.context = context;
-        }
+    public SpinnerAdapter(Activity context, int resouceId, List<UniversalSpinner> list) {
+        super(context, resouceId, list);
+        inflater = context.getLayoutInflater();
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        this.universalSpinner = list;
+        this.context = context;
+    }
 
-            UniversalSpinner universalSpinner = getItem(position);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-            //View rowview = inflater.inflate(R.layout.spinner_layout,null,true);
+        UniversalSpinner universalSpinner = getItem(position);
 
-            View view =  View.inflate(context, R.layout.spinner_layout, null);
+        //View rowview = inflater.inflate(R.layout.spinner_layout,null,true);
 
-            TextView txtTitle = view.findViewById(R.id.text1);
-            txtTitle.setText(universalSpinner.getName());
+        View view = View.inflate(context, R.layout.spinner_layout, null);
 
-            return view;
-        }
+        TextView txtTitle = view.findViewById(R.id.text1);
+        txtTitle.setText(universalSpinner.getName());
+
+        return view;
+    }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
         View view;
-        view =  View.inflate(context, R.layout.spinner_layout, null);
+        view = View.inflate(context, R.layout.spinner_layout, null);
         final TextView textView = view.findViewById(R.id.text1);
         textView.setText(universalSpinner.get(position).getName());
 

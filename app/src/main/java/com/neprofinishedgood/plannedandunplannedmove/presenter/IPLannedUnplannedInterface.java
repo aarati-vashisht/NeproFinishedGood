@@ -7,8 +7,11 @@ import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
 
-public interface IMoveInterface {
-    void callMoveServcie(UpdateMoveLocationInput updateMoveLocationInput);
-    void getUpdateMoveResponse(UniversalResponse body);
+public interface IPLannedUnplannedInterface {
 
+
+    void callGetAllAssignedData(AllAssignedDataInput allAssignedDataInput);
+    void getAllAssignedData(AssignedStillages body);
+    void callGetMoveDataService(MoveInput moveInput);
+    void getMoveResponse(MoveResponse body);
 }

@@ -4,6 +4,7 @@
     package="com.neprofinishedgood">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -13,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".plannedandunplannedmove.MoveStillageActivity"></activity>
         <activity
             android:name=".lookup.LookUpActivity"
             android:screenOrientation="portrait" />
@@ -47,13 +49,13 @@
             android:name=".qualitycheck.QualityCheckDashboardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".counting.CountingStillageActivity"
+            android:name=".raf.RAFStillageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".base.BaseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".counting.CountingActivity"
+            android:name=".raf.RAFActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".plannedandunplannedmove.PlannedAndUnPlannedMoveActivity"
@@ -64,14 +66,12 @@
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait" />
-              <activity android:name=".updatequantity.UpdateQuantityActivity" 
-                        android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".updatequantity.UpdateQuantityActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".splash.SplashActivity"
             android:screenOrientation="portrait">
-
-      
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

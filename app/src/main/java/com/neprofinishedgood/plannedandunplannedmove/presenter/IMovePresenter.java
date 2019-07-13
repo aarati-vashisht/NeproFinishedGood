@@ -2,8 +2,12 @@ package com.neprofinishedgood.plannedandunplannedmove.presenter;
 
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
+import com.neprofinishedgood.base.model.UniversalResponse;
+import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
+import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveResponse;
+import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -17,30 +21,34 @@ public class IMovePresenter implements IMoveInterface {
     }
 
 
-    @Override
-    public void getMoveResponse(MoveResponse body) {
-        if (body == null) {
-            iMoveView.onFailure();
-        } else {
-            iMoveView.onSuccess(body);
-        }
-    }
+
 
     @Override
-    public void callMoveService(MoveInput moveInput) {
+    public void callMoveServcie(UpdateMoveLocationInput updateMoveLocationInput) {
         ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
-        Call<MoveResponse> call = apiInterface.stillageMoving(moveInput);
-        call.enqueue(new Callback<MoveResponse>() {
+        Call<UniversalResponse> call = apiInterface.updateMovingStatus(updateMoveLocationInput);
+        call.enqueue(new Callback<UniversalResponse>() {
             @Override
-            public void onResponse(Call<MoveResponse> call, Response<MoveResponse> response) {
-                getMoveResponse(response.body());
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getUpdateMoveResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<MoveResponse> call, Throwable t) {
-                getMoveResponse(null);
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getUpdateMoveResponse(null);
 
             }
         });
     }
+
+    @Override
+    public void getUpdateMoveResponse(UniversalResponse body) {
+        if (body == null) {
+            iMoveView.onUpdateMoveFailure();
+        } else {
+            iMoveView.onUpdateMoveSuccess(body);
+        }
+    }
+
+
 }

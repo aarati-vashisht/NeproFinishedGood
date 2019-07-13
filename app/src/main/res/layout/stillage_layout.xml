@@ -86,7 +86,7 @@
                     android:layout_marginStart="10dp"
                     android:maxLines="2"
                     android:text="S00001"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
 
@@ -116,7 +116,7 @@
                     android:layout_marginStart="10dp"
                     android:maxLines="2"
                     android:text="S00001"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
 
@@ -152,7 +152,7 @@
                         android:layout_weight=".20"
                         android:maxLines="1"
                         android:text="20sdfsdfsdf"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray_color"
                         android:textSize="10sp" />
 
                     <TextView
@@ -172,7 +172,7 @@
                         android:layout_weight=".20"
                         android:maxLines="1"
                         android:text="20dffsf"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray_color"
                         android:textSize="10sp" />
                 </LinearLayout>
 
@@ -195,8 +195,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/location"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
-                  />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/textViewLocation"
@@ -206,7 +205,7 @@
                     android:layout_weight=".20"
                     android:maxLines="1"
                     android:text="Location: Site 1 WareHouse 2 Aisle 1 Rack 2 Bin 3"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
 

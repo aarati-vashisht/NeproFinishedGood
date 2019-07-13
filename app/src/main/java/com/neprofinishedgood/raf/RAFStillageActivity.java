@@ -1,4 +1,4 @@
-package com.neprofinishedgood.counting;
+package com.neprofinishedgood.raf;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
-import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
@@ -35,7 +35,7 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
 
-public class CountingStillageActivity extends BaseActivity {
+public class RAFStillageActivity extends BaseActivity {
     @BindView(R.id.frameEnterQuantity)
     FrameLayout frameEnterQuantity;
 
@@ -112,7 +112,7 @@ public class CountingStillageActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_counting_stillage);
+        setContentView(R.layout.activity_r_a_f);
         ButterKnife.bind(this);
         initData();
     }
@@ -121,8 +121,8 @@ public class CountingStillageActivity extends BaseActivity {
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
 
-        fadeOut = AnimationUtils.loadAnimation(CountingStillageActivity.this, R.anim.animate_fade_out);
-        fadeIn = AnimationUtils.loadAnimation(CountingStillageActivity.this, R.anim.animate_fade_in);
+        fadeOut = AnimationUtils.loadAnimation(RAFStillageActivity.this, R.anim.animate_fade_out);
+        fadeIn = AnimationUtils.loadAnimation(RAFStillageActivity.this, R.anim.animate_fade_in);
         SELECTED_STILLAGE = getIntent().getStringExtra(Constants.SELECTED_STILLAGE);
         Gson gson = new Gson();
         StillageDatum stillageDatum = gson.fromJson(SELECTED_STILLAGE, StillageDatum.class);
@@ -209,7 +209,7 @@ public class CountingStillageActivity extends BaseActivity {
     @OnClick(R.id.buttonLocationConfirm)
     public void onbuttonLocationConfirmClick() {
         if (isValidated()) {
-            CustomToast.showToast(CountingStillageActivity.this, getResources().getString(R.string.item_location_assigned_successfully));
+            CustomToast.showToast(RAFStillageActivity.this, getResources().getString(R.string.item_location_assigned_successfully));
             frameAssignFlt.setVisibility(View.VISIBLE);
             frameEnterLocation.setVisibility(View.GONE);
             buttonAssign.setEnabled(false);
@@ -246,7 +246,7 @@ public class CountingStillageActivity extends BaseActivity {
 
     @OnClick(R.id.buttonLocationCancel)
     public void onbuttonLocationCancelClick() {
-        CustomToast.showToast(CountingStillageActivity.this, getResources().getString(R.string.item_location_unassigned_successfully));
+        CustomToast.showToast(RAFStillageActivity.this, getResources().getString(R.string.item_location_unassigned_successfully));
         frameAssignFlt.setVisibility(View.VISIBLE);
         frameEnterLocation.setVisibility(View.GONE);
         buttonAssign.setEnabled(false);
@@ -262,7 +262,7 @@ public class CountingStillageActivity extends BaseActivity {
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
-        startActivity(new Intent(CountingStillageActivity.this, DashBoardAcivity.class));
+        startActivity(new Intent(RAFStillageActivity.this, DashBoardAcivity.class));
         finish();
     }
 
@@ -303,7 +303,7 @@ public class CountingStillageActivity extends BaseActivity {
             aisleList.add(new UniversalSpinner("Aisle " + i, i + ""));
         }
         aisleList.add(0, new UniversalSpinner("Select Aisle", "0"));
-        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(CountingStillageActivity.this, R.layout.spinner_layout, aisleList);
+        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(RAFStillageActivity.this, R.layout.spinner_layout, aisleList);
         spinnerAisle.setAdapter(aisleListAdapter);
     }
 
@@ -313,7 +313,7 @@ public class CountingStillageActivity extends BaseActivity {
             rackList.add(new UniversalSpinner("Rack " + i, i + ""));
         }
         rackList.add(0, new UniversalSpinner("Select Rack", "0"));
-        SpinnerAdapter rackListAdapter = new SpinnerAdapter(CountingStillageActivity.this, R.layout.spinner_layout, rackList);
+        SpinnerAdapter rackListAdapter = new SpinnerAdapter(RAFStillageActivity.this, R.layout.spinner_layout, rackList);
         spinnerRack.setAdapter(rackListAdapter);
     }
 
@@ -323,7 +323,7 @@ public class CountingStillageActivity extends BaseActivity {
             binList.add(new UniversalSpinner("Bin " + i, i + ""));
         }
         binList.add(0, new UniversalSpinner("Select Bin", "0"));
-        SpinnerAdapter binListAdapter = new SpinnerAdapter(CountingStillageActivity.this, R.layout.spinner_layout, binList);
+        SpinnerAdapter binListAdapter = new SpinnerAdapter(RAFStillageActivity.this, R.layout.spinner_layout, binList);
         spinnerBin.setAdapter(binListAdapter);
     }
 

@@ -11,7 +11,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.utils.StillageLayout;

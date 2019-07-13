@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.assignlocationandflt.AssignLocationAndFltActivity;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.counting.CountingActivity;
+import com.neprofinishedgood.raf.RAFActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.lookup.LookUpActivity;
@@ -126,7 +126,7 @@ public class DashBoardAcivity extends BaseActivity {
         if (loginResponse.getUserLoginResponse().get(0).getIsReportAsFinished() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
-            startActivity(new Intent(this, CountingActivity.class));
+            startActivity(new Intent(this, RAFActivity.class));
         }
     }
 

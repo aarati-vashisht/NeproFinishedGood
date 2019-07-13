@@ -1,4 +1,4 @@
-package com.neprofinishedgood.counting;
+package com.neprofinishedgood.raf;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.utils.Utils;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
 
-public class CountingActivity extends BaseActivity {
+public class RAFActivity extends BaseActivity {
 
     @BindView(R.id.recyclerViewStillage)
     RecyclerView recyclerViewStillage;
@@ -27,7 +27,7 @@ public class CountingActivity extends BaseActivity {
     @BindView(R.id.editTextScanStillage)
     AppCompatEditText editTextScanStillage;
 
-    ContingAdapter contingAdapter;
+    RAFAdapter contingAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class CountingActivity extends BaseActivity {
         ButterKnife.bind(this);
         Utils.hideSoftKeyboard(this);
         setTitle(getString(R.string.reportasfinished));
-        setAdapter();
+       // setAdapter();
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage,
@@ -57,7 +57,7 @@ public class CountingActivity extends BaseActivity {
             formDatum.setQuantity("20");
             getFormResponseList.add(formDatum);
         }
-        contingAdapter = new ContingAdapter(getFormResponseList);
+        contingAdapter = new RAFAdapter(getFormResponseList);
         recyclerViewStillage.setAdapter(contingAdapter);
         recyclerViewStillage.setHasFixedSize(true);
 

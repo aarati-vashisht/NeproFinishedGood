@@ -124,5 +124,6 @@
     <string name="shift">Shift</string>
     <string name="confirm_r_a_f_quantity">Confirm RAF Quantity</string>
     <string name="select_shift">Select Shift</string>
+    <string name="enter_stillage_number">Enter Stillage Number</string>
 
 </resources>

@@ -75,7 +75,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
             CustomToast.showToast(this, getString(R.string.login_successfully));
             Gson gson = new Gson();
             String loginData = gson.toJson(body);
-            SharedPref.saveLoginUSer(this, loginData);
+            SharedPref.saveLoginUSer(loginData);
             startActivity(new Intent(this, DashBoardAcivity.class));
             finishAffinity();
         } else {

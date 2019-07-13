@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Api {
 
-    public static final String BASE_URL = "http://10.10.10.140:8053/api/Nepro/";///client url
+    public static final String BASE_URL = "http://10.10.10.238:8012/api/Nepro/";///client url
 
     private static Retrofit retrofit = null;
     private static OkHttpClient client;
