@@ -121,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linearLayoutScanChildDetail"
-                android:background="@color/buttonColor"
+                android:background="@color/colorPrimaryDark"
                 android:padding="5dp"
                 android:text="@string/merge_quantity"
                 android:textColor="@color/white"

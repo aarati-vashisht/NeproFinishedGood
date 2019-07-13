@@ -17,7 +17,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 

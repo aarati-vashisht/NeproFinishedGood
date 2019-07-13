@@ -1,14 +1,15 @@
 package com.neprofinishedgood.plannedandunplannedmove.presenter;
 
-import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveResponse;
 
-public interface IMoveView {
+public interface IPlannedAndUnPlannedView {
+    void onAssignedFailure();
 
-    void onUpdateMoveSuccess(UniversalResponse response);
+    void onAssignedSuccess(AssignedStillages body);
 
-    void onUpdateMoveFailure();
+    void onSuccess(MoveResponse body);
 
+    void onFailure();
 
 }

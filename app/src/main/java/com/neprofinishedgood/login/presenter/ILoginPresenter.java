@@ -19,9 +19,12 @@ public class ILoginPresenter implements ILoginInterface {
     @Override
     public void getLoginResponse(LoginResponse body) {
         if (body == null) {
-            iLoginView.onFailure();
         } else {
-            iLoginView.onSuccess(body);
+            if (body.getStatus() == null) {
+                iLoginView.onFailure();
+            } else {
+                iLoginView.onSuccess(body);
+            }
         }
     }
 

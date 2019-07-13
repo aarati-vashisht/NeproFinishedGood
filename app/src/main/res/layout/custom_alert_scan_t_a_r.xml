@@ -7,8 +7,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/buttonColor"
-        android:padding="5dp"
+        android:background="@color/colorPrimaryDark"
+        android:padding="7dp"
         android:text="@string/scan_t_a_r"
         android:textColor="@color/white"
         android:textSize="12sp"

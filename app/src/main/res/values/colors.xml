@@ -11,6 +11,7 @@
     <color name="buttonColor">#26a59a</color>
     <color name="transparentbuttonColor">#9026a59a</color>>
     <color name="lightbuttonColor">#D1FBF7</color>
-    <color name="errorColor">#ff0000</color>>
+    <color name="errorColor">#ff0000</color>
+    <color name="gray_color">#707070</color>>
 
 </resources>

@@ -1,17 +1,14 @@
 package com.neprofinishedgood.utils;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import com.neprofinishedgood.MyApplication;
 
 import static com.neprofinishedgood.MyApplication.editor;
 
 public class SharedPref {
-    static SharedPreferences sharedPreferences;
     static String LOGIN_DATA = "LOGIN_DATA";
+    private static String MASTER_DATA = "MASTER_DATA";
 
-    public static void saveLoginUSer(Context context, String loginData) {
+    public static void saveLoginUSer(String loginData) {
         editor.putString(LOGIN_DATA, loginData);
         editor.apply();
     }
@@ -24,6 +21,16 @@ public class SharedPref {
 
     public static String getLoginUser() {
         String data = MyApplication.sharedPreferences.getString(LOGIN_DATA, "");
+        return data;
+    }
+
+    public static void saveMasterData(String jsonData) {
+        editor.putString(MASTER_DATA, jsonData);
+        editor.apply();
+    }
+
+    public static String getMasterData() {
+        String data = MyApplication.sharedPreferences.getString(MASTER_DATA, "");
         return data;
     }
 }

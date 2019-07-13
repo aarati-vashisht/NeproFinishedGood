@@ -1,4 +1,4 @@
-package com.neprofinishedgood.counting;
+package com.neprofinishedgood.raf;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.counting.model.StillageDatum;
+import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.utils.Constants;
 
 import java.util.ArrayList;
@@ -23,14 +23,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHolder> implements Filterable {
+public class RAFAdapter extends RecyclerView.Adapter<RAFAdapter.ViewHolder> implements Filterable {
 
     private final List<StillageDatum> stillageDatumList;
     private List<StillageDatum> stillageDatumListFiltered;
     private Context context;
     private View view;
 
-    public ContingAdapter(List<StillageDatum> stillageDatumList) {
+    public RAFAdapter(List<StillageDatum> stillageDatumList) {
         this.stillageDatumList = stillageDatumList;
         this.stillageDatumListFiltered = stillageDatumList;
     }
@@ -91,7 +91,7 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
             if (v == mView) {
                 Gson gson = new Gson();
                 String putExtraData = gson.toJson(stillageDatumListFiltered.get(getAdapterPosition()));
-                context.startActivity(new Intent(context, CountingStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+                context.startActivity(new Intent(context, RAFStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
             }
 
         }
@@ -113,7 +113,7 @@ public class ContingAdapter extends RecyclerView.Adapter<ContingAdapter.ViewHold
                             stillageDatumListFiltered.remove(row);
                             Gson gson = new Gson();
                             String putExtraData = gson.toJson(filteredList.get(0));
-                            context.startActivity(new Intent(context, CountingStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+                            context.startActivity(new Intent(context, RAFStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
                         }
                     }
                     filteredList.addAll(stillageDatumListFiltered);
