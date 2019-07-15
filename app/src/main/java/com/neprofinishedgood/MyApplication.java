@@ -18,16 +18,22 @@ public class MyApplication extends Application {
     public static SharedPreferences sharedPreferences;
     static String SHARED_PREF = "SHARED_PREF";
     public static SharedPreferences.Editor editor;
+    private static MyApplication instance;
+
+    public static MyApplication getInstance() {
+        return instance;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         callMasterData();
     }
 
-    private void callMasterData() {
+    public void callMasterData() {
         ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
         Call<MasterData> call = apiInterface.masterData();
         call.enqueue(new Callback<MasterData>() {

@@ -10,7 +10,7 @@ public class AssignedStillages {
 
     @SerializedName("StillageList")
     @Expose
-    private List<StillageList> stillageList = null;
+    private List<ScanStillageResponse> stillageList = null;
     @SerializedName("Status")
     @Expose
     private String status;
@@ -18,11 +18,11 @@ public class AssignedStillages {
     @Expose
     private String message;
 
-    public List<StillageList> getStillageList() {
+    public List<ScanStillageResponse> getStillageList() {
         return stillageList;
     }
 
-    public void setStillageList(List<StillageList> stillageList) {
+    public void setStillageList(List<ScanStillageResponse> stillageList) {
         this.stillageList = stillageList;
     }
 

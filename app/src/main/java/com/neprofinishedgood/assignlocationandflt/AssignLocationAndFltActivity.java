@@ -15,10 +15,10 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
-import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.plannedandunplannedmove.Adapter.SpinnerAdapter;
+import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
+import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import java.util.ArrayList;
@@ -159,7 +159,7 @@ public class AssignLocationAndFltActivity extends BaseActivity {
             frameAssignLocation.setVisibility(View.GONE);
             buttonAssign.setEnabled(false);
             setSpinnerAssignFltData();
-        } else if(!isButtonInAssignLocation){
+        } else if (!isButtonInAssignLocation) {
             CustomToast.showToast(AssignLocationAndFltActivity.this, getResources().getString(R.string.item_flt_assigned_successfully));
             finish();
         }
@@ -174,7 +174,7 @@ public class AssignLocationAndFltActivity extends BaseActivity {
             frameAssignLocation.setVisibility(View.GONE);
             buttonAssign.setEnabled(false);
             setSpinnerAssignFltData();
-        } else if(!isButtonInAssignLocation) {
+        } else if (!isButtonInAssignLocation) {
             CustomToast.showToast(AssignLocationAndFltActivity.this, getResources().getString(R.string.item_flt_unassigned_successfully));
             finish();
         }
@@ -182,7 +182,7 @@ public class AssignLocationAndFltActivity extends BaseActivity {
 
     @OnItemSelected(R.id.spinnerAssignFlt)
     void onItemSelected(int position) {
-        if(position>0){
+        if (position > 0) {
             buttonAssign.setEnabled(true);
         }
     }

@@ -6,49 +6,61 @@ import com.google.gson.annotations.SerializedName;
 
 public class LocationData {
 
-    @SerializedName("location")
-    @Expose
-    private String location;
+
     @SerializedName("Aisle")
     @Expose
-    private String aisle;
-    @SerializedName("rack")
+    private Integer aisle;
+    @SerializedName("Rack")
     @Expose
-    private String rack;
-    @SerializedName("bin")
+    private Integer rack;
+    @SerializedName("Bin")
     @Expose
-    private String bin;
+    private Integer bin;
+    @SerializedName("Status")
+    @Expose
+    private String status;
+    @SerializedName("Message")
+    @Expose
+    private String message;
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getAisle() {
+    public Integer getAisle() {
         return aisle;
     }
 
-    public void setAisle(String aisle) {
+    public void setAisle(Integer aisle) {
         this.aisle = aisle;
     }
 
-    public String getRack() {
+    public Integer getRack() {
         return rack;
     }
 
-    public void setRack(String rack) {
+    public void setRack(Integer rack) {
         this.rack = rack;
     }
 
-    public String getBin() {
+    public Integer getBin() {
         return bin;
     }
 
-    public void setBin(String bin) {
+    public void setBin(Integer bin) {
         this.bin = bin;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 }

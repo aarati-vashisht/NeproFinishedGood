@@ -1,6 +1,7 @@
 package com.neprofinishedgood.plannedandunplannedmove;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -9,17 +10,18 @@ import android.view.View;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.plannedandunplannedmove.Adapter.MoveAdapter;
+import com.neprofinishedgood.plannedandunplannedmove.adapter.MoveAdapter;
 import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.StillageList;
+import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IPlannedAndUnPlannedView;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IPlannedUnplannedPresenter;
+import com.neprofinishedgood.utils.Constants;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ import butterknife.OnTextChanged;
 public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPlannedAndUnPlannedView {
 
 
+    private static PlannedAndUnPlannedMoveActivity instance;
     @BindView(R.id.editTextScanStillage)
     AppCompatEditText editTextScanStillage;
     @BindView(R.id.recyclerViewStillage)
@@ -39,21 +42,25 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
     private IPlannedUnplannedPresenter iPlannedUnplannedPresenter;
     long delay = 1500;
     long scanStillageLastTexxt = 0;
-    long dropLocationLastText = 0;
     private MoveAdapter adapter;
+
+    public static PlannedAndUnPlannedMoveActivity getInstance() {
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planned_unplanned_move);
         ButterKnife.bind(this);
+        instance = this;
         setTitle(getString(R.string.move));
         iPlannedUnplannedPresenter = new IPlannedUnplannedPresenter(this);
         getAllAssignedData();
 
     }
 
-    private void getAllAssignedData() {
+    public void getAllAssignedData() {
         showProgress(this);
         iPlannedUnplannedPresenter.callGetAllAssignedData(new AllAssignedDataInput(userId));
     }
@@ -79,25 +86,25 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
         public void run() {
             showProgress(PlannedAndUnPlannedMoveActivity.this);
             if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                iPlannedUnplannedPresenter.callGetMoveDataService(new MoveInput(editTextScanStillage.getText().toString().trim()));
+                iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(),userId));
             }
         }
     };
 
     //on get data success
     @Override
-    public void onSuccess(MoveResponse body) {
+    public void onSuccess(ScanStillageResponse body) {
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            if (body.getIsMovedFromProdLine() == 0) {
-
-            } else {
-            }
-
+            Gson gson = new Gson();
+            String putExtraData = gson.toJson(body);
+            startActivity(new Intent(this, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+            editTextScanStillage.setText("");
+            overridePendingTransition(0, 0);
         } else {
             editTextScanStillage.setText("");
-            CustomToast.showToast(getApplicationContext(), getString(R.string.something_went_wrong_please_try_again));
+            CustomToast.showToast(getApplicationContext(), body.getMessage());
 
         }
 
@@ -105,13 +112,13 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
 
     //on get data failure
     @Override
-    public void onFailure() {
+    public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
+        CustomToast.showToast(this, message);
     }
 
     @Override
-    public void onAssignedFailure() {
+    public void onAssignedFailure(String message) {
         hideProgress();
 
     }
@@ -129,7 +136,7 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
         }
     }
 
-    private void setAdapter(List<StillageList> stillageList) {
+    private void setAdapter(List<ScanStillageResponse> stillageList) {
         recyclerViewStillage.setVisibility(View.VISIBLE);
         adapter = new MoveAdapter(stillageList);
         recyclerViewStillage.setAdapter(adapter);
