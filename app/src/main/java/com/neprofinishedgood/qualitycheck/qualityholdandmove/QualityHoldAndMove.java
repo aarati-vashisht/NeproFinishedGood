@@ -84,6 +84,9 @@ public class QualityHoldAndMove extends BaseActivity implements IHoldView {
     public void onEditTextScanStillageTEXTCHANGED(Editable text) {
         scanStillagehandler.removeCallbacks(stillageRunnable);
 
+
+
+
     }
 
     //for call service on text change
