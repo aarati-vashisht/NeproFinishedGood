@@ -15,11 +15,11 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
+import com.neprofinishedgood.qualitycheck.qualityhold.QualityHold;
 import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.plannedandunplannedmove.Adapter.SpinnerAdapter;
-import com.neprofinishedgood.qualitycheck.qualityholdandmove.QualityHoldAndMove;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import java.util.ArrayList;
@@ -122,7 +122,7 @@ public class RejectCompleteStillage extends BaseActivity {
         if (isValidated()) {
             if (editTextScanStillage.getText().toString().equalsIgnoreCase("s00003")) {
                 CustomToast.showToast(RejectCompleteStillage.this, getResources().getString(R.string.items_rejected_successfully));
-                startActivity(new Intent(this, QualityHoldAndMove.class).putExtra("DATA", "DATA"));
+                startActivity(new Intent(this, QualityHold.class).putExtra("DATA", "DATA"));
                 finish();
             } else {
                 CustomToast.showToast(RejectCompleteStillage.this, getResources().getString(R.string.items_rejected_successfully));

@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.qualitycheck.qualityholdandmove.QualityHoldAndMove;
+import com.neprofinishedgood.qualitycheck.qualityhold.QualityHold;
 import com.neprofinishedgood.qualitycheck.rejectcompletestillage.RejectCompleteStillage;
 import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 
@@ -34,6 +34,6 @@ public class QualityCheckDashboardActivity extends BaseActivity {
 
     @OnClick(R.id.linearLayoutQualityHoldAndMove)
     public void onLinearLayoutQualityHoldAndMoveClick() {
-        startActivity(new Intent(QualityCheckDashboardActivity.this, QualityHoldAndMove.class));
+        startActivity(new Intent(QualityCheckDashboardActivity.this, QualityHold.class));
     }
 }

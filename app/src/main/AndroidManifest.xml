@@ -28,16 +28,16 @@
             android:name=".receivereturnstillage.ReceiveReturnStillageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".returnstillage.ReturnStillageActivity"
+            android:name=".transferstillage.TransferStillageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".mergestillage.MergeStillageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".assignlocationandflt.AssignLocationAndFltActivity"
+            android:name=".assignlocationandflt.AssignPlannedAndUnplannedActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".qualitycheck.qualityholdandmove.QualityHoldAndMove"
+            android:name=".qualitycheck.qualityhold.QualityHold"
             android:screenOrientation="portrait" />
         <activity
             android:name=".qualitycheck.rejectcompletestillage.RejectCompleteStillage"
