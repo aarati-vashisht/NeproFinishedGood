@@ -138,6 +138,7 @@ public class MergeStillageActivity extends BaseActivity {
             linearLayoutAssignLocationButtons.setAnimation(fadeIn);
 
             linearLayoutQuantitySum.setVisibility(View.VISIBLE);
+            textViewQuantitySum.setText(parentStillageLayout.textViewQuantity.getText().toString());
             setChildData(text.toString());
             editTextScanChildStillage.setEnabled(false);
             editTextMergeQuantity.requestFocus();

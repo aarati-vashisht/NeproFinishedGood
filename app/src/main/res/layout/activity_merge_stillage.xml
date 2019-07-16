@@ -8,225 +8,238 @@
     android:orientation="vertical"
     tools:context=".mergestillage.MergeStillageActivity">
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.9"
-                android:text="@string/scan_parent_stillage"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/editTextScanParentStillage"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="3"
-                android:background="@drawable/edittext_drawable"
-                android:maxLines="1"
-                android:padding="5dp"
-                android:textSize="10sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutScanParentDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <include
-                android:id="@+id/parentStillageDetail"
-                layout="@layout/stillage_layout" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutScanChild"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.9"
-                android:text="@string/scan_child_stillage"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/editTextScanChildStillage"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="3"
-                android:background="@drawable/edittext_drawable"
-                android:maxLines="1"
-                android:padding="5dp"
-                android:textSize="10sp" />
-
-        </LinearLayout>
+        android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/relativeLayoutScanChildDetail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/linearLayoutScanChildDetail"
+                android:id="@+id/linearLayoutScanParent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <include
-                    android:id="@+id/childStillageDetail"
-                    layout="@layout/stillage_layout" />
-
-
-            </LinearLayout>
-
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutMergeStillage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/textViewMergeQuantity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayoutScanChildDetail"
-                android:background="@color/colorPrimaryDark"
-                android:padding="5dp"
-                android:elevation="5dp"
-                android:text="@string/merge_quantity"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewMergeQuantity"
-                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.9"
-                    android:text="@string/enter_merge_quantity"
+                    android:text="@string/scan_parent_stillage"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/editTextMergeQuantity"
+                    android:id="@+id/editTextScanParentStillage"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="3"
                     android:background="@drawable/edittext_drawable"
-                    android:inputType="number"
                     android:maxLines="1"
                     android:padding="5dp"
                     android:textSize="10sp" />
 
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayoutQuantitySum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp"
-            android:layout_marginTop="10dp"
-            android:elevation="5dp"
-            android:background="@color/gray_color"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/linearLayoutScanParentDetail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.2"
-                android:text="@string/sum_of_stillage_quantity_after_merge"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:layout_below="@id/linearLayoutScanParent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <TextView
-                android:id="@+id/textViewQuantitySum"
-                android:layout_width="0dp"
+                <include
+                    android:id="@+id/parentStillageDetail"
+                    layout="@layout/stillage_layout" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutScanChild"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight=".5"
-                android:maxLines="2"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:layout_below="@+id/linearLayoutScanParentDetail"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.9"
+                    android:text="@string/scan_child_stillage"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
-    </LinearLayout>
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/editTextScanChildStillage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="3"
+                    android:background="@drawable/edittext_drawable"
+                    android:maxLines="1"
+                    android:padding="5dp"
+                    android:textSize="10sp" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutAssignLocationButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone">
+            </LinearLayout>
 
-        <com.neprofinishedgood.custom_views.CustomButton
-            android:id="@+id/buttonMerge"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:background="@drawable/button_ripple_effect"
-            android:gravity="center"
-            android:text="@string/merge"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+            <RelativeLayout
+                android:id="@+id/relativeLayoutScanChildDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearLayoutScanChild"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-        <com.neprofinishedgood.custom_views.CustomButton
-            android:id="@+id/buttonCancel"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/button_ripple_effect"
-            android:gravity="center"
-            android:text="@string/cancel"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+                <LinearLayout
+                    android:id="@+id/linearLayoutScanChildDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
-    </LinearLayout>
+                    <include
+                        android:id="@+id/childStillageDetail"
+                        layout="@layout/stillage_layout" />
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutMergeStillage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativeLayoutScanChildDetail"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textViewMergeQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linearLayoutScanChildDetail"
+                    android:background="@color/colorPrimaryDark"
+                    android:elevation="5dp"
+                    android:padding="5dp"
+                    android:text="@string/merge_quantity"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewMergeQuantity"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.9"
+                        android:text="@string/enter_merge_quantity"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editTextMergeQuantity"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/edittext_drawable"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:padding="5dp"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutQuantitySum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/gray_color"
+                android:layout_below="@+id/linearLayoutMergeStillage"
+                android:elevation="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:text="@string/sum_of_stillage_quantity_after_merge"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/textViewQuantitySum"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight=".5"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutAssignLocationButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@+id/linearLayoutQuantitySum"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <com.neprofinishedgood.custom_views.CustomButton
+                    android:id="@+id/buttonMerge"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/button_ripple_effect"
+                    android:gravity="center"
+                    android:text="@string/merge"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <com.neprofinishedgood.custom_views.CustomButton
+                    android:id="@+id/buttonCancel"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/button_ripple_effect"
+                    android:gravity="center"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
 </RelativeLayout>
