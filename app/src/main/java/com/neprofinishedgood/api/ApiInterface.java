@@ -45,6 +45,7 @@ public interface ApiInterface {
     @POST("UpdateRAF")
     Call<UniversalResponse> updateRAF(@Body RafInput rafInput);
 
+
     @POST("RejectedStillageDetails")
     Call<ScanCountingResponse> rejectedStillageDetails(@Body MoveInput moveInput);
 
