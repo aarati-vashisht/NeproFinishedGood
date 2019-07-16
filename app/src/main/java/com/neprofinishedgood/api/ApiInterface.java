@@ -1,5 +1,6 @@
 package com.neprofinishedgood.api;
 
+import com.neprofinishedgood.assignplannedunplanned.model.AssignedUnAssignedInput;
 import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.login.model.LoginResponse;
@@ -56,4 +57,7 @@ public interface ApiInterface {
 
     @POST("GetAssigningData")
     Call<ScanStillageResponse> getAssigningData(@Body MoveInput moveInput);
+
+    @POST("UpdateAssigningData")
+    Call<UniversalResponse> updateAssigningData(@Body AssignedUnAssignedInput assignedUnAssignedInput);
 }

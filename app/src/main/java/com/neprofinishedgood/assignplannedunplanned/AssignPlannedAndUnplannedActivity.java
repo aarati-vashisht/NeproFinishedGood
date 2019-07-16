@@ -12,7 +12,9 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.assignplannedunplanned.model.AssignedUnAssignedInput;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
@@ -68,7 +70,6 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     @BindView(R.id.frameAssignLocation)
     FrameLayout frameAssignLocation;
     boolean isButtonInAssignLocation = true;
-    boolean isAssignFLT = false;
     private IAssignPlannedAndUnplannedInterFace iAssAndUAssInterface;
     long scanStillageLastTexxt = 0;
     long delay = 1000;
@@ -236,9 +237,11 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
             frameAssignFlt.setVisibility(View.VISIBLE);
             frameAssignLocation.setVisibility(View.GONE);
             buttonAssign.setEnabled(false);
-
-        } else if (!isButtonInAssignLocation) {
-            isAssignFLT = true;
+        } else if (isFLTValidated() && !isButtonInAssignLocation) {
+            //for flt Assign
+            showProgress(this);
+            AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
+            iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
         }
 
     }
@@ -255,17 +258,12 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
             frameAssignLocation.setVisibility(View.GONE);
             buttonAssign.setEnabled(false);
         } else if (!isButtonInAssignLocation) {
-            //for FLT UnAssign
-            isAssignFLT = false;
-            editTextScanStillage.setEnabled(false);
+            flt = "";
+            showProgress(this);
+            AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
+            iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
         }
-//        if (!isAssignFLT && !isAssignLocation) {
-//            relativeLayoutScanDetail.setVisibility(View.GONE);
-//            editTextScanStillage.setEnabled(true);
-//        } else if (isAssignFLT && !isAssignLocation) {
-//        } else if (!isAssignFLT && isAssignLocation) {
-//        } else if (isAssignFLT && isAssignLocation) {
-//        }
+
 
     }
 
@@ -342,6 +340,25 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
         hideProgress();
         if (response.getStatus().equals(getString(R.string.success))) {
             initData(response);
+        } else {
+            CustomToast.showToast(this, response.getMessage());
+        }
+    }
+
+    @Override
+    public void onAssigneUnassignedFailure(String message) {
+        hideProgress();
+        CustomToast.showToast(this, message);
+    }
+
+    @Override
+    public void onAssigneUnassignedSuccess(UniversalResponse response) {
+        hideProgress();
+        if (response.getStatus().equals(getString(R.string.success))) {
+            relativeLayoutScanDetail.setVisibility(View.GONE);
+            editTextScanStillage.setEnabled(true);
+            editTextScanStillage.setText("");
+            clearAllSpinnerData();
         } else {
             CustomToast.showToast(this, response.getMessage());
         }
