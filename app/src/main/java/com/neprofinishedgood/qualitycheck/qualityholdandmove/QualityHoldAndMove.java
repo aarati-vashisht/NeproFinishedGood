@@ -1,4 +1,4 @@
-package com.neprofinishedgood.qualitycheck.qualityhold;
+package com.neprofinishedgood.qualitycheck.qualityholdandmove;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public class QualityHold extends BaseActivity {
+public class QualityHoldAndMove extends BaseActivity {
 
     @BindView(R.id.linearLayoutScanDetail)
     LinearLayout linearLayoutScanDetail;
@@ -50,10 +50,10 @@ public class QualityHold extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quality_hold);
+        setContentView(R.layout.activity_quality_hold_and_move);
 
         ButterKnife.bind(this);
-        setTitle(getString(R.string.quality_hold));
+        setTitle(getString(R.string.quality_hold_and_move));
         initData();
     }
 
@@ -64,8 +64,8 @@ public class QualityHold extends BaseActivity {
         if (data == null) data = "";
 
         setData();
-        fadeOut = AnimationUtils.loadAnimation(QualityHold.this, R.anim.animate_fade_out);
-        fadeIn = AnimationUtils.loadAnimation(QualityHold.this, R.anim.animate_fade_in);
+        fadeOut = AnimationUtils.loadAnimation(QualityHoldAndMove.this, R.anim.animate_fade_out);
+        fadeIn = AnimationUtils.loadAnimation(QualityHoldAndMove.this, R.anim.animate_fade_in);
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -124,13 +124,13 @@ public class QualityHold extends BaseActivity {
 
     @OnClick(R.id.buttonHold)
     public void onButtonHoldClick() {
-        CustomToast.showToast(QualityHold.this, getResources().getString(R.string.items_hold));
+        CustomToast.showToast(QualityHoldAndMove.this, getResources().getString(R.string.items_hold));
         finish();
     }
 
     @OnClick(R.id.buttonUnhold)
     public void onButtonUnholdClick() {
-        CustomToast.showToast(QualityHold.this, getResources().getString(R.string.items_unhold));
+        CustomToast.showToast(QualityHoldAndMove.this, getResources().getString(R.string.items_unhold));
         finish();
     }
 

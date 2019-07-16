@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.assignlocationandflt.AssignPlannedAndUnplannedActivity;
+import com.neprofinishedgood.assignlocationandflt.AssignLocationAndFltActivity;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.raf.RAFActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
@@ -16,7 +16,7 @@ import com.neprofinishedgood.pickandload.PickAndLoadActivity;
 import com.neprofinishedgood.plannedandunplannedmove.PlannedAndUnPlannedMoveActivity;
 import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
 import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
-import com.neprofinishedgood.transferstillage.TransferStillageActivity;
+import com.neprofinishedgood.returnstillage.ReturnStillageActivity;
 import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 import com.neprofinishedgood.utils.SharedPref;
 
@@ -81,7 +81,7 @@ public class DashBoardAcivity extends BaseActivity {
         if (loginResponse.getUserLoginResponse().get(0).getIsAssignedPlannedAndUnplanned() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
-            startActivity(new Intent(this, AssignPlannedAndUnplannedActivity.class));
+            startActivity(new Intent(this, AssignLocationAndFltActivity.class));
         }
     }
 
@@ -99,7 +99,7 @@ public class DashBoardAcivity extends BaseActivity {
         if (loginResponse.getUserLoginResponse().get(0).getIsReturnStillage() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
-            startActivity(new Intent(this, TransferStillageActivity.class));
+            startActivity(new Intent(this, ReturnStillageActivity.class));
         }
     }
 
