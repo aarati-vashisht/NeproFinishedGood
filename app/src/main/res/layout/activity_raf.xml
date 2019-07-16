@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".raf.RAFActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scan_stillage"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/editTextScanStillage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/edittext_drawable"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutScanDetail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/stillageDetail"
+                layout="@layout/stillage_layout" />
+
+            <FrameLayout
+                android:id="@+id/frameEnterQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textViewSelectShift"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimaryDark"
+                        android:elevation="5dp"
+                        android:padding="5dp"
+                        android:text="@string/select_shift"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutShift"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewSelectShift"
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/shift"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <Spinner
+                            android:id="@+id/spinnerShift"
+                            style="@style/AppTheme"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="3"
+                            android:background="@drawable/spinner_background" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textViewEnterQuantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/linearLayoutShift"
+                        android:background="@color/colorPrimaryDark"
+                        android:elevation="5dp"
+                        android:padding="5dp"
+                        android:text="@string/confirm_r_a_f_quantity"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutQuantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewEnterQuantity"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/quantity"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/editTextQuantity"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="3"
+                            android:background="@drawable/edittext_drawable"
+                            android:inputType="numberDecimal"
+                            android:padding="5dp"
+                            android:textSize="10sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutEnterQtyButtons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <com.neprofinishedgood.custom_views.CustomButton
+                                android:id="@+id/buttonConfirm"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:background="@drawable/button_ripple_effect"
+                                android:gravity="center"
+                                android:text="@string/confirm"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <com.neprofinishedgood.custom_views.CustomButton
+                                android:id="@+id/buttonCancel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:background="@drawable/button_ripple_effect"
+                                android:gravity="center"
+                                android:text="@string/cancel"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

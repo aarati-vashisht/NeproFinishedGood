@@ -97,5 +97,3 @@ public class StillageDatum {
     private String stillageId;
 
 }
-
-

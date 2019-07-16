@@ -1,4 +1,4 @@
-package com.neprofinishedgood.plannedandunplannedmove.Adapter;
+package com.neprofinishedgood.plannedandunplannedmove.adapter;
 
 import android.app.Activity;
 import android.content.Context;

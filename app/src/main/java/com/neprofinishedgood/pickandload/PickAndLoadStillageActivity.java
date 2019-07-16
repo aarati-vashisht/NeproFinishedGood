@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.pickandload.model.LoadingPlanDatum;
+import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.Utils;
 

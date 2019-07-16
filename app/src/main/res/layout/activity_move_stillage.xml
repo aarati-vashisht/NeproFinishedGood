@@ -1,225 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     android:orientation="vertical"
     tools:context=".plannedandunplannedmove.MoveStillageActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayoutScanDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <include
-            android:id="@+id/stillageDetail"
-            layout="@layout/stillage_layout" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutPutAwayLocation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linearLayoutAssignedLocation"
+            android:id="@+id/linearLayoutScanDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <include
+                android:id="@+id/stillageDetail"
+                layout="@layout/stillage_layout" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutPutAwayLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutAssignedLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="5dp"
+                    android:text="@string/assigned_location"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewAssignedLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location: Site 1 WareHouse 2 Aisle 1 Rack 2 Bin 3"
+                    android:textColor="@color/black"
+                    android:textSize="10sp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:background="@color/colorPrimaryDark"
                 android:padding="5dp"
-                android:text="@string/assigned_location"
+                android:text="@string/enter_putaway_location"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textViewAssignedLocation"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location: Site 1 WareHouse 2 Aisle 1 Rack 2 Bin 3"
-                android:textColor="@color/black"
-                android:textSize="10sp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:padding="5dp"
-            android:text="@string/enter_putaway_location"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/location"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scan_stillage"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="29dp"
+                    android:background="@drawable/edittext_drawable"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editTextDropLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:padding="5dp"
+                        android:textSize="10sp" />
+
+                    <ImageButton
+                        android:id="@+id/imageButtonClose"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/cross"
+                        android:foreground="?selectableItemBackground"
+                        android:onClick="imageButtonCloseClick" />
+                </LinearLayout>
+
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="39dp"
-                android:background="@drawable/edittext_drawable"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/editTextDropLocation"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:maxLines="1"
-                    android:padding="5dp"
-                    android:textSize="10sp" />
+                    android:text="@string/aisle"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
 
-                <ImageButton
-                    android:id="@+id/imageButtonClose"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/cross"
-                    android:foreground="?selectableItemBackground"
-                    android:onClick="imageButtonCloseClick" />
+                <Spinner
+                    android:id="@+id/spinnerAisle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="58dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/spinner_background"
+                    android:maxLines="1"
+                    android:textSize="10sp"
+                    android:visibility="visible" />
+
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rack"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+
+                <Spinner
+                    android:id="@+id/spinnerRack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="58dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/spinner_background"
+                    android:maxLines="1"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bin"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+
+                <Spinner
+                    android:id="@+id/spinnerBin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="68dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/spinner_background"
+                    android:maxLines="1"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutEnterQtyButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <TextView
+            <com.neprofinishedgood.custom_views.CustomButton
+                android:id="@+id/buttonConfirm"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/aisle"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewScanAisle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="58dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/edittext_drawable"
-                android:maxLines="1"
-                android:padding="5dp"
-                android:textSize="10sp"
-                android:visibility="gone" />
-
-            <Spinner
-                android:id="@+id/spinnerAisle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="58dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/spinner_background"
-                android:maxLines="1"
-                android:textSize="10sp"
+                android:layout_height="35dp"
+                android:gravity="center"
+                android:text="@string/move_"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp"
                 android:visibility="visible" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <TextView
+            <com.neprofinishedgood.custom_views.CustomButton
+                android:id="@+id/buttonCancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/rack"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/textViewtRack"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="58dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/edittext_drawable"
-                android:maxLines="1"
-                android:padding="5dp"
-                android:textSize="10sp"
-                android:visibility="gone" />
-
-            <Spinner
-                android:id="@+id/spinnerRack"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="58dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/spinner_background"
-                android:maxLines="1"
-                android:textSize="10sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bin"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewBin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="68dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/edittext_drawable"
-                android:maxLines="1"
-                android:padding="5dp"
-                android:textSize="10sp"
-                android:visibility="gone" />
-
-            <Spinner
-                android:id="@+id/spinnerBin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="68dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/spinner_background"
-                android:maxLines="1"
-                android:textSize="10sp" />
-
+                android:layout_height="35dp"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="visible" />
         </LinearLayout>
 
     </LinearLayout>
-</LinearLayout>
+
+
+</RelativeLayout>
