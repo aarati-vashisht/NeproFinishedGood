@@ -34,7 +34,7 @@
             android:name=".mergestillage.MergeStillageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".assignlocationandflt.AssignPlannedAndUnplannedActivity"
+            android:name=".assignplannedunplanned.AssignPlannedAndUnplannedActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".qualitycheck.qualityhold.QualityHoldActivity"
