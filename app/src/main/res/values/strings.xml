@@ -56,7 +56,7 @@
     <string name="items_unhold">Item Unhold</string>
     <string name="assign_location">Assign Location?</string>
     <string name="scan_location">Scan Location</string>
-    <string name="assign_location_and_flt"><![CDATA[Assign Planned & Unplanned]]></string>
+    <string name="assign_planned_and_unplanned"><![CDATA[Assign Planned & Unplanned]]></string>
     <string name="scan_parent_stillage">Scan Parent Stillage</string>
     <string name="scan_child_stillage">Scan Child Stillage</string>
     <string name="merge_quantity">Merge Quantity</string>
