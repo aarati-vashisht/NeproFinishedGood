@@ -21,6 +21,7 @@ import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
+import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.presenter.IQAPresenter;
 import com.neprofinishedgood.qualitycheck.presenter.IQAView;
@@ -117,11 +118,11 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
     }
 
     @Override
-    public void onSuccess(ScanCountingResponse body) {
+    public void onSuccess(ScanStillageResponse body) {
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            setData(body.getStillageList().get(0));
+            setData(body);
         } else {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanStillage.setText("");
@@ -153,14 +154,14 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         }
     }
 
-    StillageList body;
+    ScanStillageResponse body;
 
     @OnItemSelected(R.id.spinnerRejectReason)
     public void spinnerBinSelected(Spinner spinner, int position) {
         reason = reasonList.get(position).getId();
     }
 
-    void setData(StillageList body) {
+    void setData(ScanStillageResponse body) {
         this.body = body;
         isHold = body.getIsHold();
         linearLayoutScanDetail.setVisibility(View.VISIBLE);

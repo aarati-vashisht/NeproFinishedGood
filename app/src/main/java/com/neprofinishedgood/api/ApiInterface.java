@@ -41,13 +41,13 @@ public interface ApiInterface {
     Call<LocationData> callLocationService(@Body LocationInput locationInput);
 
     @POST("ScanStillageCount")
-    Call<ScanCountingResponse> scanStillageCount(@Body MoveInput moveInput);
+    Call<ScanStillageResponse> scanStillageCount(@Body MoveInput moveInput);
 
     @POST("UpdateRAF")
     Call<UniversalResponse> updateRAF(@Body RafInput rafInput);
 
     @POST("RejectedStillageDetails")
-    Call<ScanCountingResponse> rejectedStillageDetails(@Body MoveInput moveInput);
+    Call<ScanStillageResponse> rejectedStillageDetails(@Body MoveInput moveInput);
 
     @POST("UpdatedRejectedStillage")
     Call<UniversalResponse> updatedRejectedStillage(@Body RejectedInput rejectedInput);
