@@ -4,6 +4,7 @@ import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
+import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.raf.model.ScanCountingResponse;
 
 import retrofit2.Call;
@@ -21,15 +22,15 @@ public class IHoldPresenter implements IHoldInterface {
     @Override
     public void callScanStillageService(MoveInput moveInput) {
         ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
-        Call<ScanCountingResponse> call = apiInterface.rejectedStillageDetails(moveInput);
-        call.enqueue(new Callback<ScanCountingResponse>() {
+        Call<ScanStillageResponse> call = apiInterface.rejectedStillageDetails(moveInput);
+        call.enqueue(new Callback<ScanStillageResponse>() {
             @Override
-            public void onResponse(Call<ScanCountingResponse> call, Response<ScanCountingResponse> response) {
+            public void onResponse(Call<ScanStillageResponse> call, Response<ScanStillageResponse> response) {
                 getScanStillageResponse(response.body());
             }
 
             @Override
-            public void onFailure(Call<ScanCountingResponse> call, Throwable t) {
+            public void onFailure(Call<ScanStillageResponse> call, Throwable t) {
                 getScanStillageResponse(null);
 
             }
@@ -37,7 +38,7 @@ public class IHoldPresenter implements IHoldInterface {
     }
 
     @Override
-    public void getScanStillageResponse(ScanCountingResponse body) {
+    public void getScanStillageResponse(ScanStillageResponse body) {
         if (body == null) {
             iHoldView.onFailure(body.getMessage());
         } else {

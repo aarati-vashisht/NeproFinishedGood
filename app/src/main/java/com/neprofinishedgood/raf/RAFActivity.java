@@ -16,9 +16,8 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
+import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.raf.model.RafInput;
-import com.neprofinishedgood.raf.model.ScanCountingResponse;
-import com.neprofinishedgood.raf.model.StillageList;
 import com.neprofinishedgood.raf.presenter.IRAFInterface;
 import com.neprofinishedgood.raf.presenter.IRAFPresenter;
 import com.neprofinishedgood.raf.presenter.IRAFView;
@@ -109,11 +108,11 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     }
 
     @Override
-    public void onSuccess(ScanCountingResponse body) {
+    public void onSuccess(ScanStillageResponse body) {
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            setData(body.getStillageList().get(0));
+            setData(body);
         } else {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanStillage.setText("");
@@ -135,7 +134,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         editTextScanStillage.setText("");
     }
 
-    private void setData(StillageList body) {
+    private void setData(ScanStillageResponse body) {
         setSpinnerShiftData();
         linearLayoutScanDetail.setVisibility(View.VISIBLE);
         editTextScanStillage.setEnabled(false);

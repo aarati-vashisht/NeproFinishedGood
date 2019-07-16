@@ -33,7 +33,17 @@ public class ScanStillageResponse {
     @SerializedName("IsMovedFromProdLine")
     @Expose
     private Integer isMovedFromProdLine;
+    public String getIsHold() {
+        return isHold;
+    }
 
+    public void setIsHold(String isHold) {
+        this.isHold = isHold;
+    }
+
+    @SerializedName("isHold")
+    @Expose
+    private String isHold;
     public String getStatus() {
         return status;
     }

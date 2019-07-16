@@ -15,6 +15,7 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
+import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.qualitycheck.qualityhold.presenter.IHoldPresenter;
 import com.neprofinishedgood.qualitycheck.qualityhold.presenter.IHoldView;
 import com.neprofinishedgood.raf.model.ScanCountingResponse;
@@ -50,7 +51,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     private String SELECTED_STILLAGE = "";
     long scanStillageLastTexxt = 0;
     private IHoldPresenter iHoldPresenter;
-    private StillageList body;
+    private ScanStillageResponse body;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
 
     void initData() {
         SELECTED_STILLAGE = getIntent().getStringExtra(Constants.SELECTED_STILLAGE);
-        StillageList stillageList = new Gson().fromJson(SELECTED_STILLAGE, StillageList.class);
+        ScanStillageResponse stillageList = new Gson().fromJson(SELECTED_STILLAGE, ScanStillageResponse.class);
         if (stillageList != null)
             setData(stillageList);
     }
@@ -108,11 +109,11 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     }
 
     @Override
-    public void onSuccess(ScanCountingResponse body) {
+    public void onSuccess(ScanStillageResponse body) {
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            setData(body.getStillageList().get(0));
+            setData(body);
         } else {
             CustomToast.showToast(this, getString(R.string.no_data_found));
             editTextScanStillage.setText("");
@@ -133,7 +134,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
         CustomToast.showToast(this, body.getMessage());
     }
 
-    void setData(StillageList body) {
+    void setData(ScanStillageResponse body) {
         this.body = body;
         linearLayoutScanDetail.setVisibility(View.VISIBLE);
         editTextScanStillage.setEnabled(false);

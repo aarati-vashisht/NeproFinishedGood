@@ -1,12 +1,12 @@
 package com.neprofinishedgood.raf.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.raf.model.ScanCountingResponse;
+import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 
 public interface IRAFView {
     void onFailure(String message);
 
-    void onSuccess(ScanCountingResponse body);
+    void onSuccess(ScanStillageResponse body);
 
     void onUpdateRAFFailure(String message);
 
