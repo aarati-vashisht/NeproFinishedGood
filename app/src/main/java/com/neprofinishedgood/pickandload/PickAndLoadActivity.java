@@ -23,17 +23,26 @@ public class PickAndLoadActivity extends BaseActivity {
     @BindView(R.id.recyclerViewLoadingPlans)
     RecyclerView recyclerViewLoadingPlans;
 
+    @BindView(R.id.editTextScanLoadingPlan)
+    AppCompatEditText editTextScanLoadingPlan;
+
 
     private PickAndLoadAdapter loadingPlanAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pick_and_load);
+        setContentView(R.layout.activity_put_and_hold);
         ButterKnife.bind(this);
         Utils.hideSoftKeyboard(this);
         setTitle(getString(R.string.pickload));
         setAdapter();
+    }
+
+    @OnTextChanged(value = R.id.editTextScanLoadingPlan,
+            callback = OnTextChanged.Callback.TEXT_CHANGED)
+    protected void afterEditTextChanged(Editable editable) {
+        loadingPlanAdapter.getFilter().filter(editable);
     }
 
     private void setAdapter() {

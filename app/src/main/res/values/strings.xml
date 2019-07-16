@@ -5,12 +5,12 @@
     <string name="plz_enter_pin">Please Enter Login Pin</string>
     <string name="invalid_pin">Invalid Pin</string>
     <string name="login_successfully">Logged In Successfully</string>
-    <string name="move">Planned/Un-Planned Move</string>
+    <string name="move"><![CDATA[Planned & Unplanned Move]]></string>
     <string name="reportasfinished">RAF</string>
     <string name="quality_check">Quality Check</string>
     <string name="assignlocation_flt"><![CDATA[Assign Planned & Unplanned]]></string>
     <string name="pickload"><![CDATA[Pick & Load]]></string>
-    <string name="transfer_stillage">Transfer Stillage</string>
+    <string name="return_stillage">Return Stillage</string>
     <string name="recieve_return_stillage">Receive Return Stillage</string>
     <string name="scan_stillage">Scan/Type</string>
     <string name="stillage_number">Stillage Number:</string>
@@ -41,8 +41,8 @@
     <string name="rack">Rack:</string>
     <string name="reject_quantity">Reject Quantity</string>
     <string name="reject_complete_stillage">Reject Complete Stillage</string>
-    <string name="quality_hold">Quality Hold</string>
-    <string name="select_quality_check_operation">Quality Check</string>
+    <string name="quality_hold_and_move"><![CDATA[Quality Hold & Move]]></string>
+    <string name="select_quality_check_operation">Select Quality Check Operation</string>
     <string name="button_reject">Reject</string>
     <string name="enter_reject_quantity">Enter Reject Quantity</string>
     <string name="reason">Reason</string>
@@ -56,9 +56,9 @@
     <string name="items_unhold">Item Unhold</string>
     <string name="assign_location">Assign Location?</string>
     <string name="scan_location">Scan Location</string>
-    <string name="assign_planned_and_unplanned"><![CDATA[Assign Planned & Unplanned]]></string>
-    <string name="scan_parent_stillage">Parent Scan/Type</string>
-    <string name="scan_child_stillage">Child Scan/Type</string>
+    <string name="assign_location_and_flt"><![CDATA[Assign Planned & Unplanned]]></string>
+    <string name="scan_parent_stillage">Scan Parent Stillage</string>
+    <string name="scan_child_stillage">Scan Child Stillage</string>
     <string name="merge_quantity">Merge Quantity</string>
     <string name="enter_merge_quantity">Enter Merge Quantity</string>
     <string name="merge">Merge</string>
@@ -76,7 +76,7 @@
     <string name="item_merged_successfully">Item Merged Successfully</string>
     <string name="drop">Drop</string>
     <string name="item_droped_successfully">Item Dropped Successfully</string>
-    <string name="item_transferred_successfully">Item Transferred Successfully</string>
+    <string name="item_returned_successfully">Item Returned Successfully</string>
     <string name="work_number">Work Order</string>
     <string name="site">Site</string>
     <string name="warehouse">Warehouse</string>
@@ -125,12 +125,5 @@
     <string name="confirm_r_a_f_quantity">Confirm RAF Quantity</string>
     <string name="select_shift">Select Shift</string>
     <string name="enter_stillage_number">Enter Stillage Number</string>
-    <string name="child_and_parent_not_matched">Child and Parent Items Not Matched!</string>
-    <string name="sum_of_stillage_quantity_after_merge">Sum of Stillage Quantity After Merge:</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="transfer">Transfer</string>
-    <string name="to_warehouse">\'To\' Warehouse</string>
-    <string name="select_warehouse">Select Warehouse</string>
 
 </resources>

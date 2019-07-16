@@ -29,7 +29,7 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
 
-public class AssignPlannedAndUnplannedActivity extends BaseActivity {
+public class AssignLocationAndFltActivity extends BaseActivity {
 
     @BindView(R.id.relativeLayoutScanDetail)
     RelativeLayout relativeLayoutScanDetail;
@@ -84,10 +84,10 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assign_planned_and_unplanned);
+        setContentView(R.layout.activity_assign_location_and_flt);
 
         ButterKnife.bind(this);
-        setTitle(getString(R.string.assign_planned_and_unplanned));
+        setTitle(getString(R.string.assign_location_and_flt));
         initData();
     }
 
@@ -95,8 +95,8 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity {
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
 
-        fadeOut = AnimationUtils.loadAnimation(AssignPlannedAndUnplannedActivity.this, R.anim.animate_fade_out);
-        fadeIn = AnimationUtils.loadAnimation(AssignPlannedAndUnplannedActivity.this, R.anim.animate_fade_in);
+        fadeOut = AnimationUtils.loadAnimation(AssignLocationAndFltActivity.this, R.anim.animate_fade_out);
+        fadeIn = AnimationUtils.loadAnimation(AssignLocationAndFltActivity.this, R.anim.animate_fade_in);
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -153,14 +153,14 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity {
     @OnClick(R.id.buttonAssign)
     public void onButtonAssignClick() {
         if (isValidated() && isButtonInAssignLocation) {
-            CustomToast.showToast(AssignPlannedAndUnplannedActivity.this, getResources().getString(R.string.item_location_assigned_successfully));
+            CustomToast.showToast(AssignLocationAndFltActivity.this, getResources().getString(R.string.item_location_assigned_successfully));
             isButtonInAssignLocation = false;
             frameAssignFlt.setVisibility(View.VISIBLE);
             frameAssignLocation.setVisibility(View.GONE);
             buttonAssign.setEnabled(false);
             setSpinnerAssignFltData();
         } else if(!isButtonInAssignLocation){
-            CustomToast.showToast(AssignPlannedAndUnplannedActivity.this, getResources().getString(R.string.item_flt_assigned_successfully));
+            CustomToast.showToast(AssignLocationAndFltActivity.this, getResources().getString(R.string.item_flt_assigned_successfully));
             finish();
         }
     }
@@ -168,14 +168,14 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity {
     @OnClick(R.id.buttonUnAssign)
     public void onButtonUnAssignClick() {
         if (isButtonInAssignLocation) {
-            CustomToast.showToast(AssignPlannedAndUnplannedActivity.this, getResources().getString(R.string.item_location_unassigned_successfully));
+            CustomToast.showToast(AssignLocationAndFltActivity.this, getResources().getString(R.string.item_location_unassigned_successfully));
             isButtonInAssignLocation = false;
             frameAssignFlt.setVisibility(View.VISIBLE);
             frameAssignLocation.setVisibility(View.GONE);
             buttonAssign.setEnabled(false);
             setSpinnerAssignFltData();
         } else if(!isButtonInAssignLocation) {
-            CustomToast.showToast(AssignPlannedAndUnplannedActivity.this, getResources().getString(R.string.item_flt_unassigned_successfully));
+            CustomToast.showToast(AssignLocationAndFltActivity.this, getResources().getString(R.string.item_flt_unassigned_successfully));
             finish();
         }
     }
@@ -193,7 +193,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity {
             assignFltList.add(new UniversalSpinner("FLT " + i, i + ""));
         }
         assignFltList.add(0, new UniversalSpinner("Select FLT", "0"));
-        SpinnerAdapter assignFltListAdapter = new SpinnerAdapter(AssignPlannedAndUnplannedActivity.this, R.layout.spinner_layout, assignFltList);
+        SpinnerAdapter assignFltListAdapter = new SpinnerAdapter(AssignLocationAndFltActivity.this, R.layout.spinner_layout, assignFltList);
         spinnerAssignFlt.setAdapter(assignFltListAdapter);
     }
 
@@ -203,7 +203,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity {
             aisleList.add(new UniversalSpinner("Aisle " + i, i + ""));
         }
         aisleList.add(0, new UniversalSpinner("Select Aisle", "0"));
-        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignPlannedAndUnplannedActivity.this, R.layout.spinner_layout, aisleList);
+        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignLocationAndFltActivity.this, R.layout.spinner_layout, aisleList);
         spinnerAisle.setAdapter(aisleListAdapter);
     }
 
@@ -213,7 +213,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity {
             rackList.add(new UniversalSpinner("Rack " + i, i + ""));
         }
         rackList.add(0, new UniversalSpinner("Select Rack", "0"));
-        SpinnerAdapter rackListAdapter = new SpinnerAdapter(AssignPlannedAndUnplannedActivity.this, R.layout.spinner_layout, rackList);
+        SpinnerAdapter rackListAdapter = new SpinnerAdapter(AssignLocationAndFltActivity.this, R.layout.spinner_layout, rackList);
         spinnerRack.setAdapter(rackListAdapter);
     }
 
@@ -223,7 +223,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity {
             binList.add(new UniversalSpinner("Bin " + i, i + ""));
         }
         binList.add(0, new UniversalSpinner("Select Bin", "0"));
-        SpinnerAdapter binListAdapter = new SpinnerAdapter(AssignPlannedAndUnplannedActivity.this, R.layout.spinner_layout, binList);
+        SpinnerAdapter binListAdapter = new SpinnerAdapter(AssignLocationAndFltActivity.this, R.layout.spinner_layout, binList);
         spinnerBin.setAdapter(binListAdapter);
     }
 
