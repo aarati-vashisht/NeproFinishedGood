@@ -28,7 +28,7 @@
             android:name=".receivereturnstillage.ReceiveReturnStillageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".returnstillage.ReturnStillageActivity"
+            android:name=".transferstillage.TransferStillageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".mergestillage.MergeStillageActivity"

@@ -16,7 +16,7 @@ import com.neprofinishedgood.pickandload.PickAndLoadActivity;
 import com.neprofinishedgood.plannedandunplannedmove.PlannedAndUnPlannedMoveActivity;
 import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
 import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
-import com.neprofinishedgood.returnstillage.ReturnStillageActivity;
+import com.neprofinishedgood.transferstillage.TransferStillageActivity;
 import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 import com.neprofinishedgood.utils.SharedPref;
 
@@ -99,7 +99,7 @@ public class DashBoardAcivity extends BaseActivity {
         if (loginResponse.getUserLoginResponse().get(0).getIsReturnStillage() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
-            startActivity(new Intent(this, ReturnStillageActivity.class));
+            startActivity(new Intent(this, TransferStillageActivity.class));
         }
     }
 
