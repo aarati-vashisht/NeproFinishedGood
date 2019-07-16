@@ -121,6 +121,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         overridePendingTransition(0, 0);
 
     }
+
     @OnTextChanged(value = R.id.editTextDropLocation, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void oneditTextDropLocationChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
@@ -145,7 +146,6 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             }
         }
     };
-
 
 
     @OnItemSelected(R.id.spinnerAisle)
@@ -214,7 +214,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             finish();
             PlannedAndUnPlannedMoveActivity.getInstance().getAllAssignedData();
         } else {
-            CustomToast.showToast(this,response.getMessage());
+            CustomToast.showToast(this, response.getMessage());
         }
     }
 
@@ -238,7 +238,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     public void onLocationFailure(String message) {
         hideProgress();
         editTextDropLocation.setText("");
-        CustomToast.showToast(this,message);
+        CustomToast.showToast(this, message);
 
     }
 
@@ -252,7 +252,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         if (body.getAssignedLocation().equals("")) {
             linearLayoutAssignedLocation.setVisibility(View.GONE);
         } else {
-            linearLayoutAssignedLocation.setVisibility(View.GONE);
+            linearLayoutAssignedLocation.setVisibility(View.VISIBLE);
             textViewAssignedLocation.setText(body.getAssignedLocation());
         }
 
