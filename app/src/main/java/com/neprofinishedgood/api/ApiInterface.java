@@ -45,7 +45,6 @@ public interface ApiInterface {
     @POST("UpdateRAF")
     Call<UniversalResponse> updateRAF(@Body RafInput rafInput);
 
-
     @POST("RejectedStillageDetails")
     Call<ScanCountingResponse> rejectedStillageDetails(@Body MoveInput moveInput);
 
@@ -54,4 +53,7 @@ public interface ApiInterface {
 
     @POST("UpdatedHoldUnHoldStillage")
     Call<UniversalResponse> updatedHoldUnHoldStillage(@Body MoveInput moveInput);
+
+    @POST("GetAssigningData")
+    Call<ScanStillageResponse> getAssigningData(@Body MoveInput moveInput);
 }

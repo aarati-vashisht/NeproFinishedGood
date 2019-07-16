@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.assignlocationandflt.AssignPlannedAndUnplannedActivity;
+import com.neprofinishedgood.assignplannedunplanned.AssignPlannedAndUnplannedActivity;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.raf.RAFActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
