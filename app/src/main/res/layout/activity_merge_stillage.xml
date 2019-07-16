@@ -6,7 +6,8 @@
     android:layout_margin="5dp"
     android:background="@color/background_color"
     android:orientation="vertical"
-    tools:context=".assignlocationandflt.AssignLocationAndFltActivity">
+    tools:context=".mergestillage.MergeStillageActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
