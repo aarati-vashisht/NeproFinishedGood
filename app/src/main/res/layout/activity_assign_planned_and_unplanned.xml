@@ -96,7 +96,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.1"
-                            android:text="@string/scan_location"
+                            android:text="@string/scan_stillage"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
 

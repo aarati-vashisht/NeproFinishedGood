@@ -46,7 +46,6 @@
     <string name="button_reject">Reject</string>
     <string name="enter_reject_quantity">Enter Reject Quantity</string>
     <string name="reason">Reason</string>
-    <string name="return_">Return</string>
     <string name="items_rejected_successfully"> Items Rejected Successfully</string>
     <string name="enter_reason">Enter Reason</string>
     <string name="mark">Mark</string>
@@ -57,8 +56,8 @@
     <string name="assign_location">Assign Location?</string>
     <string name="scan_location">Scan Location</string>
     <string name="assign_planned_and_unplanned"><![CDATA[Assign Planned & Unplanned]]></string>
-    <string name="scan_parent_stillage">Scan Parent Stillage</string>
-    <string name="scan_child_stillage">Scan Child Stillage</string>
+    <string name="scan_parent_stillage">Parent Scan/Type</string>
+    <string name="scan_child_stillage">Child Scan/Type</string>
     <string name="merge_quantity">Merge Quantity</string>
     <string name="enter_merge_quantity">Enter Merge Quantity</string>
     <string name="merge">Merge</string>
@@ -126,5 +125,15 @@
     <string name="select_shift">Select Shift</string>
     <string name="enter_stillage_number">Enter Stillage Number</string>
     <string name="no_data_found">No Data Found</string>
+
+    <string name="child_and_parent_not_matched">Child and Parent Items Not Matched!</string>
+    <string name="sum_of_stillage_quantity_after_merge">Sum of Stillage Quantity After Merge:</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="transfer">Transfer</string>
+    <string name="to_warehouse">\'To\' Warehouse</string>
+    <string name="select_warehouse">Select Warehouse</string>
+    <string name="transfer_stillage">Transfer Stillage</string>
+    <string name="item_transferred_successfully">Item Transferred Successfully</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.neprofinishedgood.returnstillage;
+package com.neprofinishedgood.transferstillage;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -6,15 +6,18 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalSpinner;
+import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
+import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import java.util.ArrayList;
@@ -24,20 +27,23 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public class ReturnStillageActivity extends BaseActivity {
+public class TransferStillageActivity extends BaseActivity {
 
     @BindView(R.id.relativeLayoutScanDetail)
     RelativeLayout relativeLayoutScanDetail;
 
 
-    @BindView(R.id.buttonReturn)
-    CustomButton buttonReturn;
+    @BindView(R.id.buttonTransfer)
+    CustomButton buttonTransfer;
 
     @BindView(R.id.editTextScanStillage)
     AppCompatEditText editTextScanStillage;
 
     @BindView(R.id.stillageDetail)
     View stillageDetail;
+
+    @BindView(R.id.spinnerWarehouse)
+    Spinner spinnerWarehouse;
 
     StillageLayout stillageLayout;
 
@@ -49,14 +55,15 @@ public class ReturnStillageActivity extends BaseActivity {
     ArrayList<UniversalSpinner> binList;
 
     StillageDatum stillageDatum;
+    private ArrayList<UniversalSpinner> warehouseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_return_stillage);
+        setContentView(R.layout.activity_transfer_stillage);
 
         ButterKnife.bind(this);
-        setTitle(getString(R.string.return_stillage));
+        setTitle(getString(R.string.transfer_stillage));
         initData();
     }
 
@@ -64,8 +71,8 @@ public class ReturnStillageActivity extends BaseActivity {
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
 
-        fadeOut = AnimationUtils.loadAnimation(ReturnStillageActivity.this, R.anim.animate_fade_out);
-        fadeIn = AnimationUtils.loadAnimation(ReturnStillageActivity.this, R.anim.animate_fade_in);
+        fadeOut = AnimationUtils.loadAnimation(TransferStillageActivity.this, R.anim.animate_fade_out);
+        fadeIn = AnimationUtils.loadAnimation(TransferStillageActivity.this, R.anim.animate_fade_in);
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -97,12 +104,26 @@ public class ReturnStillageActivity extends BaseActivity {
         stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
         stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
         stillageLayout.textViewStdQuantity.setText(stillageDatum.getStdQuantity());
+
+        warehouseList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            warehouseList.add(new UniversalSpinner("Warehouse " + i, i + ""));
+        }
+        warehouseList.add(0, new UniversalSpinner("Select Warehouse", "0"));
+        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, warehouseList);
+        spinnerWarehouse.setAdapter(reasonListAdapter);
     }
 
-    @OnClick(R.id.buttonReturn)
+    @OnClick(R.id.buttonTransfer)
     public void onButtonDropClick() {
-        CustomToast.showToast(ReturnStillageActivity.this, getResources().getString(R.string.item_returned_successfully));
-        finish();
+        if (spinnerWarehouse.getSelectedItemPosition() > 0) {
+            CustomToast.showToast(TransferStillageActivity.this, getResources().getString(R.string.item_transferred_successfully));
+            finish();
+        }else {
+            TextView textView = (TextView) spinnerWarehouse.getSelectedView();
+            textView.setError(getString(R.string.select_warehouse));
+            textView.requestFocus();
+        }
 
     }
 
