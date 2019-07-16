@@ -22,7 +22,7 @@ import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.presenter.IQAPresenter;
 import com.neprofinishedgood.qualitycheck.presenter.IQAView;
-import com.neprofinishedgood.qualitycheck.qualityholdandmove.QualityHoldAndMove;
+import com.neprofinishedgood.qualitycheck.qualityhold.QualityHoldActivity;
 import com.neprofinishedgood.raf.model.ScanCountingResponse;
 import com.neprofinishedgood.raf.model.StillageList;
 import com.neprofinishedgood.utils.Constants;
@@ -140,7 +140,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
             editTextScanStillage.setText("");
             if (isHold.equals("1")) {
                 String SELECTED_STILLAGE = new Gson().toJson(body, StillageList.class);
-                startActivity(new Intent(this, QualityHoldAndMove.class).putExtra(Constants.SELECTED_STILLAGE, SELECTED_STILLAGE));
+                startActivity(new Intent(this, QualityHoldActivity.class).putExtra(Constants.SELECTED_STILLAGE, SELECTED_STILLAGE));
                 finish();
             }
         } else {

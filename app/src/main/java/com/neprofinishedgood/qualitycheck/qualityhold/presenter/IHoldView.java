@@ -1,4 +1,4 @@
-package com.neprofinishedgood.qualitycheck.qualityholdandmove.presenter;
+package com.neprofinishedgood.qualitycheck.qualityhold.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.raf.model.ScanCountingResponse;

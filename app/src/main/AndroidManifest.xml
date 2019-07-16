@@ -37,7 +37,7 @@
             android:name=".assignlocationandflt.AssignLocationAndFltActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".qualitycheck.qualityholdandmove.QualityHoldAndMove"
+            android:name=".qualitycheck.qualityhold.QualityHoldActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".qualitycheck.rejectcompletestillage.RejectCompleteStillage"
