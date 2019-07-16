@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.neprofinishedgood.MyApplication;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalSpinner;
@@ -64,16 +65,18 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     private void getMAsterData(Gson gson) {
         MasterData masterData = gson.fromJson(SharedPref.getMasterData(), MasterData.class);
         if (masterData != null) {
-            aisleList = masterData.getAisleList();
-            aisleList.add(0, new UniversalSpinner("Select Aisle", "000"));
-            rackList = masterData.getRackList();
-            rackList.add(0, new UniversalSpinner("Select Rack", "000"));
-            binList = masterData.getBinList();
-            binList.add(0, new UniversalSpinner("Select Bin", "000"));
-            reasonList = masterData.getReasonList();
-            reasonList.add(0, new UniversalSpinner("Select Reason", "000"));
-            fltList = masterData.getFLTList();
-            fltList.add(0, new UniversalSpinner("Select FLT", "000"));
+            if (masterData.getStatus().equals(getString(R.string.success))) {
+                aisleList = masterData.getAisleList();
+                aisleList.add(0, new UniversalSpinner("Select Aisle", "000"));
+                rackList = masterData.getRackList();
+                rackList.add(0, new UniversalSpinner("Select Rack", "000"));
+                binList = masterData.getBinList();
+                binList.add(0, new UniversalSpinner("Select Bin", "000"));
+                reasonList = masterData.getReasonList();
+                reasonList.add(0, new UniversalSpinner("Select Reason", "000"));
+                fltList = masterData.getFLTList();
+                fltList.add(0, new UniversalSpinner("Select FLT", "000"));
+            }
         } else {
             aisleList = new ArrayList<>();
             rackList = new ArrayList<>();

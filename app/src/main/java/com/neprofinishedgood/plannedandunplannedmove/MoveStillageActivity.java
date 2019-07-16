@@ -10,25 +10,28 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.plannedandunplannedmove.Adapter.MoveAdapter;
-import com.neprofinishedgood.plannedandunplannedmove.Adapter.SpinnerAdapter;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveResponse;
+import com.neprofinishedgood.plannedandunplannedmove.adapter.MoveAdapter;
+import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
+import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
+import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
+import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IMovePresenter;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IMoveView;
+import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
 
 public class MoveStillageActivity extends BaseActivity implements IMoveView {
@@ -42,36 +45,26 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     LinearLayout linearLayoutPutAwayLocation;
     @BindView(R.id.linearLayoutAssignedLocation)
     LinearLayout linearLayoutAssignedLocation;
-    @BindView(R.id.editTextScanStillage)
-    AppCompatEditText editTextScanStillage;
-    @BindView(R.id.textViewScanAisle)
-    AppCompatTextView textViewScanAisle;
     @BindView(R.id.textViewAssignedLocation)
     AppCompatTextView textViewAssignedLocation;
     @BindView(R.id.editTextDropLocation)
     EditText editTextDropLocation;
-    @BindView(R.id.textViewtRack)
-    AppCompatTextView textViewtRack;
-    @BindView(R.id.textViewBin)
-    AppCompatTextView textViewBin;
     @BindView(R.id.spinnerAisle)
     Spinner spinnerAisle;
     @BindView(R.id.spinnerRack)
     Spinner spinnerRack;
     @BindView(R.id.spinnerBin)
     Spinner spinnerBin;
-    @BindView(R.id.recyclerViewStillage)
-    RecyclerView recyclerViewStillage;
     @BindView(R.id.stillageDetail)
     View stillageDetail;
 
     StillageLayout stillageLayout;
 
     private IMovePresenter movePresenter;
-    long delay = 1500;
-    long scanStillageLastTexxt = 0;
+    long delay = 1000;
     long dropLocationLastText = 0;
     private MoveAdapter adapter;
+    String aisle, rack, bin, stillageData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,22 +73,31 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         ButterKnife.bind(this);
         setTitle(getString(R.string.move));
         movePresenter = new IMovePresenter(this);
+        stillageLayout = new StillageLayout();
+        ButterKnife.bind(stillageLayout, stillageDetail);
+        getIntentData();
+    }
+
+    private void getIntentData() {
+        initData(null);
+        Gson gson = new Gson();
+        stillageData = getIntent().getStringExtra(Constants.SELECTED_STILLAGE);
+        ScanStillageResponse scanStillageResponse = gson.fromJson(stillageData, ScanStillageResponse.class);
+        setData(scanStillageResponse);
     }
 
     //data initialization
-    void initData() {
-        stillageLayout = new StillageLayout();
-        ButterKnife.bind(stillageLayout, stillageDetail);
-        textViewScanAisle.setVisibility(View.GONE);
-        textViewBin.setVisibility(View.GONE);
-        textViewtRack.setVisibility(View.GONE);
-        spinnerAisle.setVisibility(View.VISIBLE);
-        spinnerBin.setVisibility(View.VISIBLE);
-        spinnerRack.setVisibility(View.VISIBLE);
+    void initData(LocationData response) {
+        if (response == null) {
+            setSpinnerAisleData(0);
+            setSpinnerRackData(0);
+            setSpinnerBinData(0);
+        } else {
+            setSpinnerAisleData(response.getAisle());
+            setSpinnerRackData(response.getRack());
+            setSpinnerBinData(response.getBin());
+        }
 
-        setSpinnerAisleData();
-        setSpinnerRackData();
-        setSpinnerBinData();
     }
 
 
@@ -104,15 +106,21 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         if (isValidated()) {
             UpdateMoveLocationInput updateMoveLocationInput;
             if (linearLayoutPutAwayLocation.getVisibility() != View.VISIBLE) {
-                updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), "", userId);
+                updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), "", "", "", userId);
             } else {
-                updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), editTextDropLocation.getText().toString(), userId);
+                updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), aisle, rack, bin, userId);
             }
             movePresenter.callMoveServcie(updateMoveLocationInput);
         }
 
     }
 
+    @OnClick(R.id.buttonCancel)
+    public void onButtonCancelClick() {
+        finish();
+        overridePendingTransition(0, 0);
+
+    }
     @OnTextChanged(value = R.id.editTextDropLocation, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void oneditTextDropLocationChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
@@ -131,51 +139,69 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     Handler dropLocationhandler = new Handler();
     private Runnable dropLocationRunnable = new Runnable() {
         public void run() {
-            // showProgress(MoveStillageActivity.this);
+            showProgress(MoveStillageActivity.this);
             if (System.currentTimeMillis() > (dropLocationLastText + delay - 500)) {
-                //call service to check location in database
-                textViewScanAisle.setVisibility(View.VISIBLE);
-                textViewBin.setVisibility(View.VISIBLE);
-                textViewtRack.setVisibility(View.VISIBLE);
-                spinnerAisle.setVisibility(View.GONE);
-                spinnerBin.setVisibility(View.GONE);
-                spinnerRack.setVisibility(View.GONE);
+                movePresenter.callLocationService(new LocationInput(editTextDropLocation.getText().toString(), userId));
             }
         }
     };
 
-    @OnClick(R.id.buttonCancel)
-    public void onButtonCancelClick() {
-        linearLayoutScanDetail.setVisibility(View.GONE);
-        linearLayoutPutAwayLocation.setVisibility(View.GONE);
-        if (linearLayoutPutAwayLocation.getVisibility() == View.VISIBLE)
-            linearLayoutPutAwayLocation.startAnimation(fadeOut);
-        if (linearLayoutScanDetail.getVisibility() == View.VISIBLE)
-            linearLayoutScanDetail.startAnimation(fadeOut);
 
-        editTextScanStillage.setText("");
-        editTextScanStillage.setEnabled(true);
-        buttonPutAway.setVisibility(View.GONE);
-        buttonCancel.setVisibility(View.GONE);
 
+    @OnItemSelected(R.id.spinnerAisle)
+    public void spinnerAisleSelected(Spinner spinner, int position) {
+        aisle = aisleList.get(position).getId();
     }
 
-    void setSpinnerAisleData() {
+    @OnItemSelected(R.id.spinnerRack)
+    public void spinnerRackSelected(Spinner spinner, int position) {
+        rack = rackList.get(position).getId();
+    }
+
+    @OnItemSelected(R.id.spinnerBin)
+    public void spinnerBinSelected(Spinner spinner, int position) {
+        bin = binList.get(position).getId();
+    }
+
+    void setSpinnerAisleData(int item) {
         SpinnerAdapter aisleListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, aisleList);
         spinnerAisle.setAdapter(aisleListAdapter);
+        if (item > 0) {
+            for (int j = 0; j < aisleList.size(); j++) {
+                if (aisleList.get(j).getId().equals(item + "")) {
+                    spinnerAisle.setSelection(j);
+                    aisle = aisleList.get(j).getId() + "";
+                }
+            }
+        }
     }
 
-    void setSpinnerRackData() {
+
+    void setSpinnerRackData(int item) {
         SpinnerAdapter rackListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, rackList);
         spinnerRack.setAdapter(rackListAdapter);
+        if (item > 0) {
+            for (int j = 0; j < rackList.size(); j++) {
+                if (rackList.get(j).getId().equals(item + "")) {
+                    spinnerRack.setSelection(j);
+                    rack = rackList.get(j).getId() + "";
+                }
+            }
+        }
     }
 
-    void setSpinnerBinData() {
+    void setSpinnerBinData(int item) {
         SpinnerAdapter binListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, binList);
         spinnerBin.setAdapter(binListAdapter);
+        if (item > 0) {
+            for (int j = 0; j < binList.size(); j++) {
+                if (binList.get(j).getId().equals(item + "")) {
+                    spinnerBin.setSelection(j);
+                    bin = binList.get(j).getId() + "";
+                }
+            }
+        }
     }
-
-
 
 
     @Override
@@ -185,19 +211,39 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             CustomToast.showToast(this, response.getMessage());
             onButtonCancelClick();
             clearAllSpinnerData();
+            finish();
+            PlannedAndUnPlannedMoveActivity.getInstance().getAllAssignedData();
         } else {
-            CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
+            CustomToast.showToast(this,response.getMessage());
         }
     }
 
     @Override
-    public void onUpdateMoveFailure() {
+    public void onUpdateMoveFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
+        CustomToast.showToast(this, message);
+    }
+
+    @Override
+    public void onLocationSuccess(LocationData response) {
+        hideProgress();
+        if (response.getStatus().equals(getString(R.string.success))) {
+            initData(response);
+        } else {
+            CustomToast.showToast(this, response.getMessage());
+        }
+    }
+
+    @Override
+    public void onLocationFailure(String message) {
+        hideProgress();
+        editTextDropLocation.setText("");
+        CustomToast.showToast(this,message);
+
     }
 
     //set response data
-    void setData(MoveResponse body) {
+    void setData(ScanStillageResponse body) {
         stillageLayout.textViewitem.setText(body.getItemId());
         stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
         stillageLayout.textViewitemDesc.setText(body.getDescription());
@@ -208,11 +254,10 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         } else {
             linearLayoutAssignedLocation.setVisibility(View.GONE);
             textViewAssignedLocation.setText(body.getAssignedLocation());
-
         }
+
     }
 
-    //check Validation
     boolean isValidated() {
         if (linearLayoutPutAwayLocation.getVisibility() == View.VISIBLE) {
             if (spinnerAisle.getSelectedItemPosition() != 0 || spinnerRack.getSelectedItemPosition() == 0 || spinnerBin.getSelectedItemPosition() == 0) {
@@ -224,11 +269,6 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
                 return false;
             }
         } else {
-            if (editTextScanStillage.getText().toString().equals("")) {
-                editTextScanStillage.setError(getResources().getString(R.string.enter_stillage_number));
-                editTextScanStillage.requestFocus();
-                return false;
-            }
             return true;
         }
     }
@@ -241,9 +281,6 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     }
 
     public void imageButtonCloseClick(View view) {
-        textViewScanAisle.setVisibility(View.GONE);
-        textViewBin.setVisibility(View.GONE);
-        textViewtRack.setVisibility(View.GONE);
         spinnerAisle.setVisibility(View.VISIBLE);
         spinnerBin.setVisibility(View.VISIBLE);
         spinnerRack.setVisibility(View.VISIBLE);

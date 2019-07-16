@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".mergestillage.MergeStillageActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,7 +23,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.6"
+                android:layout_weight="1.9"
                 android:text="@string/scan_parent_stillage"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
@@ -46,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <include
                 android:id="@+id/parentStillageDetail"
@@ -55,20 +56,18 @@
 
         </LinearLayout>
 
-
-
         <LinearLayout
             android:id="@+id/linearLayoutScanChild"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.6"
+                android:layout_weight="1.9"
                 android:text="@string/scan_child_stillage"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
@@ -91,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/linearLayoutScanChildDetail"
@@ -125,7 +124,6 @@
                 android:layout_below="@+id/linearLayoutScanChildDetail"
                 android:background="@color/colorPrimaryDark"
                 android:padding="5dp"
-                android:elevation="5dp"
                 android:text="@string/merge_quantity"
                 android:textColor="@color/white"
                 android:textSize="12sp"
@@ -161,37 +159,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayoutQuantitySum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp"
-            android:layout_marginTop="10dp"
-            android:elevation="5dp"
-            android:background="@color/gray_color"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.2"
-                android:text="@string/sum_of_stillage_quantity_after_merge"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/textViewQuantitySum"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight=".5"
-                android:maxLines="2"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="10sp" />
-
-        </LinearLayout>
 
     </LinearLayout>
 

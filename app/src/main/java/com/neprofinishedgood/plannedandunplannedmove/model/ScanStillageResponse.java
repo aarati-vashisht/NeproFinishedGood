@@ -1,10 +1,17 @@
 package com.neprofinishedgood.plannedandunplannedmove.model;
 
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class StillageList {
+public class ScanStillageResponse {
 
+    @SerializedName("Status")
+    @Expose
+    private String status;
+    @SerializedName("Message")
+    @Expose
+    private String message;
     @SerializedName("StickerID")
     @Expose
     private String stickerID;
@@ -20,6 +27,28 @@ public class StillageList {
     @SerializedName("ItemStdQty")
     @Expose
     private Integer itemStdQty;
+    @SerializedName("AssignedLocation")
+    @Expose
+    private String assignedLocation;
+    @SerializedName("IsMovedFromProdLine")
+    @Expose
+    private Integer isMovedFromProdLine;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public String getStickerID() {
         return stickerID;
@@ -59,6 +88,22 @@ public class StillageList {
 
     public void setItemStdQty(Integer itemStdQty) {
         this.itemStdQty = itemStdQty;
+    }
+
+    public String getAssignedLocation() {
+        return assignedLocation;
+    }
+
+    public void setAssignedLocation(String assignedLocation) {
+        this.assignedLocation = assignedLocation;
+    }
+
+    public Integer getIsMovedFromProdLine() {
+        return isMovedFromProdLine;
+    }
+
+    public void setIsMovedFromProdLine(Integer isMovedFromProdLine) {
+        this.isMovedFromProdLine = isMovedFromProdLine;
     }
 
 }
