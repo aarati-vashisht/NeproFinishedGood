@@ -1,4 +1,4 @@
-package com.neprofinishedgood.qualitycheck.qualityholdandmove;
+package com.neprofinishedgood.qualitycheck.qualityhold;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,8 +15,8 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.qualitycheck.qualityholdandmove.presenter.IHoldPresenter;
-import com.neprofinishedgood.qualitycheck.qualityholdandmove.presenter.IHoldView;
+import com.neprofinishedgood.qualitycheck.qualityhold.presenter.IHoldPresenter;
+import com.neprofinishedgood.qualitycheck.qualityhold.presenter.IHoldView;
 import com.neprofinishedgood.raf.model.ScanCountingResponse;
 import com.neprofinishedgood.raf.model.StillageList;
 import com.neprofinishedgood.utils.Constants;
@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public class QualityHoldAndMove extends BaseActivity implements IHoldView {
+public class QualityHoldActivity extends BaseActivity implements IHoldView {
 
     @BindView(R.id.linearLayoutScanDetail)
     LinearLayout linearLayoutScanDetail;
@@ -55,7 +55,7 @@ public class QualityHoldAndMove extends BaseActivity implements IHoldView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quality_hold_and_move);
+        setContentView(R.layout.activity_quality_hold);
         ButterKnife.bind(this);
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
@@ -93,7 +93,7 @@ public class QualityHoldAndMove extends BaseActivity implements IHoldView {
     Handler scanStillagehandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            showProgress(QualityHoldAndMove.this);
+            showProgress(QualityHoldActivity.this);
             if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
                 iHoldPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
             }

@@ -1,4 +1,4 @@
-package com.neprofinishedgood.qualitycheck.qualityholdandmove.presenter;
+package com.neprofinishedgood.qualitycheck.qualityhold.presenter;
 
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
