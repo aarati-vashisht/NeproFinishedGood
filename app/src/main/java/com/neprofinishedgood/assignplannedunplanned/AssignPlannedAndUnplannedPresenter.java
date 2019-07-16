@@ -2,6 +2,8 @@ package com.neprofinishedgood.assignplannedunplanned;
 
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
+import com.neprofinishedgood.assignplannedunplanned.model.AssignedUnAssignedInput;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
 import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
@@ -69,6 +71,33 @@ class AssignPlannedAndUnplannedPresenter implements IAssignPlannedAndUnplannedIn
             unplannedView.onLocationFailure(body.getMessage());
         } else {
             unplannedView.onLocationSuccess(body);
+        }
+    }
+
+    @Override
+    public void callAssigneUnassignedServcie(AssignedUnAssignedInput assignedUnAssignedInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.updateAssigningData(assignedUnAssignedInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getAssigneUnassigned(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getAssigneUnassigned(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getAssigneUnassigned(UniversalResponse body) {
+        if (body == null) {
+            unplannedView.onAssigneUnassignedFailure(body.getMessage());
+        } else {
+            unplannedView.onAssigneUnassignedSuccess(body);
         }
     }
 }
