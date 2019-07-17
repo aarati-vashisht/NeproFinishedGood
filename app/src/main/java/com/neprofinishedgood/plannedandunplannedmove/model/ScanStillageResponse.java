@@ -34,6 +34,18 @@ public class ScanStillageResponse {
     @Expose
     private Integer isMovedFromProdLine;
 
+    public String getLocation() {
+        return Location;
+    }
+
+    public void setLocation(String location) {
+        Location = location;
+    }
+
+    @SerializedName("Location")
+    @Expose
+    private String Location;
+
     public String getWareHouseName() {
         return WareHouseName;
     }

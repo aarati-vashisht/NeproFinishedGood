@@ -1,64 +1,109 @@
 package com.neprofinishedgood.lookup;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.lookup.presenter.ILookUpInterface;
+import com.neprofinishedgood.lookup.presenter.ILookUpView;
+import com.neprofinishedgood.lookup.presenter.LookUpPresenter;
+import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
+import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.utils.StillageLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
 
-public class LookUpActivity extends BaseActivity  {
-    @BindView(R.id.stillageLayoutLookUp)
-    LinearLayout stillageLayoutLookUp;
-    @BindView(R.id.linearLayoutLocation)
-    LinearLayout linearLayoutLocation;
+public class LookUpActivity extends BaseActivity implements ILookUpView {
+
     @BindView(R.id.editTextScanStillage)
     AppCompatEditText editTextScanStillage;
-    Animation fadeOut;
-    Animation fadeIn;
+
+    @BindView(R.id.stillageLayoutLookUp)
+    View stillageLayoutLookUp;
+
+    long delay = 1000;
+    long scanStillageLastTexxt = 0;
+    ILookUpInterface iLookUpInterface;
+    StillageLayout stillageLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_look_up);
         ButterKnife.bind(this);
+        stillageLayout = new StillageLayout();
+        ButterKnife.bind(stillageLayout, stillageLayoutLookUp);
         setTitle(getString(R.string.lookUp));
+        iLookUpInterface = new LookUpPresenter(this);
 
     }
-
 
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
-        if (text.toString().equalsIgnoreCase("S00001")) {
-            stillageLayoutLookUp.setVisibility(View.VISIBLE);
-            stillageLayoutLookUp.startAnimation(fadeIn);
-            linearLayoutLocation.setVisibility(View.VISIBLE);
-            linearLayoutLocation.startAnimation(fadeIn);
-            editTextScanStillage.setEnabled(false);
-
+        if (!text.toString().trim().equals("")) {
+            scanStillagehandler.postDelayed(stillageRunnable, delay);
         }
 
+    }
+
+    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+        scanStillagehandler.removeCallbacks(stillageRunnable);
 
     }
+
+    //for call service on text change
+    Handler scanStillagehandler = new Handler();
+    private Runnable stillageRunnable = new Runnable() {
+        public void run() {
+            showProgress(LookUpActivity.this);
+            if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                iLookUpInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+
+            }
+        }
+    };
 
 
     public void imageButtonCloseClick(View view) {
         stillageLayoutLookUp.startAnimation(fadeOut);
         stillageLayoutLookUp.setVisibility(View.GONE);
-        linearLayoutLocation.startAnimation(fadeOut);
-        linearLayoutLocation.setVisibility(View.GONE);
+        stillageLayout.linearLayoutLocation.startAnimation(fadeOut);
+        stillageLayout.linearLayoutLocation.setVisibility(View.GONE);
         editTextScanStillage.setText("");
         editTextScanStillage.setEnabled(true);
 
+    }
+
+    @Override
+    public void onFailure(String message) {
+        hideProgress();
+        CustomToast.showToast(this, message);
+    }
+
+    @Override
+    public void onSuccess(ScanStillageResponse body) {
+        hideProgress();
+        setData(body);
+    }
+
+    void setData(ScanStillageResponse body) {
+        stillageLayoutLookUp.setVisibility(View.VISIBLE);
+        stillageLayout.textViewitem.setText(body.getItemId());
+        stillageLayout.textViewNumber.setText(body.getStickerID());
+        stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
+        stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
+        stillageLayout.textViewitemDesc.setText(body.getDescription());
+        stillageLayout.linearLayoutLocation.setVisibility(View.VISIBLE);
+        stillageLayout.textViewLocation.setText(body.getLocation());
     }
 }

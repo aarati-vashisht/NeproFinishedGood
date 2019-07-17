@@ -1,10 +1,9 @@
 package com.neprofinishedgood.transferstillage;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -13,21 +12,25 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.base.model.UniversalSpinner;
-import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
-import com.neprofinishedgood.raf.model.StillageDatum;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
+import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
+import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.transferstillage.model.TransferInput;
+import com.neprofinishedgood.transferstillage.presenter.ITransferInterface;
+import com.neprofinishedgood.transferstillage.presenter.ITransferView;
+import com.neprofinishedgood.transferstillage.presenter.TransferPresenter;
 import com.neprofinishedgood.utils.StillageLayout;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
 
-public class TransferStillageActivity extends BaseActivity {
+public class TransferStillageActivity extends BaseActivity implements ITransferView {
 
     @BindView(R.id.relativeLayoutScanDetail)
     RelativeLayout relativeLayoutScanDetail;
@@ -47,79 +50,124 @@ public class TransferStillageActivity extends BaseActivity {
 
     StillageLayout stillageLayout;
 
-    Animation fadeOut;
-    Animation fadeIn;
 
-    ArrayList<UniversalSpinner> aisleList;
-    ArrayList<UniversalSpinner> rackList;
-    ArrayList<UniversalSpinner> binList;
+    long delay = 1000;
+    long scanStillageLastTexxt = 0;
 
-    StillageDatum stillageDatum;
-    private ArrayList<UniversalSpinner> warehouseList;
+    private ITransferInterface iTransferInterface;
+    private String warehouse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer_stillage);
-
         ButterKnife.bind(this);
-        setTitle(getString(R.string.transfer_stillage));
-        initData();
-    }
-
-    void initData() {
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
+        setTitle(getString(R.string.transfer));
+        iTransferInterface = new TransferPresenter(this);
+        initData();
 
-        fadeOut = AnimationUtils.loadAnimation(TransferStillageActivity.this, R.anim.animate_fade_out);
-        fadeIn = AnimationUtils.loadAnimation(TransferStillageActivity.this, R.anim.animate_fade_in);
+    }
+
+    private void initData() {
+        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, warehouseList);
+        spinnerWarehouse.setAdapter(reasonListAdapter);
+    }
+
+    @OnItemSelected(R.id.spinnerWarehouse)
+    public void spinnerBinSelected(Spinner spinner, int position) {
+        warehouse = warehouseList.get(position).getId();
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
-        if (text.toString().equalsIgnoreCase("S00001")) {
-            relativeLayoutScanDetail.setVisibility(View.VISIBLE);
-            relativeLayoutScanDetail.setAnimation(fadeIn);
-            setData();
-            editTextScanStillage.setEnabled(false);
+        if (!text.toString().trim().equals("")) {
+            scanStillagehandler.postDelayed(stillageRunnable, delay);
+        }
+
+    }
+
+    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+        scanStillagehandler.removeCallbacks(stillageRunnable);
+
+    }
+
+    //for call service on text change
+    Handler scanStillagehandler = new Handler();
+    private Runnable stillageRunnable = new Runnable() {
+        public void run() {
+            showProgress(TransferStillageActivity.this);
+            if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+
+            }
+        }
+    };
+
+
+    public void imageButtonCloseClick(View view) {
+        relativeLayoutScanDetail.startAnimation(fadeOut);
+        relativeLayoutScanDetail.setVisibility(View.GONE);
+        editTextScanStillage.setText("");
+        editTextScanStillage.setEnabled(true);
+
+    }
+
+    @Override
+    public void onFailure(String message) {
+        hideProgress();
+        CustomToast.showToast(this, message);
+    }
+
+    @Override
+    public void onSuccess(ScanStillageResponse body) {
+        if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+            hideProgress();
+            setData(body);
         } else {
-            relativeLayoutScanDetail.setVisibility(View.GONE);
-            relativeLayoutScanDetail.setAnimation(fadeOut);
+            hideProgress();
+            CustomToast.showToast(this, body.getMessage());
+            editTextScanStillage.setText("");
         }
     }
 
+    @Override
+    public void onUpdateTransferFailure(String message) {
+        hideProgress();
+        CustomToast.showToast(this, message);
+        onButtonCancelClick();
+    }
 
-    void setData() {
-//        Gson gson = new Gson();
-//        LoadingPlanDatum stillageDatum = gson.fromJson(JsonString, LoadingPlanDatum.class);
-        stillageDatum = new StillageDatum();
-        stillageDatum.setItem("1");
-        stillageDatum.setName("S00001");
-        stillageDatum.setNumber("S00001");
-        stillageDatum.setQuantity("100");
-        stillageDatum.setStdQuantity("100");
-        stillageDatum.setStillageId("");
+    @Override
+    public void onUpdateTransferSuccess(UniversalResponse body) {
+        hideProgress();
+        CustomToast.showToast(this, body.getMessage());
+        editTextScanStillage.setEnabled(true);
+        editTextScanStillage.setText("");
+        editTextScanStillage.requestFocus();
+        stillageDetail.setVisibility(View.GONE);
+        stillageDetail.setAnimation(fadeOut);
+        relativeLayoutScanDetail.setVisibility(View.GONE);
+    }
 
-        stillageLayout.textViewitem.setText(stillageDatum.getItem());
-        stillageLayout.textViewNumber.setText(stillageDatum.getNumber());
-        stillageLayout.textViewQuantity.setText(stillageDatum.getQuantity());
-        stillageLayout.textViewStdQuantity.setText(stillageDatum.getStdQuantity());
-
-        warehouseList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            warehouseList.add(new UniversalSpinner("Warehouse " + i, i + ""));
-        }
-        warehouseList.add(0, new UniversalSpinner("Select Warehouse", "0"));
-        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, warehouseList);
-        spinnerWarehouse.setAdapter(reasonListAdapter);
+    void setData(ScanStillageResponse body) {
+        relativeLayoutScanDetail.setVisibility(View.VISIBLE);
+        stillageLayout.textViewitem.setText(body.getItemId());
+        stillageLayout.textViewNumber.setText(body.getStickerID());
+        stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
+        stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
+        stillageLayout.textViewitemDesc.setText(body.getDescription());
     }
 
     @OnClick(R.id.buttonTransfer)
     public void onButtonDropClick() {
         if (spinnerWarehouse.getSelectedItemPosition() > 0) {
-            CustomToast.showToast(TransferStillageActivity.this, getResources().getString(R.string.item_transferred_successfully));
-            finish();
-        }else {
+            showProgress(this);
+            TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), warehouse, userId);
+            iTransferInterface.callUpdateTransferStillage(transferInput);
+        } else {
             TextView textView = (TextView) spinnerWarehouse.getSelectedView();
             textView.setError(getString(R.string.select_warehouse));
             textView.requestFocus();
@@ -133,7 +181,7 @@ public class TransferStillageActivity extends BaseActivity {
         editTextScanStillage.setEnabled(true);
         relativeLayoutScanDetail.setVisibility(View.GONE);
         relativeLayoutScanDetail.setAnimation(fadeOut);
-        stillageDatum = new StillageDatum();
+
     }
 
 
