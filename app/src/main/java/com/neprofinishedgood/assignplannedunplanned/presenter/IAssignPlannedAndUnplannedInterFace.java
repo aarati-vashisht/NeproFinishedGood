@@ -1,4 +1,4 @@
-package com.neprofinishedgood.assignplannedunplanned;
+package com.neprofinishedgood.assignplannedunplanned.presenter;
 
 import com.neprofinishedgood.assignplannedunplanned.model.AssignedUnAssignedInput;
 import com.neprofinishedgood.base.model.UniversalResponse;

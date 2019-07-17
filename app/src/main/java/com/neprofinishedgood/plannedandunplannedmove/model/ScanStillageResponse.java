@@ -33,6 +33,19 @@ public class ScanStillageResponse {
     @SerializedName("IsMovedFromProdLine")
     @Expose
     private Integer isMovedFromProdLine;
+
+    public String getWareHouseName() {
+        return WareHouseName;
+    }
+
+    public void setWareHouseName(String wareHouseName) {
+        WareHouseName = wareHouseName;
+    }
+
+    @SerializedName("WareHouseName")
+    @Expose
+    private String WareHouseName;
+
     public String getIsHold() {
         return isHold;
     }
@@ -44,6 +57,7 @@ public class ScanStillageResponse {
     @SerializedName("isHold")
     @Expose
     private String isHold;
+
     public String getStatus() {
         return status;
     }

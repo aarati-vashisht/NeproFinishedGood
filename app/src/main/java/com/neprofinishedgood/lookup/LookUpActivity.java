@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
 
-public class LookUpActivity extends BaseActivity {
+public class LookUpActivity extends BaseActivity  {
     @BindView(R.id.stillageLayoutLookUp)
     LinearLayout stillageLayoutLookUp;
     @BindView(R.id.linearLayoutLocation)
@@ -32,15 +32,10 @@ public class LookUpActivity extends BaseActivity {
         setContentView(R.layout.activity_look_up);
         ButterKnife.bind(this);
         setTitle(getString(R.string.lookUp));
-        initData();
 
     }
 
-    void initData() {
-        fadeOut = AnimationUtils.loadAnimation(LookUpActivity.this, R.anim.animate_fade_out);
-        fadeIn = AnimationUtils.loadAnimation(LookUpActivity.this, R.anim.animate_fade_in);
 
-    }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {

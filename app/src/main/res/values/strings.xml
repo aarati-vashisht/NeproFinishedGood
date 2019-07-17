@@ -126,7 +126,7 @@
     <string name="enter_stillage_number">Enter Stillage Number</string>
     <string name="no_data_found">No Data Found</string>
     <string name="select_flt">Select FLT</string>
-
+    <string name="child_and_parent_warehouse_not_matched">Child and Parent Warehouse Not Matched!</string>
     <string name="child_and_parent_not_matched">Child and Parent Items Not Matched!</string>
     <string name="sum_of_stillage_quantity_after_merge">Sum of Stillage Quantity After Merge:</string>
     <string name="yes">Yes</string>
@@ -136,5 +136,8 @@
     <string name="select_warehouse">Select Warehouse</string>
     <string name="transfer_stillage">Transfer Stillage</string>
     <string name="item_transferred_successfully">Item Transferred Successfully</string>
+    <string name="discard">Discard</string>
+    <string name="nodiscard">No Discard</string>
+    <string name="this_stillage_already_merged">This Stillage Already Merged</string>
 
 </resources>

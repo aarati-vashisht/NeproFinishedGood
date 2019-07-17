@@ -22,6 +22,26 @@ public class MasterData {
     @SerializedName("FLTList")
     @Expose
     private List<UniversalSpinner> fLTList = null;
+
+    public List<UniversalSpinner> getfLTList() {
+        return fLTList;
+    }
+
+    public void setfLTList(List<UniversalSpinner> fLTList) {
+        this.fLTList = fLTList;
+    }
+
+    public List<UniversalSpinner> getWareHouseList() {
+        return WareHouseList;
+    }
+
+    public void setWareHouseList(List<UniversalSpinner> wareHouseList) {
+        WareHouseList = wareHouseList;
+    }
+
+    @SerializedName("WareHouseList")
+    @Expose
+    private List<UniversalSpinner> WareHouseList = null;
     @SerializedName("Status")
     @Expose
     private String status;
