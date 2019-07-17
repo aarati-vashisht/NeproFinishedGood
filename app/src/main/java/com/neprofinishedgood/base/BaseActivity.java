@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.neprofinishedgood.MyApplication;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalSpinner;
@@ -43,6 +42,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<UniversalSpinner> binList = new ArrayList<>();
     public List<UniversalSpinner> reasonList = new ArrayList<>();
     public List<UniversalSpinner> fltList = new ArrayList<>();
+    public List<UniversalSpinner> warehouseList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +76,8 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                 reasonList.add(0, new UniversalSpinner("Select Reason", "000"));
                 fltList = masterData.getFLTList();
                 fltList.add(0, new UniversalSpinner("Select FLT", "000"));
+                warehouseList = masterData.getWareHouseList();
+                warehouseList.add(0, new UniversalSpinner("Select WareHouse", "000"));
             }
         } else {
             aisleList = new ArrayList<>();
@@ -83,6 +85,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
             binList = new ArrayList<>();
             reasonList = new ArrayList<>();
             fltList = new ArrayList<>();
+            warehouseList = new ArrayList<>();
         }
 
     }

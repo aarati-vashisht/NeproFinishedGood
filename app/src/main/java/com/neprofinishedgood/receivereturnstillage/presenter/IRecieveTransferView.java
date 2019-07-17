@@ -1,14 +1,14 @@
-package com.neprofinishedgood.mergestillage.presenter;
+package com.neprofinishedgood.receivereturnstillage.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 
-public interface IMergeStillageView {
+public interface IRecieveTransferView {
     void onFailure(String message);
 
     void onSuccess(ScanStillageResponse body);
 
-    void onUpdateMergeStillageFailure(String message);
+    void onUpdateRecieveTransferFailure(String message);
 
-    void onUpdateMergeStillageSuccess(UniversalResponse body);
+    void onUpdateRecieveTransferSuccess(UniversalResponse body);
 }

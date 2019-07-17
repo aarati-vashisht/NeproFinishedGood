@@ -5,6 +5,7 @@ import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.login.model.LoginUser;
+import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
 import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
@@ -14,6 +15,7 @@ import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.raf.model.RafInput;
+import com.neprofinishedgood.transferstillage.model.TransferInput;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -62,4 +64,16 @@ public interface ApiInterface {
 
     @POST("ScanMergeStillage")
     Call<ScanStillageResponse> scanMergeStillage(@Body MoveInput moveInput);
+
+    @POST("UpdateMergeStillage")
+    Call<UniversalResponse> updateMergeStillage(@Body UpgradeMergeInput upgradeMergeInput);
+
+    @POST("UpdateTransferStillage")
+    Call<UniversalResponse> updateTransferStillage(@Body TransferInput moveInput);
+
+    @POST("ScanRecievedTransfer")
+    Call<ScanStillageResponse> scanRecievedTransfer(@Body MoveInput moveInput);
+
+    @POST("UpdateRecievedTransfer")
+    Call<UniversalResponse> updateRecievedTransfer(@Body MoveInput moveInput);
 }

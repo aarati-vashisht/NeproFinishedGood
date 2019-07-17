@@ -1,26 +1,22 @@
-package com.neprofinishedgood.mergestillage.presenter;
+package com.neprofinishedgood.transferstillage.presenter;
 
-import android.app.Activity;
-
-import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
+import com.neprofinishedgood.lookup.presenter.ILookUpInterface;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.transferstillage.model.TransferInput;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MergeStillagePresenter implements IMergeStillageInterface {
-    IMergeStillageView iMergeStillageView;
-    Activity activity;
+public class TransferPresenter implements ITransferInterface {
+    ITransferView iTransferView;
 
-    public MergeStillagePresenter(IMergeStillageView iMergeStillageView, Activity activity) {
-        this.iMergeStillageView = iMergeStillageView;
-        this.activity = activity;
+    public TransferPresenter(ITransferView iTransferView) {
+        this.iTransferView = iTransferView;
 
     }
 
@@ -45,36 +41,37 @@ public class MergeStillagePresenter implements IMergeStillageInterface {
     @Override
     public void getScanMergeStillageResponse(ScanStillageResponse body) {
         if (body == null) {
-            iMergeStillageView.onFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+            iTransferView.onFailure(body.getMessage());
         } else {
-            iMergeStillageView.onSuccess(body);
+            iTransferView.onSuccess(body);
         }
     }
 
     @Override
-    public void callUpdateMergeStillage(UpgradeMergeInput upgradeMergeInput) {
+    public void callUpdateTransferStillage(TransferInput transferInput) {
         ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
-        Call<UniversalResponse> call = apiInterface.updateMergeStillage(upgradeMergeInput);
+        Call<UniversalResponse> call = apiInterface.updateTransferStillage(transferInput);
         call.enqueue(new Callback<UniversalResponse>() {
             @Override
             public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
-                getUpdateMergeStillageResponse(response.body());
+                getUpdateTransferStillageResponse(response.body());
             }
 
             @Override
             public void onFailure(Call<UniversalResponse> call, Throwable t) {
-                getUpdateMergeStillageResponse(null);
+                getUpdateTransferStillageResponse(null);
 
             }
         });
     }
 
     @Override
-    public void getUpdateMergeStillageResponse(UniversalResponse body) {
+    public void getUpdateTransferStillageResponse(UniversalResponse body) {
         if (body == null) {
-            iMergeStillageView.onUpdateMergeStillageFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+            iTransferView.onUpdateTransferFailure(body.getMessage());
         } else {
-            iMergeStillageView.onUpdateMergeStillageSuccess(body);
+            iTransferView.onUpdateTransferSuccess(body);
         }
     }
+
 }

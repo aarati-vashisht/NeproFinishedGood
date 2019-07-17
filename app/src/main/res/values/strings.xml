@@ -11,14 +11,14 @@
     <string name="assignlocation_flt"><![CDATA[Assign Planned & Unplanned]]></string>
     <string name="pickload"><![CDATA[Pick & Load]]></string>
     <string name="return_stillage">Return Stillage</string>
-    <string name="recieve_return_stillage">Receive Return Stillage</string>
+    <string name="recieve_return_stillage">Receive Stillage</string>
     <string name="scan_stillage">Scan/Type</string>
     <string name="stillage_number">Stillage Number:</string>
     <string name="stillage_quantity">Stillage Quantity:</string>
     <string name="stillage_name">Stillage Name:</string>
     <string name="stillage_stdquantity">Stillage Std Quantity:</string>
     <string name="item">Item:</string>
-    <string name="dashbord">Dashboard</string>
+    <string name="dashbord">Select Operation</string>
     <string name="enter_quantity">Enter Quantity</string>
     <string name="quantity">Quantity</string>
     <string name="universalSpinner">Reason</string>

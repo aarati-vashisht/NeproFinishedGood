@@ -1,5 +1,6 @@
 package com.neprofinishedgood.utils;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -29,6 +30,11 @@ public class StillageLayout {
     @BindView(R.id.textViewitemDesc)
     public TextView textViewitemDesc;
 
+    @BindView(R.id.textViewLocation)
+    public TextView textViewLocation;
+
+    @BindView(R.id.linearLayoutLocation)
+    public LinearLayout linearLayoutLocation;
 
 
 }
