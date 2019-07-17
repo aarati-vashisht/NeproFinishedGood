@@ -55,7 +55,7 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
         ButterKnife.bind(this);
         instance = this;
         setTitle(getString(R.string.move));
-        iPlannedUnplannedPresenter = new IPlannedUnplannedPresenter(this);
+        iPlannedUnplannedPresenter = new IPlannedUnplannedPresenter(this, this);
         getAllAssignedData();
 
     }

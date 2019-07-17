@@ -224,12 +224,15 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
 
     void setData(ScanStillageResponse body) {
         relativeLayoutScanDetail.setVisibility(View.VISIBLE);
+
         editTextScanStillage.setEnabled(false);
         stillageLayout.textViewitem.setText(body.getItemId());
         stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
         stillageLayout.textViewitemDesc.setText(body.getDescription());
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewNumber.setText(body.getStickerID());
+        initData(null);
+        buttonAssign.setEnabled(true);
     }
 
     @OnClick(R.id.buttonAssign)
@@ -245,6 +248,11 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
             showProgress(this);
             AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
             iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
+
+            frameAssignFlt.setVisibility(View.GONE);
+            frameAssignLocation.setVisibility(View.VISIBLE);
+            isButtonInAssignLocation = true;
+
         }
 
     }
@@ -265,6 +273,10 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
             showProgress(this);
             AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
             iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
+
+            frameAssignFlt.setVisibility(View.GONE);
+            frameAssignLocation.setVisibility(View.VISIBLE);
+            isButtonInAssignLocation = true;
         }
 
 
@@ -294,7 +306,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
 
     boolean isValidated() {
         if (frameAssignLocation.getVisibility() == View.VISIBLE) {
-            if (spinnerAisle.getSelectedItemPosition() != 0 || spinnerRack.getSelectedItemPosition() == 0 || spinnerBin.getSelectedItemPosition() == 0) {
+            if (spinnerAisle.getSelectedItemPosition() != 0 || spinnerRack.getSelectedItemPosition() != 0 || spinnerBin.getSelectedItemPosition() != 0 || !editTextScanLocation.getText().toString().equalsIgnoreCase("")) {
                 return true;
             } else {
                 TextView textView = (TextView) spinnerAisle.getSelectedView();
@@ -345,6 +357,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
             initData(response);
         } else {
             CustomToast.showToast(this, response.getMessage());
+            editTextScanLocation.setText("");
         }
     }
 
