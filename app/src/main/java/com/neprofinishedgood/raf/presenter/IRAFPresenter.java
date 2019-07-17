@@ -1,10 +1,14 @@
 package com.neprofinishedgood.raf.presenter;
 
+import android.app.Activity;
+
+import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.raf.RAFActivity;
 import com.neprofinishedgood.raf.model.RafInput;
 import com.neprofinishedgood.raf.model.ScanCountingResponse;
 
@@ -14,9 +18,11 @@ import retrofit2.Response;
 
 public class IRAFPresenter implements IRAFInterface {
     IRAFView irafView;
+    Activity activity;
 
-    public IRAFPresenter(IRAFView irafView) {
+    public IRAFPresenter(IRAFView irafView, Activity activity) {
         this.irafView = irafView;
+        this.activity = activity;
     }
 
 
@@ -41,7 +47,7 @@ public class IRAFPresenter implements IRAFInterface {
     @Override
     public void getRAFResponse(ScanStillageResponse body) {
         if (body == null) {
-            irafView.onFailure(body.getMessage());
+            irafView.onFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             irafView.onSuccess(body);
         }

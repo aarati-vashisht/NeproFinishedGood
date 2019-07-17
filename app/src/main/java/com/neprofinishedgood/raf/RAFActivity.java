@@ -61,7 +61,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
 
         Utils.hideSoftKeyboard(this);
         setTitle(getString(R.string.reportasfinished));
-        irafInterface = new IRAFPresenter(this);
+        irafInterface = new IRAFPresenter(this, this);
     }
 
     void setSpinnerShiftData() {

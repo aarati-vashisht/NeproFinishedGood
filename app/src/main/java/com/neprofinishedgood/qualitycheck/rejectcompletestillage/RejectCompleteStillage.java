@@ -152,6 +152,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         } else {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
         }
+        spinnerRejectReason.setSelection(0);
     }
 
     ScanStillageResponse body;
@@ -190,6 +191,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         linearLayoutScanDetail.setAnimation(fadeOut);
         editTextScanStillage.setText("");
         editTextScanStillage.setEnabled(true);
+        spinnerRejectReason.setSelection(0);
     }
 
     boolean isValidated() {

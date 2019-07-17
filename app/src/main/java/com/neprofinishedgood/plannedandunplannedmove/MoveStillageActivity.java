@@ -72,7 +72,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         setContentView(R.layout.activity_move_stillage);
         ButterKnife.bind(this);
         setTitle(getString(R.string.move));
-        movePresenter = new IMovePresenter(this);
+        movePresenter = new IMovePresenter(this, this);
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
         getIntentData();
@@ -230,6 +230,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         if (response.getStatus().equals(getString(R.string.success))) {
             initData(response);
         } else {
+            editTextDropLocation.setText("");
             CustomToast.showToast(this, response.getMessage());
         }
     }
@@ -260,7 +261,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 
     boolean isValidated() {
         if (linearLayoutPutAwayLocation.getVisibility() == View.VISIBLE) {
-            if (spinnerAisle.getSelectedItemPosition() != 0 || spinnerRack.getSelectedItemPosition() == 0 || spinnerBin.getSelectedItemPosition() == 0) {
+            if (spinnerAisle.getSelectedItemPosition() != 0 || spinnerRack.getSelectedItemPosition() != 0 || spinnerBin.getSelectedItemPosition() != 0 || !editTextDropLocation.getText().toString().equalsIgnoreCase("")) {
                 return true;
             } else {
                 TextView textView = (TextView) spinnerAisle.getSelectedView();

@@ -1,8 +1,12 @@
 package com.neprofinishedgood.plannedandunplannedmove.presenter;
 
+import android.app.Activity;
+
+import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
+import com.neprofinishedgood.plannedandunplannedmove.MoveStillageActivity;
 import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
 import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
@@ -13,9 +17,11 @@ import retrofit2.Response;
 
 public class IMovePresenter implements IMoveInterface {
     IMoveView iMoveView;
+    Activity activity;
 
-    public IMovePresenter(IMoveView iLoginView) {
+    public IMovePresenter(IMoveView iLoginView, Activity activity) {
         this.iMoveView = iLoginView;
+        this.activity = activity;
     }
 
 
@@ -40,7 +46,7 @@ public class IMovePresenter implements IMoveInterface {
     @Override
     public void getUpdateMoveResponse(UniversalResponse body) {
         if (body == null) {
-            iMoveView.onUpdateMoveFailure(body.getMessage());
+            iMoveView.onUpdateMoveFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iMoveView.onUpdateMoveSuccess(body);
         }

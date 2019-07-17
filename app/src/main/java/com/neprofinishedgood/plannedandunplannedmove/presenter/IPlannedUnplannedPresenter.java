@@ -1,7 +1,11 @@
 package com.neprofinishedgood.plannedandunplannedmove.presenter;
 
+import android.app.Activity;
+
+import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
+import com.neprofinishedgood.plannedandunplannedmove.PlannedAndUnPlannedMoveActivity;
 import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
@@ -13,9 +17,11 @@ import retrofit2.Response;
 
 public class IPlannedUnplannedPresenter implements IPLannedUnplannedInterface {
     IPlannedAndUnPlannedView iPlannedAndUnPlannedView;
+    Activity activity;
 
-    public IPlannedUnplannedPresenter(IPlannedAndUnPlannedView iPlannedAndUnPlannedView) {
+    public IPlannedUnplannedPresenter(IPlannedAndUnPlannedView iPlannedAndUnPlannedView, Activity activity) {
         this.iPlannedAndUnPlannedView = iPlannedAndUnPlannedView;
+        this.activity = activity;
     }
 
 
@@ -40,7 +46,7 @@ public class IPlannedUnplannedPresenter implements IPLannedUnplannedInterface {
     @Override
     public void getAllAssignedData(AssignedStillages body) {
         if (body == null) {
-            iPlannedAndUnPlannedView.onAssignedFailure(body.getMessage());
+            iPlannedAndUnPlannedView.onAssignedFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iPlannedAndUnPlannedView.onAssignedSuccess(body);
         }
