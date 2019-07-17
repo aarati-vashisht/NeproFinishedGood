@@ -1,4 +1,4 @@
-package com.neprofinishedgood.assignplannedunplanned;
+package com.neprofinishedgood.assignplannedunplanned.presenter;
 
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
@@ -13,7 +13,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-class AssignPlannedAndUnplannedPresenter implements IAssignPlannedAndUnplannedInterFace {
+public class AssignPlannedAndUnplannedPresenter implements IAssignPlannedAndUnplannedInterFace {
     IAssignePlannedUnplannedView unplannedView;
 
     public AssignPlannedAndUnplannedPresenter(IAssignePlannedUnplannedView unplannedView) {

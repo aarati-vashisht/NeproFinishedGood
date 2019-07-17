@@ -14,7 +14,6 @@ import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.raf.model.RafInput;
-import com.neprofinishedgood.raf.model.ScanCountingResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -60,4 +59,7 @@ public interface ApiInterface {
 
     @POST("UpdateAssigningData")
     Call<UniversalResponse> updateAssigningData(@Body AssignedUnAssignedInput assignedUnAssignedInput);
+
+    @POST("ScanMergeStillage")
+    Call<ScanStillageResponse> scanMergeStillage(@Body MoveInput moveInput);
 }
