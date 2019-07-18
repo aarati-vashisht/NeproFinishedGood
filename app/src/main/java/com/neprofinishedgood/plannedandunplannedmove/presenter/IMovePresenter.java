@@ -73,7 +73,7 @@ public class IMovePresenter implements IMoveInterface {
     @Override
     public void getLocationData(LocationData body) {
         if (body == null) {
-            iMoveView.onLocationFailure(body.getMessage());
+            iMoveView.onLocationFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iMoveView.onLocationSuccess(body);
         }

@@ -50,7 +50,7 @@ public class ReceiveReturnStillageActivity extends BaseActivity implements IReci
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.recieve_return_stillage));
-        iRecieveTransferInterface = new RecieveTransferPresenter(this);
+        iRecieveTransferInterface = new RecieveTransferPresenter(this, this);
         initData();
     }
 

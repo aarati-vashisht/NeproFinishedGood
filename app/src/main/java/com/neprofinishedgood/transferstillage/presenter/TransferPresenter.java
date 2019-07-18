@@ -1,11 +1,15 @@
 package com.neprofinishedgood.transferstillage.presenter;
 
+import android.app.Activity;
+
+import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.lookup.presenter.ILookUpInterface;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.transferstillage.TransferStillageActivity;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 
 import retrofit2.Call;
@@ -14,8 +18,9 @@ import retrofit2.Response;
 
 public class TransferPresenter implements ITransferInterface {
     ITransferView iTransferView;
+    Activity activity;
 
-    public TransferPresenter(ITransferView iTransferView) {
+    public TransferPresenter(ITransferView iTransferView, Activity activity) {
         this.iTransferView = iTransferView;
 
     }
@@ -41,7 +46,7 @@ public class TransferPresenter implements ITransferInterface {
     @Override
     public void getScanMergeStillageResponse(ScanStillageResponse body) {
         if (body == null) {
-            iTransferView.onFailure(body.getMessage());
+            iTransferView.onFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iTransferView.onSuccess(body);
         }
@@ -68,7 +73,7 @@ public class TransferPresenter implements ITransferInterface {
     @Override
     public void getUpdateTransferStillageResponse(UniversalResponse body) {
         if (body == null) {
-            iTransferView.onUpdateTransferFailure(body.getMessage());
+            iTransferView.onUpdateTransferFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iTransferView.onUpdateTransferSuccess(body);
         }

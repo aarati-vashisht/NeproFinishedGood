@@ -62,7 +62,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.quality_hold_and_move));
         initData();
-        iHoldPresenter = new IHoldPresenter(this);
+        iHoldPresenter = new IHoldPresenter(this, this);
 
     }
 

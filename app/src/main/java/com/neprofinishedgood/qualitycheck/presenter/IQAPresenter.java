@@ -1,5 +1,8 @@
 package com.neprofinishedgood.qualitycheck.presenter;
 
+import android.app.Activity;
+
+import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
@@ -14,9 +17,11 @@ import retrofit2.Response;
 
 public class IQAPresenter implements IQAInterface {
     IQAView iqaView;
+    Activity activity;
 
-    public IQAPresenter(IQAView iqaView) {
+    public IQAPresenter(IQAView iqaView, Activity activity) {
         this.iqaView = iqaView;
+        this.activity = activity;
     }
 
 
@@ -41,7 +46,7 @@ public class IQAPresenter implements IQAInterface {
     @Override
     public void getScanStillageResponse(ScanStillageResponse body) {
         if (body == null) {
-            iqaView.onFailure(body.getMessage());
+            iqaView.onFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iqaView.onSuccess(body);
         }
@@ -68,7 +73,7 @@ public class IQAPresenter implements IQAInterface {
     @Override
     public void getUpdateRejectedResponse(UniversalResponse body) {
         if (body == null) {
-            iqaView.onUpdateRejectedFailure(body.getMessage());
+            iqaView.onUpdateRejectedFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iqaView.onUpdateRejectedSuccess(body);
         }

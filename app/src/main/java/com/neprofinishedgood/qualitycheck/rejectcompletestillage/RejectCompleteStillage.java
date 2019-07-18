@@ -75,8 +75,8 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         ButterKnife.bind(this);
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
-        setTitle(getString(R.string.reject_quantity));
-        iqaInterface = new IQAPresenter(this);
+        setTitle(getString(R.string.reject_complete_stillage));
+        iqaInterface = new IQAPresenter(this, this);
         initData();
     }
 

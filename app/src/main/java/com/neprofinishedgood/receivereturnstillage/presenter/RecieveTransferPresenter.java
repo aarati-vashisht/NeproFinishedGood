@@ -1,10 +1,14 @@
 package com.neprofinishedgood.receivereturnstillage.presenter;
 
+import android.app.Activity;
+
+import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -12,8 +16,9 @@ import retrofit2.Response;
 
 public class RecieveTransferPresenter implements IRecieveTransferInterface {
     IRecieveTransferView iRecieveTransferView;
+    Activity activity;
 
-    public RecieveTransferPresenter(IRecieveTransferView iRecieveTransferView) {
+    public RecieveTransferPresenter(IRecieveTransferView iRecieveTransferView, Activity activity) {
         this.iRecieveTransferView = iRecieveTransferView;
 
     }
@@ -39,7 +44,7 @@ public class RecieveTransferPresenter implements IRecieveTransferInterface {
     @Override
     public void getScanMergeStillageResponse(ScanStillageResponse body) {
         if (body == null) {
-            iRecieveTransferView.onFailure(body.getMessage());
+            iRecieveTransferView.onFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iRecieveTransferView.onSuccess(body);
         }
@@ -66,7 +71,7 @@ public class RecieveTransferPresenter implements IRecieveTransferInterface {
     @Override
     public void getUpdateRecieveTransferStillageResponse(UniversalResponse body) {
         if (body == null) {
-            iRecieveTransferView.onUpdateRecieveTransferFailure("");
+            iRecieveTransferView.onUpdateRecieveTransferFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iRecieveTransferView.onUpdateRecieveTransferSuccess(body);
         }

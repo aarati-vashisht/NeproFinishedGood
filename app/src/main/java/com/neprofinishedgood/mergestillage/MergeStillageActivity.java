@@ -88,7 +88,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         ButterKnife.bind(parentStillageLayout, parentStillageDetail);
         ButterKnife.bind(childStillageLayout, childStillageDetail);
         setTitle(getString(R.string.merge_stillage));
-        iMergeStillageInterface = new MergeStillagePresenter(this,this);
+        iMergeStillageInterface = new MergeStillagePresenter(this, this);
     }
 
 
@@ -362,43 +362,49 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     public void onSuccess(ScanStillageResponse body) {
         hideProgress();
         //  CustomToast.showToast(this, body.getMessage());
-        if (isChild) {
-            childWareHouse = body.getWareHouseName();
-            relativeLayoutScanChildDetail.setVisibility(View.VISIBLE);
-            relativeLayoutScanChildDetail.setAnimation(fadeIn);
-            linearLayoutMergeStillage.setVisibility(View.VISIBLE);
-            linearLayoutMergeStillage.setAnimation(fadeIn);
-            linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
-            linearLayoutAssignLocationButtons.setAnimation(fadeIn);
+        if (body.getStatus().equals(getResources().getString(R.string.success))) {
+            if (isChild) {
+                childWareHouse = body.getWareHouseName();
+                relativeLayoutScanChildDetail.setVisibility(View.VISIBLE);
+                relativeLayoutScanChildDetail.setAnimation(fadeIn);
+                linearLayoutMergeStillage.setVisibility(View.VISIBLE);
+                linearLayoutMergeStillage.setAnimation(fadeIn);
+                linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
+                linearLayoutAssignLocationButtons.setAnimation(fadeIn);
 
-            linearLayoutQuantitySum.setVisibility(View.VISIBLE);
-            textViewQuantitySum.setText(parentStillageLayout.textViewQuantity.getText().toString());
-            setChildData(body);
-            editTextScanChildStillage.setEnabled(false);
-            editTextMergeQuantity.requestFocus();
+                linearLayoutQuantitySum.setVisibility(View.VISIBLE);
+                textViewQuantitySum.setText(parentStillageLayout.textViewQuantity.getText().toString());
+                setChildData(body);
+                editTextScanChildStillage.setEnabled(false);
+                editTextMergeQuantity.requestFocus();
 
-            int parentRemainQty, childQty;
+                int parentRemainQty, childQty;
 
-            parentRemainQty = Integer.parseInt(parentStillageLayout.textViewStdQuantity.getText().toString())
-                    - Integer.parseInt(parentStillageLayout.textViewQuantity.getText().toString());
+                parentRemainQty = Integer.parseInt(parentStillageLayout.textViewStdQuantity.getText().toString())
+                        - Integer.parseInt(parentStillageLayout.textViewQuantity.getText().toString());
 
-            childQty = Integer.parseInt(childStillageLayout.textViewQuantity.getText().toString());
+                childQty = Integer.parseInt(childStillageLayout.textViewQuantity.getText().toString());
 
-            if (childQty <= parentRemainQty) {
-                editTextMergeQuantity.setText(childQty + "");
-            } else if (childQty > parentRemainQty) {
-                editTextMergeQuantity.setText(parentRemainQty + "");
+                if (childQty <= parentRemainQty) {
+                    editTextMergeQuantity.setText(childQty + "");
+                } else if (childQty > parentRemainQty) {
+                    editTextMergeQuantity.setText(parentRemainQty + "");
+                }
+                editTextMergeQuantity.setSelection(editTextMergeQuantity.getText().toString().length());
+            } else {
+                parentWareHouse = body.getWareHouseName();
+                linearLayoutScanParentDetail.setVisibility(View.VISIBLE);
+                linearLayoutScanParentDetail.setAnimation(fadeIn);
+                linearLayoutScanChild.setVisibility(View.VISIBLE);
+                linearLayoutScanChild.setAnimation(fadeIn);
+                setParentData(body);
+                editTextScanParentStillage.setEnabled(false);
+                editTextScanChildStillage.requestFocus();
             }
-            editTextMergeQuantity.setSelection(editTextMergeQuantity.getText().toString().length());
-        } else {
-            parentWareHouse = body.getWareHouseName();
-            linearLayoutScanParentDetail.setVisibility(View.VISIBLE);
-            linearLayoutScanParentDetail.setAnimation(fadeIn);
-            linearLayoutScanChild.setVisibility(View.VISIBLE);
-            linearLayoutScanChild.setAnimation(fadeIn);
-            setParentData(body);
-            editTextScanParentStillage.setEnabled(false);
-            editTextScanChildStillage.requestFocus();
+        }
+        else {
+            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            editTextScanChildStillage.setText("");
         }
     }
 

@@ -42,7 +42,7 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageLayoutLookUp);
         setTitle(getString(R.string.lookUp));
-        iLookUpInterface = new LookUpPresenter(this);
+        iLookUpInterface = new LookUpPresenter(this, this);
 
     }
 
@@ -93,7 +93,12 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
     @Override
     public void onSuccess(ScanStillageResponse body) {
         hideProgress();
-        setData(body);
+        if(body.getStatus().equalsIgnoreCase(getString(R.string.success))){
+            setData(body);
+        }else {
+            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            editTextScanStillage.setText("");
+        }
     }
 
     void setData(ScanStillageResponse body) {
