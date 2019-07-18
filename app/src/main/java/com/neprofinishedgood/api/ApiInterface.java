@@ -16,6 +16,7 @@ import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInp
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.raf.model.RafInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
+import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -78,4 +79,9 @@ public interface ApiInterface {
 
     @POST("UpdateRecievedTransfer")
     Call<UniversalResponse> updateRecievedTransfer(@Body MoveInput moveInput);
+
+    @POST("ScanUpdateQuantity")
+    Call<ScanStillageResponse> scanUpdateQuantity(@Body MoveInput moveInput);
+    @POST("UpdateStillageQuantity")
+    Call<UniversalResponse> updateStillageQuantity(@Body UpdateQtyInput updateQtyInput);
 }
