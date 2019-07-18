@@ -110,7 +110,11 @@ public class ReceiveReturnStillageActivity extends BaseActivity implements IReci
     public void onSuccess(ScanStillageResponse body) {
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
             hideProgress();
-            setData(body);
+            if (body.getIsRecieved() == 1) {
+                CustomToast.showToast(this, getString(R.string.this_stillage_already_recieved));
+            } else {
+                setData(body);
+            }
         } else {
             hideProgress();
             CustomToast.showToast(this, body.getMessage());

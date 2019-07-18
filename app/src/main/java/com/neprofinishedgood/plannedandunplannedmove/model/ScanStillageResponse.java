@@ -34,6 +34,30 @@ public class ScanStillageResponse {
     @Expose
     private Integer isMovedFromProdLine;
 
+    public Integer getIsTransfered() {
+        return IsTransfered;
+    }
+
+    public void setIsTransfered(Integer isTransfered) {
+        IsTransfered = isTransfered;
+    }
+
+    @SerializedName("IsTransfered")
+    @Expose
+    private Integer IsTransfered;
+
+    public Integer getIsRecieved() {
+        return IsRecieved;
+    }
+
+    public void setIsRecieved(Integer isRecieved) {
+        IsRecieved = isRecieved;
+    }
+
+    @SerializedName("IsRecieved")
+    @Expose
+    private Integer IsRecieved;
+
     public String getLocation() {
         return Location;
     }

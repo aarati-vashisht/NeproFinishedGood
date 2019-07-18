@@ -62,6 +62,8 @@ public interface ApiInterface {
     @POST("UpdateAssigningData")
     Call<UniversalResponse> updateAssigningData(@Body AssignedUnAssignedInput assignedUnAssignedInput);
 
+    @POST("ScanLookUpStillage")
+    Call<ScanStillageResponse> scanLookUpStillage(@Body MoveInput moveInput);
     @POST("ScanMergeStillage")
     Call<ScanStillageResponse> scanMergeStillage(@Body MoveInput moveInput);
 
