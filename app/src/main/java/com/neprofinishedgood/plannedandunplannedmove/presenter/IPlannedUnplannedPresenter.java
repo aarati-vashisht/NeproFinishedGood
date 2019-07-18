@@ -55,7 +55,7 @@ public class IPlannedUnplannedPresenter implements IPLannedUnplannedInterface {
     @Override
     public void getMoveResponse(ScanStillageResponse body) {
         if (body == null) {
-            iPlannedAndUnPlannedView.onFailure(body.getMessage());
+            iPlannedAndUnPlannedView.onFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iPlannedAndUnPlannedView.onSuccess(body);
         }

@@ -1,7 +1,11 @@
 package com.neprofinishedgood.assignplannedunplanned.presenter;
 
+import android.app.Activity;
+
+import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
+import com.neprofinishedgood.assignplannedunplanned.AssignPlannedAndUnplannedActivity;
 import com.neprofinishedgood.assignplannedunplanned.model.AssignedUnAssignedInput;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
@@ -15,9 +19,11 @@ import retrofit2.Response;
 
 public class AssignPlannedAndUnplannedPresenter implements IAssignPlannedAndUnplannedInterFace {
     IAssignePlannedUnplannedView unplannedView;
+    Activity activity;
 
-    public AssignPlannedAndUnplannedPresenter(IAssignePlannedUnplannedView unplannedView) {
+    public AssignPlannedAndUnplannedPresenter(IAssignePlannedUnplannedView unplannedView, Activity activity) {
         this.unplannedView = unplannedView;
+        this.activity = activity;
     }
 
     @Override
@@ -41,7 +47,7 @@ public class AssignPlannedAndUnplannedPresenter implements IAssignPlannedAndUnpl
     @Override
     public void getScanStillageResponse(ScanStillageResponse body) {
         if (body == null) {
-            unplannedView.onFailure(body.getMessage());
+            unplannedView.onFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             unplannedView.onSuccess(body);
         }
@@ -68,7 +74,7 @@ public class AssignPlannedAndUnplannedPresenter implements IAssignPlannedAndUnpl
     @Override
     public void getLocationData(LocationData body) {
         if (body == null) {
-            unplannedView.onLocationFailure(body.getMessage());
+            unplannedView.onLocationFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             unplannedView.onLocationSuccess(body);
         }

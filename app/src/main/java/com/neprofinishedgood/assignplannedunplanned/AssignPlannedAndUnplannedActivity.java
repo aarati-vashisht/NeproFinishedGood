@@ -87,7 +87,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.assign_planned_and_unplanned));
-        iAssAndUAssInterface = new AssignPlannedAndUnplannedPresenter(this);
+        iAssAndUAssInterface = new AssignPlannedAndUnplannedPresenter(this, this);
         initData(null);
 
     }

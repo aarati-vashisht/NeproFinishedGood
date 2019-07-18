@@ -1,10 +1,14 @@
 package com.neprofinishedgood.qualitycheck.qualityhold.presenter;
 
+import android.app.Activity;
+
+import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.qualityhold.QualityHoldActivity;
 import com.neprofinishedgood.raf.model.ScanCountingResponse;
 
 import retrofit2.Call;
@@ -13,9 +17,11 @@ import retrofit2.Response;
 
 public class IHoldPresenter implements IHoldInterface {
     IHoldView iHoldView;
+    Activity activity;
 
-    public IHoldPresenter(IHoldView iHoldView) {
+    public IHoldPresenter(IHoldView iHoldView, Activity activity) {
         this.iHoldView = iHoldView;
+        this.activity = activity;
     }
 
 
@@ -40,7 +46,7 @@ public class IHoldPresenter implements IHoldInterface {
     @Override
     public void getScanStillageResponse(ScanStillageResponse body) {
         if (body == null) {
-            iHoldView.onFailure(body.getMessage());
+            iHoldView.onFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iHoldView.onSuccess(body);
         }
@@ -67,7 +73,7 @@ public class IHoldPresenter implements IHoldInterface {
     @Override
     public void getHoldUnholdResponse(UniversalResponse body) {
         if (body == null) {
-            iHoldView.onHoldUnholdFailure(body.getMessage());
+            iHoldView.onHoldUnholdFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iHoldView.onHoldUnholdSuccess(body);
         }

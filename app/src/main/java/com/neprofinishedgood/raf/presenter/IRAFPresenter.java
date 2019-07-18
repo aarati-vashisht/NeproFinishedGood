@@ -74,7 +74,7 @@ public class IRAFPresenter implements IRAFInterface {
     @Override
     public void getUpdateMoveResponse(UniversalResponse body) {
         if (body == null) {
-            irafView.onUpdateRAFFailure(body.getMessage());
+            irafView.onUpdateRAFFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             irafView.onUpdateRAFSuccess(body);
         }
