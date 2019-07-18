@@ -125,7 +125,12 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     public void onSuccess(ScanStillageResponse body) {
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
             hideProgress();
-            setData(body);
+            if (body.getIsTransfered() == 1) {
+                CustomToast.showToast(this, getString(R.string.this_stillage_already_transfred));
+                editTextScanStillage.setText("");
+            } else {
+                setData(body);
+            }
         } else {
             hideProgress();
             CustomToast.showToast(this, body.getMessage());
@@ -153,6 +158,8 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     }
 
     void setData(ScanStillageResponse body) {
+        stillageDetail.setVisibility(View.VISIBLE);
+        stillageDetail.setAnimation(fadeIn);
         relativeLayoutScanDetail.setVisibility(View.VISIBLE);
         stillageLayout.textViewitem.setText(body.getItemId());
         stillageLayout.textViewNumber.setText(body.getStickerID());
