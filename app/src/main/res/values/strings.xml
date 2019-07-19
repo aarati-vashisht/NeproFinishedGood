@@ -92,7 +92,7 @@
     <string name="assigned_location">Assigned Location</string>
     <string name="put_away_location">Move Location</string>
     <string name="loading_plan">Loading Plan:</string>
-    <string name="customer">Customer</string>
+    <string name="customer">Customer:</string>
     <string name="logout_successfully">Logout Successfully</string>
     <string name="scan_loading_plan">Scan Loading Plan:</string>
     <string name="trucknumber">Truck Number:</string>
@@ -143,5 +143,8 @@
     <string name="this_stillage_already_transfred">This Stillage Already Transferred</string>
     <string name="proceed_offline">Do You Want To Proceed In Offline Mode</string>
     <string name="data_saved_offline">Data Saved Offline</string>
+    <string name="scan_type_loading_plan">Scan/Type Truck Assignment Report:</string>
+    <string name="scan_type">Scan/Type</string>
+    <string name="loading_plan_not_matched_with_tar">Loading Plan didn\'t matched with TAR</string>
 
 </resources>

@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,7 +32,6 @@ import java.util.List;
 public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     String title;
     TextView textViewTitle;
-    ImageButton imageButtonBack;
     Gson gson = new Gson();
     private KProgressHUD kProgressHUD;
     public String userId;
@@ -48,12 +46,19 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
 
     AlertDialog.Builder builder;
     public boolean isOffline = false;
+    static BaseActivity instance;
+
+    public static BaseActivity getInstance() {
+        return instance;
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         setActionBarData();
+        instance = this;
         gson = new Gson();
         LoginResponse loginResponse = gson.fromJson(SharedPref.getLoginUser(), LoginResponse.class);
         if (loginResponse != null) {

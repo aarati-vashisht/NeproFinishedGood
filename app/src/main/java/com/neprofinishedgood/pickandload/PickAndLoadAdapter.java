@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.pickandload.model.LoadingPlanDatum;
+import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.utils.Constants;
 
 import java.util.ArrayList;
@@ -25,12 +26,13 @@ import butterknife.ButterKnife;
 
 public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.ViewHolder> implements Filterable {
 
-    private final List<LoadingPlanDatum> stillageDatumList;
-    private List<LoadingPlanDatum> stillageDatumListFiltered;
+    private final List<ScanLoadingPlanList> stillageDatumList;
+    private List<ScanLoadingPlanList> stillageDatumListFiltered;
     private Context context;
     private View view;
+    String customerName;
 
-    public PickAndLoadAdapter(List<LoadingPlanDatum> stillageDatumList) {
+    public PickAndLoadAdapter(List<ScanLoadingPlanList> stillageDatumList) {
         this.stillageDatumList = stillageDatumList;
         this.stillageDatumListFiltered = stillageDatumList;
     }
@@ -45,8 +47,8 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.textViewLoadingPlan.setText(stillageDatumListFiltered.get(position).getloadingPlan());
-        holder.textViewCustomer.setText(stillageDatumListFiltered.get(position).getcustomer());
+        holder.textViewLoadingPlan.setText(stillageDatumListFiltered.get(position).getLoadingPlanNo());
+        holder.textViewCustomer.setText(stillageDatumListFiltered.get(position).getCustomerId());
 
     }
 
@@ -100,9 +102,9 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
                 if (charString.isEmpty()) {
                     stillageDatumListFiltered = stillageDatumList;
                 } else {
-                    List<LoadingPlanDatum> filteredList = new ArrayList<>();
-                    for (LoadingPlanDatum row : stillageDatumList) {
-                        if (row.getloadingPlan().equalsIgnoreCase(charSequence.toString())) {
+                    List<ScanLoadingPlanList> filteredList = new ArrayList<>();
+                    for (ScanLoadingPlanList row : stillageDatumList) {
+                        if (row.getLoadingPlanNo().equalsIgnoreCase(charSequence.toString())) {
                             filteredList.add(row);
                             stillageDatumListFiltered.remove(row);
                             Gson gson = new Gson();
@@ -122,7 +124,7 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                stillageDatumListFiltered = (ArrayList<LoadingPlanDatum>) filterResults.values;
+                stillageDatumListFiltered = (ArrayList<ScanLoadingPlanList>) filterResults.values;
                 notifyDataSetChanged();
 
             }
