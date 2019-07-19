@@ -28,6 +28,7 @@ import com.neprofinishedgood.plannedandunplannedmove.presenter.IPlannedAndUnPlan
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IPlannedUnplannedPresenter;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
+import com.neprofinishedgood.utils.NetworkHandleService;
 import com.neprofinishedgood.utils.SharedPref;
 
 import java.lang.reflect.Type;
@@ -65,8 +66,7 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
         instance = this;
         setTitle(getString(R.string.move));
         iPlannedUnplannedPresenter = new IPlannedUnplannedPresenter(this, this);
-        callMoveService();
-        initData();
+        callService();
 
     }
 
@@ -95,9 +95,10 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
             if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                if (!isOffline) {
+                if (NetworkChangeReceiver.isInternetConnected(PlannedAndUnPlannedMoveActivity.this)) {
                     showProgress(PlannedAndUnPlannedMoveActivity.this);
-                    iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                    String stillageTxt = editTextScanStillage.getText().toString().trim();
+                    iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(stillageTxt, userId));
                 } else {
                     offlineProcess();
                 }
@@ -157,22 +158,14 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
         recyclerViewStillage.setHasFixedSize(true);
     }
 
-    //initializes data after checking internet
-    void initData() {
-        if (NetworkChangeReceiver.isInternetConnected(PlannedAndUnPlannedMoveActivity.this)) {
-            getAllAssignedData();
-        } else {
-            showNoInternetAlert();
-        }
-    }
-
     void offlineProcess() {
         startActivity(new Intent(this, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE_OFFLINE, editTextScanStillage.getText().toString().trim()));
         editTextScanStillage.setText("");
         overridePendingTransition(0, 0);
     }
 
-    public void callMoveService() {
+    //initializes data and calling MoveService after checking internet
+    public void callService() {
         if (NetworkChangeReceiver.isInternetConnected(PlannedAndUnPlannedMoveActivity.this)) {
             ArrayList<UpdateMoveLocationInput> moveList = new ArrayList<>();
             Gson gson = new Gson();
@@ -188,6 +181,7 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
                 String json = "";
                 SharedPref.saveMoveData(json);
             }
+            getAllAssignedData();
         }
     }
 }

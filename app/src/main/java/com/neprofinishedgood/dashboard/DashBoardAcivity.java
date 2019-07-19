@@ -18,6 +18,8 @@ import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
 import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
 import com.neprofinishedgood.transferstillage.TransferStillageActivity;
 import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
+import com.neprofinishedgood.utils.NetworkHandleService;
 import com.neprofinishedgood.utils.SharedPref;
 
 import butterknife.ButterKnife;
@@ -41,6 +43,8 @@ public class DashBoardAcivity extends BaseActivity {
         instance = this;
         setTitle(getString(R.string.dashbord));
         initData();
+        offlineCheck();
+
     }
 
     private void initData() {
@@ -133,5 +137,11 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutUpdateQuantity)
     public void setlinearLayoutUpdateQuantityClick() {
         startActivity(new Intent(this, UpdateQuantityActivity.class));
+    }
+
+    void offlineCheck(){
+        if(!NetworkChangeReceiver.isInternetConnected(DashBoardAcivity.this) ){
+            showNoInternetAlert();
+        }
     }
 }
