@@ -141,5 +141,7 @@
     <string name="this_stillage_already_merged">This Stillage Already Merged</string>
     <string name="this_stillage_already_recieved">This Stillage Already Received</string>
     <string name="this_stillage_already_transfred">This Stillage Already Transferred</string>
+    <string name="proceed_offline">Do You Want To Proceed In Offline Mode</string>
+    <string name="data_saved_offline">Data Saved Offline</string>
 
 </resources>

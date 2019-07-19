@@ -1,6 +1,9 @@
 package com.neprofinishedgood.plannedandunplannedmove;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +14,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
@@ -19,10 +23,15 @@ import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IPlannedAndUnPlannedView;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IPlannedUnplannedPresenter;
 import com.neprofinishedgood.utils.Constants;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
+import com.neprofinishedgood.utils.SharedPref;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -56,7 +65,8 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
         instance = this;
         setTitle(getString(R.string.move));
         iPlannedUnplannedPresenter = new IPlannedUnplannedPresenter(this, this);
-        getAllAssignedData();
+        callMoveService();
+        initData();
 
     }
 
@@ -84,9 +94,13 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
     Handler scanStillagehandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            showProgress(PlannedAndUnPlannedMoveActivity.this);
             if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(),userId));
+                if (!isOffline) {
+                    showProgress(PlannedAndUnPlannedMoveActivity.this);
+                    iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                } else {
+                    offlineProcess();
+                }
             }
         }
     };
@@ -143,5 +157,37 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
         recyclerViewStillage.setHasFixedSize(true);
     }
 
+    //initializes data after checking internet
+    void initData() {
+        if (NetworkChangeReceiver.isInternetConnected(PlannedAndUnPlannedMoveActivity.this)) {
+            getAllAssignedData();
+        } else {
+            showNoInternetAlert();
+        }
+    }
 
+    void offlineProcess() {
+        startActivity(new Intent(this, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE_OFFLINE, editTextScanStillage.getText().toString().trim()));
+        editTextScanStillage.setText("");
+        overridePendingTransition(0, 0);
+    }
+
+    public void callMoveService() {
+        if (NetworkChangeReceiver.isInternetConnected(PlannedAndUnPlannedMoveActivity.this)) {
+            ArrayList<UpdateMoveLocationInput> moveList = new ArrayList<>();
+            Gson gson = new Gson();
+            String moveData = SharedPref.getMoveData();
+            if (!moveData.equals("")) {
+                Type type = new TypeToken<ArrayList<UpdateMoveLocationInput>>() {
+                }.getType();
+                moveList = gson.fromJson(moveData, type);
+
+                for (UpdateMoveLocationInput updateMoveLocationInput : moveList) {
+                    iPlannedUnplannedPresenter.callMoveServcie(updateMoveLocationInput);
+                }
+                String json = "";
+                SharedPref.saveMoveData(json);
+            }
+        }
+    }
 }

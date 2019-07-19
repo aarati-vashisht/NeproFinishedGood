@@ -5,11 +5,13 @@ import android.app.Activity;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.PlannedAndUnPlannedMoveActivity;
 import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,6 +76,24 @@ public class IPlannedUnplannedPresenter implements IPLannedUnplannedInterface {
             @Override
             public void onFailure(Call<ScanStillageResponse> call, Throwable t) {
                 getMoveResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void callMoveServcie(UpdateMoveLocationInput updateMoveLocationInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.updateMovingStatus(updateMoveLocationInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+
 
             }
         });

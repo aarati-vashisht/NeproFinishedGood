@@ -7,6 +7,8 @@ import static com.neprofinishedgood.MyApplication.editor;
 public class SharedPref {
     static String LOGIN_DATA = "LOGIN_DATA";
     private static String MASTER_DATA = "MASTER_DATA";
+    private static String MOVE_DATA = "MOVE_DATA";
+
 
     public static void saveLoginUSer(String loginData) {
         editor.putString(LOGIN_DATA, loginData);
@@ -31,6 +33,16 @@ public class SharedPref {
 
     public static String getMasterData() {
         String data = MyApplication.sharedPreferences.getString(MASTER_DATA, "");
+        return data;
+    }
+
+    public static void saveMoveData(String jsonData) {
+        editor.putString(MOVE_DATA, jsonData);
+        editor.apply();
+    }
+
+    public static String getMoveData() {
+        String data = MyApplication.sharedPreferences.getString(MOVE_DATA, "");
         return data;
     }
 }
