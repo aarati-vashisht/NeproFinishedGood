@@ -13,8 +13,10 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.plannedandunplannedmove.adapter.MoveAdapter;
@@ -25,8 +27,14 @@ import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IMovePresenter;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IMoveView;
+import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 import com.neprofinishedgood.utils.Constants;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
+import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,13 +66,23 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     @BindView(R.id.stillageDetail)
     View stillageDetail;
 
+    @BindView(R.id.textViewNumberOffline)
+    TextView textViewNumberOffline;
+
+    @BindView(R.id.linearLayoutOfflineData)
+    LinearLayout linearLayoutOfflineData;
+
     StillageLayout stillageLayout;
 
-    private IMovePresenter movePresenter;
+    private static IMovePresenter movePresenter;
     long delay = 1000;
     long dropLocationLastText = 0;
     private MoveAdapter adapter;
-    String aisle, rack, bin, stillageData;
+    String aisle = "", rack = "", bin = "", stillageData;
+
+    String stillageNumber;
+
+    String offlineData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +97,17 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     }
 
     private void getIntentData() {
-        initData(null);
-        Gson gson = new Gson();
-        stillageData = getIntent().getStringExtra(Constants.SELECTED_STILLAGE);
-        ScanStillageResponse scanStillageResponse = gson.fromJson(stillageData, ScanStillageResponse.class);
-        setData(scanStillageResponse);
+        offlineData = getIntent().getStringExtra(Constants.SELECTED_STILLAGE_OFFLINE);
+        if (offlineData == null) {
+            initData(null);
+
+            Gson gson = new Gson();
+            stillageData = getIntent().getStringExtra(Constants.SELECTED_STILLAGE);
+            ScanStillageResponse scanStillageResponse = gson.fromJson(stillageData, ScanStillageResponse.class);
+            setData(scanStillageResponse);
+        } else {
+            setDataOffline();
+        }
     }
 
     //data initialization
@@ -103,14 +127,21 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 
     @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
-        if (isValidated()) {
-            UpdateMoveLocationInput updateMoveLocationInput;
-            if (linearLayoutPutAwayLocation.getVisibility() != View.VISIBLE) {
-                updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), "", "", "", userId);
-            } else {
-                updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), aisle, rack, bin, userId);
+        UpdateMoveLocationInput updateMoveLocationInput;
+        if (offlineData == null) {
+            if (isValidated()) {
+                if (linearLayoutPutAwayLocation.getVisibility() != View.VISIBLE) {
+                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), "", "", "", userId);
+                } else {
+                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), aisle, rack, bin, userId);
+                }
+                movePresenter.callMoveServcie(updateMoveLocationInput);
             }
-            movePresenter.callMoveServcie(updateMoveLocationInput);
+        } else {
+            if (isOfflineValidated()) {
+                updateMoveLocationInput = new UpdateMoveLocationInput(textViewNumberOffline.getText().toString(), aisle, rack, bin, userId);
+                saveDataOffline(updateMoveLocationInput);
+            }
         }
 
     }
@@ -287,4 +318,48 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         spinnerRack.setVisibility(View.VISIBLE);
         editTextDropLocation.setText("");
     }
+
+    void setDataOffline() {
+        stillageNumber = getIntent().getStringExtra(Constants.SELECTED_STILLAGE_OFFLINE);
+        initData(null);
+        textViewNumberOffline.setText(stillageNumber);
+        setVisibilityInOfflineMode();
+    }
+
+    void setVisibilityInOfflineMode() {
+        linearLayoutOfflineData.setVisibility(View.VISIBLE);
+        stillageDetail.setVisibility(View.GONE);
+        linearLayoutAssignedLocation.setVisibility(View.GONE);
+    }
+
+    void saveDataOffline(UpdateMoveLocationInput data) {
+        ArrayList<UpdateMoveLocationInput> moveList = new ArrayList<>();
+        Gson gson = new Gson();
+        String moveData = SharedPref.getMoveData();
+        if (!moveData.equals("")) {
+            Type type = new TypeToken<ArrayList<UpdateMoveLocationInput>>() {
+            }.getType();
+            moveList = gson.fromJson(moveData, type);
+        }
+        moveList.add(data);
+        String json = gson.toJson(moveList);
+        SharedPref.saveMoveData(json);
+        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
+        onButtonCancelClick();
+        clearAllSpinnerData();
+        finish();
+    }
+
+    boolean isOfflineValidated() {
+        if (spinnerAisle.getSelectedItemPosition() != 0 || spinnerRack.getSelectedItemPosition() != 0 || spinnerBin.getSelectedItemPosition() != 0) {
+            return true;
+        } else {
+            TextView textView = (TextView) spinnerAisle.getSelectedView();
+            textView.setError(getString(R.string.select_aisle));
+            textView.requestFocus();
+            return false;
+        }
+
+    }
+
 }

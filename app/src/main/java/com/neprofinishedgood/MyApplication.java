@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.MasterData;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 
 import retrofit2.Call;
@@ -30,7 +31,9 @@ public class MyApplication extends Application {
         instance = this;
         sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        callMasterData();
+        if (NetworkChangeReceiver.isInternetConnected(getApplicationContext())) {
+            callMasterData();
+        }
     }
 
     public void callMasterData() {

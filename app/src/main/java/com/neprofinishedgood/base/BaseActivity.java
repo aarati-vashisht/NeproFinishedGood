@@ -1,6 +1,8 @@
 package com.neprofinishedgood.base;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -43,6 +45,9 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<UniversalSpinner> reasonList = new ArrayList<>();
     public List<UniversalSpinner> fltList = new ArrayList<>();
     public List<UniversalSpinner> warehouseList = new ArrayList<>();
+
+    AlertDialog.Builder builder;
+    public boolean isOffline = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +140,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     }
 
     public void imageButtonBackClick(View view) {
+        isOffline = false;
         finish();
     }
 
@@ -160,5 +166,33 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void showNoInternetAlert() {
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.proceed_offline));
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        isOffline = true;
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.setClassName("com.android.phone", "com.android.phone.NetworkSetting");
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        isOffline = false;
     }
 }
