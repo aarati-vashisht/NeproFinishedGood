@@ -65,7 +65,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.transfer));
-        iTransferInterface = new TransferPresenter(this, this );
+        iTransferInterface = new TransferPresenter(this, this);
         initData();
 
     }
