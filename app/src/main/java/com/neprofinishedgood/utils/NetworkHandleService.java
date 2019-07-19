@@ -8,6 +8,7 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 
 
+
 public class NetworkHandleService extends IntentService {
 
     private Handler handler;
@@ -22,7 +23,6 @@ public class NetworkHandleService extends IntentService {
         handler = new Handler();
         boolean isNetworkConnected = extras.getBoolean("isNetworkConnected");
         if (isNetworkConnected) {
-
         }
     }
 

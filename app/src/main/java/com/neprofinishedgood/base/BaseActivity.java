@@ -25,6 +25,8 @@ import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.login.LoginActivity;
 import com.neprofinishedgood.login.model.LoginResponse;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
+import com.neprofinishedgood.utils.NetworkHandleService;
 import com.neprofinishedgood.utils.SharedPref;
 
 import java.util.ArrayList;
@@ -47,7 +49,8 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<UniversalSpinner> warehouseList = new ArrayList<>();
 
     AlertDialog.Builder builder;
-    public boolean isOffline = false;
+
+    boolean isOffline = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         fadeOut = AnimationUtils.loadAnimation(BaseActivity.this, R.anim.animate_fade_out);
         fadeIn = AnimationUtils.loadAnimation(BaseActivity.this, R.anim.animate_fade_in);
         getMAsterData(gson);
+
 
     }
 
@@ -140,10 +144,9 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     }
 
     public void imageButtonBackClick(View view) {
-        isOffline = false;
+
         finish();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -193,6 +196,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        isOffline = false;
+
     }
+
 }

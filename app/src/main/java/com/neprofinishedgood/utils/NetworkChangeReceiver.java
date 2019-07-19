@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
-    private static boolean isConnected = true;
+    public static boolean isConnected = true;
 
     public static boolean isInternetConnected(Context context) {
         try {

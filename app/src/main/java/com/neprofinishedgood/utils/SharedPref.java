@@ -8,6 +8,8 @@ public class SharedPref {
     static String LOGIN_DATA = "LOGIN_DATA";
     private static String MASTER_DATA = "MASTER_DATA";
     private static String MOVE_DATA = "MOVE_DATA";
+    private static String RAF_DATA = "MOVE_DATA";
+    private static String REJECT_DATA = "MOVE_DATA";
 
 
     public static void saveLoginUSer(String loginData) {
@@ -43,6 +45,26 @@ public class SharedPref {
 
     public static String getMoveData() {
         String data = MyApplication.sharedPreferences.getString(MOVE_DATA, "");
+        return data;
+    }
+
+    public static void saveRafData(String jsonData) {
+        editor.putString(RAF_DATA, jsonData);
+        editor.apply();
+    }
+
+    public static String getRafData() {
+        String data = MyApplication.sharedPreferences.getString(RAF_DATA, "");
+        return data;
+    }
+
+    public static void saveRejectData(String jsonData) {
+        editor.putString(REJECT_DATA, jsonData);
+        editor.apply();
+    }
+
+    public static String getRejectData() {
+        String data = MyApplication.sharedPreferences.getString(REJECT_DATA, "");
         return data;
     }
 }
