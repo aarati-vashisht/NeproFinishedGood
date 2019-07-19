@@ -50,7 +50,7 @@
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:text="W00001"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
                 <TextView
@@ -65,11 +65,11 @@
                 <TextView
                     android:id="@+id/textViewQuantity"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight=".20"
                     android:maxLines="1"
                     android:text="20"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -95,7 +95,7 @@
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:text="Item1"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
                 <TextView
@@ -116,7 +116,7 @@
                     android:layout_weight=".20"
                     android:maxLines="1"
                     android:text="20"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -142,7 +142,7 @@
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:text="S1"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
 
@@ -163,7 +163,7 @@
                     android:layout_weight=".20"
                     android:maxLines="1"
                     android:text="W1"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
             </LinearLayout>
@@ -190,7 +190,7 @@
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:text="A1"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
 
@@ -211,7 +211,7 @@
                     android:layout_weight=".20"
                     android:maxLines="1"
                     android:text="R1"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
             </LinearLayout>
@@ -238,7 +238,7 @@
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:text="B1"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
 

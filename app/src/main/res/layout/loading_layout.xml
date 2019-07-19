@@ -27,9 +27,9 @@
             android:padding="10dp">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginRight="10dp"
                 android:text="@string/loading_plan"
                 android:textColor="@color/black"
                 android:textSize="10sp" />
@@ -41,14 +41,14 @@
                 android:layout_weight="1"
                 android:maxLines="1"
                 android:text="W00001"
-                android:textColor="@color/black"
+                android:textColor="@color/gray_color"
                 android:textSize="10sp" />
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_weight="1"
+                android:layout_marginRight="10dp"
                 android:text="@string/customer"
                 android:textColor="@color/black"
                 android:textSize="10sp" />
@@ -60,7 +60,7 @@
                 android:layout_weight="1"
                 android:maxLines="1"
                 android:text="20"
-                android:textColor="@color/black"
+                android:textColor="@color/gray_color"
                 android:textSize="10sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
