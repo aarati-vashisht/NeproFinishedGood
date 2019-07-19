@@ -114,7 +114,7 @@
     <string name="picked_successfullt">Is Picked Successfully</string>
     <string name="itemDesc">Item Description:</string>
     <string name="lookUp">Look Up</string>
-    <string name="update_quantity">Update Quantity</string>
+    <string name="update_quantity">Update Sticker Quantity</string>
     <string name="success">Success</string>
     <string name="quantity_must_not_be_zero">Quantity Must Not Be Zero!</string>
     <string name="quantity_updated_successfully">Quantity Updated Successfully</string>

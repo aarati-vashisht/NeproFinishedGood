@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatEditText;
@@ -34,6 +32,8 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     LinearLayout linearLayoutScanDetail;
     @BindView(R.id.linearLayoutEnterQuantity)
     LinearLayout linearLayoutEnterQuantity;
+    @BindView(R.id.linearLayoutRejectReason)
+    LinearLayout linearLayoutRejectReason;
     @BindView(R.id.linearLayoutButtons)
     LinearLayout linearLayoutButtons;
     @BindView(R.id.editTextScanStillage)
@@ -49,8 +49,6 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     StillageLayout stillageLayout;
     StillageDatum stillageDatum;
 
-    Animation fadeOut;
-    Animation fadeIn;
 
     long delay = 1000;
     long scanStillageLastTexxt = 0;
@@ -72,8 +70,6 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
 
-        fadeOut = AnimationUtils.loadAnimation(UpdateQuantityActivity.this, R.anim.animate_fade_out);
-        fadeIn = AnimationUtils.loadAnimation(UpdateQuantityActivity.this, R.anim.animate_fade_in);
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -96,7 +92,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         public void run() {
             showProgress(UpdateQuantityActivity.this);
             if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                iUpdateQtyInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+             //   iUpdateQtyInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
 
             }
         }
@@ -105,6 +101,8 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     void setData(ScanStillageResponse body) {
         linearLayoutScanDetail.setVisibility(View.VISIBLE);
         linearLayoutScanDetail.setAnimation(fadeIn);
+        linearLayoutRejectReason.setVisibility(View.VISIBLE);
+        linearLayoutRejectReason.setAnimation(fadeIn);
         linearLayoutEnterQuantity.setVisibility(View.VISIBLE);
         linearLayoutEnterQuantity.setAnimation(fadeIn);
         linearLayoutButtons.setVisibility(View.VISIBLE);
@@ -153,6 +151,8 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     public void onButtonCancelClick() {
         linearLayoutScanDetail.setVisibility(View.GONE);
         linearLayoutScanDetail.setAnimation(fadeOut);
+        linearLayoutRejectReason.setVisibility(View.GONE);
+        linearLayoutRejectReason.setAnimation(fadeOut);
         linearLayoutEnterQuantity.setVisibility(View.GONE);
         linearLayoutEnterQuantity.setAnimation(fadeOut);
         linearLayoutButtons.setVisibility(View.GONE);
