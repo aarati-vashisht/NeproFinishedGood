@@ -6,8 +6,8 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.login.model.LoginUser;
 import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
-import com.neprofinishedgood.pickandload.model.LoadingPlanDetailInput;
-import com.neprofinishedgood.pickandload.model.LoadingPlanDetailResponse;
+import com.neprofinishedgood.pickandload.model.LoadingPlanDetails;
+import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.pickandload.model.LoadingPlanResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
@@ -91,10 +91,10 @@ public interface ApiInterface {
 
 
     @POST("GetLoadingPlan")
-    Call<LoadingPlanResponse> getLoadingPlan(@Body MoveInput moveInput);
+    Call<LoadingPlanResponse> getLoadingPlan(@Body AllAssignedDataInput allAssignedDataInput);
 
     @POST("GetLoadingPlanDetails")
-    Call<LoadingPlanDetailResponse> getLoadingPlanDetails(@Body LoadingPlanDetailInput loadingPlanDetailInput);
+    Call<LoadingPlanDetails> getLoadingPlanDetails(@Body LoadingPlanInput loadingPlanDetailInput);
 
 
 }

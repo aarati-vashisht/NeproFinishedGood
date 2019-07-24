@@ -146,4 +146,8 @@
     <string name="child_and_parent_cannot_be_same">Child And Parent Stillage Can\'t  Be Same</string>
     <string name="no_internet">No Internet!</string>
 
+    <string name="scan_type_loading_plan">Scan/Type Truck Assignment Report:</string>
+    <string name="scan_type">Scan/Type</string>
+    <string name="loading_plan_not_matched_with_tar">Loading Plan didn\'t matched with TAR</string>
+
 </resources>

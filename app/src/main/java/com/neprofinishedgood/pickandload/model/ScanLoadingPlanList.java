@@ -15,6 +15,16 @@ public class ScanLoadingPlanList {
     @Expose
     private String customerId;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String status = "";
+
     public Integer getTLPHID() {
         return tLPHID;
     }

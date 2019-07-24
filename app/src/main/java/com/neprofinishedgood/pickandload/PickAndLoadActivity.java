@@ -10,66 +10,75 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.pickandload.model.LoadingPlanResponse;
 import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
-import com.neprofinishedgood.pickandload.presenter.ILoadingPlanPresenter;
-import com.neprofinishedgood.pickandload.presenter.ILoadingPlanView;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
+import com.neprofinishedgood.pickandload.presenter.IPickAndLoadInterFace;
+import com.neprofinishedgood.pickandload.presenter.IPickAndLoadVIew;
+import com.neprofinishedgood.pickandload.presenter.PickAndLoadPresenter;
+import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
 import com.neprofinishedgood.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PickAndLoadActivity extends BaseActivity implements ILoadingPlanView {
+public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIew {
     @BindView(R.id.recyclerViewLoadingPlans)
     RecyclerView recyclerViewLoadingPlans;
 
-    ILoadingPlanPresenter iLoadingPlanPresenter;
-
 
     private PickAndLoadAdapter loadingPlanAdapter;
+    IPickAndLoadInterFace iPickAndLoadInterFace;
+    public List<ScanLoadingPlanList> scanLoadingPlanList = new ArrayList<>();
+    static PickAndLoadActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_and_load);
         ButterKnife.bind(this);
+        instance = this;
         Utils.hideSoftKeyboard(this);
-        iLoadingPlanPresenter = new ILoadingPlanPresenter(this, this);
         setTitle(getString(R.string.pickload));
-        getAllLoadingData();
+        iPickAndLoadInterFace = new PickAndLoadPresenter(this, this);
+        getLoadingPlanData();
     }
 
-    void getAllLoadingData() {
+    private void getLoadingPlanData() {
         showProgress(this);
-        iLoadingPlanPresenter.callLoadingPlanService(new MoveInput("", userId));
+        iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
     }
 
-    private void setAdapter(List<ScanLoadingPlanList> scanLoadingPlanLists) {
+    private void setAdapter(List<ScanLoadingPlanList> scanLoadingPlanList) {
         recyclerViewLoadingPlans.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        loadingPlanAdapter = new PickAndLoadAdapter(scanLoadingPlanLists);
+        loadingPlanAdapter = new PickAndLoadAdapter(scanLoadingPlanList);
         recyclerViewLoadingPlans.setAdapter(loadingPlanAdapter);
         recyclerViewLoadingPlans.setHasFixedSize(true);
 
     }
 
     @Override
-    public void onLoadingPlanSuccess(LoadingPlanResponse response) {
+    public void onFailure(String message) {
         hideProgress();
-        if (response.getStatus().equals(getString(R.string.success))) {
-            CustomToast.showToast(this, response.getMessage());
-            if (response.getScanLoadingPlanList().size() > 0) {
-                setAdapter(response.getScanLoadingPlanList());
-            }
-        } else {
-            CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
-        }
+        CustomToast.showToast(this, message);
+    }
+
+    public static PickAndLoadActivity getInstance() {
+        return instance;
     }
 
     @Override
-    public void onLoadingPlanFailure(String message) {
+    public void onSuccess(LoadingPlanResponse body) {
+        scanLoadingPlanList = body.getScanLoadingPlanList();
         hideProgress();
-        CustomToast.showToast(this, message);
+        setAdapter(scanLoadingPlanList);
+    }
+
+    public void refreshData(String loadingPlan) {
+        for (int i = 0; i < scanLoadingPlanList.size(); i++) {
+            if (scanLoadingPlanList.get(i).getLoadingPlanNo().equals(loadingPlan)) {
+                scanLoadingPlanList.get(i).setStatus("1");
+            }
+        }
     }
 }
