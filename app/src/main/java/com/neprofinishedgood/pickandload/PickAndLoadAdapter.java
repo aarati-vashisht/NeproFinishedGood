@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.pickandload.model.LoadingPlanDatum;
+import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.utils.Constants;
 
 import java.util.ArrayList;
@@ -25,14 +25,14 @@ import butterknife.ButterKnife;
 
 public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.ViewHolder> implements Filterable {
 
-    private final List<LoadingPlanDatum> stillageDatumList;
-    private List<LoadingPlanDatum> stillageDatumListFiltered;
+    private final List<ScanLoadingPlanList> scanLoadingPlanList;
+    private List<ScanLoadingPlanList> scanLoadingPlanListFiltered;
     private Context context;
     private View view;
 
-    public PickAndLoadAdapter(List<LoadingPlanDatum> stillageDatumList) {
-        this.stillageDatumList = stillageDatumList;
-        this.stillageDatumListFiltered = stillageDatumList;
+    public PickAndLoadAdapter(List<ScanLoadingPlanList> scanLoadingPlanList) {
+        this.scanLoadingPlanList = scanLoadingPlanList;
+        this.scanLoadingPlanListFiltered = scanLoadingPlanList;
     }
 
     @Override
@@ -45,14 +45,14 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.textViewLoadingPlan.setText(stillageDatumListFiltered.get(position).getloadingPlan());
-        holder.textViewCustomer.setText(stillageDatumListFiltered.get(position).getcustomer());
+        holder.textViewLoadingPlan.setText(scanLoadingPlanListFiltered.get(position).getLoadingPlanNo());
+        holder.textViewCustomer.setText(scanLoadingPlanListFiltered.get(position).getCustomerId());
 
     }
 
     @Override
     public int getItemCount() {
-        return stillageDatumListFiltered.size();
+        return scanLoadingPlanListFiltered.size();
     }
 
 
@@ -83,9 +83,11 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
         @Override
         public void onClick(View v) {
             if (v == mView) {
-                Gson gson = new Gson();
-                String putExtraData = gson.toJson(stillageDatumListFiltered.get(getAdapterPosition()));
-                context.startActivity(new Intent(context, PickAndLoadStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+//                Gson gson = new Gson();
+//                String putExtraData = gson.toJson(scanLoadingPlanListFiltered.get(getAdapterPosition()));
+                String loadingPlanID = scanLoadingPlanListFiltered.get(getAdapterPosition()).getTLPHID()+"";
+                context.startActivity(new Intent(context, PickAndLoadStillageActivity.class)
+                        .putExtra(Constants.SELECTED_STILLAGE, loadingPlanID));
             }
 
         }
@@ -98,31 +100,31 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
-                    stillageDatumListFiltered = stillageDatumList;
+                    scanLoadingPlanListFiltered = scanLoadingPlanList;
                 } else {
-                    List<LoadingPlanDatum> filteredList = new ArrayList<>();
-                    for (LoadingPlanDatum row : stillageDatumList) {
-                        if (row.getloadingPlan().equalsIgnoreCase(charSequence.toString())) {
+                    List<ScanLoadingPlanList> filteredList = new ArrayList<>();
+                    for (ScanLoadingPlanList row : scanLoadingPlanList) {
+                        if (row.getLoadingPlanNo().equalsIgnoreCase(charSequence.toString())) {
                             filteredList.add(row);
-                            stillageDatumListFiltered.remove(row);
+                            scanLoadingPlanListFiltered.remove(row);
                             Gson gson = new Gson();
                             String putExtraData = gson.toJson(filteredList.get(0));
                             context.startActivity(new Intent(context, PickAndLoadStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
                         }
                     }
-                    filteredList.addAll(stillageDatumListFiltered);
-                    stillageDatumListFiltered = filteredList;
+                    filteredList.addAll(scanLoadingPlanListFiltered);
+                    scanLoadingPlanListFiltered = filteredList;
 
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = stillageDatumListFiltered;
+                filterResults.values = scanLoadingPlanListFiltered;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                stillageDatumListFiltered = (ArrayList<LoadingPlanDatum>) filterResults.values;
+                scanLoadingPlanListFiltered = (ArrayList<ScanLoadingPlanList>) filterResults.values;
                 notifyDataSetChanged();
 
             }

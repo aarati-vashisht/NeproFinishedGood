@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -183,8 +184,8 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                 })
                 .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.setClassName("com.android.phone", "com.android.phone.NetworkSetting");
+                        Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+//                        intent.setClassName("com.android.phone", "com.android.phone.ACTION_WIRELESS_SETTINGS");
                         startActivity(intent);
                         dialog.cancel();
                     }

@@ -92,7 +92,7 @@
     <string name="assigned_location">Assigned Location</string>
     <string name="put_away_location">Move Location</string>
     <string name="loading_plan">Loading Plan:</string>
-    <string name="customer">Customer</string>
+    <string name="customer">Customer:</string>
     <string name="logout_successfully">Logout Successfully</string>
     <string name="scan_loading_plan">Scan Loading Plan:</string>
     <string name="trucknumber">Truck Number:</string>
@@ -143,5 +143,7 @@
     <string name="this_stillage_already_transfred">This Stillage Already Transferred</string>
     <string name="proceed_offline">Do You Want To Proceed In Offline Mode</string>
     <string name="data_saved_offline">Data Saved Offline</string>
+    <string name="child_and_parent_cannot_be_same">Child And Parent Stillage Can\'t  Be Same</string>
+    <string name="no_internet">No Internet!</string>
 
 </resources>

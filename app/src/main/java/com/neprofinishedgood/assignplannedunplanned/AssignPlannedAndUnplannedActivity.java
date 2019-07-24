@@ -5,12 +5,15 @@ import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.assignplannedunplanned.model.AssignedUnAssignedInput;
 import com.neprofinishedgood.assignplannedunplanned.presenter.AssignPlannedAndUnplannedPresenter;
@@ -25,7 +28,14 @@ import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
 import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.model.RejectedInput;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
+import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +82,13 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
 
     @BindView(R.id.frameAssignLocation)
     FrameLayout frameAssignLocation;
+
+    @BindView(R.id.linearLayoutOfflineData)
+    LinearLayout linearLayoutOfflineData;
+
+    @BindView(R.id.textViewNumberOffline)
+    TextView textViewNumberOffline;
+
     boolean isButtonInAssignLocation = true;
     private IAssignPlannedAndUnplannedInterFace iAssAndUAssInterface;
     long scanStillageLastTexxt = 0;
@@ -89,6 +106,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
         setTitle(getString(R.string.assign_planned_and_unplanned));
         iAssAndUAssInterface = new AssignPlannedAndUnplannedPresenter(this, this);
         initData(null);
+        callService();
 
     }
 
@@ -189,9 +207,13 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     Handler scanStillagehandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            showProgress(AssignPlannedAndUnplannedActivity.this);
-            if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                iAssAndUAssInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+            if (NetworkChangeReceiver.isInternetConnected(AssignPlannedAndUnplannedActivity.this)) {
+                showProgress(AssignPlannedAndUnplannedActivity.this);
+                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                    iAssAndUAssInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                }
+            } else {
+                setDataOffline();
             }
         }
     };
@@ -245,14 +267,20 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
             buttonAssign.setEnabled(false);
         } else if (isFLTValidated() && !isButtonInAssignLocation) {
             //for flt Assign
-            showProgress(this);
-            AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
-            iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
+            if (linearLayoutOfflineData.getVisibility() == View.GONE) {
+                showProgress(this);
+                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
+                iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
 
-            frameAssignFlt.setVisibility(View.GONE);
-            frameAssignLocation.setVisibility(View.VISIBLE);
-            isButtonInAssignLocation = true;
-
+                frameAssignFlt.setVisibility(View.GONE);
+                frameAssignLocation.setVisibility(View.VISIBLE);
+                isButtonInAssignLocation = true;
+            } else {
+                if (isOfflineValidated()) {
+                    AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
+                    saveDataOffline(assignedUnAssignedInput);
+                }
+            }
         }
 
     }
@@ -270,13 +298,18 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
             buttonAssign.setEnabled(false);
         } else if (!isButtonInAssignLocation) {
             flt = "";
-            showProgress(this);
-            AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
-            iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
+            if (linearLayoutOfflineData.getVisibility() == View.GONE) {
+                showProgress(this);
+                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
+                iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
 
-            frameAssignFlt.setVisibility(View.GONE);
-            frameAssignLocation.setVisibility(View.VISIBLE);
-            isButtonInAssignLocation = true;
+                frameAssignFlt.setVisibility(View.GONE);
+                frameAssignLocation.setVisibility(View.VISIBLE);
+                isButtonInAssignLocation = true;
+            } else {
+                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
+                saveDataOffline(assignedUnAssignedInput);
+            }
         }
 
 
@@ -364,19 +397,94 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     @Override
     public void onAssigneUnassignedFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
+            CustomToast.showToast(this, message);
+        }
     }
 
     @Override
     public void onAssigneUnassignedSuccess(UniversalResponse response) {
         hideProgress();
-        if (response.getStatus().equals(getString(R.string.success))) {
-            relativeLayoutScanDetail.setVisibility(View.GONE);
-            editTextScanStillage.setEnabled(true);
-            editTextScanStillage.setText("");
-            clearAllSpinnerData();
-        } else {
-            CustomToast.showToast(this, response.getMessage());
+        if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
+            if (response.getStatus().equals(getString(R.string.success))) {
+                relativeLayoutScanDetail.setVisibility(View.GONE);
+                editTextScanStillage.setEnabled(true);
+                editTextScanStillage.setText("");
+                clearAllSpinnerData();
+            } else {
+                CustomToast.showToast(this, response.getMessage());
+            }
+        }
+    }
+
+
+    void setDataOffline() {
+        textViewNumberOffline.setText(editTextScanStillage.getText().toString());
+        setVisibilityInOfflineMode();
+        initData(null);
+    }
+
+    void setVisibilityInOfflineMode() {
+        editTextScanStillage.setEnabled(false);
+        linearLayoutOfflineData.setVisibility(View.VISIBLE);
+        stillageDetail.setVisibility(View.GONE);
+        relativeLayoutScanDetail.setVisibility(View.VISIBLE);
+    }
+
+    void disableVisibility() {
+        relativeLayoutScanDetail.setVisibility(View.GONE);
+        editTextScanStillage.setEnabled(true);
+        editTextScanStillage.setText("");
+        linearLayoutOfflineData.setVisibility(View.GONE);
+        stillageDetail.setVisibility(View.VISIBLE);
+        clearAllSpinnerData();
+        frameAssignFlt.setVisibility(View.GONE);
+        frameAssignLocation.setVisibility(View.VISIBLE);
+        isButtonInAssignLocation = true;
+    }
+
+    void saveDataOffline(AssignedUnAssignedInput data) {
+        ArrayList<AssignedUnAssignedInput> assignedUnAssignedList = new ArrayList<>();
+        Gson gson = new Gson();
+        String assignedUnAssignedData = SharedPref.getAssignedUnAssignedData();
+        if (!assignedUnAssignedData.equals("")) {
+            Type type = new TypeToken<ArrayList<AssignedUnAssignedInput>>() {
+            }.getType();
+            assignedUnAssignedList = gson.fromJson(assignedUnAssignedData, type);
+        }
+        assignedUnAssignedList.add(data);
+        String json = gson.toJson(assignedUnAssignedList);
+        SharedPref.saveAssignedUnAssignedData(json);
+        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
+        disableVisibility();
+    }
+
+    boolean isOfflineValidated() {
+        if (spinnerAssignFlt.getSelectedItemPosition() == 0) {
+            TextView textView = (TextView) spinnerAssignFlt.getSelectedView();
+            textView.setError(getString(R.string.select_flt));
+            textView.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    public void callService() {
+        if (NetworkChangeReceiver.isInternetConnected(AssignPlannedAndUnplannedActivity.this)) {
+            ArrayList<AssignedUnAssignedInput> assignedUnAssignedList = new ArrayList<>();
+            Gson gson = new Gson();
+            String assignedUnAssignedData = SharedPref.getAssignedUnAssignedData();
+            if (!assignedUnAssignedData.equals("")) {
+                Type type = new TypeToken<ArrayList<AssignedUnAssignedInput>>() {
+                }.getType();
+                assignedUnAssignedList = gson.fromJson(assignedUnAssignedData, type);
+
+                for (AssignedUnAssignedInput assignedUnAssignedInput : assignedUnAssignedList) {
+                    iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
+                }
+                String json = "";
+                SharedPref.saveAssignedUnAssignedData(json);
+            }
         }
     }
 }

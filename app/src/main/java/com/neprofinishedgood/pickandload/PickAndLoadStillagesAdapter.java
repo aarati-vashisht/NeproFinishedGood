@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.pickandload.model.LoadingPlanList1;
 import com.neprofinishedgood.raf.model.StillageDatum;
 
 import java.util.ArrayList;
@@ -29,15 +30,15 @@ import butterknife.ButterKnife;
 
 public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoadStillagesAdapter.ViewHolder> implements Filterable {
 
-    private List<StillageDatum> stillageDatumList;
-    private List<StillageDatum> stillageDatumListFiltered;
+    private List<LoadingPlanList1> loadingPlanList;
+    private List<LoadingPlanList1> loadingPlanListFiltered;
     private Context context;
     private View view;
     private String charString = "";
 
-    public PickAndLoadStillagesAdapter(List<StillageDatum> stillageDatumList) {
-        this.stillageDatumList = stillageDatumList;
-        this.stillageDatumListFiltered = stillageDatumList;
+    public PickAndLoadStillagesAdapter(List<LoadingPlanList1> loadingPlanList) {
+        this.loadingPlanList = loadingPlanList;
+        this.loadingPlanListFiltered = loadingPlanList;
     }
 
     @Override
@@ -52,26 +53,26 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.textViewWorkOrder.setText(stillageDatumListFiltered.get(position).getNumber());
-        holder.textViewitem.setText("Item" + (position + 1));
-        holder.textViewSite.setText("Site" + (position + 1));
-        holder.textViewAisle.setText("A" + (position + 1));
-        holder.textViewBin.setText("B" + (position + 1));
-        holder.textViewQuantity.setText(stillageDatumListFiltered.get(position).getQuantity());
-        holder.textViewStdQuatity.setText(stillageDatumListFiltered.get(position).getStdQuantity());
-        holder.textViewWarehouse.setText("W" + (position + 1));
-        holder.textViewRack.setText("R" + (position + 1));
-        if (charString.equalsIgnoreCase(stillageDatumListFiltered.get(position).getNumber())) {
-            if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("1")) {
-                stillageDatumListFiltered.get(position).setStatus("");
+        holder.textViewWorkOrder.setText(loadingPlanListFiltered.get(position).getWorkOrderQty()+"");
+        holder.textViewitem.setText(loadingPlanListFiltered.get(position).getItemId()+"");
+        holder.textViewSite.setText(loadingPlanListFiltered.get(position).getSiteName());
+        holder.textViewAisle.setText(loadingPlanListFiltered.get(position).getAisle());
+        holder.textViewBin.setText(loadingPlanListFiltered.get(position).getBin());
+        holder.textViewQuantity.setText(loadingPlanListFiltered.get(position).getStillageQty()+"");
+        holder.textViewStdQuatity.setText(loadingPlanListFiltered.get(position).getStillageStdQty()+"");
+        holder.textViewWarehouse.setText(loadingPlanListFiltered.get(position).getWareHouseID()+"");
+        holder.textViewRack.setText(loadingPlanListFiltered.get(position).getRack());
+        if (charString.equalsIgnoreCase(loadingPlanListFiltered.get(position).getWorkOrderQty()+"")) {
+            if (loadingPlanListFiltered.get(position).getStatus().equalsIgnoreCase("1")) {
+                loadingPlanListFiltered.get(position).setStatus("");
                 showCustomAlert(context, position);
-            } else if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("2")) {
+            } else if (loadingPlanListFiltered.get(position).getStatus().equalsIgnoreCase("2")) {
                 alertDialogForScanTAR(context, position);
             }
         }
-        if (stillageDatumListFiltered.get(position).getStatus().equals("")) {
+        if (loadingPlanListFiltered.get(position).getStatus().equals("")) {
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.white));
-        } else if (stillageDatumListFiltered.get(position).getStatus().equals("-1")) {
+        } else if (loadingPlanListFiltered.get(position).getStatus().equals("-1")) {
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
         }
 
@@ -80,7 +81,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
     @Override
     public int getItemCount() {
-        return stillageDatumListFiltered.size();
+        return loadingPlanListFiltered.size();
     }
 
 
@@ -126,7 +127,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         @Override
         public void onClick(View v) {
 
-
+            showCustomAlert(context, getAdapterPosition());
         }
     }
 
@@ -136,39 +137,39 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                StillageDatum beforFilerRow;
+                LoadingPlanList1 beforFilerRow;
                 charString = charSequence.toString();
                 if (charString.isEmpty()) {
-                    stillageDatumListFiltered = stillageDatumList;
+                    loadingPlanListFiltered = loadingPlanList;
                 } else {
-                    List<StillageDatum> filteredList = new ArrayList<>();
-                    for (StillageDatum row : stillageDatumList) {
+                    List<LoadingPlanList1> filteredList = new ArrayList<>();
+                    for (LoadingPlanList1 row : loadingPlanList) {
                         beforFilerRow = row;
-                        if (row.getNumber().equalsIgnoreCase(charSequence.toString())) {
+                        if (row.getWorkOrderQty().toString().equalsIgnoreCase(charSequence.toString())) {
                             if (row.getStatus().equalsIgnoreCase("")) {
                                 row.setStatus("1");
                             } else if (row.getStatus().equalsIgnoreCase("-1")) {
                                 row.setStatus("2");
                             }
                             filteredList.add(row);
-                            stillageDatumList.remove(beforFilerRow);
-                            stillageDatumList.add(0, row);
-                            stillageDatumListFiltered.remove(row);
+                            loadingPlanList.remove(beforFilerRow);
+                            loadingPlanList.add(0, row);
+                            loadingPlanListFiltered.remove(row);
                             break;
                         }
                     }
-                    filteredList.addAll(stillageDatumListFiltered);
-                    stillageDatumListFiltered = filteredList;
+                    filteredList.addAll(loadingPlanListFiltered);
+                    loadingPlanListFiltered = filteredList;
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = stillageDatumListFiltered;
+                filterResults.values = loadingPlanListFiltered;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                stillageDatumListFiltered = (ArrayList<StillageDatum>) filterResults.values;
+                loadingPlanListFiltered = (ArrayList<LoadingPlanList1>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -183,16 +184,16 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        stillageDatumListFiltered.get(position).setStatus("-1");
+                        loadingPlanListFiltered.get(position).setStatus("-1");
                         notifyDataSetChanged();
                         PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
-                        CustomToast.showToast(context, stillageDatumListFiltered.get(position).getNumber() + " " + context.getString(R.string.picked_successfullt));
+                        CustomToast.showToast(context, loadingPlanListFiltered.get(position).getWorkOrderQty() + " " + context.getString(R.string.picked_successfullt));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        stillageDatumListFiltered.get(position).setStatus("");
+                        loadingPlanListFiltered.get(position).setStatus("");
                         notifyDataSetChanged();
                         PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
 
@@ -222,7 +223,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                 } else {
                     quatityToLoad = Integer.parseInt(editTextLoadQuantity.getText().toString().trim());
                 }
-                int stdQuantity = Integer.parseInt(stillageDatumListFiltered.get(position).getQuantity());
+                int stdQuantity = Integer.parseInt(loadingPlanListFiltered.get(position).getStillageQty()+"");
                 if (editTextLoadQuantity.getText().toString().trim().length() == 0) {
                     editTextLoadQuantity.setError(context.getResources().getString(R.string.please_add_load_quantity));
                     editTextLoadQuantity.requestFocus();
@@ -231,8 +232,8 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                     editTextLoadQuantity.requestFocus();
                 } else {
                     dialog.cancel();
-                    stillageDatumListFiltered.remove(stillageDatumListFiltered.get(position));
-                    stillageDatumList.remove(stillageDatumList.get(position));
+                    loadingPlanListFiltered.remove(loadingPlanListFiltered.get(position));
+                    loadingPlanList.remove(loadingPlanList.get(position));
                     notifyDataSetChanged();
                     PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
                     CustomToast.showToast(context, context.getString(R.string.stillage_loaded_successfully));
@@ -243,7 +244,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                stillageDatumListFiltered.get(position).setStatus("-1");
+                loadingPlanListFiltered.get(position).setStatus("-1");
                 PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
             }
         });
@@ -266,7 +267,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                 if (editTextScanReport.getText().toString().trim().length() == 0) {
                     editTextScanReport.setError(context.getResources().getString(R.string.please_scan_t_a_r));
                     editTextScanReport.requestFocus();
-                } else if (!stillageDatumListFiltered.get(position).getLoadingPlan().equalsIgnoreCase(editTextScanReport.getText().toString().trim())) {
+                } else if (!PickAndLoadStillageActivity.loadingPlanNumber.equalsIgnoreCase(editTextScanReport.getText().toString().trim())) {
                     editTextScanReport.setError(context.getResources().getString(R.string.stillage_loading_plan_doesnt_match_with_tar));
                     editTextScanReport.requestFocus();
                 } else {
@@ -279,7 +280,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                stillageDatumListFiltered.get(position).setStatus("-1");
+                loadingPlanListFiltered.get(position).setStatus("-1");
                 PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
             }
         });
