@@ -213,7 +213,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         childItem = childStillageLayout.textViewitem.getText().toString().trim();
         parentItem = parentStillageLayout.textViewitem.getText().toString().trim();
         if (editTextScanParentStillage.getText().toString().trim().equals(editTextScanChildStillage.getText().toString().trim())) {
-            CustomToast.showToast(MergeStillageActivity.this, getResources().getString(R.string.child_and_parent_not_matched));
+            CustomToast.showToast(MergeStillageActivity.this, getResources().getString(R.string.child_and_parent_cannot_be_same));
             return false;
         }
         if (!childItem.equals(parentItem)) {
@@ -404,7 +404,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         }
         else {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
-            editTextScanChildStillage.setText("");
+            editTextScanParentStillage.setText("");
         }
     }
 

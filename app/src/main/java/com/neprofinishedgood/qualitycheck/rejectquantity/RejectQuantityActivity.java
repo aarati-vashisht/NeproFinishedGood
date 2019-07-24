@@ -276,7 +276,6 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         SharedPref.saveRejectData(json);
         CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
         onButtonCancelClick();
-        editTextScanStillage.setEnabled(true);
         disableVisibility();
     }
 

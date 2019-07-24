@@ -61,14 +61,14 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         holder.textViewStdQuatity.setText(stillageDatumListFiltered.get(position).getStillageStdQty()+"");
         holder.textViewWarehouse.setText(stillageDatumListFiltered.get(position).getWareHouseID()+"");
         holder.textViewRack.setText(stillageDatumListFiltered.get(position).getRack());
-//        if (charString.equalsIgnoreCase(stillageDatumListFiltered.get(position).ge())) {
-//            if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("1")) {
-//                stillageDatumListFiltered.get(position).setStatus("");
-//                showCustomAlert(context, position);
-//            } else if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("2")) {
-//                alertDialogForScanTAR(context, position);
-//            }
-//        }
+// if (charString.equalsIgnoreCase(stillageDatumListFiltered.get(position).ge())) {
+// if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("1")) {
+// stillageDatumListFiltered.get(position).setStatus("");
+// showCustomAlert(context, position);
+// } else if (stillageDatumListFiltered.get(position).getStatus().equalsIgnoreCase("2")) {
+// alertDialogForScanTAR(context, position);
+// }
+// }
         if (stillageDatumListFiltered.get(position).getStatus().equals("")) {
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.white));
         } else if (stillageDatumListFiltered.get(position).getStatus().equals("-1")) {
@@ -119,7 +119,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
         @Override
         public String toString() {
-            //return super.toString() + " '" + textViewReference.getText() + "'";
+//return super.toString() + " '" + textViewReference.getText() + "'";
             return "";
         }
 
@@ -251,40 +251,40 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
     }
 
-//    public void alertDialogForScanTAR(Context context, int position) {
-//        final Dialog dialog = new Dialog(context);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setCancelable(false);
-//        dialog.setContentView(R.layout.custom_alert_scan_t_a_r);
-//        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        EditText editTextScanReport = dialog.findViewById(R.id.editTextScanReport);
-//        CustomButton buttonConfirm = dialog.findViewById(R.id.buttonConfirm);
-//        CustomButton buttonCancel = dialog.findViewById(R.id.buttonCancel);
-//        buttonConfirm.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (editTextScanReport.getText().toString().trim().length() == 0) {
-//                    editTextScanReport.setError(context.getResources().getString(R.string.please_scan_t_a_r));
-//                    editTextScanReport.requestFocus();
-//                } else if (!stillageDatumListFiltered.get(position).getLoadingPlan().equalsIgnoreCase(editTextScanReport.getText().toString().trim())) {
-//                    editTextScanReport.setError(context.getResources().getString(R.string.stillage_loading_plan_doesnt_match_with_tar));
-//                    editTextScanReport.requestFocus();
-//                } else {
-//                    dialog.cancel();
-//                    alertDialogForQuantity(context, position);
-//                }
-//            }
-//        });
-//        buttonCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//                stillageDatumListFiltered.get(position).setStatus("-1");
-//                PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
-//            }
-//        });
-//        dialog.show();
+// public void alertDialogForScanTAR(Context context, int position) {
+// final Dialog dialog = new Dialog(context);
+// dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+// dialog.setCancelable(false);
+// dialog.setContentView(R.layout.custom_alert_scan_t_a_r);
+// dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+// EditText editTextScanReport = dialog.findViewById(R.id.editTextScanReport);
+// CustomButton buttonConfirm = dialog.findViewById(R.id.buttonConfirm);
+// CustomButton buttonCancel = dialog.findViewById(R.id.buttonCancel);
+// buttonConfirm.setOnClickListener(new View.OnClickListener() {
+// @Override
+// public void onClick(View v) {
+// if (editTextScanReport.getText().toString().trim().length() == 0) {
+// editTextScanReport.setError(context.getResources().getString(R.string.please_scan_t_a_r));
+// editTextScanReport.requestFocus();
+// } else if (!stillageDatumListFiltered.get(position).getLoadingPlan().equalsIgnoreCase(editTextScanReport.getText().toString().trim())) {
+// editTextScanReport.setError(context.getResources().getString(R.string.stillage_loading_plan_doesnt_match_with_tar));
+// editTextScanReport.requestFocus();
+// } else {
+// dialog.cancel();
+// alertDialogForQuantity(context, position);
+// }
+// }
+// });
+// buttonCancel.setOnClickListener(new View.OnClickListener() {
+// @Override
+// public void onClick(View v) {
+// dialog.dismiss();
+// stillageDatumListFiltered.get(position).setStatus("-1");
+// PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
+// }
+// });
+// dialog.show();
 //
-//    }
+// }
 
 }

@@ -15,6 +15,8 @@ import com.neprofinishedgood.lookup.presenter.ILookUpView;
 import com.neprofinishedgood.lookup.presenter.LookUpPresenter;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import butterknife.BindView;
@@ -65,10 +67,13 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
     Handler scanStillagehandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            showProgress(LookUpActivity.this);
-            if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                iLookUpInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
-
+            if (NetworkChangeReceiver.isInternetConnected(LookUpActivity.this)) {
+                showProgress(LookUpActivity.this);
+                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                    iLookUpInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                }
+            } else {
+                CustomToast.showToast(LookUpActivity.this, getString(R.string.no_internet));
             }
         }
     };
@@ -95,6 +100,7 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
         hideProgress();
         if(body.getStatus().equalsIgnoreCase(getString(R.string.success))){
             setData(body);
+            editTextScanStillage.setEnabled(false);
         }else {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanStillage.setText("");

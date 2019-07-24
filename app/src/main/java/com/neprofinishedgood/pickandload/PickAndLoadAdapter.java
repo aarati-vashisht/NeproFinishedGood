@@ -78,7 +78,7 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
 
         @Override
         public String toString() {
-            //return super.toString() + " '" + textViewReference.getText() + "'";
+//return super.toString() + " '" + textViewReference.getText() + "'";
             return "";
         }
 

@@ -10,6 +10,9 @@ public class SharedPref {
     private static String MOVE_DATA = "MOVE_DATA";
     private static String RAF_DATA = "MOVE_DATA";
     private static String REJECT_DATA = "MOVE_DATA";
+    private static String ASSIGNED_UNASSIGNED_DATA = "ASSIGNED_UNASSIGNED_DATA";
+    private static String TRANSFER_DATA = "TRANSFER_DATA";
+    private static String RECEIVE_DATA = "RECEIVE_DATA";
 
 
     public static void saveLoginUSer(String loginData) {
@@ -65,6 +68,36 @@ public class SharedPref {
 
     public static String getRejectData() {
         String data = MyApplication.sharedPreferences.getString(REJECT_DATA, "");
+        return data;
+    }
+
+    public static void saveAssignedUnAssignedData(String jsonData) {
+        editor.putString(ASSIGNED_UNASSIGNED_DATA, jsonData);
+        editor.apply();
+    }
+
+    public static String getAssignedUnAssignedData() {
+        String data = MyApplication.sharedPreferences.getString(ASSIGNED_UNASSIGNED_DATA, "");
+        return data;
+    }
+
+    public static void saveTransferData(String jsonData) {
+        editor.putString(TRANSFER_DATA, jsonData);
+        editor.apply();
+    }
+
+    public static String getTransferData() {
+        String data = MyApplication.sharedPreferences.getString(TRANSFER_DATA, "");
+        return data;
+    }
+
+    public static void saveReceiveData(String jsonData) {
+        editor.putString(RECEIVE_DATA, jsonData);
+        editor.apply();
+    }
+
+    public static String getReceiveData() {
+        String data = MyApplication.sharedPreferences.getString(RECEIVE_DATA, "");
         return data;
     }
 }

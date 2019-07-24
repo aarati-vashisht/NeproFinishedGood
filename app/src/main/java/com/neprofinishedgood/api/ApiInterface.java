@@ -68,7 +68,6 @@ public interface ApiInterface {
 
     @POST("ScanLookUpStillage")
     Call<ScanStillageResponse> scanLookUpStillage(@Body MoveInput moveInput);
-
     @POST("ScanMergeStillage")
     Call<ScanStillageResponse> scanMergeStillage(@Body MoveInput moveInput);
 
@@ -86,13 +85,16 @@ public interface ApiInterface {
 
     @POST("ScanUpdateQuantity")
     Call<ScanStillageResponse> scanUpdateQuantity(@Body MoveInput moveInput);
-
     @POST("UpdateStillageQuantity")
     Call<UniversalResponse> updateStillageQuantity(@Body UpdateQtyInput updateQtyInput);
+
+
 
     @POST("GetLoadingPlan")
     Call<LoadingPlanResponse> getLoadingPlan(@Body AllAssignedDataInput allAssignedDataInput);
 
     @POST("GetLoadingPlanDetails")
-    Call<LoadingPlanDetails> getLoadingPlanDetails(@Body LoadingPlanInput loadingPlanInput);
+    Call<LoadingPlanDetails> getLoadingPlanDetails(@Body LoadingPlanInput loadingPlanDetailInput);
+
+
 }
