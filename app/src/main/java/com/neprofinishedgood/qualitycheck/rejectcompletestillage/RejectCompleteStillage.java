@@ -27,8 +27,6 @@ import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.presenter.IQAPresenter;
 import com.neprofinishedgood.qualitycheck.presenter.IQAView;
 import com.neprofinishedgood.qualitycheck.qualityhold.QualityHoldActivity;
-import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
-import com.neprofinishedgood.raf.model.ScanCountingResponse;
 import com.neprofinishedgood.raf.model.StillageList;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
@@ -55,7 +53,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
 
     StillageLayout stillageLayout;
 
-    @BindView(R.id.spinnerRejectReason)
+    @BindView(R.id.spinnerReason)
     Spinner spinnerRejectReason;
 
     @BindView(R.id.buttonReject)
@@ -178,7 +176,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
 
     ScanStillageResponse body;
 
-    @OnItemSelected(R.id.spinnerRejectReason)
+    @OnItemSelected(R.id.spinnerReason)
     public void spinnerBinSelected(Spinner spinner, int position) {
         reason = reasonList.get(position).getId();
     }

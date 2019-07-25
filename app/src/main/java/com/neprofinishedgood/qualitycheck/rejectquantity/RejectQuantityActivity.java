@@ -25,9 +25,6 @@ import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.presenter.IQAPresenter;
 import com.neprofinishedgood.qualitycheck.presenter.IQAView;
 import com.neprofinishedgood.qualitycheck.qualityhold.QualityHoldActivity;
-import com.neprofinishedgood.raf.RAFActivity;
-import com.neprofinishedgood.raf.model.RafInput;
-import com.neprofinishedgood.raf.model.ScanCountingResponse;
 import com.neprofinishedgood.raf.model.StillageList;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
@@ -56,7 +53,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     @BindView(R.id.editTextRejectQuantity)
     AppCompatEditText editTextRejectQuantity;
 
-    @BindView(R.id.spinnerRejectReason)
+    @BindView(R.id.spinnerReason)
     Spinner spinnerRejectReason;
 
     @BindView(R.id.buttonReject)
@@ -175,7 +172,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     }
 
 
-    @OnItemSelected(R.id.spinnerRejectReason)
+    @OnItemSelected(R.id.spinnerReason)
     public void spinnerBinSelected(Spinner spinner, int position) {
         reason = reasonList.get(position).getId();
     }

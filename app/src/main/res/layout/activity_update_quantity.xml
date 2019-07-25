@@ -51,6 +51,44 @@
             <include
                 android:id="@+id/stillageDetail"
                 layout="@layout/stillage_layout" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutOfflineData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="horizontal"
+                android:paddingStart="5dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="8dp"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stillage_number"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewNumberOffline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:text="S00001"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -106,7 +144,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayoutRejectReason"
+            android:id="@+id/linearLayoutReason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/linearLayoutEnterQuantity"
@@ -123,7 +161,7 @@
                 android:textSize="12sp" />
 
             <Spinner
-                android:id="@+id/spinnerRejectReason"
+                android:id="@+id/spinnerReason"
                 style="@style/AppTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

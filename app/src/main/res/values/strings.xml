@@ -149,5 +149,7 @@
     <string name="scan_type_loading_plan">Scan/Type Truck Assignment Report:</string>
     <string name="scan_type">Scan/Type</string>
     <string name="loading_plan_not_matched_with_tar">Loading Plan didn\'t matched with TAR</string>
+    <string name="enter_update_quantity">Enter Update Quantity</string>
+    <string name="item_updated_successfully">Item Updated Successfully</string>
 
 </resources>

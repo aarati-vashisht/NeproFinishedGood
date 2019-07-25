@@ -83,10 +83,11 @@ public interface ApiInterface {
     @POST("UpdateRecievedTransfer")
     Call<UniversalResponse> updateRecievedTransfer(@Body MoveInput moveInput);
 
-    @POST("ScanUpdateQuantity")
-    Call<ScanStillageResponse> scanUpdateQuantity(@Body MoveInput moveInput);
-    @POST("UpdateStillageQuantity")
-    Call<UniversalResponse> updateStillageQuantity(@Body UpdateQtyInput updateQtyInput);
+//    @POST("ScanUpdateQuantity")
+//    Call<ScanStillageResponse> scanUpdateQuantity(@Body MoveInput moveInput);
+
+    @POST("UpdateStillageDetails")
+    Call<UniversalResponse> updateStillageDetails(@Body UpdateQtyInput updateQtyInput);
 
 
 

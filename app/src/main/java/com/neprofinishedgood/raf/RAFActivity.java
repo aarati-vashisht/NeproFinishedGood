@@ -270,7 +270,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
                 Type type = new TypeToken<ArrayList<RafInput>>() {
                 }.getType();
                 rafList = gson.fromJson(rafData, type);
-
+                showProgress(this);
                 for (RafInput rafInput : rafList) {
                     irafInterface.callRAFServcie(rafInput);
                 }
