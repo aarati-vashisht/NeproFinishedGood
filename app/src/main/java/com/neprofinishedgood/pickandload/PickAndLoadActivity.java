@@ -14,6 +14,7 @@ import com.neprofinishedgood.pickandload.presenter.IPickAndLoadInterFace;
 import com.neprofinishedgood.pickandload.presenter.IPickAndLoadVIew;
 import com.neprofinishedgood.pickandload.presenter.PickAndLoadPresenter;
 import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
+import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.Utils;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
     IPickAndLoadInterFace iPickAndLoadInterFace;
     public List<ScanLoadingPlanList> scanLoadingPlanList = new ArrayList<>();
     static PickAndLoadActivity instance;
+    private List<ScanLoadingPlanList> loadingPlanList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,15 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
     }
 
     private void setAdapter(List<ScanLoadingPlanList> scanLoadingPlanList) {
+        boolean isExist;
+        loadingPlanList = SharedPref.getLoadinGplanList();
+        for (ScanLoadingPlanList savedList : loadingPlanList) {
+            for (ScanLoadingPlanList serverList : scanLoadingPlanList) {
+                if (savedList.getLoadingPlanNo().equals(serverList.getLoadingPlanNo())) {
+                    isExist = true;
+                }
+            }
+        }
         recyclerViewLoadingPlans.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         loadingPlanAdapter = new PickAndLoadAdapter(scanLoadingPlanList);
         recyclerViewLoadingPlans.setAdapter(loadingPlanAdapter);

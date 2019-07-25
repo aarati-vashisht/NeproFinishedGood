@@ -9,6 +9,7 @@ import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
 import com.neprofinishedgood.pickandload.model.LoadingPlanDetails;
 import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.pickandload.model.LoadingPlanResponse;
+import com.neprofinishedgood.pickandload.model.UpdateLoadInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
 import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
@@ -68,6 +69,7 @@ public interface ApiInterface {
 
     @POST("ScanLookUpStillage")
     Call<ScanStillageResponse> scanLookUpStillage(@Body MoveInput moveInput);
+
     @POST("ScanMergeStillage")
     Call<ScanStillageResponse> scanMergeStillage(@Body MoveInput moveInput);
 
@@ -85,10 +87,9 @@ public interface ApiInterface {
 
     @POST("ScanUpdateQuantity")
     Call<ScanStillageResponse> scanUpdateQuantity(@Body MoveInput moveInput);
+
     @POST("UpdateStillageQuantity")
     Call<UniversalResponse> updateStillageQuantity(@Body UpdateQtyInput updateQtyInput);
-
-
 
     @POST("GetLoadingPlan")
     Call<LoadingPlanResponse> getLoadingPlan(@Body AllAssignedDataInput allAssignedDataInput);
@@ -96,5 +97,6 @@ public interface ApiInterface {
     @POST("GetLoadingPlanDetails")
     Call<LoadingPlanDetails> getLoadingPlanDetails(@Body LoadingPlanInput loadingPlanDetailInput);
 
-
+    @POST("UpdatePickAndLoading")
+    Call<UniversalResponse> getupdateLoadInput(@Body UpdateLoadInput updateLoadInput);
 }

@@ -13,6 +13,6 @@
     <color name="lightbuttonColor">#D1FBF7</color>
     <color name="errorColor">#ff0000</color>
     <color name="gray_color">#707070</color>>
-    <color name="transparent">#80ffffff</color>
+    <color name="blur_transparent">#80ffffff</color>
 
 </resources>

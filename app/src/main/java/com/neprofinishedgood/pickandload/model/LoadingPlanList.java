@@ -36,6 +36,30 @@ public class LoadingPlanList {
     @Expose
     private Integer wareHouseID;
 
+    public Integer getPickingQty() {
+        return PickingQty;
+    }
+
+    public void setPickingQty(Integer pickingQty) {
+        PickingQty = pickingQty;
+    }
+
+    @SerializedName("PickingQty")
+    @Expose
+    private Integer PickingQty;
+
+    public String getStillageNO() {
+        return StillageNO;
+    }
+
+    public void setStillageNO(String stillageNO) {
+        StillageNO = stillageNO;
+    }
+
+    @SerializedName("StickerID")
+    @Expose
+    private String StillageNO = "";
+
     public String getStatus() {
         return Status;
     }
@@ -44,7 +68,7 @@ public class LoadingPlanList {
         Status = status;
     }
 
-    String Status="";
+    String Status = "";
 
     public String getLoadingNumber() {
         return LoadingNumber;
@@ -54,7 +78,8 @@ public class LoadingPlanList {
         LoadingNumber = loadingNumber;
     }
 
-    String  LoadingNumber;
+    String LoadingNumber;
+
     public Integer getWorkOrderQty() {
         return workOrderQty;
     }

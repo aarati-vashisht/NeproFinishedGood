@@ -149,5 +149,7 @@
     <string name="scan_type_loading_plan">Scan/Type Truck Assignment Report:</string>
     <string name="scan_type">Scan/Type</string>
     <string name="loading_plan_not_matched_with_tar">Loading Plan didn\'t matched with TAR</string>
+    <string name="load_quantiy_must_be_lower_than_tobeload">Load Quantity Must Be Smaller Equals To/Than To Be Load Quantity</string>
+    <string name="to_be_load_quantity">To Be Load Quantity For Stillage:</string>
 
 </resources>
