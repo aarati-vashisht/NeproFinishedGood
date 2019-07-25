@@ -3,6 +3,12 @@ package com.neprofinishedgood.utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.MyApplication;
+import com.neprofinishedgood.pickandload.model.LoadingPlanList;
+import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 
 import java.lang.reflect.Type;
@@ -19,6 +25,8 @@ public class SharedPref {
     private static String ASSIGNED_UNASSIGNED_DATA = "ASSIGNED_UNASSIGNED_DATA";
     private static String TRANSFER_DATA = "TRANSFER_DATA";
     private static String RECEIVE_DATA = "RECEIVE_DATA";
+    private static String LOADING_PLAN_LIST = "LOADING_PLAN_LIST";
+    private static String LOADING_PLAN_DETAIL_LIST = "LOADING_PLAN_DETAIL_LIST";
     private static String UPDATE_DATA = "UPDATE_DATA";
 
 
@@ -108,6 +116,36 @@ public class SharedPref {
         return data;
     }
 
+    public static void saveLoadinGplanList(String saveLoadingPlanListData) {
+        editor.putString(LOADING_PLAN_LIST, saveLoadingPlanListData);
+        editor.apply();
+    }
+
+    public static List<ScanLoadingPlanList> getLoadinGplanList() {
+        List<ScanLoadingPlanList> scanLoadingPlanList = new ArrayList<>();
+        String data = MyApplication.sharedPreferences.getString(LOADING_PLAN_LIST, "");
+        if (!data.equals("")) {
+            Type type = new TypeToken<ArrayList<ScanLoadingPlanList>>() {
+            }.getType();
+            scanLoadingPlanList = new Gson().fromJson(data, type);
+        }
+        return scanLoadingPlanList;
+    }
+
+    public static void saveLoadinGplanDetailList(String saveLoadingPlanListData) {
+        editor.putString(LOADING_PLAN_DETAIL_LIST, saveLoadingPlanListData);
+        editor.apply();
+    }
+
+    public static List<LoadingPlanList> getLoadinGplanDetailList() {
+        List<LoadingPlanList> loadingPlanLists = new ArrayList<>();
+        String data = MyApplication.sharedPreferences.getString(LOADING_PLAN_DETAIL_LIST, "");
+        if (!data.equals("")) {
+            Type type = new TypeToken<ArrayList<LoadingPlanList>>() {
+            }.getType();
+            loadingPlanLists = new Gson().fromJson(data, type);
+        }
+        return loadingPlanLists;
 
     public static void saveUpdateData(String jsonData) {
         editor.putString(UPDATE_DATA, jsonData);

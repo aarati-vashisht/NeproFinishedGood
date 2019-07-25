@@ -5,8 +5,10 @@ import android.app.Activity;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.pickandload.model.LoadingPlanDetails;
 import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
+import com.neprofinishedgood.pickandload.model.UpdateLoadInput;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +47,33 @@ public class PickAndLoadItemPresenter implements IPickLoadItemInterface {
             iPickLoadItemView.onFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iPickLoadItemView.onSuccess(body);
+        }
+    }
+
+    @Override
+    public void callUpdateLoadService(UpdateLoadInput updateLoadInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.getupdateLoadInput(updateLoadInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getUpdateLoadingPlanDetailsResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getUpdateLoadingPlanDetailsResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getUpdateLoadingPlanDetailsResponse(UniversalResponse body) {
+        if (body == null) {
+            iPickLoadItemView.onUpdateLoadingPlanDetailsFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            iPickLoadItemView.onUpdateLoadingPlanDetailsSuccess(body);
         }
     }
 }

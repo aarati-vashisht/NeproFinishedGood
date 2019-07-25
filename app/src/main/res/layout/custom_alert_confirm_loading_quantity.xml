@@ -17,13 +17,42 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp">
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/to_be_load_quantity"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textViewQuantityToBeLoad"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:layout_weight="3"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:nextFocusDown="@id/buttonConfirm"
+            android:padding="5dp"
+            android:textColor="@color/gray_color"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/load_quantity"
             android:textColor="@color/black"
             android:textSize="10sp" />
@@ -33,13 +62,42 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:background="@drawable/edittext_drawable"
             android:inputType="numberDecimal"
             android:maxLines="1"
             android:nextFocusDown="@id/buttonConfirm"
             android:padding="5dp"
             android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRejectReason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearLayoutRejectQuantity"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/reason"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <Spinner
+            android:id="@+id/spinnerRejectReason"
+            style="@style/AppTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="3"
+            android:background="@drawable/spinner_background"
+           />
 
     </LinearLayout>
 
