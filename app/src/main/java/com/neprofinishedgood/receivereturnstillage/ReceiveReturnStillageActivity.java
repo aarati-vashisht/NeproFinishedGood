@@ -17,6 +17,7 @@ import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.receivereturnstillage.presenter.IRecieveTransferInterface;
 import com.neprofinishedgood.receivereturnstillage.presenter.IRecieveTransferView;
 import com.neprofinishedgood.receivereturnstillage.presenter.RecieveTransferPresenter;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import butterknife.BindView;
@@ -76,10 +77,16 @@ public class ReceiveReturnStillageActivity extends BaseActivity implements IReci
     Handler scanStillagehandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            showProgress(ReceiveReturnStillageActivity.this);
-            if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                iRecieveTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+            if(NetworkChangeReceiver.isInternetConnected(ReceiveReturnStillageActivity.this)) {
+                showProgress(ReceiveReturnStillageActivity.this);
+                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                    iRecieveTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
 
+                }
+            }
+            else{
+                CustomToast.showToast(ReceiveReturnStillageActivity.this, getString(R.string.no_internet));
+                editTextScanStillage.setText("");
             }
         }
     };

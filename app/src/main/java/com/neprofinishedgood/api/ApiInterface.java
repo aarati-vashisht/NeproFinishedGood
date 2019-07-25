@@ -91,6 +91,9 @@ public interface ApiInterface {
     @POST("UpdateStillageQuantity")
     Call<UniversalResponse> updateStillageQuantity(@Body UpdateQtyInput updateQtyInput);
 
+    @POST("UpdateStillageDetails")
+    Call<UniversalResponse> updateStillageDetails(@Body UpdateQtyInput updateQtyInput);
+
     @POST("GetLoadingPlan")
     Call<LoadingPlanResponse> getLoadingPlan(@Body AllAssignedDataInput allAssignedDataInput);
 

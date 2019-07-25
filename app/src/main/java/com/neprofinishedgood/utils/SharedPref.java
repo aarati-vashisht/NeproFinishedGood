@@ -9,6 +9,10 @@ import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import static com.neprofinishedgood.MyApplication.editor;
 
@@ -23,6 +27,7 @@ public class SharedPref {
     private static String RECEIVE_DATA = "RECEIVE_DATA";
     private static String LOADING_PLAN_LIST = "LOADING_PLAN_LIST";
     private static String LOADING_PLAN_DETAIL_LIST = "LOADING_PLAN_DETAIL_LIST";
+    private static String UPDATE_DATA = "UPDATE_DATA";
 
 
     public static void saveLoginUSer(String loginData) {
@@ -141,5 +146,21 @@ public class SharedPref {
             loadingPlanLists = new Gson().fromJson(data, type);
         }
         return loadingPlanLists;
+
+    public static void saveUpdateData(String jsonData) {
+        editor.putString(UPDATE_DATA, jsonData);
+        editor.apply();
+    }
+
+    public static  ArrayList<UpdateQtyInput> getUpdateData() {
+        ArrayList<UpdateQtyInput> updateList = new ArrayList<>();
+        Gson gson = new Gson();
+        String data = MyApplication.sharedPreferences.getString(UPDATE_DATA, "");
+        if (!data.equals("")) {
+            Type type = new TypeToken<ArrayList<UpdateQtyInput>>() {
+            }.getType();
+            updateList = gson.fromJson(data, type);
+        }
+        return updateList;
     }
 }
