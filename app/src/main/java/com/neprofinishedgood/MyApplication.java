@@ -16,9 +16,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyApplication extends Application {
-    public static SharedPreferences sharedPreferences;
+    public static SharedPreferences sharedPreferences, sharedPreferencesMaster;
     static String SHARED_PREF = "SHARED_PREF";
-    public static SharedPreferences.Editor editor;
+    static String SHARED_PREF_MASTER = "SHARED_PREF_MASTER";
+    public static SharedPreferences.Editor editor, editor_master;
     private static MyApplication instance;
 
     public static MyApplication getInstance() {
@@ -31,6 +32,10 @@ public class MyApplication extends Application {
         instance = this;
         sharedPreferences = getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+
+        sharedPreferencesMaster = getSharedPreferences(SHARED_PREF_MASTER, Context.MODE_PRIVATE);
+        editor_master = sharedPreferencesMaster.edit();
+
         if (NetworkChangeReceiver.isInternetConnected(getApplicationContext())) {
             callMasterData();
         }

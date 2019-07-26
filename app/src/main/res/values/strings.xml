@@ -79,7 +79,6 @@
     <string name="work_number">Work Order</string>
     <string name="site">Site</string>
     <string name="warehouse">Warehouse</string>
-    <string name="asile">Asile</string>
     <string name="confirm_loading_quantity">Confirm Loading Quantity</string>
     <string name="load_quantity">Load Quantity</string>
     <string name="button_confirm">Confirm</string>
@@ -152,5 +151,7 @@
     <string name="to_be_load_quantity">To Be Load Quantity For Stillage:</string>
     <string name="enter_update_quantity">Enter Update Quantity</string>
     <string name="item_updated_successfully">Item Updated Successfully</string>
+    <string name="delete">Delete</string>
+    <string name="stillage_unpicked">Stillage Unpicked</string>
 
 </resources>

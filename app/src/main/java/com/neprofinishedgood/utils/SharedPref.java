@@ -5,16 +5,14 @@ import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.MyApplication;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
 import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.neprofinishedgood.MyApplication.editor;
+import static com.neprofinishedgood.MyApplication.editor_master;
 
 public class SharedPref {
     static String LOGIN_DATA = "LOGIN_DATA";
@@ -47,12 +45,12 @@ public class SharedPref {
     }
 
     public static void saveMasterData(String jsonData) {
-        editor.putString(MASTER_DATA, jsonData);
-        editor.apply();
+        editor_master.putString(MASTER_DATA, jsonData);
+        editor_master.apply();
     }
 
     public static String getMasterData() {
-        String data = MyApplication.sharedPreferences.getString(MASTER_DATA, "");
+        String data = MyApplication.sharedPreferencesMaster.getString(MASTER_DATA, "");
         return data;
     }
 
@@ -146,13 +144,14 @@ public class SharedPref {
             loadingPlanLists = new Gson().fromJson(data, type);
         }
         return loadingPlanLists;
+    }
 
     public static void saveUpdateData(String jsonData) {
         editor.putString(UPDATE_DATA, jsonData);
         editor.apply();
     }
 
-    public static  ArrayList<UpdateQtyInput> getUpdateData() {
+    public static ArrayList<UpdateQtyInput> getUpdateData() {
         ArrayList<UpdateQtyInput> updateList = new ArrayList<>();
         Gson gson = new Gson();
         String data = MyApplication.sharedPreferences.getString(UPDATE_DATA, "");

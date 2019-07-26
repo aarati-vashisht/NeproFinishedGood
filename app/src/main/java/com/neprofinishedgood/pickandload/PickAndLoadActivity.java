@@ -52,20 +52,18 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
     }
 
     private void setAdapter(List<ScanLoadingPlanList> scanLoadingPlanList) {
-        boolean isExist;
-        loadingPlanList = SharedPref.getLoadinGplanList();
-        for (ScanLoadingPlanList savedList : loadingPlanList) {
-            for (ScanLoadingPlanList serverList : scanLoadingPlanList) {
-                if (savedList.getLoadingPlanNo().equals(serverList.getLoadingPlanNo())) {
-                    isExist = true;
-                }
+        if (scanLoadingPlanList != null) {
+            if (scanLoadingPlanList.size() > 0) {
+                recyclerViewLoadingPlans.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                loadingPlanAdapter = new PickAndLoadAdapter(scanLoadingPlanList);
+                recyclerViewLoadingPlans.setAdapter(loadingPlanAdapter);
+                recyclerViewLoadingPlans.setHasFixedSize(true);
+            } else {
+                SharedPref.saveLoadinGplanList("");
             }
+        } else {
+            SharedPref.saveLoadinGplanList("");
         }
-        recyclerViewLoadingPlans.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        loadingPlanAdapter = new PickAndLoadAdapter(scanLoadingPlanList);
-        recyclerViewLoadingPlans.setAdapter(loadingPlanAdapter);
-        recyclerViewLoadingPlans.setHasFixedSize(true);
-
     }
 
     @Override

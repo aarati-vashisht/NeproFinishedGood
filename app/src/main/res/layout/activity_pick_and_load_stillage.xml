@@ -204,7 +204,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
+            android:clipToPadding="false"
             android:layoutAnimation="@anim/layout_animation_fall_down"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/stillage_layout" />
     </LinearLayout>

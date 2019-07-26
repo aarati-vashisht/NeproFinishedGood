@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.custom_views.RecyclerItemTouchHelper;
 import com.neprofinishedgood.pickandload.model.LoadingPlanDetails;
 import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
@@ -27,7 +29,6 @@ import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.pickandload.presenter.IPickLoadItemInterface;
 import com.neprofinishedgood.pickandload.presenter.IPickLoadItemView;
 import com.neprofinishedgood.pickandload.presenter.PickAndLoadItemPresenter;
-import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.Utils;
@@ -39,7 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
 
-public class PickAndLoadStillageActivity extends BaseActivity implements IPickLoadItemView {
+public class PickAndLoadStillageActivity extends BaseActivity implements IPickLoadItemView, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
     private static PickAndLoadStillageActivity instance;
     public String stillageNoToDelete;
     @BindView(R.id.recyclerViewLoadingPlansStillage)
@@ -74,6 +75,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     List<ScanLoadingPlanList> saveLoadingPlanList = new ArrayList<>();
     boolean isAlreadyExist, isSearchOnStillages = false;
     private List<LoadingPlanList> loadingPlanDetailLists = new ArrayList<>();
+    List<LoadingPlanList> loadingPlanList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +164,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     };
 
     private void initData() {
+
         String SELECTED_STILLAGE = getIntent().getStringExtra(Constants.SELECTED_STILLAGE);
         Gson gson = new Gson();
         scanLoadingPlanList = gson.fromJson(SELECTED_STILLAGE, ScanLoadingPlanList.class);
@@ -170,6 +173,9 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         textViewLoadingPlan.setText(loadingPlan);
         showProgress(this);
         iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId));
+
+        RecyclerItemTouchHelper itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerViewLoadingPlansStillage);
 
     }
 
@@ -211,7 +217,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
             }
             CustomToast.showToast(this, body.getMessage());
             showProgress(this);
-          //  PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
+            //  PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
             iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId));
         } else {
             CustomToast.showToast(this, body.getMessage());
@@ -230,7 +236,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setAdapter(List<LoadingPlanList> loadingPlanList) {
-
+        this.loadingPlanList = loadingPlanList;
         for (ScanLoadingPlanList scanLoadingPlanList : saveLoadingPlanList) {
             if (scanLoadingPlanList.getLoadingPlanNo().equals(loadingPlan)) {
                 isAlreadyExist = true;
@@ -246,7 +252,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
             linearLayoutStillages.setVisibility(View.VISIBLE);
             editTextScanStillage.requestFocus();
         } else {
-            if (loadingPlanList.size() > 0) {
+            if (this.loadingPlanList.size() > 0) {
                 if (scanLoadingPlanList.getStatus().equals("1")) {
                     recyclerViewLoadingPlansStillage.setClickable(true);
                     recyclerViewLoadingPlansStillage.setEnabled(true);
@@ -265,9 +271,32 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
             }
         }
         recyclerViewLoadingPlansStillage.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        loadingPlanStillagesAdapter = new PickAndLoadStillagesAdapter(loadingPlanList);
+        loadingPlanStillagesAdapter = new PickAndLoadStillagesAdapter(this.loadingPlanList);
         recyclerViewLoadingPlansStillage.setAdapter(loadingPlanStillagesAdapter);
         recyclerViewLoadingPlansStillage.setHasFixedSize(true);
+
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (viewHolder instanceof PickAndLoadStillagesAdapter.ViewHolder) {
+            if (loadingPlanList.get(viewHolder.getAdapterPosition()).getStatus().equals("-1")) {
+                String name = loadingPlanList.get(viewHolder.getAdapterPosition()).getStillageNO();
+
+                // backup of removed item for undo purpose
+                LoadingPlanList deletedItem = this.loadingPlanList.get(viewHolder.getAdapterPosition());
+                final int deletedIndex = viewHolder.getAdapterPosition();
+
+                // remove the item from recycler view
+                loadingPlanStillagesAdapter.removeItem(viewHolder.getAdapterPosition());
+
+                // showing snack bar with Undo option
+                CustomToast.showToast(getApplicationContext(), name + " " + getString(R.string.stillage_unpicked));
+            } else {
+
+                ((PickAndLoadStillagesAdapter.ViewHolder) viewHolder).view_background.setVisibility(View.GONE);
+            }
+        }
 
     }
 }
