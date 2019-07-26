@@ -78,7 +78,12 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         holder.textViewSite.setText(stillageDatumListFiltered.get(position).getSiteName());
         holder.textViewQuantity.setText(stillageDatumListFiltered.get(position).getStillageQty() + "");
         holder.textViewStdQuatity.setText(stillageDatumListFiltered.get(position).getStillageStdQty() + "");
-        holder.textViewWarehouse.setText(stillageDatumListFiltered.get(position).getWareHouseID() + "");
+
+        for (int j = 0; j < PickAndLoadStillageActivity.getInstance().warehouseList.size(); j++) {
+            if (PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getId().equals(stillageDatumListFiltered.get(position).getWareHouseID() + "")) {
+                holder.textViewWarehouse.setText(PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getName());
+            }
+        }
         holder.textViewNumber.setText(stillageDatumListFiltered.get(position).getStillageNO());
         holder.textViewLocation.setText(stillageDatumListFiltered.get(position).getAisle() + "-" + stillageDatumListFiltered.get(position).getRack() + "-" + stillageDatumListFiltered.get(position).getBin());
 
@@ -122,7 +127,11 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         @BindView(R.id.textViewLocation)
         TextView textViewLocation;
         @BindView(R.id.cardView)
+        public
         CardView cardView;
+        @BindView(R.id.view_background)
+        public
+        LinearLayout view_background;
 
         public ViewHolder(View view) {
             super(view);
@@ -220,7 +229,19 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         alert.show();
     }
 
-    int quatityToLoad, stdQuantity;
+    public void removeItem(int position) {
+        if (stillageDatumListFiltered.get(position).getStatus().equals("-1")) {
+
+            stillageDatumListFiltered.remove(position);
+            stillageDatumListFiltered.get(position).setStatus("");
+            notifyItemRemoved(position);
+        }
+    }
+
+    public void restoreItem(LoadingPlanList item, int position) {
+        stillageDatumListFiltered.add(position, item);
+        notifyItemInserted(position);
+    }
 
     public void alertDialogForQuantity(Context context, int position) {
         final Dialog dialog = new Dialog(context);

@@ -144,4 +144,10 @@ public class DashBoardAcivity extends BaseActivity {
             showNoInternetAlert();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
 }
