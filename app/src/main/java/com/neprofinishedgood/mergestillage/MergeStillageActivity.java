@@ -23,6 +23,7 @@ import com.neprofinishedgood.mergestillage.presenter.IMergeStillageView;
 import com.neprofinishedgood.mergestillage.presenter.MergeStillagePresenter;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import butterknife.BindView;
@@ -110,10 +111,14 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     Handler scanStillagehandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            showProgress(MergeStillageActivity.this);
-            if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                iMergeStillageInterface.callScanStillageService(new MoveInput(editTextScanParentStillage.getText().toString().trim(), userId));
+            if (NetworkChangeReceiver.isInternetConnected(MergeStillageActivity.this)) {
+                showProgress(MergeStillageActivity.this);
+                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                    iMergeStillageInterface.callScanStillageService(new MoveInput(editTextScanParentStillage.getText().toString().trim(), userId));
 
+                }
+            } else {
+                CustomToast.showToast(MergeStillageActivity.this, getString(R.string.no_internet));
             }
         }
     };
@@ -401,8 +406,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                 editTextScanParentStillage.setEnabled(false);
                 editTextScanChildStillage.requestFocus();
             }
-        }
-        else {
+        } else {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanParentStillage.setText("");
         }
