@@ -82,7 +82,8 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         ButterKnife.bind(this);
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
-        setTitle(getString(R.string.reject_quantity));
+        String title = getIntent().getStringExtra("REJECT_TITLE");
+        setTitle(title);
         iqaInterface = new IQAPresenter(this, this);
         initData();
         callService();

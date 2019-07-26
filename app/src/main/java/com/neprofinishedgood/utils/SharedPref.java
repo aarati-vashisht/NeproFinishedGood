@@ -146,6 +146,7 @@ public class SharedPref {
             loadingPlanLists = new Gson().fromJson(data, type);
         }
         return loadingPlanLists;
+    }
 
     public static void saveUpdateData(String jsonData) {
         editor.putString(UPDATE_DATA, jsonData);
