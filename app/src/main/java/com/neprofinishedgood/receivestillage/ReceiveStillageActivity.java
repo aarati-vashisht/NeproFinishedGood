@@ -1,4 +1,4 @@
-package com.neprofinishedgood.receivereturnstillage;
+package com.neprofinishedgood.receivestillage;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,9 +14,9 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
-import com.neprofinishedgood.receivereturnstillage.presenter.IRecieveTransferInterface;
-import com.neprofinishedgood.receivereturnstillage.presenter.IRecieveTransferView;
-import com.neprofinishedgood.receivereturnstillage.presenter.RecieveTransferPresenter;
+import com.neprofinishedgood.receivestillage.presenter.IRecieveTransferInterface;
+import com.neprofinishedgood.receivestillage.presenter.IRecieveTransferView;
+import com.neprofinishedgood.receivestillage.presenter.RecieveTransferPresenter;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
 
@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public class ReceiveReturnStillageActivity extends BaseActivity implements IRecieveTransferView {
+public class ReceiveStillageActivity extends BaseActivity implements IRecieveTransferView {
 
     @BindView(R.id.relativeLayoutScanDetail)
     RelativeLayout relativeLayoutScanDetail;
@@ -77,15 +77,15 @@ public class ReceiveReturnStillageActivity extends BaseActivity implements IReci
     Handler scanStillagehandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            if(NetworkChangeReceiver.isInternetConnected(ReceiveReturnStillageActivity.this)) {
-                showProgress(ReceiveReturnStillageActivity.this);
+            if(NetworkChangeReceiver.isInternetConnected(ReceiveStillageActivity.this)) {
+                showProgress(ReceiveStillageActivity.this);
                 if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
                     iRecieveTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
 
                 }
             }
             else{
-                CustomToast.showToast(ReceiveReturnStillageActivity.this, getString(R.string.no_internet));
+                CustomToast.showToast(ReceiveStillageActivity.this, getString(R.string.no_internet));
                 editTextScanStillage.setText("");
             }
         }
@@ -95,7 +95,7 @@ public class ReceiveReturnStillageActivity extends BaseActivity implements IReci
     public void onButtonReceiveClick() {
         showProgress(this);
         iRecieveTransferInterface.callUpdateRecieveTransferStillage(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
-        CustomToast.showToast(ReceiveReturnStillageActivity.this, getResources().getString(R.string.item_received_successfully));
+        //CustomToast.showToast(ReceiveStillageActivity.this, getResources().getString(R.string.item_received_successfully));
         finish();
     }
 

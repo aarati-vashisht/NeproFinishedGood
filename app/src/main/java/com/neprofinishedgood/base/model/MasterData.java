@@ -105,4 +105,17 @@ public class MasterData {
         this.message = message;
     }
 
+
+    @SerializedName("LocationList")
+    @Expose
+    private List<LocationList> locationList = null;
+
+    public List<LocationList> getLocationList() {
+        return locationList;
+    }
+
+    public void setLocationList(List<LocationList> locationList) {
+        this.locationList = locationList;
+    }
+
 }

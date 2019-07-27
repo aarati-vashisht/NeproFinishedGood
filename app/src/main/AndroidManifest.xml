@@ -26,7 +26,7 @@
             android:name=".pickandload.PickAndLoadActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".receivereturnstillage.ReceiveReturnStillageActivity"
+            android:name=".receivestillage.ReceiveStillageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".transferstillage.TransferStillageActivity"

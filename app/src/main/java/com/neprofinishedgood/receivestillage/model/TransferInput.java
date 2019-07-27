@@ -1,4 +1,4 @@
-package com.neprofinishedgood.receivereturnstillage.model;
+package com.neprofinishedgood.receivestillage.model;
 
 public class TransferInput {
     String StickerNo;

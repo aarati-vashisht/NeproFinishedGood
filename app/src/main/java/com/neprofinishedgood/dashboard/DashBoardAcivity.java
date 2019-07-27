@@ -15,11 +15,10 @@ import com.neprofinishedgood.mergestillage.MergeStillageActivity;
 import com.neprofinishedgood.pickandload.PickAndLoadActivity;
 import com.neprofinishedgood.plannedandunplannedmove.PlannedAndUnPlannedMoveActivity;
 import com.neprofinishedgood.qualitycheck.QualityCheckDashboardActivity;
-import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
+import com.neprofinishedgood.receivestillage.ReceiveStillageActivity;
 import com.neprofinishedgood.transferstillage.TransferStillageActivity;
 import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
-import com.neprofinishedgood.utils.NetworkHandleService;
 import com.neprofinishedgood.utils.SharedPref;
 
 import butterknife.ButterKnife;
@@ -112,7 +111,7 @@ public class DashBoardAcivity extends BaseActivity {
         if (loginResponse.getUserLoginResponse().get(0).getIsRecieveReturnStillage() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
-            startActivity(new Intent(this, ReceiveReturnStillageActivity.class));
+            startActivity(new Intent(this, ReceiveStillageActivity.class));
         }
     }
 
