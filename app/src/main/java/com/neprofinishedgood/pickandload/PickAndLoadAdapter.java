@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -14,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.utils.Constants;
 
@@ -68,26 +70,30 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
 
         @BindView(R.id.cardView)
         CardView cardView;
+        @BindView(R.id.back_layout)
+        FrameLayout back_layout;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             ButterKnife.bind(this, view);
-            mView.setOnClickListener(this);
+            cardView.setOnClickListener(this);
+            back_layout.setOnClickListener(this);
         }
 
         @Override
         public String toString() {
-//return super.toString() + " '" + textViewReference.getText() + "'";
             return "";
         }
 
         @Override
         public void onClick(View v) {
-            if (v == mView) {
+            if (v == cardView) {
                 Gson gson = new Gson();
                 String putExtraData = gson.toJson(stillageDatumListFiltered.get(getAdapterPosition()));
                 context.startActivity(new Intent(context, PickAndLoadStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+            } else if (v == back_layout) {
+                CustomToast.showToast(context,"deleted successfully "+getAdapterPosition());
             }
 
         }
