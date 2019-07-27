@@ -21,6 +21,7 @@ import com.neprofinishedgood.qualitycheck.qualityhold.presenter.IHoldView;
 import com.neprofinishedgood.raf.model.ScanCountingResponse;
 import com.neprofinishedgood.raf.model.StillageList;
 import com.neprofinishedgood.utils.Constants;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import butterknife.BindView;
@@ -94,9 +95,13 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     Handler scanStillagehandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            showProgress(QualityHoldActivity.this);
-            if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                iHoldPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+            if(NetworkChangeReceiver.isInternetConnected(QualityHoldActivity.this)){
+                showProgress(QualityHoldActivity.this);
+                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                    iHoldPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                }
+            }else{
+                CustomToast.showToast(QualityHoldActivity.this, getString(R.string.no_internet));
             }
         }
     };

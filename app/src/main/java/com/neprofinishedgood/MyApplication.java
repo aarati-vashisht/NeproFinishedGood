@@ -60,7 +60,9 @@ public class MyApplication extends Application {
 
     private void getMasterData(Response<MasterData> response) {
         Gson gson = new Gson();
-        String jsonData = gson.toJson(response.body());
-        SharedPref.saveMasterData(jsonData);
+        if (!(response == null)) {
+            String jsonData = gson.toJson(response.body());
+            SharedPref.saveMasterData(jsonData);
+        }
     }
 }

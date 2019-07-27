@@ -1,4 +1,4 @@
-package com.neprofinishedgood.receivereturnstillage.presenter;
+package com.neprofinishedgood.receivestillage.presenter;
 
 import android.app.Activity;
 
@@ -8,7 +8,6 @@ import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
-import com.neprofinishedgood.receivereturnstillage.ReceiveReturnStillageActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;

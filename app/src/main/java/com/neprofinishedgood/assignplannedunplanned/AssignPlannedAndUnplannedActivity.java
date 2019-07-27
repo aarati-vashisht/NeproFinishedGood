@@ -28,8 +28,6 @@ import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
 import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
-import com.neprofinishedgood.qualitycheck.model.RejectedInput;
-import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
@@ -236,13 +234,32 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     Handler dropLocationhandler = new Handler();
     private Runnable dropLocationRunnable = new Runnable() {
         public void run() {
-            showProgress(AssignPlannedAndUnplannedActivity.this);
-            if (System.currentTimeMillis() > (dropLocationLastText + delay - 500)) {
-                iAssAndUAssInterface.callLocationService(new LocationInput(editTextScanLocation.getText().toString(), userId));
+            if (NetworkChangeReceiver.isInternetConnected(AssignPlannedAndUnplannedActivity.this)) {
+                showProgress(AssignPlannedAndUnplannedActivity.this);
+                if (System.currentTimeMillis() > (dropLocationLastText + delay - 500)) {
+                    iAssAndUAssInterface.callLocationService(new LocationInput(editTextScanLocation.getText().toString(), userId));
+                }
+            } else {
+                setLocationOffline();
             }
         }
     };
 
+    void setLocationOffline() {
+        String locationId = editTextScanLocation.getText().toString();
+        for (int i = 0; i < locationList.size(); i++) {
+            if (locationId.equals(locationList.get(i).getLocationID())) {
+                try {
+                    setSpinnerAisleData(Integer.parseInt(locationList.get(i).getAisle()));
+                    setSpinnerRackData(Integer.parseInt(locationList.get(i).getRack()));
+                    setSpinnerBinData(Integer.parseInt(locationList.get(i).getBin()));
+                } catch (NumberFormatException numberFormatException) {
+                    numberFormatException.printStackTrace();
+                }
+                break;
+            }
+        }
+    }
 
     void setData(ScanStillageResponse body) {
         relativeLayoutScanDetail.setVisibility(View.VISIBLE);

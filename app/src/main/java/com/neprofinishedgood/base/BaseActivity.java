@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.base.model.LocationList;
 import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomToast;
@@ -46,6 +47,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<UniversalSpinner> reasonList = new ArrayList<>();
     public List<UniversalSpinner> fltList = new ArrayList<>();
     public List<UniversalSpinner> warehouseList = new ArrayList<>();
+    public List<LocationList> locationList = new ArrayList<>();
 
     AlertDialog.Builder builder;
 
@@ -94,6 +96,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                 fltList.add(0, new UniversalSpinner("Select FLT", "000"));
                 warehouseList = masterData.getWareHouseList();
                 warehouseList.add(0, new UniversalSpinner("Select WareHouse", "000"));
+                locationList = masterData.getLocationList();
             }
         } else {
             aisleList = new ArrayList<>();
@@ -102,6 +105,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
             reasonList = new ArrayList<>();
             fltList = new ArrayList<>();
             warehouseList = new ArrayList<>();
+            locationList = new ArrayList<>();
         }
 
     }

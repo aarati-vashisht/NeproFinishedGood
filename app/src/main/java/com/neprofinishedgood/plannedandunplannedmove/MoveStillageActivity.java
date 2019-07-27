@@ -3,6 +3,7 @@ package com.neprofinishedgood.plannedandunplannedmove;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -16,7 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.plannedandunplannedmove.adapter.MoveAdapter;
@@ -27,7 +27,6 @@ import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IMovePresenter;
 import com.neprofinishedgood.plannedandunplannedmove.presenter.IMoveView;
-import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
@@ -171,13 +170,33 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     Handler dropLocationhandler = new Handler();
     private Runnable dropLocationRunnable = new Runnable() {
         public void run() {
-            showProgress(MoveStillageActivity.this);
-            if (System.currentTimeMillis() > (dropLocationLastText + delay - 500)) {
-                movePresenter.callLocationService(new LocationInput(editTextDropLocation.getText().toString(), userId));
+            if (NetworkChangeReceiver.isInternetConnected(MoveStillageActivity.this)) {
+                showProgress(MoveStillageActivity.this);
+                if (System.currentTimeMillis() > (dropLocationLastText + delay - 500)) {
+                    movePresenter.callLocationService(new LocationInput(editTextDropLocation.getText().toString(), userId));
+                }
+            } else {
+                setLocationOffline();
             }
         }
     };
 
+    void setLocationOffline(){
+        String locationId = editTextDropLocation.getText().toString();
+        for (int i = 0; i < locationList.size(); i++) {
+            if (locationId.equals(locationList.get(i).getLocationID())) {
+                try {
+                    setSpinnerAisleData(Integer.parseInt(locationList.get(i).getAisle()));
+                    setSpinnerRackData(Integer.parseInt(locationList.get(i).getRack()));
+                    setSpinnerBinData(Integer.parseInt(locationList.get(i).getBin()));
+                } catch (NumberFormatException numberFormatException) {
+                    Log.d("NumberFormatException", numberFormatException.toString());
+                    numberFormatException.printStackTrace();
+                }
+                break;
+            }
+        }
+    }
 
     @OnItemSelected(R.id.spinnerAisle)
     public void spinnerAisleSelected(Spinner spinner, int position) {
@@ -206,7 +225,6 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             }
         }
     }
-
 
     void setSpinnerRackData(int item) {
         SpinnerAdapter rackListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, rackList);
