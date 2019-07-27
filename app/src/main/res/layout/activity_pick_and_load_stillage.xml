@@ -212,4 +212,16 @@
             tools:listitem="@layout/stillage_layout" />
     </LinearLayout>
 
+    <com.neprofinishedgood.custom_views.CustomButton
+        android:id="@+id/buttonEndPick"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/end_pick"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

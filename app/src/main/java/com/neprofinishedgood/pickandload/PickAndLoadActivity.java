@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.pickandload.model.LoadingPlanResponse;
 import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
@@ -26,7 +27,6 @@ import butterknife.ButterKnife;
 public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIew {
     @BindView(R.id.recyclerViewLoadingPlans)
     RecyclerView recyclerViewLoadingPlans;
-
 
     private PickAndLoadAdapter loadingPlanAdapter;
     IPickAndLoadInterFace iPickAndLoadInterFace;

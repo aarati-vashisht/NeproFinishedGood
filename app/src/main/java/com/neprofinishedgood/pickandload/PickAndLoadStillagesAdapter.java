@@ -21,6 +21,8 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.custom_views.CustomButton;
@@ -40,12 +42,15 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
     private final List<LoadingPlanList> loadingPlanDetailList;
     private List<LoadingPlanList> stillageDatumList;
-    private List<LoadingPlanList> stillageDatumListFiltered;
+    public List<LoadingPlanList> stillageDatumListFiltered;
     List<LoadingPlanList> loadingPlanLists = new ArrayList<>();
     private Context context;
     private View view;
     private String charString = "";
     private String reason;
+
+    private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+    private List<LoadingPlanList> loadingPlanDetailLists;
 
     public PickAndLoadStillagesAdapter(List<LoadingPlanList> stillageDatumList) {
         this.stillageDatumList = stillageDatumList;
@@ -74,6 +79,8 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        viewBinderHelper.bind(holder.swipeRevealLayout, stillageDatumListFiltered.get(position).getStillageNO());
+
         holder.textViewitem.setText(stillageDatumListFiltered.get(position).getItemName());
         holder.textViewSite.setText(stillageDatumListFiltered.get(position).getSiteName());
         holder.textViewQuantity.setText(stillageDatumListFiltered.get(position).getStillageQty() + "");
@@ -96,10 +103,15 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             showCustomAlert(context, position);
             stillageDatumListFiltered.get(position).setStatus("-1");
             stillageDatumList.get(position).setStatus("-1");
+            holder.swipeRevealLayout.setLockDrag(true);
         } else if (stillageDatumListFiltered.get(position).getStatus().equals("2")) {
             alertDialogForQuantity(context, position);
+            holder.swipeRevealLayout.setLockDrag(true);
         }
-
+        if (!stillageDatumListFiltered.get(position).getStatus().equals("-1")) {
+            holder.swipeRevealLayout.setLockDrag(true);
+            holder.swipeRevealLayout.close(true);
+        }
 
     }
 
@@ -133,11 +145,15 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         public
         LinearLayout view_background;
 
+        @BindView(R.id.swipeRevealLayout)
+        SwipeRevealLayout swipeRevealLayout;
+
         public ViewHolder(View view) {
             super(view);
             mView = view;
             ButterKnife.bind(this, view);
-            mView.setOnClickListener(this);
+
+            view_background.setOnClickListener(this);
         }
 
         @Override
@@ -147,9 +163,9 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
         @Override
         public void onClick(View v) {
-
-
+            removeItem(getAdapterPosition());
         }
+
     }
 
 
@@ -231,9 +247,15 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
     public void removeItem(int position) {
         if (stillageDatumListFiltered.get(position).getStatus().equals("-1")) {
-
-            stillageDatumListFiltered.remove(position);
             stillageDatumListFiltered.get(position).setStatus("");
+            loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
+            for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
+                if (loadingPlanList.getStillageNO().equals(stillageDatumListFiltered.get(position).getStillageNO())) {
+                    loadingPlanDetailLists.remove(loadingPlanList);
+                    SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
+                }
+            }
+            CustomToast.showToast(context, stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.stillage_unpicked));
             notifyItemRemoved(position);
         }
     }

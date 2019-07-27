@@ -153,5 +153,7 @@
     <string name="item_updated_successfully">Item Updated Successfully</string>
     <string name="delete">Delete</string>
     <string name="stillage_unpicked">Stillage Unpicked</string>
+    <string name="unpick">UnPick</string>
+    <string name="end_pick">End Pick</string>
 
 </resources>
