@@ -11,4 +11,8 @@ public interface IPickLoadItemView {
     void onUpdateLoadingPlanDetailsFailure(String string);
 
     void onUpdateLoadingPlanDetailsSuccess(UniversalResponse body);
+
+    void onEndPickFailure(String string);
+
+    void onEndPickSuccess(UniversalResponse body);
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.pickandload.model.LoadingPlanResponse;
@@ -90,4 +91,19 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
             }
         }
     }
+
+    @Override
+    public void onCancelFailure(String message) {
+        hideProgress();
+        CustomToast.showToast(this, message);
+    }
+
+    @Override
+    public void onCancelSuccess(UniversalResponse body) {
+        hideProgress();
+        CustomToast.showToast(this, body.getMessage());
+        showProgress(this);
+        iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
+    }
+
 }

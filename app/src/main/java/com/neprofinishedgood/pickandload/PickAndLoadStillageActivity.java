@@ -37,6 +37,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 public class PickAndLoadStillageActivity extends BaseActivity implements IPickLoadItemView {
@@ -279,5 +280,26 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
 
     }
 
+    @OnClick(R.id.buttonEndPick)
+    public void buttonEndPickClick() {
+        showProgress(this);
+        iPickAndLoadItemInterFace.callEndPickService(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId));
+    }
 
+    @Override
+    public void onEndPickFailure(String message) {
+        hideProgress();
+        CustomToast.showToast(this, message);
+    }
+
+    @Override
+    public void onEndPickSuccess(UniversalResponse body) {
+        hideProgress();
+        if (body.getStatus().equals(getString(R.string.success))) {
+            CustomToast.showToast(this, body.getMessage());
+            finish();
+        } else {
+            CustomToast.showToast(this, body.getMessage());
+        }
+    }
 }
