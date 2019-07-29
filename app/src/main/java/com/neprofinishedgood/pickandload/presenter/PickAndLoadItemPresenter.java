@@ -76,4 +76,32 @@ public class PickAndLoadItemPresenter implements IPickLoadItemInterface {
             iPickLoadItemView.onUpdateLoadingPlanDetailsSuccess(body);
         }
     }
+
+    @Override
+    public void callEndPickService(LoadingPlanInput loadingPlanInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.endPickInput(loadingPlanInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getEndPickResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getEndPickResponse(null);
+            }
+        });
+    }
+
+    @Override
+    public void getEndPickResponse(UniversalResponse body) {
+        if (body == null) {
+            iPickLoadItemView.onEndPickFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            iPickLoadItemView.onEndPickSuccess(body);
+        }
+    }
+
+
 }

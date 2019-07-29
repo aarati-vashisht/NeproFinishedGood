@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.utils.Constants;
 
@@ -93,7 +95,11 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
                 String putExtraData = gson.toJson(stillageDatumListFiltered.get(getAdapterPosition()));
                 context.startActivity(new Intent(context, PickAndLoadStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
             } else if (v == back_layout) {
-                CustomToast.showToast(context,"deleted successfully "+getAdapterPosition());
+                PickAndLoadActivity.getInstance().showProgress(PickAndLoadActivity.getInstance());
+                PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callCancelLoadingPlan
+                        (new LoadingPlanInput(stillageDatumListFiltered.get(getAdapterPosition()).getTLPHID() + "",
+                                PickAndLoadActivity.getInstance().userId));
+//                CustomToast.showToast(context, "deleted successfully " + getAdapterPosition());
             }
 
         }

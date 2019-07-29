@@ -102,4 +102,12 @@ public interface ApiInterface {
 
     @POST("UpdatePickAndLoading")
     Call<UniversalResponse> getupdateLoadInput(@Body UpdateLoadInput updateLoadInput);
+
+
+
+    @POST("EndPick")
+    Call<UniversalResponse> endPickInput(@Body LoadingPlanInput loadingPlanInput);
+
+    @POST("CancelLoading")
+    Call<UniversalResponse> cancelLoadingInput(@Body LoadingPlanInput loadingPlanInput);
 }

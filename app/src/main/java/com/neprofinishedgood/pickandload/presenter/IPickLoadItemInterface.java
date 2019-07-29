@@ -14,4 +14,9 @@ public interface IPickLoadItemInterface {
 
     void getUpdateLoadingPlanDetailsResponse(UniversalResponse body);
 
+
+    void callEndPickService(LoadingPlanInput loadingPlanInput);
+
+    void getEndPickResponse(UniversalResponse body);
+
 }
