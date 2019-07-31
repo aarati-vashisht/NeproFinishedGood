@@ -181,19 +181,21 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         }
     };
 
-    void setLocationOffline(){
+    void setLocationOffline() {
         String locationId = editTextDropLocation.getText().toString();
-        for (int i = 0; i < locationList.size(); i++) {
-            if (locationId.equals(locationList.get(i).getLocationID())) {
-                try {
-                    setSpinnerAisleData(Integer.parseInt(locationList.get(i).getAisle()));
-                    setSpinnerRackData(Integer.parseInt(locationList.get(i).getRack()));
-                    setSpinnerBinData(Integer.parseInt(locationList.get(i).getBin()));
-                } catch (NumberFormatException numberFormatException) {
-                    Log.d("NumberFormatException", numberFormatException.toString());
-                    numberFormatException.printStackTrace();
+        if (locationList != null) {
+            for (int i = 0; i < locationList.size(); i++) {
+                if (locationId.equals(locationList.get(i).getLocationID())) {
+                    try {
+                        setSpinnerAisleData(Integer.parseInt(locationList.get(i).getAisle()));
+                        setSpinnerRackData(Integer.parseInt(locationList.get(i).getRack()));
+                        setSpinnerBinData(Integer.parseInt(locationList.get(i).getBin()));
+                    } catch (NumberFormatException numberFormatException) {
+                        Log.d("NumberFormatException", numberFormatException.toString());
+                        numberFormatException.printStackTrace();
+                    }
+                    break;
                 }
-                break;
             }
         }
     }

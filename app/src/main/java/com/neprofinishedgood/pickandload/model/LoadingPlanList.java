@@ -7,13 +7,13 @@ public class LoadingPlanList {
 
     @SerializedName("WorkOrderQty")
     @Expose
-    private Integer workOrderQty;
+    private String workOrderQty;
     @SerializedName("ItemName")
     @Expose
     private String itemName;
     @SerializedName("ItemId")
     @Expose
-    private Integer itemId;
+    private String itemId;
     @SerializedName("SiteName")
     @Expose
     private String siteName;
@@ -80,11 +80,11 @@ public class LoadingPlanList {
 
     String LoadingNumber;
 
-    public Integer getWorkOrderQty() {
+    public String getWorkOrderQty() {
         return workOrderQty;
     }
 
-    public void setWorkOrderQty(Integer workOrderQty) {
+    public void setWorkOrderQty(String workOrderQty) {
         this.workOrderQty = workOrderQty;
     }
 
@@ -96,11 +96,11 @@ public class LoadingPlanList {
         this.itemName = itemName;
     }
 
-    public Integer getItemId() {
+    public String getItemId() {
         return itemId;
     }
 
-    public void setItemId(Integer itemId) {
+    public void setItemId(String itemId) {
         this.itemId = itemId;
     }
 
