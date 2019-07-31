@@ -5,11 +5,13 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.pickandload.model.LoadingPlanList;
 import com.neprofinishedgood.pickandload.model.LoadingPlanResponse;
 import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.pickandload.presenter.IPickAndLoadInterFace;
@@ -103,6 +105,9 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
         hideProgress();
         CustomToast.showToast(this, body.getMessage());
         showProgress(this);
+        List<LoadingPlanList> loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
+        loadingPlanDetailLists.clear();
+        SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
         iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
     }
 

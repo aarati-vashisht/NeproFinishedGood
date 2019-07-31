@@ -28,6 +28,7 @@ import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.pickandload.presenter.IPickLoadItemInterface;
 import com.neprofinishedgood.pickandload.presenter.IPickLoadItemView;
 import com.neprofinishedgood.pickandload.presenter.PickAndLoadItemPresenter;
+import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.Utils;
@@ -176,7 +177,16 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     @Override
     public void onSuccess(LoadingPlanDetails body) {
         hideProgress();
-        setData(body);
+        if (body.getDriverName() == null || body.getGateNo() == null || body.getLoadingPlanList1() == null ||
+                body.getLoadingPlanNo() == null || body.getTruckID() == null) {
+            CustomToast.showToast(PickAndLoadStillageActivity.this, getString(R.string.no_data_found));
+            textViewGateNumber.setText("");
+            textViewLoadingPlan.setText("");
+            textViewTruckDriver.setText("");
+            textViewTruckNumber.setText("");
+        } else {
+            setData(body);
+        }
 
     }
 
@@ -195,7 +205,6 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
                 if (loadingPlanList.getStillageNO().equals(stillageNoToDelete)) {
                     if (loadingPlanDetailLists.size() == 1) {
                         loadingPlanDetailLists.clear();
-                        finish();
                     } else if (loadingPlanDetailLists.size() > 1) {
                         loadingPlanDetailLists.remove(loadingPlanList);
                     }
@@ -297,6 +306,10 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         hideProgress();
         if (body.getStatus().equals(getString(R.string.success))) {
             CustomToast.showToast(this, body.getMessage());
+            PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
+            loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
+            loadingPlanDetailLists.clear();
+            SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
             finish();
         } else {
             CustomToast.showToast(this, body.getMessage());
