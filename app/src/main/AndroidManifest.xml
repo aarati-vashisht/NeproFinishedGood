@@ -15,7 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".plannedandunplannedmove.MoveStillageActivity"></activity>
+        <activity
+            android:name=".productionjournal.ProductionJournal"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".plannedandunplannedmove.MoveStillageActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".lookup.LookUpActivity"
             android:screenOrientation="portrait" />
@@ -82,7 +87,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>
