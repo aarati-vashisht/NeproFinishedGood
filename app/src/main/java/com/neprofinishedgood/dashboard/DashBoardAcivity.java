@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.assignplannedunplanned.AssignPlannedAndUnplannedActivity;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.productionjournal.ProductionJournal;
 import com.neprofinishedgood.raf.RAFActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.login.model.LoginResponse;
@@ -136,6 +137,11 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutUpdateQuantity)
     public void setlinearLayoutUpdateQuantityClick() {
         startActivity(new Intent(this, UpdateQuantityActivity.class));
+    }
+
+   @OnClick(R.id.linearLayoutProductionJournal)
+    public void setlinearLayoutProductionJournalClick() {
+        startActivity(new Intent(this, ProductionJournal.class));
     }
 
     void offlineCheck(){
