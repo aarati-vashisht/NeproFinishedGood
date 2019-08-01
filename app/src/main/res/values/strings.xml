@@ -155,5 +155,8 @@
     <string name="stillage_unpicked">Stillage Unpicked</string>
     <string name="unpick">UnPick</string>
     <string name="end_pick">End Pick</string>
+    <string name="automatic_route_consumption">Automatic Route Consumption</string>
+    <string name="automatic_picking_list_consumption">Automatic Picking List Consumption</string>
+    <string name="select_default_value">Select Default Value</string>
 
 </resources>

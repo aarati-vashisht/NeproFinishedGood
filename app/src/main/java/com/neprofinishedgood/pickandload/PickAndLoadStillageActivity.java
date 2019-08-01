@@ -306,10 +306,19 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         hideProgress();
         if (body.getStatus().equals(getString(R.string.success))) {
             CustomToast.showToast(this, body.getMessage());
-            PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
             loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
-            loadingPlanDetailLists.clear();
+            for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
+                if (loadingPlanList.getLoadingNumber().equals(loadingPlan)) {
+                    if (loadingPlanDetailLists.size() == 1) {
+                        loadingPlanDetailLists.clear();
+                    } else if (loadingPlanDetailLists.size() > 1) {
+                        loadingPlanDetailLists.remove(loadingPlanList);
+                    }
+
+                }
+            }
             SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
+            PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
             finish();
         } else {
             CustomToast.showToast(this, body.getMessage());

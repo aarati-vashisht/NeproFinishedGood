@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
 import com.neprofinishedgood.pickandload.model.LoadingPlanResponse;
@@ -34,8 +33,9 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
     private PickAndLoadAdapter loadingPlanAdapter;
     IPickAndLoadInterFace iPickAndLoadInterFace;
     public List<ScanLoadingPlanList> scanLoadingPlanList = new ArrayList<>();
+    List<ScanLoadingPlanList> tempSavedList = new ArrayList<>();
     static PickAndLoadActivity instance;
-    private List<ScanLoadingPlanList> loadingPlanList;
+    private boolean isExists = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,22 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
                 loadingPlanAdapter = new PickAndLoadAdapter(scanLoadingPlanList);
                 recyclerViewLoadingPlans.setAdapter(loadingPlanAdapter);
                 recyclerViewLoadingPlans.setHasFixedSize(true);
+                List<ScanLoadingPlanList> savedLoadingPlanList = SharedPref.getLoadinGplanList();
+                tempSavedList = savedLoadingPlanList;
+                for (ScanLoadingPlanList savedLoadingPlan : savedLoadingPlanList) {
+                    for (ScanLoadingPlanList getLoadingPlan : scanLoadingPlanList) {
+                        if (savedLoadingPlan.getLoadingPlanNo().equals(getLoadingPlan.getLoadingPlanNo())) {
+                            isExists = true;
+                            break;
+                        }
+                    }
+                    if (!isExists) {
+                        tempSavedList.remove(savedLoadingPlan);
+                        isExists = false;
+                    }
+                }
+                SharedPref.saveLoadinGplanList(new Gson().toJson(tempSavedList));
+
             } else {
                 SharedPref.saveLoadinGplanList("");
             }

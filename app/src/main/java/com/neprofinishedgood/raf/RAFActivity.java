@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,15 +18,12 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.plannedandunplannedmove.PlannedAndUnPlannedMoveActivity;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.raf.model.RafInput;
 import com.neprofinishedgood.raf.presenter.IRAFInterface;
 import com.neprofinishedgood.raf.presenter.IRAFPresenter;
 import com.neprofinishedgood.raf.presenter.IRAFView;
-import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
@@ -36,6 +34,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
@@ -57,12 +56,20 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     @BindView(R.id.linearLayoutOfflineData)
     LinearLayout linearLayoutOfflineData;
 
+    @BindView(R.id.checkBoxAutoRoute)
+    CheckBox checkBoxAutoRoute;
+
+    @BindView(R.id.checkBoxAutoPicking)
+    CheckBox checkBoxAutoPicking;
+
     long scanStillageLastTexxt = 0;
     long delay = 1500;
     IRAFInterface irafInterface;
     StillageLayout stillageLayout;
     private ArrayList<String> shiftList;
     private String shift = "";
+    private String autoRoute = "0";
+    private String autoPick = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,9 +158,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         hideProgress();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             CustomToast.showToast(this, body.getMessage());
-            linearLayoutScanDetail.setVisibility(View.GONE);
-            editTextScanStillage.setEnabled(true);
-            editTextScanStillage.setText("");
+            onButtonCancelClick();
         }
     }
 
@@ -177,6 +182,24 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         shift = shiftList.get(position);
     }
 
+    @OnCheckedChanged(R.id.checkBoxAutoPicking)
+    public void onCheckBoxAutoPickingChanged(){
+        if(checkBoxAutoPicking.isChecked()){
+            autoPick = "1";
+        }else {
+            autoPick = "0";
+        }
+    }
+
+    @OnCheckedChanged(R.id.checkBoxAutoRoute)
+    public void onCheckBoxAutoRouteChanged(){
+        if(checkBoxAutoRoute.isChecked()){
+            autoRoute = "1";
+        }else {
+            autoRoute = "0";
+        }
+    }
+
     @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
         if (linearLayoutOfflineData.getVisibility() == View.GONE) {
@@ -185,12 +208,12 @@ public class RAFActivity extends BaseActivity implements IRAFView {
                 textView.setError(getString(R.string.select_shift));
             } else {
                 showProgress(this);
-                RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, editTextQuantity.getText().toString().trim());
+                RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, editTextQuantity.getText().toString().trim(), autoPick, autoRoute);
                 irafInterface.callRAFServcie(rafInput);
             }
         } else {
             if (isOfflineValidated()) {
-                RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, editTextQuantity.getText().toString().trim());
+                RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, editTextQuantity.getText().toString().trim(), autoPick, autoRoute);
                 saveDataOffline(rafInput);
             }
         }
@@ -202,6 +225,8 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         linearLayoutScanDetail.setVisibility(View.GONE);
         editTextScanStillage.setEnabled(true);
         editTextScanStillage.setText("");
+        checkBoxAutoRoute.setChecked(false);
+        checkBoxAutoPicking.setChecked(false);
     }
 
 
