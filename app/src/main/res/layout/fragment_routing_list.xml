@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/constraintLayout"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".productionjournal.ui.main.RoutingListFragment"
+android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/search_item"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_weight="1"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/editTextScanStillage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/edittext_drawable"
+                android:maxLines="1"
+                android:layout_weight="2.5"
+                android:padding="5dp"
+                android:textSize="10sp" />
+
+            <ImageView
+                android:id="@+id/imageViewSearchButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/search_icon" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

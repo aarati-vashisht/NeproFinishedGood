@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.MyApplication;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
 import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
+import com.neprofinishedgood.productionjournal.model.PickingList;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 
 import java.lang.reflect.Type;
@@ -26,6 +27,7 @@ public class SharedPref {
     private static String LOADING_PLAN_LIST = "LOADING_PLAN_LIST";
     private static String LOADING_PLAN_DETAIL_LIST = "LOADING_PLAN_DETAIL_LIST";
     private static String UPDATE_DATA = "UPDATE_DATA";
+    private static String PICKING_LIST_DATA = "PICKING_LIST_DATA";
 
 
     public static void saveLoginUSer(String loginData) {
@@ -161,5 +163,23 @@ public class SharedPref {
             updateList = gson.fromJson(data, type);
         }
         return updateList;
+    }
+
+
+    public static void savePickingListData(String jsonData) {
+        editor.putString(PICKING_LIST_DATA, jsonData);
+        editor.apply();
+    }
+
+    public static ArrayList<PickingList> getPickingListData() {
+        ArrayList<PickingList> pickingLists = new ArrayList<>();
+        Gson gson = new Gson();
+        String data = MyApplication.sharedPreferences.getString(PICKING_LIST_DATA, "");
+        if (!data.equals("")) {
+            Type type = new TypeToken<ArrayList<PickingList>>() {
+            }.getType();
+            pickingLists = gson.fromJson(data, type);
+        }
+        return pickingLists;
     }
 }

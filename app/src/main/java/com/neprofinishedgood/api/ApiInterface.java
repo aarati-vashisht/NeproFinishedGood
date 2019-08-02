@@ -17,6 +17,10 @@ import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
+import com.neprofinishedgood.productionjournal.model.PickingListSearchInput;
+import com.neprofinishedgood.productionjournal.model.PickingListSearchResponse;
+import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
+import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.raf.model.RafInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
@@ -110,4 +114,11 @@ public interface ApiInterface {
 
     @POST("CancelLoading")
     Call<UniversalResponse> cancelLoadingInput(@Body LoadingPlanInput loadingPlanInput);
+
+    @POST("WorkOrderProcess")
+    Call<WorkOrderResponse> workOrderProcessService(@Body WorkOrderInput workOrderInput);
+
+    @POST("SearchItemProcess")
+    Call<PickingListSearchResponse> searchItemProcessService(@Body PickingListSearchInput pickingListSearchInput);
+
 }
