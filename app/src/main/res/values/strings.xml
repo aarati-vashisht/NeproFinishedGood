@@ -162,5 +162,10 @@
     <string name="tab_1_picking_list">Picking List</string>
     <string name="tab_2_routing_list">Routing List</string>
     <string name="production_journal">Production Journal</string>
+    <string name="submit">Submit</string>
+    <string name="search_item">Search Item</string>
+    <string name="ok">OK</string>
+    <string name="work_order_number">Work Order Number:</string>
+    <string name="item_name">Item Name:</string>
 
 </resources>

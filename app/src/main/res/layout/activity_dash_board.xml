@@ -354,7 +354,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@mipmap/quality_hold_move" />
+                        android:background="@mipmap/production_journal" />
 
                     <TextView
                         android:layout_width="wrap_content"
