@@ -174,6 +174,25 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         spinnerRejectReason.setSelection(0);
     }
 
+    @Override
+    public void onLotScanFailure(String message) {
+        hideProgress();
+        CustomToast.showToast(this, message);
+    }
+
+    @Override
+    public void onLotScanSuccess(UniversalResponse body) {
+        hideProgress();
+        if (body.getStatus().equals(getResources().getString(R.string.success))) {
+//            linearLayoutShift.setVisibility(View.VISIBLE);
+//            frameEnterQuantity.setVisibility(View.VISIBLE);
+        } else {
+            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            editTextScanStillage.setText("");
+        }
+    }
+
+
     ScanStillageResponse body;
 
     @OnItemSelected(R.id.spinnerReason)

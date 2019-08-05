@@ -4,6 +4,7 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
+import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
 import com.neprofinishedgood.raf.model.ScanCountingResponse;
 
 public interface IQAInterface {
@@ -14,5 +15,9 @@ public interface IQAInterface {
     void callUpdateRejectedService(RejectedInput rejectedInput);
 
     void getUpdateRejectedResponse(UniversalResponse body);
+
+    void callScanLotService(ScanLotInput scanLotInput);
+
+    void getScanLotResponse(UniversalResponse body);
 
 }

@@ -1,20 +1,20 @@
 package com.neprofinishedgood.productionjournal.model;
 
-public class PickingList {
-    String itemName, quantity, workOrderNo;
+public class PickingModel {
+    String itemName, quantity, itemId;
 
-    public PickingList(String itemName, String quantity, String workOrderNo) {
+    public PickingModel(String itemId, String itemName, String quantity) {
+        this.itemId = itemId;
         this.itemName = itemName;
         this.quantity = quantity;
-        this.workOrderNo = workOrderNo;
     }
 
-    public String getWorkOrderNo() {
-        return workOrderNo;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setWorkOrderNo(String workOrderNo) {
-        this.workOrderNo = workOrderNo;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public String getItemName() {

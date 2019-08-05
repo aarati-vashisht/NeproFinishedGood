@@ -121,14 +121,12 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
 
     }
 
-
     @Override
     public void setTitle(String title) {
         this.title = title;
         textViewTitle.setText(this.title);
 
     }
-
 
     @Override
     public void showProgress(Activity activity) {
@@ -197,6 +195,20 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                         Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
 //                        intent.setClassName("com.android.phone", "com.android.phone.ACTION_WIRELESS_SETTINGS");
                         startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void showSuccessDialog(String message){
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        isOffline = true;
                         dialog.cancel();
                     }
                 });

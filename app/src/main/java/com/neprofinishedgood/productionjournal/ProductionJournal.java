@@ -14,18 +14,25 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.productionjournal.model.PickingModel;
+import com.neprofinishedgood.productionjournal.model.RouteModel;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
+import com.neprofinishedgood.productionjournal.model.WorkOrderSubmitInput;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalInterface;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalPresenter;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalView;
 import com.neprofinishedgood.productionjournal.ui.main.SectionsPagerAdapter;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 public class ProductionJournal extends BaseActivity implements IProductionJournalView {
@@ -56,6 +63,9 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public String workOrderId;
     public String workOrderNo;
 
+    public ArrayList<PickingModel> pickingModelList;
+    public ArrayList<RouteModel> routeModelList;
+
     static ProductionJournal instance;
 
     public static ProductionJournal getInstance() {
@@ -76,48 +86,41 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         instance = this;
         setTitle(getString(R.string.production_journal));
 
+        pickingModelList = new ArrayList<>();
+        routeModelList = new ArrayList<>();
+
         iProductionJournalInterface = new IProductionJournalPresenter(this, this);
-
-        buttonSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-                CustomToast.showToast(ProductionJournal.this, "SubmitClicked");
-            }
-        });
     }
 
-        @OnTextChanged(value = R.id.editTextSearchItem, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-        public void onEditTextScanWorkOrderChanged(Editable text) {
-            if (!text.toString().trim().equals("")) {
-                scanWorkOrderhandler.postDelayed(stillageRunnable, delay);
-            }
-
+    @OnTextChanged(value = R.id.editTextSearchItem, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onEditTextScanWorkOrderChanged(Editable text) {
+        if (!text.toString().trim().equals("")) {
+            scanWorkOrderhandler.postDelayed(stillageRunnable, delay);
         }
 
-        @OnTextChanged(value = R.id.editTextSearchItem, callback = OnTextChanged.Callback.TEXT_CHANGED)
-        public void onEditTextScanWorkOrderTEXTCHANGED(Editable text) {
-            scanWorkOrderhandler.removeCallbacks(stillageRunnable);
+    }
 
-        }
+    @OnTextChanged(value = R.id.editTextSearchItem, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void onEditTextScanWorkOrderTEXTCHANGED(Editable text) {
+        scanWorkOrderhandler.removeCallbacks(stillageRunnable);
 
-        //for call service on text change
-        Handler scanWorkOrderhandler = new Handler();
-        private Runnable stillageRunnable = new Runnable() {
-            public void run() {
-                if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
-                    showProgress(ProductionJournal.this);
-                    if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                        WorkOrderInput workOrderInput = new WorkOrderInput(userId,editTextScanWorkOrder.getText().toString().trim() );
-                        iProductionJournalInterface.callScanWorkOrderService(workOrderInput);
-                    }
-                } else {
-                    CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
+    }
+
+    //for call service on text change
+    Handler scanWorkOrderhandler = new Handler();
+    private Runnable stillageRunnable = new Runnable() {
+        public void run() {
+            if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
+                showProgress(ProductionJournal.this);
+                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                    WorkOrderInput workOrderInput = new WorkOrderInput(userId, editTextScanWorkOrder.getText().toString().trim());
+                    iProductionJournalInterface.callScanWorkOrderService(workOrderInput);
                 }
+            } else {
+                CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
             }
-        };
+        }
+    };
 
     @Override
     public void onFailure(String message) {
@@ -129,7 +132,6 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @Override
     public void onSuccess(WorkOrderResponse body) {
         hideProgress();
-        // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             setData(body);
         } else {
@@ -150,5 +152,30 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
 
         workOrderId = body.getWorkOrderId();
         workOrderNo = body.getWorkOrderNo();
+    }
+
+    @OnClick(R.id.buttonSubmit)
+    public void onButtonSubmitClick(){
+        WorkOrderSubmitInput workOrderSubmitInput = new WorkOrderSubmitInput(userId, workOrderNo,pickingModelList,routeModelList);
+        showProgress(ProductionJournal.this);
+        iProductionJournalInterface.callSubmitProductionJournalService(workOrderSubmitInput);
+//        CustomToast.showToast(this, "Submit Clicked");
+    }
+
+    @Override
+    public void onSubmitProcessFailure(String message) {
+        hideProgress();
+        CustomToast.showToast(this, message);
+    }
+
+    @Override
+    public void onSubmitProcessSuccess(UniversalResponse body) {
+        hideProgress();
+        CustomToast.showToast(this, body.getMessage());
+        disableViews();
+    }
+
+    public void disableViews(){
+        editTextScanWorkOrder.setText("");
     }
 }

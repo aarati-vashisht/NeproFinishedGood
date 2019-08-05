@@ -5,11 +5,10 @@ import android.app.Activity;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
-import com.neprofinishedgood.raf.presenter.IRAFView;
+import com.neprofinishedgood.productionjournal.model.WorkOrderSubmitInput;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,6 +48,33 @@ public class IProductionJournalPresenter implements IProductionJournalInterface{
             iProductionJournalView.onFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iProductionJournalView.onSuccess(body);
+        }
+    }
+
+    @Override
+    public void callSubmitProductionJournalService(WorkOrderSubmitInput workOrderSubmitInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.submitProductionJournalProcess(workOrderSubmitInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getSubmitWorkOrderResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getSubmitWorkOrderResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getSubmitWorkOrderResponse(UniversalResponse body) {
+        if (body == null) {
+            iProductionJournalView.onSubmitProcessFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            iProductionJournalView.onSubmitProcessSuccess(body);
         }
     }
 }
