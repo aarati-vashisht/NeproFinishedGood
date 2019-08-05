@@ -21,6 +21,7 @@ import com.neprofinishedgood.transferstillage.TransferStillageActivity;
 import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
+import com.neprofinishedgood.workorderstartend.WorkOrderStartEndActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -136,16 +137,33 @@ public class DashBoardAcivity extends BaseActivity {
 
     @OnClick(R.id.linearLayoutUpdateQuantity)
     public void setlinearLayoutUpdateQuantityClick() {
-        startActivity(new Intent(this, UpdateQuantityActivity.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsUpdateQty() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, UpdateQuantityActivity.class));
+        }
     }
 
-   @OnClick(R.id.linearLayoutProductionJournal)
+    @OnClick(R.id.linearLayoutProductionJournal)
     public void setlinearLayoutProductionJournalClick() {
-        startActivity(new Intent(this, ProductionJournal.class));
+        if (loginResponse.getUserLoginResponse().get(0).getIsProductionJournal() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, ProductionJournal.class));
+        }
     }
 
-    void offlineCheck(){
-        if(!NetworkChangeReceiver.isInternetConnected(DashBoardAcivity.this) ){
+    @OnClick(R.id.linearLayoutWorkOrderStartEnd)
+    public void setlinearLayoutWorkOrderStartEndClick() {
+        if (loginResponse.getUserLoginResponse().get(0).getIsWorkOrderStartEnd() == 0) {
+            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+        } else {
+            startActivity(new Intent(this, WorkOrderStartEndActivity.class));
+        }
+    }
+
+    void offlineCheck() {
+        if (!NetworkChangeReceiver.isInternetConnected(DashBoardAcivity.this)) {
             showNoInternetAlert();
         }
     }

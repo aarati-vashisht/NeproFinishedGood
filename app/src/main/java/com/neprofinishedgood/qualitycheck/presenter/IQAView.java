@@ -12,4 +12,8 @@ public interface IQAView {
     void onUpdateRejectedFailure(String message);
 
     void onUpdateRejectedSuccess(UniversalResponse body);
+
+    void onLotScanFailure(String message);
+
+    void onLotScanSuccess(UniversalResponse body);
 }

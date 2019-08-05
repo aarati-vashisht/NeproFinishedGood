@@ -21,7 +21,9 @@ import com.neprofinishedgood.productionjournal.model.PickingListSearchInput;
 import com.neprofinishedgood.productionjournal.model.PickingListSearchResponse;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
+import com.neprofinishedgood.productionjournal.model.WorkOrderSubmitInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
+import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
 import com.neprofinishedgood.raf.model.RafInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
@@ -120,5 +122,11 @@ public interface ApiInterface {
 
     @POST("SearchItemProcess")
     Call<PickingListSearchResponse> searchItemProcessService(@Body PickingListSearchInput pickingListSearchInput);
+
+    @POST("SubmitProductionJournalProcess")
+    Call<UniversalResponse> submitProductionJournalProcess(@Body WorkOrderSubmitInput workOrderSubmitInput);
+
+    @POST("LotScan")
+    Call<UniversalResponse> lotScan(@Body ScanLotInput scanLotInput);
 
 }

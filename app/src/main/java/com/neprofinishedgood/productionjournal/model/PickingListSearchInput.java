@@ -2,10 +2,10 @@ package com.neprofinishedgood.productionjournal.model;
 
 public class PickingListSearchInput {
 
-    String WorkOrderId, UserId, ItemName;
+    String WorkOrderNo, UserId, ItemName;
 
-    public PickingListSearchInput(String workOrderId, String userId, String itemName) {
-        WorkOrderId = workOrderId;
+    public PickingListSearchInput(String workOrderNo, String userId, String itemName) {
+        WorkOrderNo = workOrderNo;
         UserId = userId;
         ItemName = itemName;
     }

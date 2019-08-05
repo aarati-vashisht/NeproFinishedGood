@@ -30,6 +30,11 @@ public class ScanStillageResponse {
     @SerializedName("AssignedLocation")
     @Expose
     private String assignedLocation;
+
+    @SerializedName("WorkOrderNo")
+    @Expose
+    private String WorkOrderNo;
+
     @SerializedName("IsMovedFromProdLine")
     @Expose
     private Integer isMovedFromProdLine;
@@ -166,4 +171,11 @@ public class ScanStillageResponse {
         this.isMovedFromProdLine = isMovedFromProdLine;
     }
 
+    public String getWorkOrderNo() {
+        return WorkOrderNo;
+    }
+
+    public void setWorkOrderNo(String workOrderNo) {
+        WorkOrderNo = workOrderNo;
+    }
 }

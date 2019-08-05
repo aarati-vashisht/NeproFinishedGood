@@ -157,8 +157,12 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     public void onUpdateRAFSuccess(UniversalResponse body) {
         hideProgress();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
-            CustomToast.showToast(this, body.getMessage());
-            onButtonCancelClick();
+            if (body.getStatus().equals(getString(R.string.success))) {
+                showSuccessDialog(body.getMessage());
+                onButtonCancelClick();
+            } else {
+                CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
+            }
         }
     }
 
@@ -172,6 +176,10 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         stillageLayout.textViewitemDesc.setText(body.getDescription());
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewNumber.setText(body.getStickerID());
+
+        stillageLayout.linearLayoutWorkOrderNo.setVisibility(View.VISIBLE);
+        stillageLayout.textViewWorkOrderNumber.setText(body.getWorkOrderNo());
+
         editTextQuantity.setText(body.getStandardQty() + "");
         editTextQuantity.setSelection(body.getStandardQty().toString().length());
         editTextQuantity.requestFocus();
@@ -183,19 +191,19 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     }
 
     @OnCheckedChanged(R.id.checkBoxAutoPicking)
-    public void onCheckBoxAutoPickingChanged(){
-        if(checkBoxAutoPicking.isChecked()){
+    public void onCheckBoxAutoPickingChanged() {
+        if (checkBoxAutoPicking.isChecked()) {
             autoPick = "1";
-        }else {
+        } else {
             autoPick = "0";
         }
     }
 
     @OnCheckedChanged(R.id.checkBoxAutoRoute)
-    public void onCheckBoxAutoRouteChanged(){
-        if(checkBoxAutoRoute.isChecked()){
+    public void onCheckBoxAutoRouteChanged() {
+        if (checkBoxAutoRoute.isChecked()) {
             autoRoute = "1";
-        }else {
+        } else {
             autoRoute = "0";
         }
     }

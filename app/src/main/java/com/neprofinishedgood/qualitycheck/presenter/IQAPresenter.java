@@ -9,6 +9,7 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
+import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
 import com.neprofinishedgood.raf.model.ScanCountingResponse;
 
 import retrofit2.Call;
@@ -79,5 +80,30 @@ public class IQAPresenter implements IQAInterface {
         }
     }
 
+    @Override
+    public void callScanLotService(ScanLotInput scanLotInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.lotScan(scanLotInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getScanLotResponse(response.body());
+            }
 
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getScanLotResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getScanLotResponse(UniversalResponse body) {
+        if (body == null) {
+            iqaView.onLotScanFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            iqaView.onLotScanSuccess(body);
+        }
+    }
 }

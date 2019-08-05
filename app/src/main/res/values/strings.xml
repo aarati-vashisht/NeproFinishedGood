@@ -5,10 +5,10 @@
     <string name="plz_enter_pin">Please Enter Login Pin</string>
     <string name="invalid_pin">Invalid Pin</string>
     <string name="login_successfully">Logged In Successfully</string>
-    <string name="move"><![CDATA[Planned & Unplanned Move]]></string>
+    <string name="move">Move</string>
     <string name="reportasfinished">RAF</string>
     <string name="quality_check">Quality Check</string>
-    <string name="assignlocation_flt"><![CDATA[Assign Planned & Unplanned]]></string>
+    <string name="assignlocation_flt">Assign</string>
     <string name="pickload"><![CDATA[Pick & Load]]></string>
     <string name="return_stillage">Return Stillage</string>
     <string name="recieve_return_stillage">Receive Stillage</string>
@@ -113,7 +113,7 @@
     <string name="picked_successfullt">Is Picked Successfully</string>
     <string name="itemDesc">Item Description:</string>
     <string name="lookUp">Look Up</string>
-    <string name="update_quantity">Update Sticker Quantity</string>
+    <string name="update_quantity">Update Quantity</string>
     <string name="success">Success</string>
     <string name="quantity_must_not_be_zero">Quantity Must Not Be Zero!</string>
     <string name="quantity_updated_successfully">Quantity Updated Successfully</string>
@@ -167,5 +167,13 @@
     <string name="ok">OK</string>
     <string name="work_order_number">Work Order Number:</string>
     <string name="item_name">Item Name:</string>
+    <string name="workorder_start_end">WorkOrder Start/End</string>
+    <string name="scan_type_lot">Scan/Type Lot</string>
+    <string name="production_line">Production Line:</string>
+    <string name="warehouse_">Warehouse:</string>
+    <string name="quantity_">Quantity:</string>
+    <string name="status">Status:</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
 
 </resources>

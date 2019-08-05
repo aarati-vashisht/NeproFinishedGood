@@ -36,5 +36,11 @@ public class StillageLayout {
     @BindView(R.id.linearLayoutLocation)
     public LinearLayout linearLayoutLocation;
 
+    @BindView(R.id.textViewWorkOrderNumber)
+    public TextView textViewWorkOrderNumber;
+
+    @BindView(R.id.linearLayoutWorkOrderNo)
+    public LinearLayout linearLayoutWorkOrderNo;
+
 
 }
