@@ -19,6 +19,7 @@ public class LookUpPresenter implements ILookUpInterface {
 
     public LookUpPresenter(ILookUpView iLookUpView, Activity activity) {
         this.iLookUpView = iLookUpView;
+        this.activity = activity;
 
     }
 

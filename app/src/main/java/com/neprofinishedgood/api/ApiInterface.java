@@ -27,6 +27,8 @@ import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
 import com.neprofinishedgood.raf.model.RafInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
+import com.neprofinishedgood.workorderstartend.model.WorkOrderScanInput;
+import com.neprofinishedgood.workorderstartend.model.WorkOrderScanResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -128,5 +130,14 @@ public interface ApiInterface {
 
     @POST("LotScan")
     Call<UniversalResponse> lotScan(@Body ScanLotInput scanLotInput);
+
+    @POST("WorkOrder_Start_EndProcess")
+    Call<WorkOrderScanResponse> workOrderStartEndScan(@Body WorkOrderScanInput workOrderScanInput);
+
+    @POST("WorkOrderStartService")
+    Call<UniversalResponse> workOrderStartService(@Body WorkOrderScanInput workOrderScanInput);
+
+    @POST("WorkOrderEndService")
+    Call<UniversalResponse> workOrderEndService(@Body WorkOrderScanInput workOrderScanInput);
 
 }

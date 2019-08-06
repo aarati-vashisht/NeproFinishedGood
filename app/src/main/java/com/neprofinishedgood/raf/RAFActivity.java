@@ -56,6 +56,9 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     @BindView(R.id.linearLayoutOfflineData)
     LinearLayout linearLayoutOfflineData;
 
+    @BindView(R.id.linearLayoutEnterQtyButtons)
+    LinearLayout linearLayoutEnterQtyButtons;
+
     @BindView(R.id.checkBoxAutoRoute)
     CheckBox checkBoxAutoRoute;
 
@@ -170,6 +173,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         setSpinnerShiftData();
         linearLayoutOfflineData.setVisibility(View.GONE);
         linearLayoutScanDetail.setVisibility(View.VISIBLE);
+        linearLayoutEnterQtyButtons.setVisibility(View.VISIBLE);
         editTextScanStillage.setEnabled(false);
         stillageLayout.textViewitem.setText(body.getItemId());
         stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
@@ -186,7 +190,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     }
 
     @OnItemSelected(R.id.spinnerShift)
-    public void spinnerBinSelected(Spinner spinner, int position) {
+    public void spinnerShiftSelected(Spinner spinner, int position) {
         shift = shiftList.get(position);
     }
 
@@ -231,6 +235,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
         linearLayoutScanDetail.setVisibility(View.GONE);
+        linearLayoutEnterQtyButtons.setVisibility(View.GONE);
         editTextScanStillage.setEnabled(true);
         editTextScanStillage.setText("");
         checkBoxAutoRoute.setChecked(false);
@@ -250,10 +255,12 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         linearLayoutOfflineData.setVisibility(View.VISIBLE);
         stillageDetail.setVisibility(View.GONE);
         linearLayoutScanDetail.setVisibility(View.VISIBLE);
+        linearLayoutEnterQtyButtons.setVisibility(View.VISIBLE);
     }
 
     void disableVisibility() {
         linearLayoutScanDetail.setVisibility(View.GONE);
+        linearLayoutEnterQtyButtons.setVisibility(View.VISIBLE);
         editTextScanStillage.setEnabled(true);
         editTextScanStillage.setText("");
         linearLayoutOfflineData.setVisibility(View.GONE);

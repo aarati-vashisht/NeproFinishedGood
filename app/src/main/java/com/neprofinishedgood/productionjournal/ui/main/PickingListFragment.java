@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.productionjournal.ProductionJournal;
 import com.neprofinishedgood.productionjournal.adapter.PickingListAdapter;
@@ -92,6 +91,9 @@ public class PickingListFragment extends Fragment implements IPickingListView {
             ProductionJournal.getInstance().pickingModelList.add(pickingData);
             adapter.notifyDataSetChanged();
             SharedPref.savePickingListData(new Gson().toJson(ProductionJournal.getInstance().pickingModelList));
+            editTextSearchItem.setText("");
+            linearLayoutQuantity.setVisibility(View.GONE);
+            linearLayoutItemName.setVisibility(View.GONE);
         } else {
             editTextQuantity.setError(getString(R.string.enter_quantity));
             editTextQuantity.requestFocus();
@@ -100,14 +102,13 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     @Override
     public void onPickingSearchFailure(String message) {
-        BaseActivity.getInstance().hideProgress();
+        ProductionJournal.getInstance().hideProgress();
         CustomToast.showToast(rootView.getContext(), message);
     }
 
     @Override
     public void onPickingSearchSuccess(PickingListSearchResponse body) {
-        BaseActivity.getInstance().hideProgress();
-        // initData();
+        ProductionJournal.getInstance().hideProgress();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             setData(body);
         } else {
