@@ -254,63 +254,64 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/linearLayoutEnterQtyButtons"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <com.neprofinishedgood.custom_views.CustomButton
-                                    android:id="@+id/buttonConfirm"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="35dp"
-                                    android:background="@drawable/button_ripple_effect"
-                                    android:gravity="center"
-                                    android:text="@string/confirm"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <com.neprofinishedgood.custom_views.CustomButton
-                                    android:id="@+id/buttonCancel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="35dp"
-                                    android:background="@drawable/button_ripple_effect"
-                                    android:gravity="center"
-                                    android:text="@string/cancel"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-
                     </RelativeLayout>
 
                 </FrameLayout>
 
-
             </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutEnterQtyButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.neprofinishedgood.custom_views.CustomButton
+                android:id="@+id/buttonConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:background="@drawable/button_ripple_effect"
+                android:gravity="center"
+                android:text="@string/confirm"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.neprofinishedgood.custom_views.CustomButton
+                android:id="@+id/buttonCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:background="@drawable/button_ripple_effect"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

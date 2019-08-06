@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -55,9 +56,6 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     @BindView(R.id.editTextRejectQuantity)
     AppCompatEditText editTextRejectQuantity;
 
-   @BindView(R.id.editTextScanLot)
-    AppCompatEditText editTextScanLot;
-
     @BindView(R.id.spinnerReason)
     Spinner spinnerRejectReason;
 
@@ -79,11 +77,15 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     @BindView(R.id.textViewNumberOffline)
     TextView textViewNumberOffline;
 
+    @BindView(R.id.spinnerShift)
+    Spinner spinnerShift;
+
     long scanStillageLastTexxt = 0;
     long delay = 1500;
     private IQAPresenter iqaInterface;
-    private String isHold, reason;
+    private String isHold, reason, shift;
     ScanStillageResponse body;
+    private ArrayList<String> shiftList;
 
 
     @Override
@@ -103,6 +105,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     private void initData() {
         SpinnerAdapter reasonListAdapter = new SpinnerAdapter(RejectQuantityActivity.this, R.layout.spinner_layout, reasonList);
         spinnerRejectReason.setAdapter(reasonListAdapter);
+        setSpinnerShiftData();
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -201,6 +204,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         editTextRejectQuantity.setText(body.getStandardQty() + "");
         editTextRejectQuantity.setSelection(body.getStandardQty().toString().length());
         editTextRejectQuantity.requestFocus();
+        setSpinnerShiftData();
 
     }
 
@@ -209,12 +213,12 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         if (linearLayoutOfflineData.getVisibility() == View.GONE) {
             if (isValidated()) {
                 showProgress(this);
-                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, editTextRejectQuantity.getText().toString().trim(), reason);
+                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, editTextRejectQuantity.getText().toString().trim(), reason, shift);
                 iqaInterface.callUpdateRejectedService(rejectedInput);
             }
         } else {
             if (isOfflineValidated()) {
-                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, editTextRejectQuantity.getText().toString().trim(), reason);
+                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, editTextRejectQuantity.getText().toString().trim(), reason, shift);
                 saveDataOffline(rejectedInput);
             }
         }
@@ -242,59 +246,77 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
             textView.requestFocus();
             return false;
         }
+        if (spinnerShift.getSelectedItemPosition() == 0) {
+            TextView textView = (TextView) spinnerShift.getSelectedView();
+            textView.setError(getString(R.string.select_shift));
+            textView.requestFocus();
+            return false;
+        }
         return true;
     }
 
+    @OnItemSelected(R.id.spinnerShift)
+    public void spinnerShiftSelected(Spinner spinner, int position) {
+        shift = shiftList.get(position);
+    }
 
-
-    @OnTextChanged(value = R.id.editTextScanLot, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    public void onEditTextScanLotChanged(Editable text) {
-        if (!text.toString().trim().equals("")) {
-            scanLothandler.postDelayed(lotRunnable, delay);
-        }
+    void setSpinnerShiftData() {
+        shiftList = new ArrayList<>();
+        shiftList.add("Select Shift");
+        shiftList.add("A");
+        shiftList.add("B");
+        shiftList.add("C");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, R.id.text1, shiftList);
+        spinnerShift.setAdapter(arrayAdapter);
 
     }
 
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextScanLotTEXTCHANGED(Editable text) {
-        scanLothandler.removeCallbacks(lotRunnable);
-
-    }
-
-    //for call service on text change
-    Handler scanLothandler = new Handler();
-    private Runnable lotRunnable = new Runnable() {
-        public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(RejectQuantityActivity.this)) {
-                showProgress(RejectQuantityActivity.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                    iqaInterface.callScanLotService(new ScanLotInput(body.getWorkOrderNo(),editTextScanLot.getText().toString().trim(), userId));
-                }
-            } else {
-                setDataOffline();
-            }
-        }
-    };
-
-    @Override
-    public void onLotScanFailure(String message) {
-        hideProgress();
-        CustomToast.showToast(this, message);
-    }
-
-    @Override
-    public void onLotScanSuccess(UniversalResponse body) {
-        hideProgress();
-        if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            linearLayoutShift.setVisibility(View.VISIBLE);
-            frameEnterQuantity.setVisibility(View.VISIBLE);
-        } else {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
-            editTextScanLot.setText("");
-        }
-    }
-
-
+//    @OnTextChanged(value = R.id.editTextScanLot, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+//    public void onEditTextScanLotChanged(Editable text) {
+//        if (!text.toString().trim().equals("")) {
+//            scanLothandler.postDelayed(lotRunnable, delay);
+//        }
+//
+//    }
+//
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextScanLotTEXTCHANGED(Editable text) {
+//        scanLothandler.removeCallbacks(lotRunnable);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanLothandler = new Handler();
+//    private Runnable lotRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(RejectQuantityActivity.this)) {
+//                showProgress(RejectQuantityActivity.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    iqaInterface.callScanLotService(new ScanLotInput(body.getWorkOrderNo(),editTextScanLot.getText().toString().trim(), userId));
+//                }
+//            } else {
+//                setDataOffline();
+//            }
+//        }
+//    };
+//
+//    @Override
+//    public void onLotScanFailure(String message) {
+//        hideProgress();
+//        CustomToast.showToast(this, message);
+//    }
+//
+//    @Override
+//    public void onLotScanSuccess(UniversalResponse body) {
+//        hideProgress();
+//        if (body.getStatus().equals(getResources().getString(R.string.success))) {
+//            linearLayoutShift.setVisibility(View.VISIBLE);
+//            frameEnterQuantity.setVisibility(View.VISIBLE);
+//        } else {
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
+//            editTextScanLot.setText("");
+//        }
+//    }
 
     void setDataOffline() {
         textViewNumberOffline.setText(editTextScanStillage.getText().toString());

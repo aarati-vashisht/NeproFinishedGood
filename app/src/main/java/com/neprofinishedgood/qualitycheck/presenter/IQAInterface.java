@@ -16,8 +16,4 @@ public interface IQAInterface {
 
     void getUpdateRejectedResponse(UniversalResponse body);
 
-    void callScanLotService(ScanLotInput scanLotInput);
-
-    void getScanLotResponse(UniversalResponse body);
-
 }

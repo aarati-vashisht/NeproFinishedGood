@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
 import android.view.animation.Animation;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -68,15 +69,20 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
     @BindView(R.id.textViewNumberOffline)
     TextView textViewNumberOffline;
 
+    @BindView(R.id.spinnerShift)
+    Spinner spinnerShift;
+
     Animation fadeOut;
     Animation fadeIn;
 
     ArrayList<UniversalSpinner> reasons;
 
     long scanStillageLastTexxt = 0;
-    private String reason, isHold;
+    private String reason, isHold, shift;
     private IQAPresenter iqaInterface;
     long delay = 1500;
+
+    private ArrayList<String> shiftList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +100,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
     private void initData() {
         SpinnerAdapter reasonListAdapter = new SpinnerAdapter(RejectCompleteStillage.this, R.layout.spinner_layout, reasonList);
         spinnerRejectReason.setAdapter(reasonListAdapter);
+        setSpinnerShiftData();
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -174,23 +181,23 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         spinnerRejectReason.setSelection(0);
     }
 
-    @Override
-    public void onLotScanFailure(String message) {
-        hideProgress();
-        CustomToast.showToast(this, message);
-    }
-
-    @Override
-    public void onLotScanSuccess(UniversalResponse body) {
-        hideProgress();
-        if (body.getStatus().equals(getResources().getString(R.string.success))) {
-//            linearLayoutShift.setVisibility(View.VISIBLE);
-//            frameEnterQuantity.setVisibility(View.VISIBLE);
-        } else {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
-            editTextScanStillage.setText("");
-        }
-    }
+//    @Override
+//    public void onLotScanFailure(String message) {
+//        hideProgress();
+//        CustomToast.showToast(this, message);
+//    }
+//
+//    @Override
+//    public void onLotScanSuccess(UniversalResponse body) {
+//        hideProgress();
+//        if (body.getStatus().equals(getResources().getString(R.string.success))) {
+////            linearLayoutShift.setVisibility(View.VISIBLE);
+////            frameEnterQuantity.setVisibility(View.VISIBLE);
+//        } else {
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
+//            editTextScanStillage.setText("");
+//        }
+//    }
 
 
     ScanStillageResponse body;
@@ -210,6 +217,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         stillageLayout.textViewitemDesc.setText(body.getDescription());
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewNumber.setText(body.getStickerID());
+        setSpinnerShiftData();
 
     }
 
@@ -218,13 +226,13 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         if (linearLayoutOfflineData.getVisibility() == View.GONE) {
             if (isValidated()) {
                 showProgress(this);
-                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, stillageLayout.textViewQuantity + "", reason);
+                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, stillageLayout.textViewQuantity + "", reason, shift);
                 iqaInterface.callUpdateRejectedService(rejectedInput);
             }
-        }else {
+        } else {
             if (isOfflineValidated()) {
-               //quantity to be rejected is not confirm
-                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, stillageLayout.textViewQuantity + "", reason);
+                //quantity to be rejected is not confirm
+                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, stillageLayout.textViewQuantity + "", reason, shift);
                 saveDataOffline(rejectedInput);
             }
         }
@@ -247,7 +255,30 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
             textView.requestFocus();
             return false;
         }
+        if (spinnerShift.getSelectedItemPosition() == 0) {
+            TextView textView = (TextView) spinnerShift.getSelectedView();
+            textView.setError(getString(R.string.select_shift));
+            textView.requestFocus();
+            return false;
+        }
         return true;
+    }
+
+
+    @OnItemSelected(R.id.spinnerShift)
+    public void spinnerShiftSelected(Spinner spinner, int position) {
+        shift = shiftList.get(position);
+    }
+
+    void setSpinnerShiftData() {
+        shiftList = new ArrayList<>();
+        shiftList.add("Select Shift");
+        shiftList.add("A");
+        shiftList.add("B");
+        shiftList.add("C");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, R.id.text1, shiftList);
+        spinnerShift.setAdapter(arrayAdapter);
+
     }
 
 
