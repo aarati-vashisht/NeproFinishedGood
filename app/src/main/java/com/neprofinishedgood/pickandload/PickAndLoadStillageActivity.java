@@ -28,7 +28,7 @@ import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.pickandload.presenter.IPickLoadItemInterface;
 import com.neprofinishedgood.pickandload.presenter.IPickLoadItemView;
 import com.neprofinishedgood.pickandload.presenter.PickAndLoadItemPresenter;
-import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
+import com.neprofinishedgood.move.model.AllAssignedDataInput;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.Utils;
@@ -63,8 +63,6 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     TextView textViewTruckDriver;
     @BindView(R.id.textViewTruckNumber)
     TextView textViewTruckNumber;
-    @BindView(R.id.textViewLoadingPlan)
-    TextView textViewLoadingPlan;
     @BindView(R.id.buttonEndPick)
     CustomButton buttonEndPick;
 
@@ -87,7 +85,6 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         ButterKnife.bind(this);
         instance = this;
         Utils.hideSoftKeyboard(this);
-        setTitle(getString(R.string.pickload));
         iPickAndLoadItemInterFace = new PickAndLoadItemPresenter(this, this);
         initData();
     }
@@ -181,7 +178,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
                 body.getLoadingPlanNo() == null || body.getTruckID() == null) {
             CustomToast.showToast(PickAndLoadStillageActivity.this, getString(R.string.no_data_found));
             textViewGateNumber.setText("");
-            textViewLoadingPlan.setText("");
+//            textViewLoadingPlan.setText("");
             textViewTruckDriver.setText("");
             textViewTruckNumber.setText("");
         } else {
@@ -224,7 +221,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setData(LoadingPlanDetails body) {
         textViewGateNumber.setText(body.getGateNo() + "");
-        textViewLoadingPlan.setText(body.getLoadingPlanNo());
+//        textViewLoadingPlan.setText(body.getLoadingPlanNo());
         textViewTruckDriver.setText(body.getDriverName());
         textViewTruckNumber.setText(body.getTruckID());
         setAdapter(body.getLoadingPlanList1());
@@ -283,8 +280,9 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         scanLoadingPlanList = gson.fromJson(SELECTED_STILLAGE, ScanLoadingPlanList.class);
         saveLoadingPlanList = SharedPref.getLoadinGplanList();
         loadingPlan = scanLoadingPlanList.getLoadingPlanNo();
-        textViewLoadingPlan.setText(loadingPlan);
+//        textViewLoadingPlan.setText(loadingPlan);
         showProgress(this);
+        setTitle(loadingPlan);
         iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId));
 
     }

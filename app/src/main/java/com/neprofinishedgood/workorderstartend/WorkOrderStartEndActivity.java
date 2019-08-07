@@ -1,13 +1,11 @@
 package com.neprofinishedgood.workorderstartend;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,8 +14,6 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.lookup.LookUpActivity;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.workorderstartend.Presenter.IWorkOrderStartEndInterface;
 import com.neprofinishedgood.workorderstartend.Presenter.IWorkOrderStartEndPresenter;

@@ -1,4 +1,4 @@
-package com.neprofinishedgood.assignplannedunplanned;
+package com.neprofinishedgood.assign;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,19 +15,19 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.assignplannedunplanned.model.AssignedUnAssignedInput;
-import com.neprofinishedgood.assignplannedunplanned.presenter.AssignPlannedAndUnplannedPresenter;
-import com.neprofinishedgood.assignplannedunplanned.presenter.IAssignPlannedAndUnplannedInterFace;
-import com.neprofinishedgood.assignplannedunplanned.presenter.IAssignePlannedUnplannedView;
+import com.neprofinishedgood.assign.model.AssignedUnAssignedInput;
+import com.neprofinishedgood.assign.presenter.AssignPresenter;
+import com.neprofinishedgood.assign.presenter.IAssignInterFace;
+import com.neprofinishedgood.assign.presenter.IAssignView;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.adapter.SpinnerAdapter;
+import com.neprofinishedgood.move.model.LocationData;
+import com.neprofinishedgood.move.model.LocationInput;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
@@ -41,7 +41,7 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
 
-public class AssignPlannedAndUnplannedActivity extends BaseActivity implements IAssignePlannedUnplannedView {
+public class AssignActivity extends BaseActivity implements IAssignView {
 
     @BindView(R.id.relativeLayoutScanDetail)
     RelativeLayout relativeLayoutScanDetail;
@@ -88,7 +88,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     TextView textViewNumberOffline;
 
     boolean isButtonInAssignLocation = true;
-    private IAssignPlannedAndUnplannedInterFace iAssAndUAssInterface;
+    private IAssignInterFace iAssAndUAssInterface;
     long scanStillageLastTexxt = 0;
     long delay = 1000;
     long dropLocationLastText = 0;
@@ -101,8 +101,8 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
         ButterKnife.bind(this);
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
-        setTitle(getString(R.string.assign_planned_and_unplanned));
-        iAssAndUAssInterface = new AssignPlannedAndUnplannedPresenter(this, this);
+        setTitle(getString(R.string.assignlocation_flt));
+        iAssAndUAssInterface = new AssignPresenter(this, this);
         initData(null);
         callService();
 
@@ -123,13 +123,13 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     }
 
     void setSpinnerFLtData() {
-        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignPlannedAndUnplannedActivity.this, R.layout.spinner_layout, fltList);
+        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, fltList);
         spinnerAssignFlt.setAdapter(aisleListAdapter);
 
     }
 
     void setSpinnerAisleData(int item) {
-        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignPlannedAndUnplannedActivity.this, R.layout.spinner_layout, aisleList);
+        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, aisleList);
         spinnerAisle.setAdapter(aisleListAdapter);
         if (item > 0) {
             for (int j = 0; j < aisleList.size(); j++) {
@@ -162,7 +162,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     }
 
     void setSpinnerRackData(int item) {
-        SpinnerAdapter rackListAdapter = new SpinnerAdapter(AssignPlannedAndUnplannedActivity.this, R.layout.spinner_layout, rackList);
+        SpinnerAdapter rackListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, rackList);
         spinnerRack.setAdapter(rackListAdapter);
         if (item > 0) {
             for (int j = 0; j < rackList.size(); j++) {
@@ -175,7 +175,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     }
 
     void setSpinnerBinData(int item) {
-        SpinnerAdapter binListAdapter = new SpinnerAdapter(AssignPlannedAndUnplannedActivity.this, R.layout.spinner_layout, binList);
+        SpinnerAdapter binListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, binList);
         spinnerBin.setAdapter(binListAdapter);
         if (item > 0) {
             for (int j = 0; j < binList.size(); j++) {
@@ -205,8 +205,8 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     Handler scanStillagehandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(AssignPlannedAndUnplannedActivity.this)) {
-                showProgress(AssignPlannedAndUnplannedActivity.this);
+            if (NetworkChangeReceiver.isInternetConnected(AssignActivity.this)) {
+                showProgress(AssignActivity.this);
                 if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
                     iAssAndUAssInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                 }
@@ -234,8 +234,8 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     Handler dropLocationhandler = new Handler();
     private Runnable dropLocationRunnable = new Runnable() {
         public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(AssignPlannedAndUnplannedActivity.this)) {
-                showProgress(AssignPlannedAndUnplannedActivity.this);
+            if (NetworkChangeReceiver.isInternetConnected(AssignActivity.this)) {
+                showProgress(AssignActivity.this);
                 if (System.currentTimeMillis() > (dropLocationLastText + delay - 500)) {
                     iAssAndUAssInterface.callLocationService(new LocationInput(editTextScanLocation.getText().toString(), userId));
                 }
@@ -330,6 +330,14 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
         }
 
 
+    }
+
+    @OnClick(R.id.imageViewBackButton)
+    public void onIimageViewBackButtonClick() {
+        isButtonInAssignLocation = true;
+        frameAssignFlt.setVisibility(View.GONE);
+        frameAssignLocation.setVisibility(View.VISIBLE);
+        buttonAssign.setEnabled(true);
     }
 
     @OnItemSelected(R.id.spinnerAssignFlt)
@@ -487,7 +495,7 @@ public class AssignPlannedAndUnplannedActivity extends BaseActivity implements I
     }
 
     public void callService() {
-        if (NetworkChangeReceiver.isInternetConnected(AssignPlannedAndUnplannedActivity.this)) {
+        if (NetworkChangeReceiver.isInternetConnected(AssignActivity.this)) {
             ArrayList<AssignedUnAssignedInput> assignedUnAssignedList = new ArrayList<>();
             Gson gson = new Gson();
             String assignedUnAssignedData = SharedPref.getAssignedUnAssignedData();

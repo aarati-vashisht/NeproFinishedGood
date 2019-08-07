@@ -51,9 +51,10 @@
         android:paddingRight="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/load_quantity"
+            android:layout_weight="1.1"
             android:textColor="@color/black"
             android:textSize="10sp" />
 
@@ -62,9 +63,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_weight="1"
+            android:layout_weight="3.45"
             android:background="@drawable/edittext_drawable"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             android:maxLines="1"
             android:nextFocusDown="@id/buttonConfirm"
             android:padding="5dp"
@@ -84,10 +85,11 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:text="@string/reason"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="10sp"
+            android:paddingVertical="5dp"/>
 
         <Spinner
             android:id="@+id/spinnerRejectReason"
@@ -135,4 +137,5 @@
             android:textSize="12sp" />
 
     </LinearLayout>
+
 </LinearLayout>

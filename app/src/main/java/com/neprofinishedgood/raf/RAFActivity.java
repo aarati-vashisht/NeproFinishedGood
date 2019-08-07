@@ -18,8 +18,8 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.raf.model.RafInput;
 import com.neprofinishedgood.raf.presenter.IRAFInterface;
 import com.neprofinishedgood.raf.presenter.IRAFPresenter;
@@ -218,6 +218,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
             if (spinnerShift.getSelectedItemPosition() == 0) {
                 TextView textView = (TextView) spinnerShift.getSelectedView();
                 textView.setError(getString(R.string.select_shift));
+                textView.requestFocus();
             } else {
                 showProgress(this);
                 RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, editTextQuantity.getText().toString().trim(), autoPick, autoRoute);

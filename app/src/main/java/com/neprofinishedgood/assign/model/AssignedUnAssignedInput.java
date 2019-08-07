@@ -1,4 +1,4 @@
-package com.neprofinishedgood.assignplannedunplanned.model;
+package com.neprofinishedgood.assign.model;
 
 public class AssignedUnAssignedInput {
     String StickerNo;

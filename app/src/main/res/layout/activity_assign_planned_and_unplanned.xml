@@ -6,7 +6,7 @@
     android:layout_margin="5dp"
     android:background="@color/background_color"
     android:orientation="vertical"
-    tools:context=".assignplannedunplanned.AssignPlannedAndUnplannedActivity">
+    tools:context=".assign.AssignActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,17 +61,17 @@
                     layout="@layout/stillage_layout" />
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutOfflineData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:background="@color/colorPrimaryDark"
                     android:orientation="horizontal"
                     android:paddingStart="5dp"
                     android:paddingTop="8dp"
                     android:paddingEnd="5dp"
                     android:paddingBottom="8dp"
-                    android:visibility="gone"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/linearLayoutOfflineData">
+                    android:visibility="gone">
 
 
                     <TextView
@@ -252,22 +252,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/textViewAssignFLT"
+                    <LinearLayout
+                        android:id="@+id/linearLayoutAssignFltHead"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:background="@color/buttonColor"
-                        android:padding="5dp"
-                        android:text="@string/assign_flt"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:elevation="5dp">
+
+                        <TextView
+                            android:id="@+id/textViewAssignFLT"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:layout_weight="1"
+                            android:text="@string/assign_flt"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/imageViewBackButton"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight=".16"
+                            android:padding="5dp"
+                            android:src="@drawable/back_button"/>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linearLayoutAssignFlt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/textViewAssignFLT"
+                        android:layout_below="@+id/linearLayoutAssignFltHead"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
@@ -309,6 +327,7 @@
                     android:id="@+id/buttonAssign"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
+                    android:layout_marginStart="20dp"
                     android:background="@drawable/button_ripple_effect"
                     android:gravity="center"
                     android:text="@string/assign"

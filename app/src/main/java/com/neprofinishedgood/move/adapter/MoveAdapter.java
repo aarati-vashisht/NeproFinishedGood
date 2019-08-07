@@ -1,4 +1,4 @@
-package com.neprofinishedgood.plannedandunplannedmove.adapter;
+package com.neprofinishedgood.move.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.plannedandunplannedmove.MoveStillageActivity;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.MoveStillageActivity;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.utils.Constants;
 
 import java.util.List;

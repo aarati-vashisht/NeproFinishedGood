@@ -12,17 +12,14 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
-import com.neprofinishedgood.qualitycheck.model.RejectedInput;
-import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
+import com.neprofinishedgood.move.adapter.SpinnerAdapter;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 import com.neprofinishedgood.updatequantity.presenter.IUpdateQtyInterface;
@@ -32,7 +29,6 @@ import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import butterknife.BindView;

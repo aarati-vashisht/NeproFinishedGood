@@ -29,7 +29,7 @@ import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
 import com.neprofinishedgood.pickandload.model.UpdateLoadInput;
-import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
+import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.utils.SharedPref;
 
 import java.util.ArrayList;

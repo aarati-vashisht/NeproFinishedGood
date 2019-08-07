@@ -1,4 +1,4 @@
-package com.neprofinishedgood.plannedandunplannedmove;
+package com.neprofinishedgood.move;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,14 +19,14 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.plannedandunplannedmove.adapter.MoveAdapter;
-import com.neprofinishedgood.plannedandunplannedmove.adapter.SpinnerAdapter;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
-import com.neprofinishedgood.plannedandunplannedmove.presenter.IMovePresenter;
-import com.neprofinishedgood.plannedandunplannedmove.presenter.IMoveView;
+import com.neprofinishedgood.move.adapter.MoveAdapter;
+import com.neprofinishedgood.move.adapter.SpinnerAdapter;
+import com.neprofinishedgood.move.model.LocationData;
+import com.neprofinishedgood.move.model.LocationInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.UpdateMoveLocationInput;
+import com.neprofinishedgood.move.presenter.IMovePresenter;
+import com.neprofinishedgood.move.presenter.IMoveView;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
@@ -263,7 +263,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             onButtonCancelClick();
             clearAllSpinnerData();
             finish();
-            PlannedAndUnPlannedMoveActivity.getInstance().getAllAssignedData();
+            MoveActivity.getInstance().getAllAssignedData();
         } else {
             CustomToast.showToast(this, response.getMessage());
         }

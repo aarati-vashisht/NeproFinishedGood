@@ -155,11 +155,10 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     }
 
     @OnClick(R.id.buttonSubmit)
-    public void onButtonSubmitClick(){
-        WorkOrderSubmitInput workOrderSubmitInput = new WorkOrderSubmitInput(userId, workOrderNo,pickingModelList,routeModelList);
+    public void onButtonSubmitClick() {
+        WorkOrderSubmitInput workOrderSubmitInput = new WorkOrderSubmitInput(userId, workOrderNo, pickingModelList, routeModelList);
         showProgress(ProductionJournal.this);
         iProductionJournalInterface.callSubmitProductionJournalService(workOrderSubmitInput);
-//        CustomToast.showToast(this, "Submit Clicked");
     }
 
     @Override
@@ -175,7 +174,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         disableViews();
     }
 
-    public void disableViews(){
+    public void disableViews() {
         editTextScanWorkOrder.setText("");
     }
 }

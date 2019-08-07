@@ -44,7 +44,7 @@
             android:elevation="5dp"
             android:background="@color/colorPrimaryDark"
             android:layout_marginTop="5dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="0dp"
@@ -75,14 +75,14 @@
             android:layout_height="30dp"
             android:background="@color/background_color"
             app:tabTextAppearance="@style/CustomTabText"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
     </LinearLayout>
 
@@ -97,6 +97,6 @@
         android:layout_marginEnd="10dp"
         android:text="@string/submit"
         android:textColor="@color/white"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </RelativeLayout>

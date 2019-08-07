@@ -5,9 +5,8 @@ import android.app.Activity;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
-import com.neprofinishedgood.lookup.LookUpActivity;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

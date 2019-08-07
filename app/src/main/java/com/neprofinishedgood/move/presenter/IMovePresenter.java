@@ -1,4 +1,4 @@
-package com.neprofinishedgood.plannedandunplannedmove.presenter;
+package com.neprofinishedgood.move.presenter;
 
 import android.app.Activity;
 
@@ -6,10 +6,9 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.plannedandunplannedmove.MoveStillageActivity;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
+import com.neprofinishedgood.move.model.LocationData;
+import com.neprofinishedgood.move.model.LocationInput;
+import com.neprofinishedgood.move.model.UpdateMoveLocationInput;
 
 import retrofit2.Call;
 import retrofit2.Callback;
