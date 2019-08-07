@@ -1,7 +1,7 @@
 package com.neprofinishedgood.transferstillage.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 
 public interface ITransferView {
     void onFailure(String message);

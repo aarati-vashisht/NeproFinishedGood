@@ -7,8 +7,8 @@ import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

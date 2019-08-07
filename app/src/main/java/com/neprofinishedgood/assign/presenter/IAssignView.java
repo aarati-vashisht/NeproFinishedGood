@@ -1,10 +1,10 @@
-package com.neprofinishedgood.assignplannedunplanned.presenter;
+package com.neprofinishedgood.assign.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.LocationData;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 
-public interface IAssignePlannedUnplannedView {
+public interface IAssignView {
 
     void onFailure(String message);
 

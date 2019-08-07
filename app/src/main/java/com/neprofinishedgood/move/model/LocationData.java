@@ -1,4 +1,4 @@
-package com.neprofinishedgood.plannedandunplannedmove.model;
+package com.neprofinishedgood.move.model;
 
 
 import com.google.gson.annotations.Expose;

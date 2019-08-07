@@ -6,8 +6,6 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.lookup.presenter.ILookUpView;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
 import com.neprofinishedgood.workorderstartend.model.WorkOrderScanInput;
 import com.neprofinishedgood.workorderstartend.model.WorkOrderScanResponse;
 

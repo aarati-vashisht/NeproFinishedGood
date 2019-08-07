@@ -1,7 +1,7 @@
-package com.neprofinishedgood.plannedandunplannedmove.presenter;
+package com.neprofinishedgood.move.presenter;
 
-import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.AssignedStillages;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 
 public interface IPlannedAndUnPlannedView {
     void onAssignedFailure(String message);

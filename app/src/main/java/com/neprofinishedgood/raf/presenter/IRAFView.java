@@ -1,7 +1,7 @@
 package com.neprofinishedgood.raf.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 
 public interface IRAFView {
     void onFailure(String message);

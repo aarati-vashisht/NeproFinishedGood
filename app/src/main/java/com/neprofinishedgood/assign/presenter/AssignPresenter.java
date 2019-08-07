@@ -1,27 +1,26 @@
-package com.neprofinishedgood.assignplannedunplanned.presenter;
+package com.neprofinishedgood.assign.presenter;
 
 import android.app.Activity;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
-import com.neprofinishedgood.assignplannedunplanned.AssignPlannedAndUnplannedActivity;
-import com.neprofinishedgood.assignplannedunplanned.model.AssignedUnAssignedInput;
+import com.neprofinishedgood.assign.model.AssignedUnAssignedInput;
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.LocationData;
+import com.neprofinishedgood.move.model.LocationInput;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AssignPlannedAndUnplannedPresenter implements IAssignPlannedAndUnplannedInterFace {
-    IAssignePlannedUnplannedView unplannedView;
+public class AssignPresenter implements IAssignInterFace {
+    IAssignView unplannedView;
     Activity activity;
 
-    public AssignPlannedAndUnplannedPresenter(IAssignePlannedUnplannedView unplannedView, Activity activity) {
+    public AssignPresenter(IAssignView unplannedView, Activity activity) {
         this.unplannedView = unplannedView;
         this.activity = activity;
     }

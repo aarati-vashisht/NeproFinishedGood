@@ -13,9 +13,8 @@ import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.lookup.presenter.ILookUpInterface;
 import com.neprofinishedgood.lookup.presenter.ILookUpView;
 import com.neprofinishedgood.lookup.presenter.LookUpPresenter;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
-import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
 

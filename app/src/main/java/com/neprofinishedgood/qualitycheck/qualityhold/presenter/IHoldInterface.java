@@ -1,9 +1,8 @@
 package com.neprofinishedgood.qualitycheck.qualityhold.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
-import com.neprofinishedgood.raf.model.ScanCountingResponse;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 
 public interface IHoldInterface {
     void callScanStillageService(MoveInput moveInput);

@@ -1,6 +1,6 @@
 package com.neprofinishedgood.api;
 
-import com.neprofinishedgood.assignplannedunplanned.model.AssignedUnAssignedInput;
+import com.neprofinishedgood.assign.model.AssignedUnAssignedInput;
 import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.login.model.LoginResponse;
@@ -10,13 +10,13 @@ import com.neprofinishedgood.pickandload.model.LoadingPlanDetails;
 import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.pickandload.model.LoadingPlanResponse;
 import com.neprofinishedgood.pickandload.model.UpdateLoadInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
+import com.neprofinishedgood.move.model.AllAssignedDataInput;
+import com.neprofinishedgood.move.model.AssignedStillages;
+import com.neprofinishedgood.move.model.LocationData;
+import com.neprofinishedgood.move.model.LocationInput;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.productionjournal.model.PickingListSearchInput;
 import com.neprofinishedgood.productionjournal.model.PickingListSearchResponse;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;

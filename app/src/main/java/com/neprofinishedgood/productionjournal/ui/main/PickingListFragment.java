@@ -56,8 +56,6 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     IPickingListInterface iPickingListInterface;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_picking_list, container, false);
@@ -80,8 +78,11 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     @OnClick(R.id.imageViewSearchButton)
     public void onImageViewSearchButtonClick() {
-        PickingListSearchInput pickingListSearchInput = new PickingListSearchInput(ProductionJournal.getInstance().workOrderNo, ProductionJournal.getInstance().userId, editTextSearchItem.getText().toString().trim());
-        iPickingListInterface.callSearchItemService(pickingListSearchInput);
+        if(isValidated()) {
+            ProductionJournal.getInstance().showProgress(getActivity());
+            PickingListSearchInput pickingListSearchInput = new PickingListSearchInput(ProductionJournal.getInstance().workOrderNo, ProductionJournal.getInstance().userId, editTextSearchItem.getText().toString().trim());
+            iPickingListInterface.callSearchItemService(pickingListSearchInput);
+        }
     }
 
     @OnClick(R.id.buttonOk)
@@ -110,6 +111,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
     public void onPickingSearchSuccess(PickingListSearchResponse body) {
         ProductionJournal.getInstance().hideProgress();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
+            ProductionJournal.getInstance().hideProgress();
             setData(body);
         } else {
             CustomToast.showToast(rootView.getContext(), body.getMessage());
@@ -131,5 +133,14 @@ public class PickingListFragment extends Fragment implements IPickingListView {
         recyclerViewPickingList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewPickingList.setAdapter(adapter);
         recyclerViewPickingList.setHasFixedSize(true);
+    }
+
+    boolean isValidated(){
+        if(editTextSearchItem.getText().toString().equals("")){
+            editTextSearchItem.setError("Enter Item Name!");
+            editTextSearchItem.requestFocus();
+            return false;
+        }
+        return true;
     }
 }

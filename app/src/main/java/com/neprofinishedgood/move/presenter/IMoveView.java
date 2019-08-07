@@ -1,7 +1,7 @@
-package com.neprofinishedgood.plannedandunplannedmove.presenter;
+package com.neprofinishedgood.move.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.LocationData;
+import com.neprofinishedgood.move.model.LocationData;
 
 public interface IMoveView {
 

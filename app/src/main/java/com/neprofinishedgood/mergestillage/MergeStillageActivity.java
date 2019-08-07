@@ -21,8 +21,8 @@ import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
 import com.neprofinishedgood.mergestillage.presenter.IMergeStillageInterface;
 import com.neprofinishedgood.mergestillage.presenter.IMergeStillageView;
 import com.neprofinishedgood.mergestillage.presenter.MergeStillagePresenter;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
 

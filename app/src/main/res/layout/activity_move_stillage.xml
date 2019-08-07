@@ -6,7 +6,7 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:orientation="vertical"
-    tools:context=".plannedandunplannedmove.MoveStillageActivity">
+    tools:context=".move.MoveStillageActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

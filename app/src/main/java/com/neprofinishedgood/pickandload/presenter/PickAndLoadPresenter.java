@@ -8,7 +8,7 @@ import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.pickandload.model.LoadingPlanResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
+import com.neprofinishedgood.move.model.AllAssignedDataInput;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -20,7 +20,7 @@
             android:name=".productionjournal.ProductionJournal"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".plannedandunplannedmove.MoveStillageActivity"
+            android:name=".move.MoveStillageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".lookup.LookUpActivity"
@@ -41,7 +41,7 @@
             android:name=".mergestillage.MergeStillageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".assignplannedunplanned.AssignPlannedAndUnplannedActivity"
+            android:name=".assign.AssignActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".qualitycheck.qualityhold.QualityHoldActivity"
@@ -62,7 +62,7 @@
             android:name=".raf.RAFActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".plannedandunplannedmove.PlannedAndUnPlannedMoveActivity"
+            android:name=".move.MoveActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".dashboard.DashBoardAcivity"

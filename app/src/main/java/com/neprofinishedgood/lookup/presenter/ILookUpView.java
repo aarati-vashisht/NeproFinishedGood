@@ -1,6 +1,6 @@
 package com.neprofinishedgood.lookup.presenter;
 
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
 
 public interface ILookUpView {
     void onFailure(String message);

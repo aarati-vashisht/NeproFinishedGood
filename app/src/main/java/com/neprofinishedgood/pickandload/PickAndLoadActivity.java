@@ -16,7 +16,7 @@ import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.pickandload.presenter.IPickAndLoadInterFace;
 import com.neprofinishedgood.pickandload.presenter.IPickAndLoadVIew;
 import com.neprofinishedgood.pickandload.presenter.PickAndLoadPresenter;
-import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
+import com.neprofinishedgood.move.model.AllAssignedDataInput;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.Utils;
 

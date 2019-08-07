@@ -1,4 +1,4 @@
-package com.neprofinishedgood.plannedandunplannedmove.model;
+package com.neprofinishedgood.move.model;
 
 public class UpdateMoveLocationInput {
     String StickerNo;

@@ -1,9 +1,6 @@
-package com.neprofinishedgood.plannedandunplannedmove;
+package com.neprofinishedgood.move;
 
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,17 +15,16 @@ import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.plannedandunplannedmove.adapter.MoveAdapter;
-import com.neprofinishedgood.plannedandunplannedmove.model.AllAssignedDataInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.AssignedStillages;
-import com.neprofinishedgood.plannedandunplannedmove.model.MoveInput;
-import com.neprofinishedgood.plannedandunplannedmove.model.ScanStillageResponse;
-import com.neprofinishedgood.plannedandunplannedmove.model.UpdateMoveLocationInput;
-import com.neprofinishedgood.plannedandunplannedmove.presenter.IPlannedAndUnPlannedView;
-import com.neprofinishedgood.plannedandunplannedmove.presenter.IPlannedUnplannedPresenter;
+import com.neprofinishedgood.move.adapter.MoveAdapter;
+import com.neprofinishedgood.move.model.AllAssignedDataInput;
+import com.neprofinishedgood.move.model.AssignedStillages;
+import com.neprofinishedgood.move.model.MoveInput;
+import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.UpdateMoveLocationInput;
+import com.neprofinishedgood.move.presenter.IPlannedAndUnPlannedView;
+import com.neprofinishedgood.move.presenter.IPlannedUnplannedPresenter;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
-import com.neprofinishedgood.utils.NetworkHandleService;
 import com.neprofinishedgood.utils.SharedPref;
 
 import java.lang.reflect.Type;
@@ -39,10 +35,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
 
-public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPlannedAndUnPlannedView {
+public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedView {
 
 
-    private static PlannedAndUnPlannedMoveActivity instance;
+    private static MoveActivity instance;
     @BindView(R.id.editTextScanStillage)
     AppCompatEditText editTextScanStillage;
     @BindView(R.id.recyclerViewStillage)
@@ -54,7 +50,7 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
     long scanStillageLastTexxt = 0;
     private MoveAdapter adapter;
 
-    public static PlannedAndUnPlannedMoveActivity getInstance() {
+    public static MoveActivity getInstance() {
         return instance;
     }
 
@@ -95,8 +91,8 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
             if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                if (NetworkChangeReceiver.isInternetConnected(PlannedAndUnPlannedMoveActivity.this)) {
-                    showProgress(PlannedAndUnPlannedMoveActivity.this);
+                if (NetworkChangeReceiver.isInternetConnected(MoveActivity.this)) {
+                    showProgress(MoveActivity.this);
                     String stillageTxt = editTextScanStillage.getText().toString().trim();
                     iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(stillageTxt, userId));
                 } else {
@@ -166,7 +162,7 @@ public class PlannedAndUnPlannedMoveActivity extends BaseActivity implements IPl
 
     //initializes data and calling MoveService after checking internet
     public void callService() {
-        if (NetworkChangeReceiver.isInternetConnected(PlannedAndUnPlannedMoveActivity.this)) {
+        if (NetworkChangeReceiver.isInternetConnected(MoveActivity.this)) {
             ArrayList<UpdateMoveLocationInput> moveList = new ArrayList<>();
             Gson gson = new Gson();
             String moveData = SharedPref.getMoveData();
