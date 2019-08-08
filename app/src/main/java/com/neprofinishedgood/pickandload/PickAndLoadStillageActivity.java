@@ -181,6 +181,8 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
 //            textViewLoadingPlan.setText("");
             textViewTruckDriver.setText("");
             textViewTruckNumber.setText("");
+            finish();
+//            PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
         } else {
             setData(body);
         }

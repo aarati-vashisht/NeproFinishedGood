@@ -57,7 +57,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_planned_unplanned_move);
+        setContentView(R.layout.activity_move);
         ButterKnife.bind(this);
         instance = this;
         setTitle(getString(R.string.move));

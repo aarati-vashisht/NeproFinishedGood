@@ -190,10 +190,18 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
             if (mergeQty > childQty || mergeQty == 0) {
                 editTextMergeQuantity.setError(getString(R.string.invalid_merge_quantity));
                 editTextMergeQuantity.requestFocus();
+                buttonMerge.setEnabled(false);
             } else if ((mergeQty + parentQty) > parentStdQty) {
                 editTextMergeQuantity.setError(getString(R.string.invalid_merge_quantity));
                 editTextMergeQuantity.requestFocus();
+                buttonMerge.setEnabled(false);
             }
+            else {
+                buttonMerge.setEnabled(true);
+            }
+        }
+        else{
+            buttonMerge.setEnabled(false);
         }
     }
 
