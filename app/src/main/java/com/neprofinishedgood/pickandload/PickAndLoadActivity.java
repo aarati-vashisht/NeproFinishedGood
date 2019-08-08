@@ -46,12 +46,17 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
         Utils.hideSoftKeyboard(this);
         setTitle(getString(R.string.pickload));
         iPickAndLoadInterFace = new PickAndLoadPresenter(this, this);
-        getLoadingPlanData();
     }
 
     private void getLoadingPlanData() {
         showProgress(this);
         iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLoadingPlanData();
     }
 
     private void setAdapter(List<ScanLoadingPlanList> scanLoadingPlanList) {
@@ -81,6 +86,11 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
                 SharedPref.saveLoadinGplanList("");
             }
         } else {
+            scanLoadingPlanList = new ArrayList<>();
+            recyclerViewLoadingPlans.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            loadingPlanAdapter = new PickAndLoadAdapter(scanLoadingPlanList);
+            recyclerViewLoadingPlans.setAdapter(loadingPlanAdapter);
+            recyclerViewLoadingPlans.setHasFixedSize(true);
             SharedPref.saveLoadinGplanList("");
         }
     }
@@ -97,6 +107,7 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
 
     @Override
     public void onSuccess(LoadingPlanResponse body) {
+        scanLoadingPlanList = new ArrayList<>();
         scanLoadingPlanList = body.getScanLoadingPlanList();
         hideProgress();
         setAdapter(scanLoadingPlanList);

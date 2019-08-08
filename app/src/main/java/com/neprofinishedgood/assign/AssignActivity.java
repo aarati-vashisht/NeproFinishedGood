@@ -97,7 +97,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assign_planned_and_unplanned);
+        setContentView(R.layout.activity_assign);
         ButterKnife.bind(this);
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
