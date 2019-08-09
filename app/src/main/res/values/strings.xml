@@ -175,5 +175,11 @@
     <string name="start">Start</string>
     <string name="end">End</string>
     <string name="estimated">Estimated</string>
+    <string name="confirm_and_post"><![CDATA[Confirm & Post]]></string>
+    <string name="production_journal_submit_confirmation">Are you sure, you want to post this production journal?</string>
+    <string name="item_id">Item Id:</string>
+    <string name="qty">Quantity:</string>
+    <string name="unit">Unit:</string>
+    <string name="date">Date:</string>
 
 </resources>

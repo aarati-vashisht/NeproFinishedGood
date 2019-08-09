@@ -1,16 +1,22 @@
 package com.neprofinishedgood.productionjournal;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
@@ -28,7 +34,11 @@ import com.neprofinishedgood.productionjournal.presenter.IProductionJournalView;
 import com.neprofinishedgood.productionjournal.ui.main.SectionsPagerAdapter;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,17 +53,23 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @BindView(R.id.linearLayoutWorkOrderNumber)
     LinearLayout linearLayoutWorkOrderNumber;
 
+    @BindView(R.id.linearLayoutButtons)
+    LinearLayout linearLayoutButtons;
+
     @BindView(R.id.view_pager)
     ViewPager view_pager;
 
     @BindView(R.id.tabs)
     TabLayout tabs;
 
-    @BindView(R.id.buttonSubmit)
-    CustomButton buttonSubmit;
+    @BindView(R.id.buttonConfirm)
+    CustomButton buttonConfirm;
 
     @BindView(R.id.textViewWorkOrderNumber)
     TextView textViewWorkOrderNumber;
+
+    @BindView(R.id.cardView)
+    CardView cardView;
 
     long scanStillageLastTexxt = 0;
     long delay = 1500;
@@ -67,6 +83,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public ArrayList<RouteModel> routeModelList;
 
     static ProductionJournal instance;
+    AlertDialog.Builder builder;
 
     public static ProductionJournal getInstance() {
         return instance;
@@ -81,7 +98,6 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
-        CustomButton buttonSubmit = findViewById(R.id.buttonSubmit);
         ButterKnife.bind(this);
         instance = this;
         setTitle(getString(R.string.production_journal));
@@ -110,15 +126,18 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     Handler scanWorkOrderhandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
-                showProgress(ProductionJournal.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                    WorkOrderInput workOrderInput = new WorkOrderInput(userId, editTextScanWorkOrder.getText().toString().trim());
-                    iProductionJournalInterface.callScanWorkOrderService(workOrderInput);
-                }
-            } else {
-                CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
+            if(editTextScanWorkOrder.getText().toString().trim().equalsIgnoreCase("wo-00001")){
+                setData();
             }
+//            if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
+//                showProgress(ProductionJournal.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    WorkOrderInput workOrderInput = new WorkOrderInput(userId, editTextScanWorkOrder.getText().toString().trim());
+//                    iProductionJournalInterface.callScanWorkOrderService(workOrderInput);
+//                }
+//            } else {
+//                CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
+//            }
         }
     };
 
@@ -133,32 +152,31 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public void onSuccess(WorkOrderResponse body) {
         hideProgress();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            setData(body);
+//            setData(body);
         } else {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanWorkOrder.setText("");
         }
     }
 
-    void setData(WorkOrderResponse body) {
-        linearLayoutWorkOrderNumber.setVisibility(View.VISIBLE);
+    void setData(/*WorkOrderResponse body*/) {
+        cardView.setVisibility(View.VISIBLE);
         tabs.setVisibility(View.VISIBLE);
         view_pager.setVisibility(View.VISIBLE);
-        buttonSubmit.setVisibility(View.VISIBLE);
+        linearLayoutButtons.setVisibility(View.VISIBLE);
 
         editTextScanWorkOrder.setEnabled(false);
+        textViewWorkOrderNumber.setText("WO-00001");
 
-        textViewWorkOrderNumber.setText(body.getWorkOrderNo());
+//        textViewWorkOrderNumber.setText(body.getWorkOrderNo());
+//        workOrderId = body.getWorkOrderId();
+//        workOrderNo = body.getWorkOrderNo();
 
-        workOrderId = body.getWorkOrderId();
-        workOrderNo = body.getWorkOrderNo();
     }
 
-    @OnClick(R.id.buttonSubmit)
+    @OnClick(R.id.buttonConfirm)
     public void onButtonSubmitClick() {
-        WorkOrderSubmitInput workOrderSubmitInput = new WorkOrderSubmitInput(userId, workOrderNo, pickingModelList, routeModelList);
-        showProgress(ProductionJournal.this);
-        iProductionJournalInterface.callSubmitProductionJournalService(workOrderSubmitInput);
+        showConfirmationAlert();
     }
 
     @Override
@@ -177,4 +195,73 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public void disableViews() {
         editTextScanWorkOrder.setText("");
     }
+
+    public void showConfirmationAlert() {
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.production_journal_submit_confirmation));
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+//                        WorkOrderSubmitInput workOrderSubmitInput = new WorkOrderSubmitInput(userId, workOrderNo, pickingModelList, routeModelList);
+//                        showProgress(ProductionJournal.this);
+//                        iProductionJournalInterface.callSubmitProductionJournalService(workOrderSubmitInput);
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
+//    textViewToDate.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            final Calendar c = Calendar.getInstance();
+//            mYear = c.get(Calendar.YEAR);
+//            mMonth = c.get(Calendar.MONTH);
+//            mDay = c.get(Calendar.DAY_OF_MONTH);
+//
+//            Calendar cc = Calendar.getInstance();
+//            @SuppressLint("SimpleDateFormat") final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//            final String getCurrentDateTime = sdf.format(cc.getTime());
+//
+//            DatePickerDialog datePickerDialog = new DatePickerDialog(homeActivity,
+//                    new DatePickerDialog.OnDateSetListener() {
+//
+//                        @Override
+//                        public void onDateSet(DatePicker view, int year,
+//                                              int monthOfYear, int dayOfMonth) {
+//                            strmydate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+//                            Date date2 = null;
+//                            Date date1 = null;
+//                            try {
+//                                date1 = sdf.parse(changeDateFormatToServerFormat(edtfromdate.getText().toString()));
+//                                date2 = sdf.parse(strmydate);
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            if (edtfromdate.getText().toString().equals("") || edtfromdate.getText().toString() == null) {
+//                                textViewToDate.setText(changeDateFormatToUserFormat(strmydate));
+//                                textViewToDate.setError(null, null);
+//                            } else {
+//                                if (date1.compareTo(date2) < 0) {
+//                                    textViewToDate.setText(changeDateFormatToUserFormat(strmydate));
+//                                    textViewToDate.setError(null, null);
+//                                } else {
+//                                    textViewToDate.setError("To Date should be greater than From Date");
+//                                }
+//                            }
+//
+//
+//                        }
+//                    }, mYear, mMonth, mDay);
+//            datePickerDialog.show();
+//        }
+//    });
 }
