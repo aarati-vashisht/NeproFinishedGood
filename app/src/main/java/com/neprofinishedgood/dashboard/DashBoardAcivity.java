@@ -54,7 +54,7 @@ public class DashBoardAcivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.linearLayoutPutAway)
+    @OnClick(R.id.linearLayoutMove)
     public void onLinearLayouPutAwayClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsMove() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
@@ -81,7 +81,7 @@ public class DashBoardAcivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.linearLayoutAssignLocationAndFlt)
+    @OnClick(R.id.linearLayoutAssign)
     public void onlinearLayoutAssignLocationAndFltClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsAssignedPlannedAndUnplanned() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
@@ -90,7 +90,7 @@ public class DashBoardAcivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.linearLayoutPutAndHold)
+    @OnClick(R.id.linearLayoutPickAndLoad)
     public void onlinearLayoutPutAndHoldClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsPickAndCount() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
@@ -99,7 +99,7 @@ public class DashBoardAcivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.linearLayoutReturnStillage)
+    @OnClick(R.id.linearLayoutTransferStillage)
     public void onlinearLayoutReturnStillageClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsReturnStillage() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
@@ -108,7 +108,7 @@ public class DashBoardAcivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.linearLayoutReceiveReturnStillage)
+    @OnClick(R.id.linearLayoutReceiveStillage)
     public void onlinearLayoutReceiveReturnStillageClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsRecieveReturnStillage() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
@@ -126,7 +126,7 @@ public class DashBoardAcivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.linearLayoutCounting)
+    @OnClick(R.id.linearLayoutRAF)
     public void setlinearLayoutCountingClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsReportAsFinished() == 0) {
             CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");

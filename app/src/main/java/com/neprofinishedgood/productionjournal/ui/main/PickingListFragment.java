@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
@@ -28,26 +29,18 @@ import com.neprofinishedgood.utils.SharedPref;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 public class PickingListFragment extends Fragment implements IPickingListView {
 
     @BindView(R.id.recyclerViewPickingList)
     RecyclerView recyclerViewPickingList;
 
-    @BindView(R.id.editTextSearchItem)
-    AppCompatEditText editTextSearchItem;
-
     @BindView(R.id.editTextQuantity)
     AppCompatEditText editTextQuantity;
 
-    @BindView(R.id.linearLayoutItemName)
-    LinearLayout linearLayoutItemName;
-
-    @BindView(R.id.linearLayoutQuantity)
-    LinearLayout linearLayoutQuantity;
-
-    @BindView(R.id.textViewItemName)
-    TextView textViewItemName;
+    @BindView(R.id.spinnerItem)
+    Spinner spinnerItem;
 
     private PickingListAdapter adapter;
     View rootView;
@@ -76,54 +69,8 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     }
 
-    @OnClick(R.id.imageViewSearchButton)
-    public void onImageViewSearchButtonClick() {
-        if(isValidated()) {
-            ProductionJournal.getInstance().showProgress(getActivity());
-            PickingListSearchInput pickingListSearchInput = new PickingListSearchInput(ProductionJournal.getInstance().workOrderNo, ProductionJournal.getInstance().userId, editTextSearchItem.getText().toString().trim());
-            iPickingListInterface.callSearchItemService(pickingListSearchInput);
-        }
-    }
-
-    @OnClick(R.id.buttonOk)
-    public void buttonOk() {
-        if (!editTextQuantity.getText().toString().equals("")) {
-            PickingModel pickingData = new PickingModel(itemId, itemName, editTextQuantity.getText().toString());
-            ProductionJournal.getInstance().pickingModelList.add(pickingData);
-            adapter.notifyDataSetChanged();
-            SharedPref.savePickingListData(new Gson().toJson(ProductionJournal.getInstance().pickingModelList));
-            editTextSearchItem.setText("");
-            linearLayoutQuantity.setVisibility(View.GONE);
-            linearLayoutItemName.setVisibility(View.GONE);
-        } else {
-            editTextQuantity.setError(getString(R.string.enter_quantity));
-            editTextQuantity.requestFocus();
-        }
-    }
-
-    @Override
-    public void onPickingSearchFailure(String message) {
-        ProductionJournal.getInstance().hideProgress();
-        CustomToast.showToast(rootView.getContext(), message);
-    }
-
-    @Override
-    public void onPickingSearchSuccess(PickingListSearchResponse body) {
-        ProductionJournal.getInstance().hideProgress();
-        if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            ProductionJournal.getInstance().hideProgress();
-            setData(body);
-        } else {
-            CustomToast.showToast(rootView.getContext(), body.getMessage());
-            editTextSearchItem.setText("");
-        }
-    }
-
     private void setData(PickingListSearchResponse body) {
         editTextQuantity.setEnabled(true);
-        linearLayoutQuantity.setVisibility(View.VISIBLE);
-        linearLayoutItemName.setVisibility(View.VISIBLE);
-        textViewItemName.setText(body.getItemName());
         itemName = body.getItemName();
         itemId = body.getItemId();
     }
@@ -135,12 +82,14 @@ public class PickingListFragment extends Fragment implements IPickingListView {
         recyclerViewPickingList.setHasFixedSize(true);
     }
 
-    boolean isValidated(){
-        if(editTextSearchItem.getText().toString().equals("")){
-            editTextSearchItem.setError("Enter Item Name!");
-            editTextSearchItem.requestFocus();
-            return false;
-        }
-        return true;
+    @Override
+    public void onPickingSearchFailure(String message) {
+
     }
+
+    @Override
+    public void onPickingSearchSuccess(PickingListSearchResponse body) {
+
+    }
+
 }
