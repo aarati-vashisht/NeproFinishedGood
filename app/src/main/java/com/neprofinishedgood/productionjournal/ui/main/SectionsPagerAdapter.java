@@ -17,7 +17,7 @@ import com.neprofinishedgood.R;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_1_picking_list, R.string.tab_2_routing_list};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_1_picking_list, R.string.tab_2_route_card};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
@@ -35,7 +35,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new PickingListFragment();
             case 1:
-                return new RoutingListFragment();
+                return new RouteCardFragment();
         }
 
         return null;

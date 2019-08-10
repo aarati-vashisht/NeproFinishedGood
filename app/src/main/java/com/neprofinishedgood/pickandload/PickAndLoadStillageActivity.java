@@ -65,6 +65,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     TextView textViewTruckNumber;
     @BindView(R.id.buttonEndPick)
     CustomButton buttonEndPick;
+    public String isCompleted = "0";
 
     private PickAndLoadStillagesAdapter loadingPlanStillagesAdapter;
     IPickLoadItemInterface iPickAndLoadItemInterFace;
@@ -184,6 +185,12 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
             finish();
 //            PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
         } else {
+            if(body.getLoadingPlanList1().size()<=1){
+                isCompleted = "1";
+            }
+            else{
+                isCompleted = "0";
+            }
             setData(body);
         }
 

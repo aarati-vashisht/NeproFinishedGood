@@ -31,6 +31,7 @@ import com.neprofinishedgood.productionjournal.model.WorkOrderSubmitInput;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalInterface;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalPresenter;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalView;
+import com.neprofinishedgood.productionjournal.ui.main.PickingListFragment;
 import com.neprofinishedgood.productionjournal.ui.main.SectionsPagerAdapter;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 
@@ -80,6 +81,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public String workOrderNo;
 
     public ArrayList<PickingModel> pickingModelList;
+    public ArrayList<PickingModel> addedPickingModelList;
     public ArrayList<RouteModel> routeModelList;
 
     static ProductionJournal instance;
@@ -103,6 +105,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         setTitle(getString(R.string.production_journal));
 
         pickingModelList = new ArrayList<>();
+        addedPickingModelList = new ArrayList<>();
         routeModelList = new ArrayList<>();
 
         iProductionJournalInterface = new IProductionJournalPresenter(this, this);
@@ -179,6 +182,11 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         showConfirmationAlert();
     }
 
+    @OnClick(R.id.buttonCancel)
+    public void onButtonCancelClick() {
+        PickingListFragment.getInstance().clearInputs();
+    }
+
     @Override
     public void onSubmitProcessFailure(String message) {
         hideProgress();
@@ -218,50 +226,5 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     }
 
 
-//    textViewToDate.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            final Calendar c = Calendar.getInstance();
-//            mYear = c.get(Calendar.YEAR);
-//            mMonth = c.get(Calendar.MONTH);
-//            mDay = c.get(Calendar.DAY_OF_MONTH);
-//
-//            Calendar cc = Calendar.getInstance();
-//            @SuppressLint("SimpleDateFormat") final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//            final String getCurrentDateTime = sdf.format(cc.getTime());
-//
-//            DatePickerDialog datePickerDialog = new DatePickerDialog(homeActivity,
-//                    new DatePickerDialog.OnDateSetListener() {
-//
-//                        @Override
-//                        public void onDateSet(DatePicker view, int year,
-//                                              int monthOfYear, int dayOfMonth) {
-//                            strmydate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-//                            Date date2 = null;
-//                            Date date1 = null;
-//                            try {
-//                                date1 = sdf.parse(changeDateFormatToServerFormat(edtfromdate.getText().toString()));
-//                                date2 = sdf.parse(strmydate);
-//                            } catch (ParseException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                            if (edtfromdate.getText().toString().equals("") || edtfromdate.getText().toString() == null) {
-//                                textViewToDate.setText(changeDateFormatToUserFormat(strmydate));
-//                                textViewToDate.setError(null, null);
-//                            } else {
-//                                if (date1.compareTo(date2) < 0) {
-//                                    textViewToDate.setText(changeDateFormatToUserFormat(strmydate));
-//                                    textViewToDate.setError(null, null);
-//                                } else {
-//                                    textViewToDate.setError("To Date should be greater than From Date");
-//                                }
-//                            }
-//
-//
-//                        }
-//                    }, mYear, mMonth, mDay);
-//            datePickerDialog.show();
-//        }
-//    });
+
 }

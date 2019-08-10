@@ -42,9 +42,7 @@ import butterknife.OnTextChanged;
 public class RAFActivity extends BaseActivity implements IRAFView {
     @BindView(R.id.editTextScanStillage)
     AppCompatEditText editTextScanStillage;
-    @BindView(R.id.editTextQuantity)
-    AppCompatEditText editTextQuantity;
-    @BindView(R.id.stillageDetail)
+     @BindView(R.id.stillageDetail)
     View stillageDetail;
     @BindView(R.id.linearLayoutScanDetail)
     LinearLayout linearLayoutScanDetail;
@@ -73,6 +71,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     private String shift = "";
     private String autoRoute = "0";
     private String autoPick = "0";
+    private String quantity = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,9 +183,10 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         stillageLayout.linearLayoutWorkOrderNo.setVisibility(View.VISIBLE);
         stillageLayout.textViewWorkOrderNumber.setText(body.getWorkOrderNo());
 
-        editTextQuantity.setText(body.getStandardQty() + "");
-        editTextQuantity.setSelection(body.getStandardQty().toString().length());
-        editTextQuantity.requestFocus();
+//        editTextQuantity.setText(body.getStandardQty() + "");
+//        editTextQuantity.setSelection(body.getStandardQty().toString().length());
+//        editTextQuantity.requestFocus();
+        quantity = body.getStandardQty() + "";
     }
 
     @OnItemSelected(R.id.spinnerShift)
@@ -221,12 +221,12 @@ public class RAFActivity extends BaseActivity implements IRAFView {
                 textView.requestFocus();
             } else {
                 showProgress(this);
-                RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, editTextQuantity.getText().toString().trim(), autoPick, autoRoute);
+                RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, quantity, autoPick, autoRoute);
                 irafInterface.callRAFServcie(rafInput);
             }
         } else {
             if (isOfflineValidated()) {
-                RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, editTextQuantity.getText().toString().trim(), autoPick, autoRoute);
+                RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, quantity, autoPick, autoRoute);
                 saveDataOffline(rafInput);
             }
         }
@@ -266,7 +266,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         editTextScanStillage.setText("");
         linearLayoutOfflineData.setVisibility(View.GONE);
         stillageDetail.setVisibility(View.VISIBLE);
-        editTextQuantity.setText("");
+//        editTextQuantity.setText("");
     }
 
     void saveDataOffline(RafInput data) {
@@ -294,11 +294,11 @@ public class RAFActivity extends BaseActivity implements IRAFView {
             textView.requestFocus();
             return false;
         }
-        if (editTextQuantity.getText().toString().equals("")) {
-            editTextQuantity.setError(getString(R.string.enter_quantity));
-            editTextQuantity.requestFocus();
-            return false;
-        }
+//        if (editTextQuantity.getText().toString().equals("")) {
+//            editTextQuantity.setError(getString(R.string.enter_quantity));
+//            editTextQuantity.requestFocus();
+//            return false;
+//        }
         return true;
     }
 
