@@ -1,16 +1,25 @@
 package com.neprofinishedgood.productionjournal.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.pickandload.PickAndLoadActivity;
+import com.neprofinishedgood.pickandload.PickAndLoadStillageActivity;
+import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.productionjournal.model.PickingModel;
+import com.neprofinishedgood.productionjournal.ui.main.PickingListFragment;
+import com.neprofinishedgood.utils.Constants;
 
 import java.util.List;
 
@@ -32,8 +41,8 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.picking_list_layout, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.picking_list_layout, parent, false);
+
         return new ViewHolder(view);
     }
 
@@ -48,7 +57,6 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
         return pickingModelListFiltered.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
 
@@ -58,12 +66,17 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
         TextView textViewQuantity;
         @BindView(R.id.cardView)
         CardView cardView;
+        @BindView(R.id.back_layout)
+        FrameLayout back_layout;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             ButterKnife.bind(this, view);
             mView.setOnClickListener(this);
+
+            cardView.setOnClickListener(this);
+            back_layout.setOnClickListener(this);
         }
 
         @Override
@@ -74,13 +87,11 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
 
         @Override
         public void onClick(View v) {
-//                if (v == mView) {
-//                    Gson gson = new Gson();
-//                    String putExtraData = gson.toJson(pickingModelListFiltered.get(getAdapterPosition()));
-//                    context.startActivity(new Intent(context, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
-//                }
-
+            if (v == cardView) {
+                CustomToast.showToast(PickingListFragment.getInstance().getActivity(), ";skfdhglkjsdfglvkbdjn");
+            } else if (v == back_layout) {
+                CustomToast.showToast(PickingListFragment.getInstance().getActivity(), "Cancelled");
+            }
         }
     }
-
 }

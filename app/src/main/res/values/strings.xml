@@ -159,7 +159,7 @@
     <string name="select_default_value">Select Default Value</string>
     <string name="title_activity_production_journal">ProductionJournal</string>
     <string name="tab_1_picking_list">Picking List</string>
-    <string name="tab_2_routing_list">Routing List</string>
+    <string name="tab_2_route_card">Route Card</string>
     <string name="production_journal">Production Journal</string>
     <string name="submit">Submit</string>
     <string name="search_item">Search Item</string>
@@ -181,5 +181,12 @@
     <string name="qty">Quantity:</string>
     <string name="unit">Unit:</string>
     <string name="date">Date:</string>
+    <string name="add_more_line">Add More Line</string>
+    <string name="scan_type_workorder">Scan/Type Work Order</string>
+    <string name="operation">Operation:</string>
+    <string name="resource">Resource:</string>
+    <string name="resource_type">Resource Type:</string>
+    <string name="hours">Hours:</string>
+    <string name="add_details">Add Details</string>
 
 </resources>

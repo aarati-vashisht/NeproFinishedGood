@@ -1,12 +1,21 @@
 package com.neprofinishedgood.productionjournal.model;
 
 public class PickingModel {
-    String itemName, quantity, itemId;
+    String itemName, quantity, itemId,unit;
 
-    public PickingModel(String itemId, String itemName, String quantity) {
+    public PickingModel(String itemId, String itemName, String quantity, String unit) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.quantity = quantity;
+        this.unit = unit;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getItemId() {
