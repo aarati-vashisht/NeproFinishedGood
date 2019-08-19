@@ -231,8 +231,8 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     private void setData(LoadingPlanDetails body) {
         textViewGateNumber.setText(body.getGateNo() + "");
 //        textViewLoadingPlan.setText(body.getLoadingPlanNo());
-        textViewTruckDriver.setText(body.getDriverName());
-        textViewTruckNumber.setText(body.getTruckID());
+        textViewTruckDriver.setText(body.getDriverName()+" "+body.getDriverID());
+        textViewTruckNumber.setText(body.getTruckNo());
         setAdapter(body.getLoadingPlanList1());
     }
 

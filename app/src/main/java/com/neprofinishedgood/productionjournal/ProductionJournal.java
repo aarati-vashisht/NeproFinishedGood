@@ -81,8 +81,10 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public String workOrderNo;
 
     public ArrayList<PickingModel> pickingModelList;
-    public ArrayList<PickingModel> addedPickingModelList;
     public ArrayList<RouteModel> routeModelList;
+
+    public ArrayList<PickingModel> addedPickingModelList;
+    public ArrayList<RouteModel> addedRouteModelList;
 
     static ProductionJournal instance;
     AlertDialog.Builder builder;
@@ -184,7 +186,20 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
-        PickingListFragment.getInstance().clearInputs();
+        finish();
+        startActivity(new Intent(ProductionJournal.this,ProductionJournal.class));
+//        PickingListFragment.getInstance().clearInputs();
+//        addedPickingModelList = new ArrayList<>();
+//        PickingListFragment.getInstance().adapter.notifyDataSetChanged();
+//        PickingListFragment.getInstance().clearPickingList();
+//        editTextScanWorkOrder.setEnabled(true);
+//        editTextScanWorkOrder.setText("");
+//
+//        cardView.setVisibility(View.GONE);
+//        tabs.setVisibility(View.GONE);
+//        view_pager.setVisibility(View.GONE);
+//        linearLayoutButtons.setVisibility(View.GONE);
+//        textViewWorkOrderNumber.setText("");
     }
 
     @Override

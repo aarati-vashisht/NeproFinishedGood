@@ -57,7 +57,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
     @BindView(R.id.textViewUnit)
     TextView textViewUnit;
 
-    private PickingListAdapter adapter;
+    public PickingListAdapter adapter;
     View rootView;
 
     String itemName, itemId, workOrderNo, userId;
@@ -175,6 +175,11 @@ public class PickingListFragment extends Fragment implements IPickingListView {
         String date = sdf.format(c.getTime());
         editTextDate.setText(date);
         editTextQuantity.setText("");
+    }
+
+    public void clearPickingList(){
+        ProductionJournal.getInstance().addedPickingModelList = new ArrayList<>();
+        adapter.notifyDataSetChanged();
     }
 
     void setSpinnerItemData() {

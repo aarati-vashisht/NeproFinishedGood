@@ -3,12 +3,13 @@ package com.neprofinishedgood.mergestillage.model;
 public class UpgradeMergeInput {
     String StickerNo;
     String UserId;
-
-    public UpgradeMergeInput(String stickerNo, String userId, String mergeStickers, String totalMergeQty) {
+    String ActivityID;
+    public UpgradeMergeInput(String stickerNo, String userId, String mergeStickers, String totalMergeQty, String ActivityID) {
         StickerNo = stickerNo;
         UserId = userId;
         MergeStickers = mergeStickers;
         TotalMergeQty = totalMergeQty;
+        ActivityID = ActivityID;
     }
 
     String MergeStickers;

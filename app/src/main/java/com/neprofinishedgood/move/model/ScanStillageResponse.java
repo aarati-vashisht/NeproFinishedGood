@@ -9,24 +9,31 @@ public class ScanStillageResponse {
     @SerializedName("Status")
     @Expose
     private String status;
+
     @SerializedName("Message")
     @Expose
     private String message;
+
     @SerializedName("StickerID")
     @Expose
     private String stickerID;
+
     @SerializedName("StandardQty")
     @Expose
     private Integer standardQty;
+
     @SerializedName("ItemId")
     @Expose
     private String itemId;
+
     @SerializedName("Description")
     @Expose
     private String description;
+
     @SerializedName("ItemStdQty")
     @Expose
     private Integer itemStdQty;
+
     @SerializedName("AssignedLocation")
     @Expose
     private String assignedLocation;
@@ -39,6 +46,39 @@ public class ScanStillageResponse {
     @Expose
     private Integer isMovedFromProdLine;
 
+    @SerializedName("WareHouseID")
+    @Expose
+    private String wareHouseID;
+
+    @SerializedName("IsTransfered")
+    @Expose
+    private Integer IsTransfered;
+
+    @SerializedName("IsRecieved")
+    @Expose
+    private Integer IsRecieved;
+
+    @SerializedName("Location")
+    @Expose
+    private String Location;
+
+    @SerializedName("WareHouseName")
+    @Expose
+    private String WareHouseName;
+
+    @SerializedName("isHold")
+    @Expose
+    private String isHold;
+
+
+    public String getWareHouseID() {
+        return wareHouseID;
+    }
+
+    public void setWareHouseID(String wareHouseID) {
+        this.wareHouseID = wareHouseID;
+    }
+
     public Integer getIsTransfered() {
         return IsTransfered;
     }
@@ -46,10 +86,6 @@ public class ScanStillageResponse {
     public void setIsTransfered(Integer isTransfered) {
         IsTransfered = isTransfered;
     }
-
-    @SerializedName("IsTransfered")
-    @Expose
-    private Integer IsTransfered;
 
     public Integer getIsRecieved() {
         return IsRecieved;
@@ -59,10 +95,6 @@ public class ScanStillageResponse {
         IsRecieved = isRecieved;
     }
 
-    @SerializedName("IsRecieved")
-    @Expose
-    private Integer IsRecieved;
-
     public String getLocation() {
         return Location;
     }
@@ -70,10 +102,6 @@ public class ScanStillageResponse {
     public void setLocation(String location) {
         Location = location;
     }
-
-    @SerializedName("Location")
-    @Expose
-    private String Location;
 
     public String getWareHouseName() {
         return WareHouseName;
@@ -83,10 +111,6 @@ public class ScanStillageResponse {
         WareHouseName = wareHouseName;
     }
 
-    @SerializedName("WareHouseName")
-    @Expose
-    private String WareHouseName;
-
     public String getIsHold() {
         return isHold;
     }
@@ -94,10 +118,6 @@ public class ScanStillageResponse {
     public void setIsHold(String isHold) {
         this.isHold = isHold;
     }
-
-    @SerializedName("isHold")
-    @Expose
-    private String isHold;
 
     public String getStatus() {
         return status;

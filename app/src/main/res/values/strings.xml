@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FinishedGood</string>
+    <string name="app_name">Stillages</string>
     <string name="enter_pin">Enter Pin:</string>
     <string name="login">Login</string>
     <string name="plz_enter_pin">Please Enter Login Pin</string>
@@ -181,7 +181,7 @@
     <string name="qty">Quantity:</string>
     <string name="unit">Unit:</string>
     <string name="date">Date:</string>
-    <string name="add_more_line">Add More Line</string>
+    <string name="add_more_line">Add Line</string>
     <string name="scan_type_workorder">Scan/Type Work Order</string>
     <string name="operation">Operation:</string>
     <string name="resource">Resource:</string>

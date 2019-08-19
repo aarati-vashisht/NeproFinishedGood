@@ -100,7 +100,7 @@ public class AssignPresenter implements IAssignInterFace {
     @Override
     public void getAssigneUnassigned(UniversalResponse body) {
         if (body == null) {
-            unplannedView.onAssigneUnassignedFailure(body.getMessage());
+            unplannedView.onAssigneUnassignedFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             unplannedView.onAssigneUnassignedSuccess(body);
         }

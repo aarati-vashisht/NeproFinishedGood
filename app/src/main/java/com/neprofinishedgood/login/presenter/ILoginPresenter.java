@@ -2,6 +2,7 @@ package com.neprofinishedgood.login.presenter;
 
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
+import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.login.model.LoginUser;
 
@@ -9,7 +10,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ILoginPresenter implements ILoginInterface {
+public class ILoginPresenter extends BaseActivity implements ILoginInterface {
     ILoginView iLoginView;
 
     public ILoginPresenter(ILoginView iLoginView) {
