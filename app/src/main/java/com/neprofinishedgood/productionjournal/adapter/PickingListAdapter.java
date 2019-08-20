@@ -1,7 +1,6 @@
 package com.neprofinishedgood.productionjournal.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +10,12 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.pickandload.PickAndLoadActivity;
-import com.neprofinishedgood.pickandload.PickAndLoadStillageActivity;
-import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
-import com.neprofinishedgood.productionjournal.model.PickingModel;
+import com.neprofinishedgood.productionjournal.ProductionJournal;
+import com.neprofinishedgood.productionjournal.model.ItemPicked;
+import com.neprofinishedgood.productionjournal.model.PickingListDatum;
 import com.neprofinishedgood.productionjournal.ui.main.PickingListFragment;
-import com.neprofinishedgood.utils.Constants;
 
 import java.util.List;
 
@@ -28,14 +24,14 @@ import butterknife.ButterKnife;
 
 public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.ViewHolder> {
 
-    private final List<PickingModel> pickingModelList;
-    private List<PickingModel> pickingModelListFiltered;
+    private final List<ItemPicked> pickingListDatumList;
+    private List<ItemPicked> pickingListDatumListFiltered;
     private Context context;
     private View view;
 
-    public PickingListAdapter(List<PickingModel> pickingModelList) {
-        this.pickingModelList = pickingModelList;
-        this.pickingModelListFiltered = pickingModelList;
+    public PickingListAdapter(List<ItemPicked> pickingListDatumList) {
+        this.pickingListDatumList = pickingListDatumList;
+        this.pickingListDatumListFiltered = pickingListDatumList;
     }
 
     @Override
@@ -48,13 +44,13 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.textViewItemName.setText(pickingModelListFiltered.get(position).getItemName());
-        holder.textViewQuantity.setText(pickingModelListFiltered.get(position).getQuantity());
+        holder.textViewItemName.setText(pickingListDatumListFiltered.get(position).getItemName());
+        holder.textViewQuantity.setText(pickingListDatumListFiltered.get(position).getQuantity());
     }
 
     @Override
     public int getItemCount() {
-        return pickingModelListFiltered.size();
+        return pickingListDatumListFiltered.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -88,7 +84,23 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
         @Override
         public void onClick(View v) {
             if (v == cardView) {
-                CustomToast.showToast(PickingListFragment.getInstance().getActivity(), ";skfdhglkjsdfglvkbdjn");
+                String itemId = pickingListDatumListFiltered.get(getAdapterPosition()).getItemId();
+                PickingListDatum pickingListDatum  = null;
+                for(int i=0; i< ProductionJournal.getInstance().pickingListDatumList.size();i++){
+                    if(ProductionJournal.getInstance().pickingListDatumList.get(i).getItemId().equals(itemId)){
+                        pickingListDatum = ProductionJournal.getInstance().pickingListDatumList.get(i);
+                        PickingListFragment.getInstance().spinnerItem.setSelection(
+                                PickingListFragment.getInstance().itemAdapter.getPosition(pickingListDatum));
+                    }
+                }
+                PickingListFragment.getInstance().spinnerShift.setSelection(PickingListFragment.getInstance().arrayAdapter.getPosition(pickingListDatumListFiltered.get(getAdapterPosition()).getShift()));
+                PickingListFragment.getInstance().editTextDate.setText(pickingListDatumListFiltered.get(getAdapterPosition()).getDate());
+                PickingListFragment.getInstance().editTextQuantity.setText(pickingListDatumListFiltered.get(getAdapterPosition()).getQuantity());
+//                CustomToast.showToast(PickingListFragment.getInstance().getActivity(), ";skfdhglkjsdfglvkbdjn");
+
+
+
+
             } else if (v == back_layout) {
                 CustomToast.showToast(PickingListFragment.getInstance().getActivity(), "Cancelled");
             }

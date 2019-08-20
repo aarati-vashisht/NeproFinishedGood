@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.MyApplication;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
 import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
-import com.neprofinishedgood.productionjournal.model.PickingModel;
+import com.neprofinishedgood.productionjournal.model.PickingListDatum;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 
 import java.lang.reflect.Type;
@@ -20,7 +20,8 @@ public class SharedPref {
     private static String MASTER_DATA = "MASTER_DATA";
     private static String MOVE_DATA = "MOVE_DATA";
     private static String RAF_DATA = "MOVE_DATA";
-    private static String REJECT_DATA = "MOVE_DATA";
+    private static String REJECT_DATA = "REJECT_DATA";
+    private static String COMPLETE_REJECT_DATA = "COMPLETE_REJECT_DATA";
     private static String ASSIGNED_UNASSIGNED_DATA = "ASSIGNED_UNASSIGNED_DATA";
     private static String TRANSFER_DATA = "TRANSFER_DATA";
     private static String RECEIVE_DATA = "RECEIVE_DATA";
@@ -83,6 +84,16 @@ public class SharedPref {
 
     public static String getRejectData() {
         String data = MyApplication.sharedPreferences.getString(REJECT_DATA, "");
+        return data;
+    }
+
+    public static void saveCompleteRejectData(String jsonData) {
+        editor.putString(COMPLETE_REJECT_DATA, jsonData);
+        editor.apply();
+    }
+
+    public static String getCompleteRejectData() {
+        String data = MyApplication.sharedPreferences.getString(COMPLETE_REJECT_DATA, "");
         return data;
     }
 
@@ -171,12 +182,12 @@ public class SharedPref {
         editor.apply();
     }
 
-    public static ArrayList<PickingModel> getPickingListData() {
-        ArrayList<PickingModel> pickingLists = new ArrayList<>();
+    public static ArrayList<PickingListDatum> getPickingListData() {
+        ArrayList<PickingListDatum> pickingLists = new ArrayList<>();
         Gson gson = new Gson();
         String data = MyApplication.sharedPreferences.getString(PICKING_LIST_DATA, "");
         if (!data.equals("")) {
-            Type type = new TypeToken<ArrayList<PickingModel>>() {
+            Type type = new TypeToken<ArrayList<PickingListDatum>>() {
             }.getType();
             pickingLists = gson.fromJson(data, type);
         }

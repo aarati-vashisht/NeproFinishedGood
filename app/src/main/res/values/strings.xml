@@ -188,5 +188,6 @@
     <string name="resource_type">Resource Type:</string>
     <string name="hours">Hours:</string>
     <string name="add_details">Add Details</string>
+    <string name="select_item">Select Item</string>
 
 </resources>

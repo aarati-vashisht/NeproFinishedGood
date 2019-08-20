@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class WorkOrderSubmitInput {
 
     String UserId,WorkOrderNo;
-    ArrayList<PickingModel> PickingList;
-    ArrayList<RouteModel> RoutingList;
+    ArrayList<PickingListDatum> PickingList;
+    ArrayList<RoutingListDatum> RoutingList;
 
-    public WorkOrderSubmitInput(String userId, String workOrderNo, ArrayList<PickingModel> pickingModelList, ArrayList<RouteModel> routeModelList) {
+    public WorkOrderSubmitInput(String userId, String workOrderNo, ArrayList<PickingListDatum> pickingListDatumList, ArrayList<RoutingListDatum> routingListDatumList) {
         this.UserId = userId;
         this.WorkOrderNo = workOrderNo;
-        this.PickingList = pickingModelList;
-        this.RoutingList = routeModelList;
+        this.PickingList = pickingListDatumList;
+        this.RoutingList = routingListDatumList;
     }
 }

@@ -24,9 +24,10 @@ import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.model.RejectedCompleteInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
-import com.neprofinishedgood.qualitycheck.presenter.IQAPresenter;
-import com.neprofinishedgood.qualitycheck.presenter.IQAView;
+import com.neprofinishedgood.qualitycheck.rejectcompletestillage.presenter.IQACompletePresenter;
+import com.neprofinishedgood.qualitycheck.rejectcompletestillage.presenter.IQACompleteView;
 import com.neprofinishedgood.qualitycheck.qualityhold.QualityHoldActivity;
 import com.neprofinishedgood.raf.model.StillageList;
 import com.neprofinishedgood.utils.Constants;
@@ -43,7 +44,7 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
 
-public class RejectCompleteStillage extends BaseActivity implements IQAView {
+public class RejectCompleteStillage extends BaseActivity implements IQACompleteView{
 
     @BindView(R.id.linearLayoutScanDetail)
     LinearLayout linearLayoutScanDetail;
@@ -79,7 +80,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
 
     long scanStillageLastTexxt = 0;
     private String reason, isHold, shift;
-    private IQAPresenter iqaInterface;
+    private IQACompletePresenter iQACompletePresenter;
     long delay = 1500;
 
     private ArrayList<String> shiftList;
@@ -92,7 +93,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.reject_complete_stillage));
-        iqaInterface = new IQAPresenter(this, this);
+        iQACompletePresenter = new IQACompletePresenter(this, this);
         initData();
         callService();
     }
@@ -124,7 +125,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
             if (NetworkChangeReceiver.isInternetConnected(RejectCompleteStillage.this)) {
                 showProgress(RejectCompleteStillage.this);
                 if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                    iqaInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                    iQACompletePresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                 }
             } else {
                 setDataOffline();
@@ -226,14 +227,13 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         if (linearLayoutOfflineData.getVisibility() == View.GONE) {
             if (isValidated()) {
                 showProgress(this);
-                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, stillageLayout.textViewQuantity + "", reason, shift);
-                iqaInterface.callUpdateRejectedService(rejectedInput);
+                RejectedCompleteInput rejectedCompleteInput = new RejectedCompleteInput(editTextScanStillage.getText().toString().trim(), userId, reason, shift);
+                iQACompletePresenter.callUpdateRejectedService(rejectedCompleteInput);
             }
         } else {
             if (isOfflineValidated()) {
-                //quantity to be rejected is not confirm
-                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, stillageLayout.textViewQuantity + "", reason, shift);
-                saveDataOffline(rejectedInput);
+                RejectedCompleteInput rejectedCompleteInput = new RejectedCompleteInput(editTextScanStillage.getText().toString().trim(), userId, reason, shift);
+                saveDataOffline(rejectedCompleteInput);
             }
         }
 
@@ -303,18 +303,18 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
         stillageDetail.setVisibility(View.VISIBLE);
     }
 
-    void saveDataOffline(RejectedInput data) {
-        ArrayList<RejectedInput> rejectList = new ArrayList<>();
+    void saveDataOffline(RejectedCompleteInput data) {
+        ArrayList<RejectedCompleteInput> rejectList = new ArrayList<>();
         Gson gson = new Gson();
-        String rejectData = SharedPref.getRejectData();
+        String rejectData = SharedPref.getCompleteRejectData();
         if (!rejectData.equals("")) {
-            Type type = new TypeToken<ArrayList<RejectedInput>>() {
+            Type type = new TypeToken<ArrayList<RejectedCompleteInput>>() {
             }.getType();
             rejectList = gson.fromJson(rejectData, type);
         }
         rejectList.add(data);
         String json = gson.toJson(rejectList);
-        SharedPref.saveRejectData(json);
+        SharedPref.saveCompleteRejectData(json);
         CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
         onButtonCancelClick();
         editTextScanStillage.setEnabled(true);
@@ -333,19 +333,19 @@ public class RejectCompleteStillage extends BaseActivity implements IQAView {
 
     public void callService() {
         if (NetworkChangeReceiver.isInternetConnected(RejectCompleteStillage.this)) {
-            ArrayList<RejectedInput> rejectList = new ArrayList<>();
+            ArrayList<RejectedCompleteInput> rejectList = new ArrayList<>();
             Gson gson = new Gson();
-            String rejectData = SharedPref.getRejectData();
+            String rejectData = SharedPref.getCompleteRejectData();
             if (!rejectData.equals("")) {
-                Type type = new TypeToken<ArrayList<RejectedInput>>() {
+                Type type = new TypeToken<ArrayList<RejectedCompleteInput>>() {
                 }.getType();
                 rejectList = gson.fromJson(rejectData, type);
 
-                for (RejectedInput rejectedInput : rejectList) {
-                    iqaInterface.callUpdateRejectedService(rejectedInput);
+                for (RejectedCompleteInput rejectedInput : rejectList) {
+                    iQACompletePresenter.callUpdateRejectedService(rejectedInput);
                 }
                 String json = "";
-                SharedPref.saveRejectData(json);
+                SharedPref.saveCompleteRejectData(json);
             }
         }
     }

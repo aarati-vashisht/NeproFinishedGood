@@ -1,4 +1,4 @@
-package com.neprofinishedgood.qualitycheck.presenter;
+package com.neprofinishedgood.qualitycheck.rejectquantity.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.ScanStillageResponse;

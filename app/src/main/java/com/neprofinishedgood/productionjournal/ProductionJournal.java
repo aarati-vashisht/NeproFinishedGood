@@ -1,15 +1,12 @@
 package com.neprofinishedgood.productionjournal;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,23 +20,19 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
-import com.neprofinishedgood.productionjournal.model.PickingModel;
-import com.neprofinishedgood.productionjournal.model.RouteModel;
+import com.neprofinishedgood.productionjournal.model.ItemPicked;
+import com.neprofinishedgood.productionjournal.model.PickingListDatum;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalDataInput;
+import com.neprofinishedgood.productionjournal.model.RoutingListDatum;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
-import com.neprofinishedgood.productionjournal.model.WorkOrderSubmitInput;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalInterface;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalPresenter;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalView;
-import com.neprofinishedgood.productionjournal.ui.main.PickingListFragment;
 import com.neprofinishedgood.productionjournal.ui.main.SectionsPagerAdapter;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +41,7 @@ import butterknife.OnTextChanged;
 
 public class ProductionJournal extends BaseActivity implements IProductionJournalView {
 
-    @BindView(R.id.editTextSearchItem)
+    @BindView(R.id.editTextScanWorkOrder)
     AppCompatEditText editTextScanWorkOrder;
 
     @BindView(R.id.linearLayoutWorkOrderNumber)
@@ -69,6 +62,15 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @BindView(R.id.textViewWorkOrderNumber)
     TextView textViewWorkOrderNumber;
 
+    @BindView(R.id.textViewitem)
+    TextView textViewitem;
+
+    @BindView(R.id.textViewItemId)
+    TextView textViewItemId;
+
+    @BindView(R.id.textViewQuatity)
+    TextView textViewQuatity;
+
     @BindView(R.id.cardView)
     CardView cardView;
 
@@ -77,14 +79,13 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
 
     IProductionJournalInterface iProductionJournalInterface;
 
-    public String workOrderId;
     public String workOrderNo;
 
-    public ArrayList<PickingModel> pickingModelList;
-    public ArrayList<RouteModel> routeModelList;
+    public ArrayList<PickingListDatum> pickingListDatumList;
+    public ArrayList<RoutingListDatum> routingListDatumList;
 
-    public ArrayList<PickingModel> addedPickingModelList;
-    public ArrayList<RouteModel> addedRouteModelList;
+    public ArrayList<ItemPicked> addedPickingListDatumList;
+    public ArrayList<ItemPicked> addedRoutingListDatumList;
 
     static ProductionJournal instance;
     AlertDialog.Builder builder;
@@ -106,14 +107,14 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         instance = this;
         setTitle(getString(R.string.production_journal));
 
-        pickingModelList = new ArrayList<>();
-        addedPickingModelList = new ArrayList<>();
-        routeModelList = new ArrayList<>();
+        pickingListDatumList = new ArrayList<>();
+        addedPickingListDatumList = new ArrayList<>();
+        routingListDatumList = new ArrayList<>();
 
         iProductionJournalInterface = new IProductionJournalPresenter(this, this);
     }
 
-    @OnTextChanged(value = R.id.editTextSearchItem, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    @OnTextChanged(value = R.id.editTextScanWorkOrder, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanWorkOrderChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
             scanWorkOrderhandler.postDelayed(stillageRunnable, delay);
@@ -121,7 +122,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
 
     }
 
-    @OnTextChanged(value = R.id.editTextSearchItem, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    @OnTextChanged(value = R.id.editTextScanWorkOrder, callback = OnTextChanged.Callback.TEXT_CHANGED)
     public void onEditTextScanWorkOrderTEXTCHANGED(Editable text) {
         scanWorkOrderhandler.removeCallbacks(stillageRunnable);
 
@@ -131,18 +132,18 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     Handler scanWorkOrderhandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-            if(editTextScanWorkOrder.getText().toString().trim().equalsIgnoreCase("wo-00001")){
-                setData();
-            }
-//            if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
-//                showProgress(ProductionJournal.this);
-//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-//                    WorkOrderInput workOrderInput = new WorkOrderInput(userId, editTextScanWorkOrder.getText().toString().trim());
-//                    iProductionJournalInterface.callScanWorkOrderService(workOrderInput);
-//                }
-//            } else {
-//                CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
+//            if(editTextScanWorkOrder.getText().toString().trim().equalsIgnoreCase("wo-00001")){
+//                setData();
 //            }
+            if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
+                showProgress(ProductionJournal.this);
+                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                    WorkOrderInput workOrderInput = new WorkOrderInput(userId, editTextScanWorkOrder.getText().toString().trim());
+                    iProductionJournalInterface.callScanWorkOrderService(workOrderInput);
+                }
+            } else {
+                CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
+            }
         }
     };
 
@@ -157,25 +158,28 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public void onSuccess(WorkOrderResponse body) {
         hideProgress();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-//            setData(body);
+            setData(body);
         } else {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanWorkOrder.setText("");
         }
     }
 
-    void setData(/*WorkOrderResponse body*/) {
+    void setData(WorkOrderResponse body) {
         cardView.setVisibility(View.VISIBLE);
         tabs.setVisibility(View.VISIBLE);
         view_pager.setVisibility(View.VISIBLE);
         linearLayoutButtons.setVisibility(View.VISIBLE);
 
         editTextScanWorkOrder.setEnabled(false);
-        textViewWorkOrderNumber.setText("WO-00001");
-
-//        textViewWorkOrderNumber.setText(body.getWorkOrderNo());
-//        workOrderId = body.getWorkOrderId();
-//        workOrderNo = body.getWorkOrderNo();
+        textViewWorkOrderNumber.setText(body.getWorkOrderNo());
+        textViewitem.setText(body.getItemName());
+        textViewItemId.setText(body.getItemId());
+        textViewQuatity.setText(body.getQuantity());
+        pickingListDatumList = body.getPickingListData();
+        pickingListDatumList.add(0,new PickingListDatum(getResources().getString(R.string.select_item),"",""));
+        routingListDatumList = body.getRoutingListData();
+        workOrderNo = body.getWorkOrderNo();
 
     }
 
@@ -187,9 +191,9 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
         finish();
-        startActivity(new Intent(ProductionJournal.this,ProductionJournal.class));
+        startActivity(new Intent(ProductionJournal.this, ProductionJournal.class));
 //        PickingListFragment.getInstance().clearInputs();
-//        addedPickingModelList = new ArrayList<>();
+//        addedPickingListDatumList = new ArrayList<>();
 //        PickingListFragment.getInstance().adapter.notifyDataSetChanged();
 //        PickingListFragment.getInstance().clearPickingList();
 //        editTextScanWorkOrder.setEnabled(true);
@@ -225,9 +229,9 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-//                        WorkOrderSubmitInput workOrderSubmitInput = new WorkOrderSubmitInput(userId, workOrderNo, pickingModelList, routeModelList);
-//                        showProgress(ProductionJournal.this);
-//                        iProductionJournalInterface.callSubmitProductionJournalService(workOrderSubmitInput);
+                        ProductionJournalDataInput productionJournalDataInput = new ProductionJournalDataInput(workOrderNo, userId,textViewItemId.getText().toString(), addedPickingListDatumList, addedRoutingListDatumList);
+                        showProgress(ProductionJournal.this);
+                        iProductionJournalInterface.callSubmitProductionJournalService(productionJournalDataInput);
                         dialog.cancel();
                     }
                 })
@@ -239,7 +243,6 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         AlertDialog alert = builder.create();
         alert.show();
     }
-
 
 
 }

@@ -1,4 +1,4 @@
-package com.neprofinishedgood.qualitycheck.presenter;
+package com.neprofinishedgood.qualitycheck.rejectcompletestillage.presenter;
 
 import android.app.Activity;
 
@@ -8,17 +8,19 @@ import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.model.RejectedCompleteInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
+import com.neprofinishedgood.qualitycheck.rejectquantity.presenter.IQAInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IQAPresenter implements IQAInterface {
-    IQAView iqaView;
+public class IQACompletePresenter implements IQACompleteInterface {
+    IQACompleteView iqaView;
     Activity activity;
 
-    public IQAPresenter(IQAView iqaView, Activity activity) {
+    public IQACompletePresenter(IQACompleteView iqaView, Activity activity) {
         this.iqaView = iqaView;
         this.activity = activity;
     }
@@ -52,9 +54,9 @@ public class IQAPresenter implements IQAInterface {
     }
 
     @Override
-    public void callUpdateRejectedService(RejectedInput rejectedInput) {
+    public void callUpdateRejectedService(RejectedCompleteInput rejectedCompleteInput) {
         ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
-        Call<UniversalResponse> call = apiInterface.updatedRejectedStillage(rejectedInput);
+        Call<UniversalResponse> call = apiInterface.completeRejectedStillage(rejectedCompleteInput);
         call.enqueue(new Callback<UniversalResponse>() {
             @Override
             public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
