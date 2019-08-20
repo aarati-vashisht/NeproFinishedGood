@@ -296,7 +296,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
             linearLayoutAssignLocationButtons.setAnimation(fadeOut);
             linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
             showProgress(this);
-            UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString());
+            UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString(),"3");
             iMergeStillageInterface.callUpdateMergeStillage(upgradeMergeInput);
         } else {
             ///add more items to merge
@@ -331,7 +331,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                 /// call merge service
                 childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim() + ",";
                 showProgress(MergeStillageActivity.this);
-                UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString());
+                UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString(),"3");
                 iMergeStillageInterface.callUpdateMergeStillage(upgradeMergeInput);
                 dialogInterface.dismiss();
             }

@@ -20,11 +20,12 @@ import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.productionjournal.ProductionJournal;
 import com.neprofinishedgood.productionjournal.adapter.PickingListAdapter;
 import com.neprofinishedgood.productionjournal.adapter.SpinnerItemAdapter;
-import com.neprofinishedgood.productionjournal.model.PickingModel;
+import com.neprofinishedgood.productionjournal.model.ItemPicked;
 import com.neprofinishedgood.productionjournal.model.PickingListSearchResponse;
 import com.neprofinishedgood.productionjournal.presenter.IPickingListInterface;
 import com.neprofinishedgood.productionjournal.presenter.IPickingListPresenter;
 import com.neprofinishedgood.productionjournal.presenter.IPickingListView;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,16 +41,16 @@ public class PickingListFragment extends Fragment implements IPickingListView {
     RecyclerView recyclerViewPickingList;
 
     @BindView(R.id.editTextQuantity)
-    AppCompatEditText editTextQuantity;
+    public AppCompatEditText editTextQuantity;
 
     @BindView(R.id.editTextDate)
-    AppCompatEditText editTextDate;
+    public AppCompatEditText editTextDate;
 
     @BindView(R.id.spinnerItem)
-    Spinner spinnerItem;
+    public Spinner spinnerItem;
 
     @BindView(R.id.spinnerShift)
-    Spinner spinnerShift;
+    public Spinner spinnerShift;
 
     @BindView(R.id.buttonAddMoreLine)
     CustomButton buttonAddMoreLine;
@@ -57,12 +58,13 @@ public class PickingListFragment extends Fragment implements IPickingListView {
     @BindView(R.id.textViewUnit)
     TextView textViewUnit;
 
-    private PickingListAdapter adapter;
+    public PickingListAdapter adapter;
     View rootView;
 
     String itemName, itemId, workOrderNo, userId;
 
     private ArrayList<String> shiftList;
+    public ArrayAdapter<String> arrayAdapter;
 
     final SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -70,7 +72,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     static PickingListFragment instance;
     private String shift = "", itemQty;
-    SpinnerItemAdapter arrayAdapter;
+    public SpinnerItemAdapter itemAdapter;
 
 
     public static PickingListFragment getInstance() {
@@ -95,15 +97,15 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     }
 
-    private void setData(PickingListSearchResponse body) {
-        editTextQuantity.setEnabled(true);
-        itemName = body.getItemName();
-        itemId = body.getItemId();
-    }
+//    private void setData(PickingListSearchResponse body) {
+//        editTextQuantity.setEnabled(true);
+//        itemName = body.getItemName();
+//        itemId = body.getItemId();
+//    }
 
     void setAdapter() {
 
-        adapter = new PickingListAdapter(ProductionJournal.getInstance().addedPickingModelList);
+        adapter = new PickingListAdapter(ProductionJournal.getInstance().addedPickingListDatumList);
         recyclerViewPickingList.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewPickingList.setAdapter(adapter);
         recyclerViewPickingList.setHasFixedSize(true);
@@ -142,7 +144,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
                 String date = sdf.format(c.getTime());
                 editTextDate.setText(date);
             }
-        },mYear,mMonth,mDay);
+        }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
 
@@ -152,7 +154,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
         shiftList.add("A");
         shiftList.add("B");
         shiftList.add("C");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_layout, R.id.text1, shiftList);
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_layout, R.id.text1, shiftList);
         spinnerShift.setAdapter(arrayAdapter);
     }
 
@@ -162,13 +164,15 @@ public class PickingListFragment extends Fragment implements IPickingListView {
     }
 
     @OnClick(R.id.buttonAddMoreLine)
-    public void onButtonAddMoreLineClick(){
-        ProductionJournal.getInstance().addedPickingModelList.add(new PickingModel("",itemName,editTextQuantity.getText().toString(),""));
-        adapter.notifyDataSetChanged();
-        clearInputs();
+    public void onButtonAddMoreLineClick() {
+        if (isValidated()) {
+            ProductionJournal.getInstance().addedPickingListDatumList.add(new ItemPicked(shift, editTextDate.getText().toString(), itemName, itemId, editTextQuantity.getText().toString()));
+            adapter.notifyDataSetChanged();
+            clearInputs();
+        }
     }
 
-    public void clearInputs(){
+    public void clearInputs() {
         spinnerShift.setSelection(0);
         spinnerItem.setSelection(0);
         Calendar c = Calendar.getInstance();
@@ -177,23 +181,36 @@ public class PickingListFragment extends Fragment implements IPickingListView {
         editTextQuantity.setText("");
     }
 
+    public void clearPickingList() {
+        ProductionJournal.getInstance().addedPickingListDatumList = new ArrayList<>();
+        adapter.notifyDataSetChanged();
+    }
+
     void setSpinnerItemData() {
-        PickingModel p0= new PickingModel("","Select Item","", "");
-        PickingModel p1= new PickingModel("123","abc","12", "pc");
-        PickingModel p2= new PickingModel("123","pqr","12", "kg");
-        PickingModel p3= new PickingModel("123","abc","12", "ltr");
-        ProductionJournal.getInstance().pickingModelList.add(p0);
-        ProductionJournal.getInstance().pickingModelList.add(p1);
-        ProductionJournal.getInstance().pickingModelList.add(p2);
-        ProductionJournal.getInstance().pickingModelList.add(p3);
-        arrayAdapter = new SpinnerItemAdapter(getActivity(), R.layout.spinner_layout, ProductionJournal.getInstance().pickingModelList);
-        spinnerItem.setAdapter(arrayAdapter);
+        itemAdapter = new SpinnerItemAdapter(getActivity(), R.layout.spinner_layout, ProductionJournal.getInstance().pickingListDatumList);
+        spinnerItem.setAdapter(itemAdapter);
     }
 
     @OnItemSelected(R.id.spinnerItem)
-    public void spinnerItemSelected(Spinner spinner, int position){
-        textViewUnit.setText(ProductionJournal.getInstance().pickingModelList.get(position).getUnit());
-        itemName = arrayAdapter.getItem(position).getItemName();
+    public void spinnerItemSelected(Spinner spinner, int position) {
+        textViewUnit.setText(ProductionJournal.getInstance().pickingListDatumList.get(position).getUnit());
+        itemName = itemAdapter.getItem(position).getItemName();
+        itemId = itemAdapter.getItem(position).getItemId();
+    }
+
+    boolean isValidated() {
+        if (spinnerItem.getSelectedItemPosition() == 0) {
+            TextView textView = (TextView) spinnerItem.getSelectedView();
+            textView.setError(getString(R.string.search_item));
+            textView.requestFocus();
+            return false;
+        }
+        if (editTextQuantity.getText().toString().equals("")) {
+            editTextQuantity.setError(getString(R.string.enter_quantity));
+            editTextQuantity.requestFocus();
+            return false;
+        }
+        return true;
     }
 
 }

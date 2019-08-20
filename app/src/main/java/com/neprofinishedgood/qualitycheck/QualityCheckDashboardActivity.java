@@ -33,12 +33,7 @@ public class QualityCheckDashboardActivity extends BaseActivity {
 
     @OnClick(R.id.linearLayoutRejectCompleteStillage)
     public void onLinearLayoutRejectCompleteStillageClick() {
-        if(NetworkChangeReceiver.isInternetConnected(this)){
             startActivity(new Intent(QualityCheckDashboardActivity.this, RejectCompleteStillage.class));
-        }else {
-            startActivity(new Intent(QualityCheckDashboardActivity.this, RejectQuantityActivity.class)
-                    .putExtra(REJECT_TITLE, getString(R.string.reject_complete_stillage)));
-        }
     }
 
     @OnClick(R.id.linearLayoutQualityHoldAndMove)

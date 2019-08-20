@@ -442,7 +442,6 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         }
     }
 
-
     void setDataOffline() {
         textViewNumberOffline.setText(editTextScanStillage.getText().toString());
         setVisibilityInOfflineMode();

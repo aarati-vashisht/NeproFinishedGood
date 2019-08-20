@@ -82,7 +82,7 @@
                 android:textSize="12sp" />
 
             <Spinner
-                android:id="@+id/spinnerItem"
+                android:id="@+id/spinnerOperation"
                 style="@style/AppTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

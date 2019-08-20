@@ -19,9 +19,11 @@ import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.move.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.productionjournal.model.PickingListSearchInput;
 import com.neprofinishedgood.productionjournal.model.PickingListSearchResponse;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalDataInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
 import com.neprofinishedgood.productionjournal.model.WorkOrderSubmitInput;
+import com.neprofinishedgood.qualitycheck.model.RejectedCompleteInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
 import com.neprofinishedgood.raf.model.RafInput;
@@ -65,6 +67,9 @@ public interface ApiInterface {
 
     @POST("UpdatedRejectedStillage")
     Call<UniversalResponse> updatedRejectedStillage(@Body RejectedInput rejectedInput);
+
+    @POST("CompleteRejectedStillage")
+    Call<UniversalResponse> completeRejectedStillage(@Body RejectedCompleteInput rejectedCompleteInput);
 
     @POST("UpdatedHoldUnHoldStillage")
     Call<UniversalResponse> updatedHoldUnHoldStillage(@Body MoveInput moveInput);
@@ -119,14 +124,14 @@ public interface ApiInterface {
     @POST("CancelLoading")
     Call<UniversalResponse> cancelLoadingInput(@Body LoadingPlanInput loadingPlanInput);
 
-    @POST("WorkOrderProcess")
-    Call<WorkOrderResponse> workOrderProcessService(@Body WorkOrderInput workOrderInput);
+    @POST("GetProductionJournalData")
+    Call<WorkOrderResponse> getProductionJournalData(@Body WorkOrderInput workOrderInput);
 
     @POST("SearchItemProcess")
     Call<PickingListSearchResponse> searchItemProcessService(@Body PickingListSearchInput pickingListSearchInput);
 
-    @POST("SubmitProductionJournalProcess")
-    Call<UniversalResponse> submitProductionJournalProcess(@Body WorkOrderSubmitInput workOrderSubmitInput);
+    @POST("SubmitProductionJournalData")
+    Call<UniversalResponse> submitProductionJournalData(@Body ProductionJournalDataInput productionJournalDataInput);
 
     @POST("LotScan")
     Call<UniversalResponse> lotScan(@Body ScanLotInput scanLotInput);
@@ -139,5 +144,8 @@ public interface ApiInterface {
 
     @POST("WorkOrderEndService")
     Call<UniversalResponse> workOrderEndService(@Body WorkOrderScanInput workOrderScanInput);
+
+//    @POST("SubmitProductionJournalData")
+//    Call<UniversalResponse> submitProductionJournalData(@Body WorkOrderScanInput workOrderScanInput);
 
 }

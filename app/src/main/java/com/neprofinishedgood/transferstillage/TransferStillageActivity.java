@@ -70,6 +70,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
     private ITransferInterface iTransferInterface;
     private String warehouse;
+    private String stillageWarehouse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,13 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
     @OnItemSelected(R.id.spinnerWarehouse)
     public void spinnerBinSelected(Spinner spinner, int position) {
-        warehouse = warehouseList.get(position).getId();
+        warehouse = warehouseList.get(position).getId().trim();
+        if(warehouse.equalsIgnoreCase(stillageWarehouse)){
+            buttonTransfer.setEnabled(false);
+        }
+        else {
+            buttonTransfer.setEnabled(true);
+        }
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -181,9 +188,12 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     }
 
     void setData(ScanStillageResponse body) {
+        stillageWarehouse = body.getWareHouseID().trim();
         stillageDetail.setVisibility(View.VISIBLE);
         stillageDetail.setAnimation(fadeIn);
         relativeLayoutScanDetail.setVisibility(View.VISIBLE);
+        stillageLayout.linearLayoutWarehouse.setVisibility(View.VISIBLE);
+        stillageLayout.textViewWarehouse.setText(body.getWareHouseName());
         stillageLayout.textViewitem.setText(body.getItemId());
         stillageLayout.textViewNumber.setText(body.getStickerID());
         stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
@@ -193,6 +203,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
     @OnClick(R.id.buttonTransfer)
     public void onButtonDropClick() {
+
         if (linearLayoutOfflineData.getVisibility() == View.GONE) {
             if (spinnerWarehouse.getSelectedItemPosition() > 0) {
                 showProgress(this);

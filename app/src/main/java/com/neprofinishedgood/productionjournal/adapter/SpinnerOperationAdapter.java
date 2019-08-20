@@ -12,16 +12,17 @@ import androidx.annotation.Nullable;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.productionjournal.model.PickingListDatum;
+import com.neprofinishedgood.productionjournal.model.RoutingListDatum;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpinnerItemAdapter extends ArrayAdapter<PickingListDatum> {
-    List<PickingListDatum> pickingListDatumList = new ArrayList<>();
+public class SpinnerOperationAdapter extends ArrayAdapter<RoutingListDatum> {
+    List<RoutingListDatum> pickingListDatumList = new ArrayList<>();
     int res;
     private final LayoutInflater mInflater;
 
-    public SpinnerItemAdapter(Context context, int resource, ArrayList<PickingListDatum> objects) {
+    public SpinnerOperationAdapter(Context context, int resource, ArrayList<RoutingListDatum> objects) {
         super(context, resource, objects);
         pickingListDatumList = objects;
         this.res = resource;
@@ -29,7 +30,7 @@ public class SpinnerItemAdapter extends ArrayAdapter<PickingListDatum> {
     }
 
     @Override
-    public PickingListDatum getItem(int position) {
+    public RoutingListDatum getItem(int position) {
         return super.getItem(position);
     }
 
@@ -50,7 +51,7 @@ public class SpinnerItemAdapter extends ArrayAdapter<PickingListDatum> {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(res, null);
         TextView textView = v.findViewById(R.id.text1);
-        String str = pickingListDatumList.get(position).getItemName();
+        String str = pickingListDatumList.get(position).getOperationName();
         textView.setText(str);
         return v;
 
@@ -60,7 +61,7 @@ public class SpinnerItemAdapter extends ArrayAdapter<PickingListDatum> {
         final View view = mInflater.inflate(res, parent, false);
 
         TextView text = view.findViewById(R.id.text1);
-        text.setText(pickingListDatumList.get(position).getItemName());
+        text.setText(pickingListDatumList.get(position).getOperationName());
 
         return view;
     }

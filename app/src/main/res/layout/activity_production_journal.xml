@@ -25,7 +25,7 @@
                 android:textSize="12sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/editTextSearchItem"
+                android:id="@+id/editTextScanWorkOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -135,7 +135,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/textViewQuantity"
+                            android:id="@+id/textViewItemId"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
@@ -155,7 +155,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/textViewStdQuatity"
+                            android:id="@+id/textViewQuatity"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"

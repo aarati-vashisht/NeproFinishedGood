@@ -17,6 +17,7 @@ import com.neprofinishedgood.pickandload.presenter.IPickAndLoadInterFace;
 import com.neprofinishedgood.pickandload.presenter.IPickAndLoadVIew;
 import com.neprofinishedgood.pickandload.presenter.PickAndLoadPresenter;
 import com.neprofinishedgood.move.model.AllAssignedDataInput;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.Utils;
 
@@ -49,8 +50,12 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
     }
 
     private void getLoadingPlanData() {
-        showProgress(this);
-        iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
+        if (NetworkChangeReceiver.isInternetConnected(PickAndLoadActivity.this)) {
+            showProgress(this);
+            iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
+        } else {
+            CustomToast.showToast(PickAndLoadActivity.this, getString(R.string.no_internet));
+        }
     }
 
     @Override
