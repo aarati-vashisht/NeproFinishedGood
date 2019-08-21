@@ -19,7 +19,7 @@ public class SharedPref {
     static String LOGIN_DATA = "LOGIN_DATA";
     private static String MASTER_DATA = "MASTER_DATA";
     private static String MOVE_DATA = "MOVE_DATA";
-    private static String RAF_DATA = "MOVE_DATA";
+    private static String RAF_DATA = "RAF_DATA";
     private static String REJECT_DATA = "REJECT_DATA";
     private static String COMPLETE_REJECT_DATA = "COMPLETE_REJECT_DATA";
     private static String ASSIGNED_UNASSIGNED_DATA = "ASSIGNED_UNASSIGNED_DATA";
@@ -175,7 +175,6 @@ public class SharedPref {
         }
         return updateList;
     }
-
 
     public static void savePickingListData(String jsonData) {
         editor.putString(PICKING_LIST_DATA, jsonData);

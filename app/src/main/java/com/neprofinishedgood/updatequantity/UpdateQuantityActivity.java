@@ -259,7 +259,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (body.getStatus().equals(getResources().getString(R.string.success))) {
-                CustomToast.showToast(this, getString(R.string.item_updated_successfully));
+                CustomToast.showToast(this, body.getMessage());
                 onButtonCancelClick();
             } else {
                 CustomToast.showToast(getApplicationContext(), body.getMessage());

@@ -67,7 +67,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     @BindView(R.id.linearLayoutOfflineData)
     LinearLayout linearLayoutOfflineData;
 
-    @BindView(R.id.linearLayoutShift)
+    @BindView(R.id.linearLayout2)
     LinearLayout linearLayoutShift;
 
     @BindView(R.id.frameEnterQuantity)

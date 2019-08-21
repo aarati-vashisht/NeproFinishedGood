@@ -8,7 +8,11 @@ public interface IProductionJournalView {
 
     void onSuccess(WorkOrderResponse body);
 
-    void onSubmitProcessFailure(String message);
+    void onSubmitPickingProcessFailure(String message);
 
-    void onSubmitProcessSuccess(UniversalResponse body);
+    void onSubmitPickingProcessSuccess(UniversalResponse body);
+
+    void onSubmitRouteProcessFailure(String message);
+
+    void onSubmitRouteProcessSuccess(UniversalResponse body);
 }

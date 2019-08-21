@@ -8,14 +8,15 @@
     android:orientation="vertical"
     tools:context=".productionjournal.ui.main.RouteCardFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:orientation="vertical"
         android:padding="2dp">
 
         <LinearLayout
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -64,10 +65,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayoutShift"
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewSelectShift"
+            android:layout_below="@+id/linearLayout1"
             android:layout_marginTop="5dp"
             android:orientation="horizontal"
             android:visibility="visible">
@@ -93,8 +94,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout2"
             android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
@@ -116,7 +119,7 @@
                 android:layout_weight=".4"
                 android:maxLines="1"
                 android:padding="5dp"
-                android:text="abcd"
+                android:text=""
                 android:textSize="10sp" />
 
             <TextView
@@ -138,14 +141,16 @@
                 android:layout_weight=".4"
                 android:maxLines="1"
                 android:padding="5dp"
-                android:text="abcd"
+                android:text=""
                 android:textSize="10sp" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout3"
             android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
@@ -167,15 +172,15 @@
                 android:inputType="number"
                 android:maxLines="1"
                 android:padding="5dp"
-                android:text="566546"
+                android:text=""
                 android:textSize="10sp" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight=".6"
                 android:layout_marginStart="5dp"
+                android:layout_weight=".6"
                 android:text="@string/quantity"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
@@ -189,14 +194,16 @@
                 android:inputType="number"
                 android:maxLines="1"
                 android:padding="5dp"
-                android:text="566546"
+                android:text=""
                 android:textSize="10sp" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout4"
             android:layout_marginTop="5dp">
 
             <com.neprofinishedgood.custom_views.CustomButton
@@ -212,15 +219,49 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewPickingList"
+            android:id="@+id/recyclerViewRouteList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linearLayout5"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="45dp"
             android:background="@android:color/transparent"
             android:layoutAnimation="@anim/layout_animation_fall_down"
             app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/picking_list_layout" />
+            tools:listitem="@layout/picking_list_layout"
+            />
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            >
+
+            <com.neprofinishedgood.custom_views.CustomButton
+                android:id="@+id/buttonCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                android:visibility="visible" />
+
+            <com.neprofinishedgood.custom_views.CustomButton
+                android:id="@+id/buttonConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="20dp"
+                android:padding="5dp"
+                android:text="@string/confirm_and_post"
+                android:textColor="@color/white"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

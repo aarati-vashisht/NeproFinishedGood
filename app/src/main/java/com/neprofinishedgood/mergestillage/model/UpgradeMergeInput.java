@@ -9,7 +9,7 @@ public class UpgradeMergeInput {
         UserId = userId;
         MergeStickers = mergeStickers;
         TotalMergeQty = totalMergeQty;
-        ActivityID = ActivityID;
+        this.ActivityID = ActivityID;
     }
 
     String MergeStickers;

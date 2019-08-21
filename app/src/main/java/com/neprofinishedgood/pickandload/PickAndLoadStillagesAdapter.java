@@ -47,7 +47,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
     private Context context;
     private View view;
     private String charString = "";
-    private String reason;
+    private String reason="";
 
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
     private List<LoadingPlanList> loadingPlanDetailLists;

@@ -18,17 +18,19 @@ import com.google.android.material.tabs.TabLayout;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.productionjournal.model.ItemPicked;
 import com.neprofinishedgood.productionjournal.model.PickingListDatum;
-import com.neprofinishedgood.productionjournal.model.ProductionJournalDataInput;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalRouteDataInput;
+import com.neprofinishedgood.productionjournal.model.RouteCardPicked;
 import com.neprofinishedgood.productionjournal.model.RoutingListDatum;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalInterface;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalPresenter;
 import com.neprofinishedgood.productionjournal.presenter.IProductionJournalView;
+import com.neprofinishedgood.productionjournal.ui.main.PickingListFragment;
+import com.neprofinishedgood.productionjournal.ui.main.RouteCardFragment;
 import com.neprofinishedgood.productionjournal.ui.main.SectionsPagerAdapter;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 
@@ -36,48 +38,41 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 public class ProductionJournal extends BaseActivity implements IProductionJournalView {
 
     @BindView(R.id.editTextScanWorkOrder)
-    AppCompatEditText editTextScanWorkOrder;
+    public AppCompatEditText editTextScanWorkOrder;
 
     @BindView(R.id.linearLayoutWorkOrderNumber)
-    LinearLayout linearLayoutWorkOrderNumber;
-
-    @BindView(R.id.linearLayoutButtons)
-    LinearLayout linearLayoutButtons;
+    public  LinearLayout linearLayoutWorkOrderNumber;
 
     @BindView(R.id.view_pager)
-    ViewPager view_pager;
+    public  ViewPager view_pager;
 
     @BindView(R.id.tabs)
-    TabLayout tabs;
-
-    @BindView(R.id.buttonConfirm)
-    CustomButton buttonConfirm;
+    public TabLayout tabs;
 
     @BindView(R.id.textViewWorkOrderNumber)
-    TextView textViewWorkOrderNumber;
+    public  TextView textViewWorkOrderNumber;
 
     @BindView(R.id.textViewitem)
-    TextView textViewitem;
+    public TextView textViewitem;
 
     @BindView(R.id.textViewItemId)
-    TextView textViewItemId;
+    public TextView textViewItemId;
 
     @BindView(R.id.textViewQuatity)
-    TextView textViewQuatity;
+    public  TextView textViewQuatity;
 
     @BindView(R.id.cardView)
-    CardView cardView;
+    public  CardView cardView;
 
     long scanStillageLastTexxt = 0;
     long delay = 1500;
 
-    IProductionJournalInterface iProductionJournalInterface;
+    public IProductionJournalInterface iProductionJournalInterface;
 
     public String workOrderNo;
 
@@ -85,7 +80,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public ArrayList<RoutingListDatum> routingListDatumList;
 
     public ArrayList<ItemPicked> addedPickingListDatumList;
-    public ArrayList<ItemPicked> addedRoutingListDatumList;
+    public ArrayList<RouteCardPicked> addedRoutingListDatumList;
 
     static ProductionJournal instance;
     AlertDialog.Builder builder;
@@ -109,6 +104,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
 
         pickingListDatumList = new ArrayList<>();
         addedPickingListDatumList = new ArrayList<>();
+        addedRoutingListDatumList = new ArrayList<>();
         routingListDatumList = new ArrayList<>();
 
         iProductionJournalInterface = new IProductionJournalPresenter(this, this);
@@ -132,9 +128,6 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     Handler scanWorkOrderhandler = new Handler();
     private Runnable stillageRunnable = new Runnable() {
         public void run() {
-//            if(editTextScanWorkOrder.getText().toString().trim().equalsIgnoreCase("wo-00001")){
-//                setData();
-//            }
             if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
                 showProgress(ProductionJournal.this);
                 if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
@@ -146,6 +139,46 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
             }
         }
     };
+
+    void setData(WorkOrderResponse body) {
+        cardView.setVisibility(View.VISIBLE);
+        tabs.setVisibility(View.VISIBLE);
+        view_pager.setVisibility(View.VISIBLE);
+
+        editTextScanWorkOrder.setEnabled(false);
+        textViewWorkOrderNumber.setText(body.getWorkOrderNo());
+        textViewitem.setText(body.getItemName());
+        textViewItemId.setText(body.getItemId());
+        textViewQuatity.setText(body.getQuantity());
+        pickingListDatumList = body.getPickingListData();
+        pickingListDatumList.add(0, new PickingListDatum(getResources().getString(R.string.select_item), "", ""));
+        routingListDatumList = body.getRoutingListData();
+        routingListDatumList.add(0, new RoutingListDatum(getResources().getString(R.string.select_operation), "", "", "", ""));
+        workOrderNo = body.getWorkOrderNo();
+
+    }
+
+    public void disableViews() {
+        editTextScanWorkOrder.setText("");
+        cardView.setVisibility(View.GONE);
+        tabs.setVisibility(View.GONE);
+        view_pager.setVisibility(View.GONE);
+
+        editTextScanWorkOrder.setEnabled(true);
+        textViewWorkOrderNumber.setText("");
+        textViewitem.setText("");
+        textViewItemId.setText("");
+        textViewQuatity.setText("");
+        pickingListDatumList = new ArrayList<>();
+        routingListDatumList = new ArrayList<>();
+        addedPickingListDatumList = new ArrayList<>();
+        addedRoutingListDatumList = new ArrayList<>();
+        PickingListFragment.getInstance().clearInputs();
+        RouteCardFragment.getInstance().clearInputs();
+        PickingListFragment.getInstance().adapter.notifyDataSetChanged();
+        RouteCardFragment.getInstance().adapter.notifyDataSetChanged();
+        workOrderNo = "";
+    }
 
     @Override
     public void onFailure(String message) {
@@ -165,73 +198,54 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         }
     }
 
-    void setData(WorkOrderResponse body) {
-        cardView.setVisibility(View.VISIBLE);
-        tabs.setVisibility(View.VISIBLE);
-        view_pager.setVisibility(View.VISIBLE);
-        linearLayoutButtons.setVisibility(View.VISIBLE);
-
-        editTextScanWorkOrder.setEnabled(false);
-        textViewWorkOrderNumber.setText(body.getWorkOrderNo());
-        textViewitem.setText(body.getItemName());
-        textViewItemId.setText(body.getItemId());
-        textViewQuatity.setText(body.getQuantity());
-        pickingListDatumList = body.getPickingListData();
-        pickingListDatumList.add(0,new PickingListDatum(getResources().getString(R.string.select_item),"",""));
-        routingListDatumList = body.getRoutingListData();
-        workOrderNo = body.getWorkOrderNo();
-
-    }
-
-    @OnClick(R.id.buttonConfirm)
-    public void onButtonSubmitClick() {
-        showConfirmationAlert();
-    }
-
-    @OnClick(R.id.buttonCancel)
-    public void onButtonCancelClick() {
-        finish();
-        startActivity(new Intent(ProductionJournal.this, ProductionJournal.class));
-//        PickingListFragment.getInstance().clearInputs();
-//        addedPickingListDatumList = new ArrayList<>();
-//        PickingListFragment.getInstance().adapter.notifyDataSetChanged();
-//        PickingListFragment.getInstance().clearPickingList();
-//        editTextScanWorkOrder.setEnabled(true);
-//        editTextScanWorkOrder.setText("");
-//
-//        cardView.setVisibility(View.GONE);
-//        tabs.setVisibility(View.GONE);
-//        view_pager.setVisibility(View.GONE);
-//        linearLayoutButtons.setVisibility(View.GONE);
-//        textViewWorkOrderNumber.setText("");
-    }
-
     @Override
-    public void onSubmitProcessFailure(String message) {
+    public void onSubmitPickingProcessFailure(String message) {
         hideProgress();
         CustomToast.showToast(this, message);
     }
 
     @Override
-    public void onSubmitProcessSuccess(UniversalResponse body) {
+    public void onSubmitPickingProcessSuccess(UniversalResponse body) {
         hideProgress();
         CustomToast.showToast(this, body.getMessage());
-        disableViews();
+//        disableViews();
+        finish();
+        startActivity(new Intent(ProductionJournal.this, ProductionJournal.class));
     }
 
-    public void disableViews() {
-        editTextScanWorkOrder.setText("");
+    @Override
+    public void onSubmitRouteProcessFailure(String message) {
+        hideProgress();
+        CustomToast.showToast(this, message);
     }
 
-    public void showConfirmationAlert() {
+    @Override
+    public void onSubmitRouteProcessSuccess(UniversalResponse body) {
+        hideProgress();
+        CustomToast.showToast(this, body.getMessage());
+//        disableViews();
+        finish();
+        startActivity(new Intent(ProductionJournal.this, ProductionJournal.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        showBackAlert();
+    }
+
+    @Override
+    public void imageButtonBackClick(View view) {
+        showBackAlert();
+    }
+
+    public void showBackAlert() {
         builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.production_journal_submit_confirmation));
+        builder.setTitle(getString(R.string.production_journal_back_confirmation));
+        builder.setMessage(getString(R.string.are_you_sure_you_want_to_go_back));
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ProductionJournalDataInput productionJournalDataInput = new ProductionJournalDataInput(workOrderNo, userId,textViewItemId.getText().toString(), addedPickingListDatumList, addedRoutingListDatumList);
-                        showProgress(ProductionJournal.this);
-                        iProductionJournalInterface.callSubmitProductionJournalService(productionJournalDataInput);
+                        finish();
                         dialog.cancel();
                     }
                 })
@@ -243,6 +257,4 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         AlertDialog alert = builder.create();
         alert.show();
     }
-
-
 }

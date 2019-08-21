@@ -19,10 +19,10 @@ import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.move.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.productionjournal.model.PickingListSearchInput;
 import com.neprofinishedgood.productionjournal.model.PickingListSearchResponse;
-import com.neprofinishedgood.productionjournal.model.ProductionJournalDataInput;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalPickinngDataInput;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalRouteDataInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
-import com.neprofinishedgood.productionjournal.model.WorkOrderSubmitInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedCompleteInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
@@ -130,9 +130,6 @@ public interface ApiInterface {
     @POST("SearchItemProcess")
     Call<PickingListSearchResponse> searchItemProcessService(@Body PickingListSearchInput pickingListSearchInput);
 
-    @POST("SubmitProductionJournalData")
-    Call<UniversalResponse> submitProductionJournalData(@Body ProductionJournalDataInput productionJournalDataInput);
-
     @POST("LotScan")
     Call<UniversalResponse> lotScan(@Body ScanLotInput scanLotInput);
 
@@ -145,7 +142,10 @@ public interface ApiInterface {
     @POST("WorkOrderEndService")
     Call<UniversalResponse> workOrderEndService(@Body WorkOrderScanInput workOrderScanInput);
 
-//    @POST("SubmitProductionJournalData")
-//    Call<UniversalResponse> submitProductionJournalData(@Body WorkOrderScanInput workOrderScanInput);
+    @POST("SubmitPickingJournalData")
+    Call<UniversalResponse> submitPickingJournalData(@Body ProductionJournalPickinngDataInput productionJournalPickinngDataInput);
+
+    @POST("SubmitRouteJournalData")
+    Call<UniversalResponse> submitRouteJournalData(@Body ProductionJournalRouteDataInput productionJournalRouteDataInput);
 
 }

@@ -115,7 +115,7 @@
                             android:textStyle="bold" />
 
                         <LinearLayout
-                            android:id="@+id/linearLayoutShift"
+                            android:id="@+id/linearLayout2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/textViewSelectShift"
@@ -147,7 +147,7 @@
                             android:id="@+id/textViewDefaultValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/linearLayoutShift"
+                            android:layout_below="@+id/linearLayout2"
                             android:background="@color/colorPrimaryDark"
                             android:elevation="5dp"
                             android:padding="5dp"
