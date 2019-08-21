@@ -189,5 +189,9 @@
     <string name="hours">Hours:</string>
     <string name="add_details">Add Details</string>
     <string name="select_item">Select Item</string>
+    <string name="select_operation">Select Operation</string>
+    <string name="enter_hours">Enter Hours</string>
+    <string name="production_journal_back_confirmation">All changes will be discarded!</string>
+    <string name="are_you_sure_you_want_to_go_back">Are you sure you want to go back?</string>
 
 </resources>

@@ -8,9 +8,11 @@ public class RoutingListDatum {
     @SerializedName("OperationName")
     @Expose
     private String operationName;
+
     @SerializedName("Resource")
     @Expose
     private String resource;
+
     @SerializedName("ResourceType")
     @Expose
     private String resourceType;
@@ -18,6 +20,26 @@ public class RoutingListDatum {
     @SerializedName("OperationId")
     @Expose
     private String operationId;
+
+    @SerializedName("Priority")
+    @Expose
+    private String priority;
+
+    public RoutingListDatum(String operationName, String resource, String resourceType, String operationId, String priority) {
+        this.operationName = operationName;
+        this.resource = resource;
+        this.resourceType = resourceType;
+        this.operationId = operationId;
+        this.priority = priority;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
 
     public String getOperationName() {
         return operationName;

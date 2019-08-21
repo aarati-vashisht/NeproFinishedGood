@@ -99,6 +99,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
                     iHoldPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                 }
             }else{
+                editTextScanStillage.setText("");
                 CustomToast.showToast(QualityHoldActivity.this, getString(R.string.no_internet));
             }
         }

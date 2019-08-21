@@ -8,14 +8,15 @@
     android:orientation="vertical"
     tools:context=".productionjournal.ui.main.PickingListFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:orientation="vertical"
         android:padding="2dp">
 
         <LinearLayout
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -42,8 +43,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight=".3"
                 android:layout_marginStart="5dp"
+                android:layout_weight=".3"
                 android:text="@string/date"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
@@ -55,8 +56,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:focusable="false"
                 android:background="@drawable/edittext_drawable"
+                android:focusable="false"
                 android:maxLines="1"
                 android:padding="5dp"
                 android:textSize="10sp" />
@@ -64,10 +65,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayoutShift"
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewSelectShift"
+            android:layout_below="@+id/linearLayout1"
             android:layout_marginTop="5dp"
             android:orientation="horizontal"
             android:visibility="visible">
@@ -93,6 +94,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_below="@id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -110,32 +113,32 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight=".8"
-                android:layout_marginStart="5dp"
                 android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:layout_weight=".8"
                 android:background="@drawable/edittext_drawable">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/editTextQuantity"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:text=""
-                    android:layout_weight="1"
-                    android:textSize="10sp"
                     android:paddingStart="4dp"
                     android:paddingEnd="0dp"
-                    android:background="@null"/>
+                    android:text=""
+                    android:textSize="10sp" />
 
                 <TextView
                     android:id="@+id/textViewUnit"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="5dp"
+                    android:layout_gravity="right"
                     android:gravity="center"
-                    android:layout_gravity="right"/>
+                    android:paddingStart="0dp"
+                    android:paddingEnd="5dp" />
 
             </LinearLayout>
 
@@ -143,26 +146,57 @@
                 android:id="@+id/buttonAddMoreLine"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1.4"
                 android:layout_marginStart="6dp"
+                android:layout_weight="1.4"
+                android:background="@drawable/button_ripple_effect"
                 android:padding="0dp"
                 android:text="@string/add_more_line"
-                android:background="@drawable/button_ripple_effect"
-                android:textColor="@color/white"/>
-
-
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPickingList"
+            android:layout_below="@+id/linearLayout3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="45dp"
             android:background="@android:color/transparent"
             android:layoutAnimation="@anim/layout_animation_fall_down"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/picking_list_layout" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            >
+
+            <com.neprofinishedgood.custom_views.CustomButton
+                android:id="@+id/buttonCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                android:visibility="visible" />
+
+            <com.neprofinishedgood.custom_views.CustomButton
+                android:id="@+id/buttonConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="20dp"
+                android:padding="5dp"
+                android:text="@string/confirm_and_post"
+                android:textColor="@color/white"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

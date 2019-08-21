@@ -142,7 +142,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         @RequiresApi(api = Build.VERSION_CODES.M)
         public void run() {
             if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                if (editTextScanLoadingPlan.getText().toString().trim().equals(loadingPlan)) {
+                if (editTextScanLoadingPlan.getText().toString().trim().equalsIgnoreCase(loadingPlan)) {
                     PickAndLoadActivity.getInstance().refreshData(loadingPlan);
                     recyclerViewLoadingPlansStillage.setClickable(true);
                     recyclerViewLoadingPlansStillage.setEnabled(true);

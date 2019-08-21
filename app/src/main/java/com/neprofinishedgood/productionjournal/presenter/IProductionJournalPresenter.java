@@ -6,10 +6,10 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.productionjournal.model.ProductionJournalDataInput;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalPickinngDataInput;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalRouteDataInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
-import com.neprofinishedgood.productionjournal.model.WorkOrderSubmitInput;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,29 +53,58 @@ public class IProductionJournalPresenter implements IProductionJournalInterface{
     }
 
     @Override
-    public void callSubmitProductionJournalService(ProductionJournalDataInput productionJournalDataInput) {
+    public void callSubmitProductionJournalPickingService(ProductionJournalPickinngDataInput productionJournalPickinngDataInput) {
         ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
-        Call<UniversalResponse> call = apiInterface.submitProductionJournalData(productionJournalDataInput);
+        Call<UniversalResponse> call = apiInterface.submitPickingJournalData(productionJournalPickinngDataInput);
         call.enqueue(new Callback<UniversalResponse>() {
             @Override
             public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
-                getSubmitWorkOrderResponse(response.body());
+                getSubmitPickingResponse(response.body());
             }
 
             @Override
             public void onFailure(Call<UniversalResponse> call, Throwable t) {
-                getSubmitWorkOrderResponse(null);
+                getSubmitPickingResponse(null);
 
             }
         });
     }
 
     @Override
-    public void getSubmitWorkOrderResponse(UniversalResponse body) {
+    public void getSubmitPickingResponse(UniversalResponse body) {
         if (body == null) {
-            iProductionJournalView.onSubmitProcessFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+            iProductionJournalView.onSubmitPickingProcessFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
-            iProductionJournalView.onSubmitProcessSuccess(body);
+            iProductionJournalView.onSubmitPickingProcessSuccess(body);
         }
     }
+
+    @Override
+    public void callSubmitProductionJournalRouteService(ProductionJournalRouteDataInput productionJournalRouteDataInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.submitRouteJournalData(productionJournalRouteDataInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getSubmitRouteResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getSubmitRouteResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getSubmitRouteResponse(UniversalResponse body) {
+        if (body == null) {
+            iProductionJournalView.onSubmitRouteProcessFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            iProductionJournalView.onSubmitRouteProcessSuccess(body);
+        }
+    }
+
+
 }

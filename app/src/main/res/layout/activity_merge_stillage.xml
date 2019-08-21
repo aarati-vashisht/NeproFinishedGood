@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativeLayoutScanChildDetail"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textViewMergeQuantity"

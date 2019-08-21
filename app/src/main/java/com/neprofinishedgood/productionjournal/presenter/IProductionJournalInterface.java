@@ -1,10 +1,10 @@
 package com.neprofinishedgood.productionjournal.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.productionjournal.model.ProductionJournalDataInput;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalPickinngDataInput;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalRouteDataInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
-import com.neprofinishedgood.productionjournal.model.WorkOrderSubmitInput;
 
 public interface IProductionJournalInterface {
 
@@ -12,8 +12,12 @@ public interface IProductionJournalInterface {
 
     void getWorkOrderResponse(WorkOrderResponse body);
 
-    void callSubmitProductionJournalService(ProductionJournalDataInput productionJournalDataInput);
+    void callSubmitProductionJournalPickingService(ProductionJournalPickinngDataInput productionJournalPickinngDataInput);
 
-    void getSubmitWorkOrderResponse(UniversalResponse body);
+    void getSubmitPickingResponse(UniversalResponse body);
+
+    void callSubmitProductionJournalRouteService(ProductionJournalRouteDataInput productionJournalRouteDataInput);
+
+    void getSubmitRouteResponse(UniversalResponse body);
 
 }

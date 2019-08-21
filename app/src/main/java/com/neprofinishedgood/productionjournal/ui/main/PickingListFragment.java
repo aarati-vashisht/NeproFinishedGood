@@ -1,6 +1,8 @@
 package com.neprofinishedgood.productionjournal.ui.main;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.neprofinishedgood.productionjournal.adapter.PickingListAdapter;
 import com.neprofinishedgood.productionjournal.adapter.SpinnerItemAdapter;
 import com.neprofinishedgood.productionjournal.model.ItemPicked;
 import com.neprofinishedgood.productionjournal.model.PickingListSearchResponse;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalPickinngDataInput;
 import com.neprofinishedgood.productionjournal.presenter.IPickingListInterface;
 import com.neprofinishedgood.productionjournal.presenter.IPickingListPresenter;
 import com.neprofinishedgood.productionjournal.presenter.IPickingListView;
@@ -63,6 +66,8 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     String itemName, itemId, workOrderNo, userId;
 
+    public int updatePosition = -1;
+
     private ArrayList<String> shiftList;
     public ArrayAdapter<String> arrayAdapter;
 
@@ -74,6 +79,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
     private String shift = "", itemQty;
     public SpinnerItemAdapter itemAdapter;
 
+    AlertDialog.Builder builder;
 
     public static PickingListFragment getInstance() {
         return instance;
@@ -160,13 +166,35 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     @OnItemSelected(R.id.spinnerShift)
     public void spinnerShiftSelected(Spinner spinner, int position) {
-        shift = shiftList.get(position);
+        if (position > 0) {
+            shift = shiftList.get(position);
+        } else {
+            shift = "";
+        }
     }
 
     @OnClick(R.id.buttonAddMoreLine)
     public void onButtonAddMoreLineClick() {
         if (isValidated()) {
-            ProductionJournal.getInstance().addedPickingListDatumList.add(new ItemPicked(shift, editTextDate.getText().toString(), itemName, itemId, editTextQuantity.getText().toString()));
+            boolean dataInserted = false;
+            if (updatePosition >= 0) {
+                try {
+                    ProductionJournal.getInstance().addedPickingListDatumList.get(updatePosition).setDate(editTextDate.getText().toString());
+                    ProductionJournal.getInstance().addedPickingListDatumList.get(updatePosition).setShift(shift);
+                    ProductionJournal.getInstance().addedPickingListDatumList.get(updatePosition).setItemName(itemName);
+                    ProductionJournal.getInstance().addedPickingListDatumList.get(updatePosition).setItemId(itemId);
+                    ProductionJournal.getInstance().addedPickingListDatumList.get(updatePosition).setQuantity(editTextQuantity.getText().toString());
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+                updatePosition = -1;
+                dataInserted = true;
+            }
+
+            if (!dataInserted) {
+                ProductionJournal.getInstance().addedPickingListDatumList.add(new ItemPicked(shift, editTextDate.getText().toString(), itemName, itemId, editTextQuantity.getText().toString()));
+                updatePosition = -1;
+            }
             adapter.notifyDataSetChanged();
             clearInputs();
         }
@@ -201,7 +229,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
     boolean isValidated() {
         if (spinnerItem.getSelectedItemPosition() == 0) {
             TextView textView = (TextView) spinnerItem.getSelectedView();
-            textView.setError(getString(R.string.search_item));
+            textView.setError(getString(R.string.select_item));
             textView.requestFocus();
             return false;
         }
@@ -211,6 +239,47 @@ public class PickingListFragment extends Fragment implements IPickingListView {
             return false;
         }
         return true;
+    }
+
+    public void deleteAddedData(int position) {
+        ProductionJournal.getInstance().addedPickingListDatumList.remove(position);
+        adapter.notifyDataSetChanged();
+        clearInputs();
+        updatePosition = -1;
+    }
+
+    @OnClick(R.id.buttonConfirm)
+    public void onButtonSubmitClick() {
+        showConfirmationAlert();
+    }
+
+    @OnClick(R.id.buttonCancel)
+    public void onButtonCancelClick() {
+        ProductionJournal.getInstance().disableViews();
+    }
+
+    public void showConfirmationAlert() {
+        builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getString(R.string.production_journal_submit_confirmation));
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ProductionJournalPickinngDataInput productionJournalPickinngDataInput = new ProductionJournalPickinngDataInput(
+                                workOrderNo, userId, ProductionJournal.getInstance().textViewItemId.getText().toString(),
+                                ProductionJournal.getInstance().addedPickingListDatumList);
+
+                        ProductionJournal.getInstance().showProgress(getActivity());
+                        ProductionJournal.getInstance().iProductionJournalInterface.callSubmitProductionJournalPickingService(productionJournalPickinngDataInput);
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }

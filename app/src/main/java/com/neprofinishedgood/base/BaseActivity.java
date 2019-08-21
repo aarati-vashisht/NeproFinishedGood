@@ -167,7 +167,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_menu:
-                CustomToast.showToast(this, "Clicked On Settings");
+//                CustomToast.showToast(this, "Clicked On Settings");
                 return true;
             case R.id.logout_menu:
                 SharedPref.clearPrefs();

@@ -1,6 +1,8 @@
 package com.neprofinishedgood.productionjournal.ui.main;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +14,19 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.productionjournal.ProductionJournal;
+import com.neprofinishedgood.productionjournal.adapter.PickingListAdapter;
+import com.neprofinishedgood.productionjournal.adapter.RouteCardAdapter;
 import com.neprofinishedgood.productionjournal.adapter.SpinnerItemAdapter;
 import com.neprofinishedgood.productionjournal.adapter.SpinnerOperationAdapter;
+import com.neprofinishedgood.productionjournal.model.ItemPicked;
+import com.neprofinishedgood.productionjournal.model.ProductionJournalRouteDataInput;
+import com.neprofinishedgood.productionjournal.model.RouteCardPicked;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,8 +41,17 @@ public class RouteCardFragment extends Fragment {
     @BindView(R.id.buttonAddMoreLine)
     CustomButton buttonAddMoreLine;
 
+    @BindView(R.id.recyclerViewRouteList)
+    RecyclerView recyclerViewRouteList;
+
     @BindView(R.id.editTextDate)
-    AppCompatEditText editTextDate;
+    public AppCompatEditText editTextDate;
+
+    @BindView(R.id.editTextQuantity)
+    public AppCompatEditText editTextQuantity;
+
+    @BindView(R.id.editTextHours)
+    public AppCompatEditText editTextHours;
 
     @BindView(R.id.spinnerShift)
     public Spinner spinnerShift;
@@ -48,14 +66,23 @@ public class RouteCardFragment extends Fragment {
     TextView textViewResourceType;
 
     private ArrayList<String> shiftList;
-    private String shift = "", operationId, operationName;
+    private String shift = "", operationId, operationName, resource, resourceType, priority;
     public ArrayAdapter<String> arrayAdapter;
+    public RouteCardAdapter adapter;
 
     public SpinnerOperationAdapter operationAdapter;
+    static RouteCardFragment instance;
 
+    public int updatePosition = -1;
+
+    AlertDialog.Builder builder;
 
     View rootView;
     final SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+
+    public static RouteCardFragment getInstance() {
+        return instance;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,6 +90,7 @@ public class RouteCardFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
         setAdapter();
+        instance = this;
         return rootView;
     }
 
@@ -82,7 +110,7 @@ public class RouteCardFragment extends Fragment {
                 String date = sdf.format(c.getTime());
                 editTextDate.setText(date);
             }
-        },mYear,mMonth,mDay);
+        }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
 
@@ -102,6 +130,10 @@ public class RouteCardFragment extends Fragment {
     }
 
     void setAdapter() {
+        adapter = new RouteCardAdapter(ProductionJournal.getInstance().addedRoutingListDatumList);
+        recyclerViewRouteList.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewRouteList.setAdapter(adapter);
+        recyclerViewRouteList.setHasFixedSize(true);
 
         Calendar c = Calendar.getInstance();
         String date = sdf.format(c.getTime());
@@ -113,15 +145,126 @@ public class RouteCardFragment extends Fragment {
 
     @OnItemSelected(R.id.spinnerOperation)
     public void spinnerOperationSelected(Spinner spinner, int position) {
-        textViewResource.setText(ProductionJournal.getInstance().routingListDatumList.get(position).getResource());
-        textViewResourceType.setText(ProductionJournal.getInstance().routingListDatumList.get(position).getResourceType());
-        operationName = operationAdapter.getItem(position).getOperationName();
+        resource = ProductionJournal.getInstance().routingListDatumList.get(position).getResource();
+        resourceType = ProductionJournal.getInstance().routingListDatumList.get(position).getResourceType();
         operationId = operationAdapter.getItem(position).getOperationId();
+        operationName = operationAdapter.getItem(position).getOperationName();
+        priority = operationAdapter.getItem(position).getPriority();
+        textViewResource.setText(resource);
+        textViewResourceType.setText(resourceType);
+    }
+
+    @OnItemSelected(R.id.spinnerShift)
+    public void spinnerShiftSelected(Spinner spinner, int position) {
+        if (position > 0) {
+            shift = shiftList.get(position);
+        } else {
+            shift = "";
+        }
     }
 
     @OnClick(R.id.buttonAddMoreLine)
-    public void onButtonAddMoreLineClick(){
+    public void onButtonAddMoreLineClick() {
+
+        if (isValidated()) {
+
+            boolean dataInserted = false;
+            if (updatePosition >= 0) {
+                try {
+                    ProductionJournal.getInstance().addedRoutingListDatumList.get(updatePosition).setDate(editTextDate.getText().toString());
+                    ProductionJournal.getInstance().addedRoutingListDatumList.get(updatePosition).setShift(shift);
+                    ProductionJournal.getInstance().addedRoutingListDatumList.get(updatePosition).setOperationName(operationName);
+                    ProductionJournal.getInstance().addedRoutingListDatumList.get(updatePosition).setOperationId(operationId);
+                    ProductionJournal.getInstance().addedRoutingListDatumList.get(updatePosition).setQuantity(editTextQuantity.getText().toString());
+                    ProductionJournal.getInstance().addedRoutingListDatumList.get(updatePosition).setHours(editTextHours.getText().toString());
+                    ProductionJournal.getInstance().addedRoutingListDatumList.get(updatePosition).setResource(resource);
+                    ProductionJournal.getInstance().addedRoutingListDatumList.get(updatePosition).setResourceType(resourceType);
+                    ProductionJournal.getInstance().addedRoutingListDatumList.get(updatePosition).setPriority(priority);
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+                updatePosition = -1;
+                dataInserted = true;
+            }
+
+            if (!dataInserted) {
+                ProductionJournal.getInstance().addedRoutingListDatumList.add(new RouteCardPicked(shift, editTextDate.getText().toString(), operationName, operationId, resource, resourceType, editTextHours.getText().toString(), editTextQuantity.getText().toString(), priority));
+                updatePosition = -1;
+            }
+            adapter.notifyDataSetChanged();
+            clearInputs();
+        }
     }
 
+    public void clearInputs() {
+        spinnerShift.setSelection(0);
+        spinnerOperation.setSelection(0);
+        Calendar c = Calendar.getInstance();
+        String date = sdf.format(c.getTime());
+        editTextDate.setText(date);
+        editTextQuantity.setText("");
+        editTextHours.setText("");
+    }
 
+    boolean isValidated() {
+        if (spinnerOperation.getSelectedItemPosition() == 0) {
+            TextView textView = (TextView) spinnerOperation.getSelectedView();
+            textView.setError(getString(R.string.select_operation));
+            textView.requestFocus();
+            return false;
+        }
+        if (editTextQuantity.getText().toString().equals("")) {
+            editTextQuantity.setError(getString(R.string.enter_quantity));
+            editTextQuantity.requestFocus();
+            return false;
+        }
+        if (editTextHours.getText().toString().equals("")) {
+            editTextHours.setError(getString(R.string.enter_hours));
+            editTextHours.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    public void deleteAddedData(int position) {
+        ProductionJournal.getInstance().addedRoutingListDatumList.remove(position);
+        adapter.notifyDataSetChanged();
+        clearInputs();
+        updatePosition = -1;
+    }
+
+    @OnClick(R.id.buttonConfirm)
+    public void onButtonSubmitClick() {
+        showConfirmationAlert();
+    }
+
+    @OnClick(R.id.buttonCancel)
+    public void onButtonCancelClick() {
+        ProductionJournal.getInstance().disableViews();
+    }
+
+    public void showConfirmationAlert() {
+        builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getString(R.string.production_journal_submit_confirmation));
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ProductionJournalRouteDataInput productionJournalRouteDataInput = new ProductionJournalRouteDataInput(
+                                ProductionJournal.getInstance().workOrderNo, ProductionJournal.getInstance().userId,
+                                ProductionJournal.getInstance().textViewItemId.getText().toString(),
+                                ProductionJournal.getInstance().addedRoutingListDatumList);
+
+                        ProductionJournal.getInstance().showProgress(getActivity());
+                        ProductionJournal.getInstance().iProductionJournalInterface.callSubmitProductionJournalRouteService(productionJournalRouteDataInput);
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

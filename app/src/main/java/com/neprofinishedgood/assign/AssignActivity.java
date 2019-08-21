@@ -435,6 +435,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
                 relativeLayoutScanDetail.setVisibility(View.GONE);
                 editTextScanStillage.setEnabled(true);
                 editTextScanStillage.setText("");
+                CustomToast.showToast(this, response.getMessage());
                 clearAllSpinnerData();
             } else {
                 CustomToast.showToast(this, response.getMessage());

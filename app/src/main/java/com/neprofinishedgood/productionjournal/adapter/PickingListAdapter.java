@@ -16,6 +16,7 @@ import com.neprofinishedgood.productionjournal.ProductionJournal;
 import com.neprofinishedgood.productionjournal.model.ItemPicked;
 import com.neprofinishedgood.productionjournal.model.PickingListDatum;
 import com.neprofinishedgood.productionjournal.ui.main.PickingListFragment;
+import com.neprofinishedgood.productionjournal.ui.main.RouteCardFragment;
 
 import java.util.List;
 
@@ -85,9 +86,9 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
         public void onClick(View v) {
             if (v == cardView) {
                 String itemId = pickingListDatumListFiltered.get(getAdapterPosition()).getItemId();
-                PickingListDatum pickingListDatum  = null;
-                for(int i=0; i< ProductionJournal.getInstance().pickingListDatumList.size();i++){
-                    if(ProductionJournal.getInstance().pickingListDatumList.get(i).getItemId().equals(itemId)){
+                PickingListDatum pickingListDatum = null;
+                for (int i = 0; i < ProductionJournal.getInstance().pickingListDatumList.size(); i++) {
+                    if (ProductionJournal.getInstance().pickingListDatumList.get(i).getItemId().equals(itemId)) {
                         pickingListDatum = ProductionJournal.getInstance().pickingListDatumList.get(i);
                         PickingListFragment.getInstance().spinnerItem.setSelection(
                                 PickingListFragment.getInstance().itemAdapter.getPosition(pickingListDatum));
@@ -96,13 +97,12 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
                 PickingListFragment.getInstance().spinnerShift.setSelection(PickingListFragment.getInstance().arrayAdapter.getPosition(pickingListDatumListFiltered.get(getAdapterPosition()).getShift()));
                 PickingListFragment.getInstance().editTextDate.setText(pickingListDatumListFiltered.get(getAdapterPosition()).getDate());
                 PickingListFragment.getInstance().editTextQuantity.setText(pickingListDatumListFiltered.get(getAdapterPosition()).getQuantity());
-//                CustomToast.showToast(PickingListFragment.getInstance().getActivity(), ";skfdhglkjsdfglvkbdjn");
-
-
+                PickingListFragment.getInstance().updatePosition = getAdapterPosition();
+                //                CustomToast.showToast(PickingListFragment.getInstance().getActivity(), ";skfdhglkjsdfglvkbdjn");
 
 
             } else if (v == back_layout) {
-                CustomToast.showToast(PickingListFragment.getInstance().getActivity(), "Cancelled");
+                PickingListFragment.getInstance().deleteAddedData(getAdapterPosition());
             }
         }
     }
