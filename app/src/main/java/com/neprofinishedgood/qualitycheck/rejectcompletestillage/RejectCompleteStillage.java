@@ -171,7 +171,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
                 editTextScanStillage.setEnabled(true);
                 editTextScanStillage.setText("");
                 if (isHold.equals("1")) {
-                    String SELECTED_STILLAGE = new Gson().toJson(body, StillageList.class);
+                    String SELECTED_STILLAGE = new Gson().toJson(this.body, ScanStillageResponse.class);
                     startActivity(new Intent(this, QualityHoldActivity.class).putExtra(Constants.SELECTED_STILLAGE, SELECTED_STILLAGE));
                     finish();
                 }

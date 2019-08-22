@@ -329,7 +329,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 /// call merge service
-                childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim();
+                childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim()+",";
                 showProgress(MergeStillageActivity.this);
                 UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString(),"3");
                 iMergeStillageInterface.callUpdateMergeStillage(upgradeMergeInput);

@@ -161,14 +161,14 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     @OnClick(R.id.buttonHold)
     public void onButtonHoldClick() {
         showProgress(this);
-        MoveInput moveInput = new MoveInput(editTextScanStillage.getText().toString().trim(), userId);
+        MoveInput moveInput = new MoveInput(stillageLayout.textViewNumber.getText().toString().trim(), userId);
         iHoldPresenter.callHoldUnholdService(moveInput);
     }
 
     @OnClick(R.id.buttonUnhold)
     public void onButtonUnholdClick() {
         showProgress(this);
-        MoveInput moveInput = new MoveInput(editTextScanStillage.getText().toString().trim(), userId);
+        MoveInput moveInput = new MoveInput(stillageLayout.textViewNumber.getText().toString().trim(), userId);
         iHoldPresenter.callHoldUnholdService(moveInput);
     }
 

@@ -34,6 +34,7 @@ import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -185,10 +186,9 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
             finish();
 //            PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
         } else {
-            if(body.getLoadingPlanList1().size()<=1){
+            if (body.getLoadingPlanList1().size() <= 1) {
                 isCompleted = "1";
-            }
-            else{
+            } else {
                 isCompleted = "0";
             }
             setData(body);
@@ -207,15 +207,20 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         hideProgress();
         if (body.getStatus().equals(getString(R.string.success))) {
             loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
-            for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
-                if (loadingPlanList.getStillageNO().equals(stillageNoToDelete)) {
-                    if (loadingPlanDetailLists.size() == 1) {
-                        loadingPlanDetailLists.clear();
-                    } else if (loadingPlanDetailLists.size() > 1) {
-                        loadingPlanDetailLists.remove(loadingPlanList);
+            try {
+                for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
+                    if (loadingPlanList.getStillageNO().equals(stillageNoToDelete)) {
+                        if (loadingPlanDetailLists.size() == 1) {
+                            loadingPlanDetailLists.clear();
+                        } else if (loadingPlanDetailLists.size() > 1) {
+                            loadingPlanDetailLists.remove(loadingPlanList);
+                        }
+                        SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
                     }
-                    SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
                 }
+            }
+            catch (ConcurrentModificationException e){
+                e.printStackTrace();
             }
             CustomToast.showToast(this, body.getMessage());
             showProgress(this);
@@ -231,7 +236,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     private void setData(LoadingPlanDetails body) {
         textViewGateNumber.setText(body.getGateNo() + "");
 //        textViewLoadingPlan.setText(body.getLoadingPlanNo());
-        textViewTruckDriver.setText(body.getDriverName()+" "+body.getDriverID());
+        textViewTruckDriver.setText(body.getDriverName() + " " + body.getDriverID());
         textViewTruckNumber.setText(body.getTruckNo());
         setAdapter(body.getLoadingPlanList1());
     }
