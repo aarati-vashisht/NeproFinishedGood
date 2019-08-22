@@ -155,11 +155,14 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
 
     @OnClick(R.id.buttonStart)
     public void onButtonStartClick() {
-        iWorkOrderStartEndInterface.callWorkOrderStartService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId));
+        showProgress(this);
+        WorkOrderScanInput workOrderScanInput = new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId);
+        iWorkOrderStartEndInterface.callWorkOrderStartService(workOrderScanInput);
     }
 
     @OnClick(R.id.buttonEnd)
     public void onButtonEndClick() {
+        showProgress(this);
         iWorkOrderStartEndInterface.callWorkOrderEndService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId));
     }
 
@@ -174,7 +177,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         hideProgress();
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
-            disableViews();
+              disableViews();
         } else {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
         }
