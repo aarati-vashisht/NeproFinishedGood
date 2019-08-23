@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -88,6 +89,8 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         instance = this;
         Utils.hideSoftKeyboard(this);
         iPickAndLoadItemInterFace = new PickAndLoadItemPresenter(this, this);
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+        editTextScanLoadingPlan.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         initData();
     }
 
@@ -98,29 +101,34 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void oneditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanStillagehandler2.postDelayed(stillageRunnable2, delay);
-        }
-
-    }
-
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void oneditTextScanStillageTEXTCHANGED(Editable text) {
-        scanStillageNo = text.toString();
-        scanStillagehandler2.removeCallbacks(stillageRunnable2);
-
-    }
-
-    //for call service on text change
-    Handler scanStillagehandler2 = new Handler();
-    private Runnable stillageRunnable2 = new Runnable() {
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        public void run() {
-            if (System.currentTimeMillis() > (scanStillageLastTexxt2 + delay - 500)) {
+//            scanStillagehandler2.postDelayed(stillageRunnable2, delay);
+            if (text.toString().trim().length() == 8) {
+                scanStillageNo = text.toString();
                 loadingPlanStillagesAdapter.getFilter().filter(scanStillageNo);
                 editTextScanStillage.setText("");
             }
         }
-    };
+
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void oneditTextScanStillageTEXTCHANGED(Editable text) {
+//        scanStillageNo = text.toString();
+//        scanStillagehandler2.removeCallbacks(stillageRunnable2);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanStillagehandler2 = new Handler();
+//    private Runnable stillageRunnable2 = new Runnable() {
+//        @RequiresApi(api = Build.VERSION_CODES.M)
+//        public void run() {
+//            if (System.currentTimeMillis() > (scanStillageLastTexxt2 + delay - 500)) {
+//                loadingPlanStillagesAdapter.getFilter().filter(scanStillageNo);
+//                editTextScanStillage.setText("");
+//            }
+//        }
+//    };
 
 
     @OnTextChanged(value = R.id.editTextScanLoadingPlan, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -218,8 +226,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
                         SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
                     }
                 }
-            }
-            catch (ConcurrentModificationException e){
+            } catch (ConcurrentModificationException e) {
                 e.printStackTrace();
             }
             CustomToast.showToast(this, body.getMessage());

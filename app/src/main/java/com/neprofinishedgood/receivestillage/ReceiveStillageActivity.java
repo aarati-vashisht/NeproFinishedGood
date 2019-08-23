@@ -3,6 +3,7 @@ package com.neprofinishedgood.receivestillage;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -52,6 +53,7 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.recieve_return_stillage));
         iRecieveTransferInterface = new RecieveTransferPresenter(this, this);
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         initData();
     }
 
@@ -62,34 +64,42 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanStillagehandler.postDelayed(stillageRunnable, delay);
-        }
-
-    }
-
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
-        scanStillagehandler.removeCallbacks(stillageRunnable);
-
-    }
-
-    //for call service on text change
-    Handler scanStillagehandler = new Handler();
-    private Runnable stillageRunnable = new Runnable() {
-        public void run() {
-            if(NetworkChangeReceiver.isInternetConnected(ReceiveStillageActivity.this)) {
-                showProgress(ReceiveStillageActivity.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//            scanStillagehandler.postDelayed(stillageRunnable, delay);
+            if (text.toString().trim().length() == 8) {
+                if (NetworkChangeReceiver.isInternetConnected(ReceiveStillageActivity.this)) {
+                    showProgress(ReceiveStillageActivity.this);
                     iRecieveTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
-
+                } else {
+                    CustomToast.showToast(ReceiveStillageActivity.this, getString(R.string.no_internet));
+                    editTextScanStillage.setText("");
                 }
             }
-            else{
-                CustomToast.showToast(ReceiveStillageActivity.this, getString(R.string.no_internet));
-                editTextScanStillage.setText("");
-            }
         }
-    };
+
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+//        scanStillagehandler.removeCallbacks(stillageRunnable);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanStillagehandler = new Handler();
+//    private Runnable stillageRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(ReceiveStillageActivity.this)) {
+//                showProgress(ReceiveStillageActivity.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    iRecieveTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//
+//                }
+//            } else {
+//                CustomToast.showToast(ReceiveStillageActivity.this, getString(R.string.no_internet));
+//                editTextScanStillage.setText("");
+//            }
+//        }
+//    };
 
     @OnClick(R.id.buttonReceive)
     public void onButtonReceiveClick() {

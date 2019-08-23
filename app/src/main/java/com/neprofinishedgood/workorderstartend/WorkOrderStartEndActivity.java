@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -78,38 +79,48 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         setContentView(R.layout.activity_work_order_start_end);
         setTitle(getString(R.string.workorder_start_end));
         ButterKnife.bind(this);
-
+        editTextScanWorkOrder.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         iWorkOrderStartEndInterface = new IWorkOrderStartEndPresenter(this, this);
     }
 
     @OnTextChanged(value = R.id.editTextScanWorkOrder, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanWorkOrderChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanWorkOrderhandler.postDelayed(workOrderRunnable, delay);
+//            scanWorkOrderhandler.postDelayed(workOrderRunnable, delay);
+            if(text.toString().trim().length() == 9) {
+                if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
+                    showProgress(WorkOrderStartEndActivity.this);
+                    if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                        iWorkOrderStartEndInterface.callScanWorkOrderService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId));
+                    }
+                } else {
+                    CustomToast.showToast(WorkOrderStartEndActivity.this, getString(R.string.no_internet));
+                }
+            }
         }
 
     }
 
     @OnTextChanged(value = R.id.editTextScanWorkOrder, callback = OnTextChanged.Callback.TEXT_CHANGED)
     public void onEditTextScanWorkOrderTEXTCHANGED(Editable text) {
-        scanWorkOrderhandler.removeCallbacks(workOrderRunnable);
+//        scanWorkOrderhandler.removeCallbacks(workOrderRunnable);
 
     }
 
-    //for call service on text change
-    Handler scanWorkOrderhandler = new Handler();
-    private Runnable workOrderRunnable = new Runnable() {
-        public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
-                showProgress(WorkOrderStartEndActivity.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                    iWorkOrderStartEndInterface.callScanWorkOrderService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId));
-                }
-            } else {
-                CustomToast.showToast(WorkOrderStartEndActivity.this, getString(R.string.no_internet));
-            }
-        }
-    };
+//    //for call service on text change
+//    Handler scanWorkOrderhandler = new Handler();
+//    private Runnable workOrderRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
+//                showProgress(WorkOrderStartEndActivity.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    iWorkOrderStartEndInterface.callScanWorkOrderService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId));
+//                }
+//            } else {
+//                CustomToast.showToast(WorkOrderStartEndActivity.this, getString(R.string.no_internet));
+//            }
+//        }
+//    };
 
     @Override
     public void onWorkOrderScanFailure(String message) {

@@ -3,6 +3,7 @@ package com.neprofinishedgood.transferstillage;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -82,6 +83,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         setTitle(getString(R.string.transfer));
         iTransferInterface = new TransferPresenter(this, this);
         initData();
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         callService();
 
     }
@@ -94,10 +96,9 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @OnItemSelected(R.id.spinnerWarehouse)
     public void spinnerBinSelected(Spinner spinner, int position) {
         warehouse = warehouseList.get(position).getId().trim();
-        if(warehouse.equalsIgnoreCase(stillageWarehouse)){
+        if (warehouse.equalsIgnoreCase(stillageWarehouse)) {
             buttonTransfer.setEnabled(false);
-        }
-        else {
+        } else {
             buttonTransfer.setEnabled(true);
         }
     }
@@ -105,32 +106,39 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanStillagehandler.postDelayed(stillageRunnable, delay);
-        }
-
-    }
-
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
-        scanStillagehandler.removeCallbacks(stillageRunnable);
-
-    }
-
-    //for call service on text change
-    Handler scanStillagehandler = new Handler();
-    private Runnable stillageRunnable = new Runnable() {
-        public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
-                showProgress(TransferStillageActivity.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//            scanStillagehandler.postDelayed(stillageRunnable, delay);
+            if (text.toString().trim().length() == 8) {
+                if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+                    showProgress(TransferStillageActivity.this);
                     iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
-
+                } else {
+                    setDataOffline();
                 }
-            }else {
-                setDataOffline();
             }
         }
-    };
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+//        scanStillagehandler.removeCallbacks(stillageRunnable);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanStillagehandler = new Handler();
+//    private Runnable stillageRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+//                showProgress(TransferStillageActivity.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//
+//                }
+//            } else {
+//                setDataOffline();
+//            }
+//        }
+//    };
 
 
     public void imageButtonCloseClick(View view) {

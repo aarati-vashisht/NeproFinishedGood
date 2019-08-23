@@ -3,6 +3,7 @@ package com.neprofinishedgood.qualitycheck.qualityhold;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -61,6 +62,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.quality_hold_and_move));
         initData();
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         iHoldPresenter = new IHoldPresenter(this, this);
 
     }
@@ -75,35 +77,44 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanStillagehandler.postDelayed(stillageRunnable, delay);
-        }
-
-    }
-
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
-        scanStillagehandler.removeCallbacks(stillageRunnable);
-
-
-
-
-    }
-
-    //for call service on text change
-    Handler scanStillagehandler = new Handler();
-    private Runnable stillageRunnable = new Runnable() {
-        public void run() {
-            if(NetworkChangeReceiver.isInternetConnected(QualityHoldActivity.this)){
-                showProgress(QualityHoldActivity.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                    iHoldPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//            scanStillagehandler.postDelayed(stillageRunnable, delay);
+            if (text.toString().trim().length() == 8) {
+                if (NetworkChangeReceiver.isInternetConnected(QualityHoldActivity.this)) {
+                    showProgress(QualityHoldActivity.this);
+                    if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                        iHoldPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                    }
+                } else {
+                    editTextScanStillage.setText("");
+                    CustomToast.showToast(QualityHoldActivity.this, getString(R.string.no_internet));
                 }
-            }else{
-                editTextScanStillage.setText("");
-                CustomToast.showToast(QualityHoldActivity.this, getString(R.string.no_internet));
             }
         }
-    };
+
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+//        scanStillagehandler.removeCallbacks(stillageRunnable);
+//
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanStillagehandler = new Handler();
+//    private Runnable stillageRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(QualityHoldActivity.this)) {
+//                showProgress(QualityHoldActivity.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    iHoldPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                }
+//            } else {
+//                editTextScanStillage.setText("");
+//                CustomToast.showToast(QualityHoldActivity.this, getString(R.string.no_internet));
+//            }
+//        }
+//    };
 
 
     @Override
@@ -134,7 +145,8 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     public void onHoldUnholdSuccess(UniversalResponse body) {
         hideProgress();
         linearLayoutScanDetail.setVisibility(View.GONE);
-        editTextScanStillage.setEnabled(true);editTextScanStillage.setText("");
+        editTextScanStillage.setEnabled(true);
+        editTextScanStillage.setText("");
         CustomToast.showToast(this, body.getMessage());
     }
 

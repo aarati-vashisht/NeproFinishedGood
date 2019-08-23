@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 
 import androidx.appcompat.widget.AppCompatEditText;
@@ -63,7 +64,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
         setTitle(getString(R.string.move));
         iPlannedUnplannedPresenter = new IPlannedUnplannedPresenter(this, this);
         callService();
-
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
     }
 
     public void getAllAssignedData() {
@@ -75,22 +76,8 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanStillagehandler.postDelayed(stillageRunnable, delay);
-        }
-
-    }
-
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
-        scanStillagehandler.removeCallbacks(stillageRunnable);
-
-    }
-
-    //for call service on text change
-    Handler scanStillagehandler = new Handler();
-    private Runnable stillageRunnable = new Runnable() {
-        public void run() {
-            if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//            scanStillagehandler.postDelayed(stillageRunnable, delay);
+            if(text.toString().trim().length() == 8) {
                 if (NetworkChangeReceiver.isInternetConnected(MoveActivity.this)) {
                     showProgress(MoveActivity.this);
                     String stillageTxt = editTextScanStillage.getText().toString().trim();
@@ -100,7 +87,30 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
                 }
             }
         }
-    };
+
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+//        scanStillagehandler.removeCallbacks(stillageRunnable);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanStillagehandler = new Handler();
+//    private Runnable stillageRunnable = new Runnable() {
+//        public void run() {
+//            if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                if (NetworkChangeReceiver.isInternetConnected(MoveActivity.this)) {
+//                    showProgress(MoveActivity.this);
+//                    String stillageTxt = editTextScanStillage.getText().toString().trim();
+//                    iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(stillageTxt, userId));
+//                } else {
+//                    offlineProcess();
+//                }
+//            }
+//        }
+//    };
 
     //on get data success
     @Override

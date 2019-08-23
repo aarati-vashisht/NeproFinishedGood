@@ -215,7 +215,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
     }
 
     void setSpinnerItemData() {
-        itemAdapter = new SpinnerItemAdapter(getActivity(), R.layout.spinner_layout, ProductionJournal.getInstance().pickingListDatumList);
+        itemAdapter = new SpinnerItemAdapter(getActivity(), R.layout.spinner_picking_item_layout, ProductionJournal.getInstance().pickingListDatumList);
         spinnerItem.setAdapter(itemAdapter);
     }
 

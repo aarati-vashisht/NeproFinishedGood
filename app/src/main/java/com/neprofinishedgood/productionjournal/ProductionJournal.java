@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -106,6 +107,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         addedPickingListDatumList = new ArrayList<>();
         addedRoutingListDatumList = new ArrayList<>();
         routingListDatumList = new ArrayList<>();
+        editTextScanWorkOrder.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 
         iProductionJournalInterface = new IProductionJournalPresenter(this, this);
     }
@@ -113,32 +115,42 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @OnTextChanged(value = R.id.editTextScanWorkOrder, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanWorkOrderChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanWorkOrderhandler.postDelayed(stillageRunnable, delay);
+//            scanWorkOrderhandler.postDelayed(stillageRunnable, delay);
+            if (text.toString().trim().length() == 9) {
+                if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
+                    showProgress(ProductionJournal.this);
+                    if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                        WorkOrderInput workOrderInput = new WorkOrderInput(userId, editTextScanWorkOrder.getText().toString().trim());
+                        iProductionJournalInterface.callScanWorkOrderService(workOrderInput);
+                    }
+                } else {
+                    CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
+                }
+            }
         }
-
     }
 
     @OnTextChanged(value = R.id.editTextScanWorkOrder, callback = OnTextChanged.Callback.TEXT_CHANGED)
     public void onEditTextScanWorkOrderTEXTCHANGED(Editable text) {
-        scanWorkOrderhandler.removeCallbacks(stillageRunnable);
+//        scanWorkOrderhandler.removeCallbacks(stillageRunnable);
 
     }
 
-    //for call service on text change
-    Handler scanWorkOrderhandler = new Handler();
-    private Runnable stillageRunnable = new Runnable() {
-        public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
-                showProgress(ProductionJournal.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                    WorkOrderInput workOrderInput = new WorkOrderInput(userId, editTextScanWorkOrder.getText().toString().trim());
-                    iProductionJournalInterface.callScanWorkOrderService(workOrderInput);
-                }
-            } else {
-                CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
-            }
-        }
-    };
+//    //for call service on text change
+//    Handler scanWorkOrderhandler = new Handler();
+//    private Runnable stillageRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
+//                showProgress(ProductionJournal.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    WorkOrderInput workOrderInput = new WorkOrderInput(userId, editTextScanWorkOrder.getText().toString().trim());
+//                    iProductionJournalInterface.callScanWorkOrderService(workOrderInput);
+//                }
+//            } else {
+//                CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
+//            }
+//        }
+//    };
 
     void setData(WorkOrderResponse body) {
         cardView.setVisibility(View.VISIBLE);
@@ -151,7 +163,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         textViewItemId.setText(body.getItemId());
         textViewQuatity.setText(body.getQuantity());
         pickingListDatumList = body.getPickingListData();
-        pickingListDatumList.add(0, new PickingListDatum(getResources().getString(R.string.select_item), "", ""));
+        pickingListDatumList.add(0, new PickingListDatum("", "", getResources().getString(R.string.select_item)));
         routingListDatumList = body.getRoutingListData();
         routingListDatumList.add(0, new RoutingListDatum(getResources().getString(R.string.select_operation), "", "", "", ""));
         workOrderNo = body.getWorkOrderNo();

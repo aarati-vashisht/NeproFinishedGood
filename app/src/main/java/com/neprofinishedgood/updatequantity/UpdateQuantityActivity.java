@@ -3,6 +3,7 @@ package com.neprofinishedgood.updatequantity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -86,7 +87,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         ButterKnife.bind(this);
         setTitle(getString(R.string.update_quantity));
         iUpdateQtyInterface = new IUpdateQtyPresenter(this, this);
-
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         callService();
         initData();
     }
@@ -102,30 +103,38 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     public void onEditTextScanStillageChanged(Editable text) {
 
         if (!text.toString().trim().equals("")) {
-            scanStillagehandler.postDelayed(stillageRunnable, delay);
-        }
-    }
-
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
-        scanStillagehandler.removeCallbacks(stillageRunnable);
-
-    }
-
-    //for call service on text change
-    Handler scanStillagehandler = new Handler();
-    private Runnable stillageRunnable = new Runnable() {
-        public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
-                showProgress(UpdateQuantityActivity.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//            scanStillagehandler.postDelayed(stillageRunnable, delay);
+            if (text.toString().trim().length() == 8) {
+                if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
+                    showProgress(UpdateQuantityActivity.this);
                     iUpdateQtyInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                } else {
+                    setDataOffline();
                 }
-            } else {
-                setDataOffline();
             }
         }
-    };
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+//        scanStillagehandler.removeCallbacks(stillageRunnable);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanStillagehandler = new Handler();
+//    private Runnable stillageRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
+//                showProgress(UpdateQuantityActivity.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    iUpdateQtyInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                }
+//            } else {
+//                setDataOffline();
+//            }
+//        }
+//    };
 
     void setData(ScanStillageResponse body) {
         linearLayoutScanDetail.setVisibility(View.VISIBLE);
@@ -152,7 +161,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
         if (!text.toString().equals("")) {
             editQty = Integer.parseInt(text.toString());
-            if (stillageLayout.textViewStdQuantity.getText().toString().length()>0) {
+            if (stillageLayout.textViewStdQuantity.getText().toString().length() > 0) {
                 stillageStdQty = Integer.parseInt(stillageLayout.textViewStdQuantity.getText().toString());
                 if (editQty > stillageStdQty) {
                     editTextQuantity.setError(getString(R.string.quantity_must_not_greater_than_stillage_std_qty));
@@ -255,7 +264,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     @Override
     public void onUpdateQtySuccess(UniversalResponse body) {
         hideProgress();
-        Log.d("afghsd  "+i,new Gson().toJson(body));
+        Log.d("afghsd  " + i, new Gson().toJson(body));
 
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (body.getStatus().equals(getResources().getString(R.string.success))) {

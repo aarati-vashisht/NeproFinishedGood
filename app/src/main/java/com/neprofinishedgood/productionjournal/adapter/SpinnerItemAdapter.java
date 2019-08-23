@@ -49,9 +49,12 @@ public class SpinnerItemAdapter extends ArrayAdapter<PickingListDatum> {
         View v = convertView;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(res, null);
-        TextView textView = v.findViewById(R.id.text1);
-        String str = pickingListDatumList.get(position).getItemName();
+        TextView textView = v.findViewById(R.id.text);
+        TextView textView1 = v.findViewById(R.id.text1);
+        String str = pickingListDatumList.get(position).getItemId();
+        String str1 = pickingListDatumList.get(position).getItemName();
         textView.setText(str);
+        textView1.setText(str1);
         return v;
 
     }
@@ -59,8 +62,11 @@ public class SpinnerItemAdapter extends ArrayAdapter<PickingListDatum> {
     private View createItemView(int position, View convertView, ViewGroup parent) {
         final View view = mInflater.inflate(res, parent, false);
 
-        TextView text = view.findViewById(R.id.text1);
-        text.setText(pickingListDatumList.get(position).getItemName());
+        TextView text = view.findViewById(R.id.text);
+        TextView text1 = view.findViewById(R.id.text1);
+
+        text.setText(pickingListDatumList.get(position).getItemId());
+        text1.setText(pickingListDatumList.get(position).getItemName());
 
         return view;
     }

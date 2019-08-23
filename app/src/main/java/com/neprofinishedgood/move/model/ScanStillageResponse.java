@@ -3,6 +3,9 @@ package com.neprofinishedgood.move.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.neprofinishedgood.base.model.UniversalSpinner;
+
+import java.util.List;
 
 public class ScanStillageResponse {
 
@@ -69,6 +72,22 @@ public class ScanStillageResponse {
     @SerializedName("isHold")
     @Expose
     private String isHold;
+
+
+
+    @SerializedName("AisleList")
+    @Expose
+    private List<UniversalSpinner> aisleList = null;
+    @SerializedName("BinList")
+    @Expose
+    private List<UniversalSpinner> binList = null;
+    @SerializedName("RackList")
+    @Expose
+    private List<UniversalSpinner> rackList = null;
+    @SerializedName("StillageLocation")
+    @Expose
+    private String stillageLocation;
+
 
 
     public String getWareHouseID() {
@@ -197,5 +216,38 @@ public class ScanStillageResponse {
 
     public void setWorkOrderNo(String workOrderNo) {
         WorkOrderNo = workOrderNo;
+    }
+
+
+    public List<UniversalSpinner> getAisleList() {
+        return aisleList;
+    }
+
+    public void setAisleList(List<UniversalSpinner> aisleList) {
+        this.aisleList = aisleList;
+    }
+
+    public List<UniversalSpinner> getBinList() {
+        return binList;
+    }
+
+    public void setBinList(List<UniversalSpinner> binList) {
+        this.binList = binList;
+    }
+
+    public List<UniversalSpinner> getRackList() {
+        return rackList;
+    }
+
+    public void setRackList(List<UniversalSpinner> rackList) {
+        this.rackList = rackList;
+    }
+
+    public String getStillageLocation() {
+        return stillageLocation;
+    }
+
+    public void setStillageLocation(String stillageLocation) {
+        this.stillageLocation = stillageLocation;
     }
 }
