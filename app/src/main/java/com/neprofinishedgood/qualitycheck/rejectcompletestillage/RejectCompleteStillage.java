@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
@@ -44,7 +45,7 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
 
-public class RejectCompleteStillage extends BaseActivity implements IQACompleteView{
+public class RejectCompleteStillage extends BaseActivity implements IQACompleteView {
 
     @BindView(R.id.linearLayoutScanDetail)
     LinearLayout linearLayoutScanDetail;
@@ -95,6 +96,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
         setTitle(getString(R.string.reject_complete_stillage));
         iQACompletePresenter = new IQACompletePresenter(this, this);
         initData();
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         callService();
     }
 
@@ -107,31 +109,40 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanStillagehandler.postDelayed(stillageRunnable, delay);
-        }
-
-    }
-
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
-        scanStillagehandler.removeCallbacks(stillageRunnable);
-
-    }
-
-    //for call service on text change
-    Handler scanStillagehandler = new Handler();
-    private Runnable stillageRunnable = new Runnable() {
-        public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(RejectCompleteStillage.this)) {
-                showProgress(RejectCompleteStillage.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                    iQACompletePresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//            scanStillagehandler.postDelayed(stillageRunnable, delay);
+            if (text.toString().trim().length() == 8) {
+                if (NetworkChangeReceiver.isInternetConnected(RejectCompleteStillage.this)) {
+                    showProgress(RejectCompleteStillage.this);
+                    if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                        iQACompletePresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                    }
+                } else {
+                    setDataOffline();
                 }
-            } else {
-                setDataOffline();
             }
         }
-    };
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+//        scanStillagehandler.removeCallbacks(stillageRunnable);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanStillagehandler = new Handler();
+//    private Runnable stillageRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(RejectCompleteStillage.this)) {
+//                showProgress(RejectCompleteStillage.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    iQACompletePresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                }
+//            } else {
+//                setDataOffline();
+//            }
+//        }
+//    };
 
 
     @Override

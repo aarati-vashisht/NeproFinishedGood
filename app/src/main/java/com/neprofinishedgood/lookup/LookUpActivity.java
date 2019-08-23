@@ -3,6 +3,7 @@ package com.neprofinishedgood.lookup;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 
 import androidx.appcompat.widget.AppCompatEditText;
@@ -43,39 +44,47 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageLayoutLookUp);
         setTitle(getString(R.string.lookUp));
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         iLookUpInterface = new LookUpPresenter(this, this);
 
     }
 
-
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanStillagehandler.postDelayed(stillageRunnable, delay);
-        }
-
-    }
-
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
-        scanStillagehandler.removeCallbacks(stillageRunnable);
-
-    }
-
-    //for call service on text change
-    Handler scanStillagehandler = new Handler();
-    private Runnable stillageRunnable = new Runnable() {
-        public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(LookUpActivity.this)) {
-                showProgress(LookUpActivity.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//            scanStillagehandler.postDelayed(stillageRunnable, delay);
+            if (text.toString().trim().length() == 8) {
+                if (NetworkChangeReceiver.isInternetConnected(LookUpActivity.this)) {
+                    showProgress(LookUpActivity.this);
                     iLookUpInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                } else {
+                    CustomToast.showToast(LookUpActivity.this, getString(R.string.no_internet));
                 }
-            } else {
-                CustomToast.showToast(LookUpActivity.this, getString(R.string.no_internet));
             }
         }
-    };
+
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+//        scanStillagehandler.removeCallbacks(stillageRunnable);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanStillagehandler = new Handler();
+//    private Runnable stillageRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(LookUpActivity.this)) {
+//                showProgress(LookUpActivity.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    iLookUpInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                }
+//            } else {
+//                CustomToast.showToast(LookUpActivity.this, getString(R.string.no_internet));
+//            }
+//        }
+//    };
 
 
     public void imageButtonCloseClick(View view) {
@@ -97,10 +106,10 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
     @Override
     public void onSuccess(ScanStillageResponse body) {
         hideProgress();
-        if(body.getStatus().equalsIgnoreCase(getString(R.string.success))){
+        if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
             setData(body);
             editTextScanStillage.setEnabled(false);
-        }else {
+        } else {
             CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanStillage.setText("");
         }

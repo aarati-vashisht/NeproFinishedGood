@@ -3,6 +3,7 @@ package com.neprofinishedgood.assign;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import com.neprofinishedgood.assign.presenter.IAssignInterFace;
 import com.neprofinishedgood.assign.presenter.IAssignView;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
+import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
@@ -34,6 +36,7 @@ import com.neprofinishedgood.utils.StillageLayout;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,6 +96,13 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     long delay = 1000;
     long dropLocationLastText = 0;
     String aisle, rack, bin, flt, isAssignLocation;
+    String wareHouseID = "";
+
+
+
+    public List<UniversalSpinner> aisleList = new ArrayList<>();
+    public List<UniversalSpinner> rackList = new ArrayList<>();
+    public List<UniversalSpinner> binList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +114,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         setTitle(getString(R.string.assignlocation_flt));
         iAssAndUAssInterface = new AssignPresenter(this, this);
         initData(null);
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         callService();
 
     }
@@ -190,31 +201,42 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanStillagehandler.postDelayed(stillageRunnable, delay);
-        }
-
-    }
-
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
-        scanStillagehandler.removeCallbacks(stillageRunnable);
-
-    }
-
-    //for call service on text change
-    Handler scanStillagehandler = new Handler();
-    private Runnable stillageRunnable = new Runnable() {
-        public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(AssignActivity.this)) {
-                showProgress(AssignActivity.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                    iAssAndUAssInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//            scanStillagehandler.postDelayed(stillageRunnable, delay);
+            if (text.toString().trim().length() == 8) {
+                if (NetworkChangeReceiver.isInternetConnected(AssignActivity.this)) {
+                    showProgress(AssignActivity.this);
+                    if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                        iAssAndUAssInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                    }
+                } else {
+                    setDataOffline();
                 }
-            } else {
-                setDataOffline();
             }
+
         }
-    };
+
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+//        scanStillagehandler.removeCallbacks(stillageRunnable);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanStillagehandler = new Handler();
+//    private Runnable stillageRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(AssignActivity.this)) {
+//                showProgress(AssignActivity.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    iAssAndUAssInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                }
+//            } else {
+//                setDataOffline();
+//            }
+//        }
+//    };
 
     @OnTextChanged(value = R.id.editTextScanLocation, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void oneditTextDropLocationChanged(Editable text) {
@@ -271,7 +293,25 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewNumber.setText(body.getStickerID());
         initData(null);
+        aisleList = body.getAisleList();
+        rackList = body.getRackList();
+        binList = body.getBinList();
+
+        if(aisleList == null || rackList == null || binList == null){
+            aisleList = new ArrayList<>();
+            rackList = new ArrayList<>();
+            binList = new ArrayList<>();
+        }
+
+        aisleList.add(0, new UniversalSpinner("Select Aisle", "000"));
+        rackList.add(0, new UniversalSpinner("Select Rack", "000"));
+        binList.add(0, new UniversalSpinner("Select Bin", "000"));
+
         buttonAssign.setEnabled(true);
+        wareHouseID = body.getWareHouseID();
+        setSpinnerAisleData(0);
+        setSpinnerRackData(0);
+        setSpinnerBinData(0);
     }
 
     @OnClick(R.id.buttonAssign)
@@ -286,7 +326,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
             //for flt Assign
             if (linearLayoutOfflineData.getVisibility() == View.GONE) {
                 showProgress(this);
-                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
+                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt, wareHouseID);
                 iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
 
                 frameAssignFlt.setVisibility(View.GONE);
@@ -294,7 +334,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
                 isButtonInAssignLocation = true;
             } else {
                 if (isOfflineValidated()) {
-                    AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
+                    AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt, wareHouseID);
                     saveDataOffline(assignedUnAssignedInput);
                 }
             }
@@ -317,14 +357,14 @@ public class AssignActivity extends BaseActivity implements IAssignView {
             flt = "";
             if (linearLayoutOfflineData.getVisibility() == View.GONE) {
                 showProgress(this);
-                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
+                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt, wareHouseID);
                 iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
 
                 frameAssignFlt.setVisibility(View.GONE);
                 frameAssignLocation.setVisibility(View.VISIBLE);
                 isButtonInAssignLocation = true;
             } else {
-                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt);
+                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt, wareHouseID);
                 saveDataOffline(assignedUnAssignedInput);
             }
         }
@@ -396,7 +436,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             setData(body);
         } else {
-            CustomToast.showToast(this, getString(R.string.no_data_found));
+            CustomToast.showToast(this, body.getMessage());
             editTextScanStillage.setText("");
         }
     }

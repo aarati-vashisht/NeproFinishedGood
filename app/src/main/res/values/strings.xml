@@ -193,5 +193,6 @@
     <string name="enter_hours">Enter Hours</string>
     <string name="production_journal_back_confirmation">All changes will be discarded!</string>
     <string name="are_you_sure_you_want_to_go_back">Are you sure you want to go back?</string>
+    <string name="cw_goods_quantity">CW Goods Quantity</string>
 
 </resources>

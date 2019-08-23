@@ -3,6 +3,7 @@ package com.neprofinishedgood.raf;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -42,7 +43,7 @@ import butterknife.OnTextChanged;
 public class RAFActivity extends BaseActivity implements IRAFView {
     @BindView(R.id.editTextScanStillage)
     AppCompatEditText editTextScanStillage;
-     @BindView(R.id.stillageDetail)
+    @BindView(R.id.stillageDetail)
     View stillageDetail;
     @BindView(R.id.linearLayoutScanDetail)
     LinearLayout linearLayoutScanDetail;
@@ -84,7 +85,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         Utils.hideSoftKeyboard(this);
         setTitle(getString(R.string.reportasfinished));
         irafInterface = new IRAFPresenter(this, this);
-
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         callService();
     }
 
@@ -102,31 +103,41 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            scanStillagehandler.postDelayed(stillageRunnable, delay);
-        }
-
-    }
-
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
-        scanStillagehandler.removeCallbacks(stillageRunnable);
-
-    }
-
-    //for call service on text change
-    Handler scanStillagehandler = new Handler();
-    private Runnable stillageRunnable = new Runnable() {
-        public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(RAFActivity.this)) {
-                showProgress(RAFActivity.this);
-                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                    irafInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//            scanStillagehandler.postDelayed(stillageRunnable, delay);
+            if (text.toString().trim().length() == 8) {
+                if (NetworkChangeReceiver.isInternetConnected(RAFActivity.this)) {
+                    showProgress(RAFActivity.this);
+                    if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                        irafInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                    }
+                } else {
+                    setDataOffline();
                 }
-            } else {
-                setDataOffline();
             }
         }
-    };
+
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
+//        scanStillagehandler.removeCallbacks(stillageRunnable);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler scanStillagehandler = new Handler();
+//    private Runnable stillageRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(RAFActivity.this)) {
+//                showProgress(RAFActivity.this);
+//                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+//                    irafInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                }
+//            } else {
+//                setDataOffline();
+//            }
+//        }
+//    };
 
 
     @Override
