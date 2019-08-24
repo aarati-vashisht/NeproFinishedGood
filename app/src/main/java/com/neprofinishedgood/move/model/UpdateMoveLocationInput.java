@@ -6,12 +6,16 @@ public class UpdateMoveLocationInput {
     String Rack;
     String Bin;
 
-    public UpdateMoveLocationInput(String stickerNo, String aisle, String rack, String bin, String userId) {
+    String LoadingAreaId, WareHouseID;
+
+    public UpdateMoveLocationInput(String stickerNo, String aisle, String rack, String bin, String userId, String loadingAreaId, String wareHouseID) {
         StickerNo = stickerNo;
         Aisle = aisle;
         Rack = rack;
         Bin = bin;
         UserId = userId;
+        LoadingAreaId = loadingAreaId;
+        WareHouseID = wareHouseID;
     }
 
     String UserId;

@@ -45,7 +45,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
         instance = this;
         getSupportActionBar().hide();
         overridePendingTransition(0, 0);
-        iLoginInterface = new ILoginPresenter(this);
+        iLoginInterface = new ILoginPresenter(this, this);
 
     }
 
@@ -86,8 +86,8 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     }
 
     @Override
-    public void onFailure() {
+    public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, getString(R.string.invalid_pin));
+        CustomToast.showToast(this, message);
     }
 }

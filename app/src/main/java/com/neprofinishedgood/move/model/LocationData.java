@@ -9,13 +9,13 @@ public class LocationData {
 
     @SerializedName("Aisle")
     @Expose
-    private Integer aisle;
+    private String aisle;
     @SerializedName("Rack")
     @Expose
-    private Integer rack;
+    private String rack;
     @SerializedName("Bin")
     @Expose
-    private Integer bin;
+    private String bin;
     @SerializedName("Status")
     @Expose
     private String status;
@@ -23,27 +23,27 @@ public class LocationData {
     @Expose
     private String message;
 
-    public Integer getAisle() {
+    public String getAisle() {
         return aisle;
     }
 
-    public void setAisle(Integer aisle) {
+    public void setAisle(String aisle) {
         this.aisle = aisle;
     }
 
-    public Integer getRack() {
+    public String getRack() {
         return rack;
     }
 
-    public void setRack(Integer rack) {
+    public void setRack(String rack) {
         this.rack = rack;
     }
 
-    public Integer getBin() {
+    public String getBin() {
         return bin;
     }
 
-    public void setBin(Integer bin) {
+    public void setBin(String bin) {
         this.bin = bin;
     }
 

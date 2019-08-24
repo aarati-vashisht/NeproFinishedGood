@@ -121,9 +121,9 @@ public class AssignActivity extends BaseActivity implements IAssignView {
 
     void initData(LocationData response) {
         if (response == null) {
-            setSpinnerAisleData(0);
-            setSpinnerRackData(0);
-            setSpinnerBinData(0);
+            setSpinnerAisleData("0");
+            setSpinnerRackData("0");
+            setSpinnerBinData("0");
         } else {
             setSpinnerAisleData(response.getAisle());
             setSpinnerRackData(response.getRack());
@@ -139,10 +139,10 @@ public class AssignActivity extends BaseActivity implements IAssignView {
 
     }
 
-    void setSpinnerAisleData(int item) {
+    void setSpinnerAisleData(String item) {
         SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, aisleList);
         spinnerAisle.setAdapter(aisleListAdapter);
-        if (item > 0) {
+        if (!item.equals("0")) {
             for (int j = 0; j < aisleList.size(); j++) {
                 if (aisleList.get(j).getId().equals(item + "")) {
                     spinnerAisle.setSelection(j);
@@ -172,12 +172,12 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         bin = binList.get(position).getId();
     }
 
-    void setSpinnerRackData(int item) {
+    void setSpinnerRackData(String item) {
         SpinnerAdapter rackListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, rackList);
         spinnerRack.setAdapter(rackListAdapter);
-        if (item > 0) {
+        if (!item.equals("0")) {
             for (int j = 0; j < rackList.size(); j++) {
-                if (rackList.get(j).getId().equals(item + "")) {
+                if (rackList.get(j).getId().equals(item)) {
                     spinnerRack.setSelection(j);
                     rack = rackList.get(j).getId() + "";
                 }
@@ -185,14 +185,14 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         }
     }
 
-    void setSpinnerBinData(int item) {
+    void setSpinnerBinData(String item) {
         SpinnerAdapter binListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, binList);
         spinnerBin.setAdapter(binListAdapter);
-        if (item > 0) {
+        if (!item.equals("0")) {
             for (int j = 0; j < binList.size(); j++) {
-                if (binList.get(j).getId().equals(item + "")) {
+                if (binList.get(j).getId().equals(item)) {
                     spinnerBin.setSelection(j);
-                    bin = binList.get(j).getId() + "";
+                    bin = binList.get(j).getId();
                 }
             }
         }
@@ -272,9 +272,9 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         for (int i = 0; i < locationList.size(); i++) {
             if (locationId.equals(locationList.get(i).getLocationID())) {
                 try {
-                    setSpinnerAisleData(Integer.parseInt(locationList.get(i).getAisle()));
-                    setSpinnerRackData(Integer.parseInt(locationList.get(i).getRack()));
-                    setSpinnerBinData(Integer.parseInt(locationList.get(i).getBin()));
+                    setSpinnerAisleData(locationList.get(i).getAisle());
+                    setSpinnerRackData(locationList.get(i).getRack());
+                    setSpinnerBinData(locationList.get(i).getBin());
                 } catch (NumberFormatException numberFormatException) {
                     numberFormatException.printStackTrace();
                 }
@@ -309,9 +309,9 @@ public class AssignActivity extends BaseActivity implements IAssignView {
 
         buttonAssign.setEnabled(true);
         wareHouseID = body.getWareHouseID();
-        setSpinnerAisleData(0);
-        setSpinnerRackData(0);
-        setSpinnerBinData(0);
+        setSpinnerAisleData("0");
+        setSpinnerRackData("0");
+        setSpinnerBinData("0");
     }
 
     @OnClick(R.id.buttonAssign)

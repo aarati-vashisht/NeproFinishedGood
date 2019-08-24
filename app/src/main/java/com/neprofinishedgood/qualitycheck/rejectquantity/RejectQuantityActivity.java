@@ -35,6 +35,7 @@ import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -213,7 +214,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewNumber.setText(body.getStickerID());
         editTextRejectQuantity.setText(body.getStandardQty() + "");
-        editTextRejectQuantity.setSelection(body.getStandardQty().toString().length());
+        editTextRejectQuantity.setSelection((body.getStandardQty()+"").length());
         editTextRejectQuantity.requestFocus();
         setSpinnerShiftData();
 
@@ -222,8 +223,8 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     @OnTextChanged(value = R.id.editTextRejectQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextRejectQuantityChanged(Editable text){
         if(!text.toString().equals("")){
-            float rejectQty = Float.parseFloat(text.toString().trim());
-            float stillageQty = Float.parseFloat(this.body.getStandardQty().toString().trim());
+            float rejectQty = round(Float.parseFloat(text.toString().trim()));
+            float stillageQty = round(Float.parseFloat((this.body.getStandardQty()+"").trim()));
             if(rejectQty>stillageQty){
                 editTextRejectQuantity.setText("");
                 editTextRejectQuantity.setError("Invalid reject quantity!");

@@ -304,7 +304,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (editTextLoadQuantity.getText().toString().trim().length() > 0)
-                    if (Integer.parseInt(editTextLoadQuantity.getText().toString().trim()) < stillageDatumListFiltered.get(position).getPickingQty()) {
+                    if (Float.parseFloat(editTextLoadQuantity.getText().toString().trim()) < stillageDatumListFiltered.get(position).getPickingQty()) {
                         linearLayoutRejectReason.setVisibility(View.VISIBLE);
                         linearLayoutRejectReason.setAnimation(PickAndLoadStillageActivity.getInstance().fadeIn);
                     }
@@ -318,18 +318,18 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int quatityToLoad;
+                float quatityToLoad;
                 if (editTextLoadQuantity.getText().toString().trim().equals("")) {
                     quatityToLoad = 0;
                 } else {
-                    quatityToLoad = Integer.parseInt(editTextLoadQuantity.getText().toString().trim());
+                    quatityToLoad = Float.parseFloat(editTextLoadQuantity.getText().toString().trim());
                 }
                 int stdQuantity = stillageDatumListFiltered.get(position).getStillageQty();
                 if (editTextLoadQuantity.getText().toString().trim().length() == 0) {
                     editTextLoadQuantity.setError(context.getResources().getString(R.string.please_add_load_quantity));
                     editTextLoadQuantity.requestFocus();
                 }
-                if (Integer.parseInt(editTextLoadQuantity.getText().toString().trim()) > stillageDatumListFiltered.get(position).getPickingQty()) {
+                if (Float.parseFloat(editTextLoadQuantity.getText().toString().trim()) > stillageDatumListFiltered.get(position).getPickingQty()) {
                     editTextLoadQuantity.setError(context.getResources().getString(R.string.load_quantiy_must_be_lower_than_tobeload));
                     editTextLoadQuantity.requestFocus();
                 } else if (quatityToLoad > stdQuantity) {
