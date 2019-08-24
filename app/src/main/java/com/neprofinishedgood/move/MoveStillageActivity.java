@@ -50,6 +50,10 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     LinearLayout linearLayoutScanDetail;
     @BindView(R.id.linearLayoutPutAwayLocation)
     LinearLayout linearLayoutPutAwayLocation;
+    @BindView(R.id.linearLayoutCurrentLocation)
+    LinearLayout linearLayoutCurrentLocation;
+    @BindView(R.id.linearLayoutMovingLocation)
+    LinearLayout linearLayoutMovingLocation;
     @BindView(R.id.linearLayoutAssignedLocation)
     LinearLayout linearLayoutAssignedLocation;
     @BindView(R.id.textViewAssignedLocation)
@@ -67,6 +71,10 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 
     @BindView(R.id.textViewNumberOffline)
     TextView textViewNumberOffline;
+    @BindView(R.id.textViewCurrentLocation)
+    TextView textViewCurrentLocation;
+    @BindView(R.id.textViewMovingLocation)
+    TextView textViewMovingLocation;
 
     @BindView(R.id.linearLayoutOfflineData)
     LinearLayout linearLayoutOfflineData;
@@ -77,7 +85,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     long delay = 1000;
     long dropLocationLastText = 0;
     private MoveAdapter adapter;
-    String aisle = "", rack = "", bin = "", stillageData;
+    String aisle = "", rack = "", bin = "", stillageData, loadingAreaId = "", wareHouseID = "";
 
     String stillageNumber;
 
@@ -112,9 +120,9 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     //data initialization
     void initData(LocationData response) {
         if (response == null) {
-            setSpinnerAisleData(0);
-            setSpinnerRackData(0);
-            setSpinnerBinData(0);
+            setSpinnerAisleData("0");
+            setSpinnerRackData("0");
+            setSpinnerBinData("0");
         } else {
             setSpinnerAisleData(response.getAisle());
             setSpinnerRackData(response.getRack());
@@ -130,15 +138,15 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         if (offlineData == null) {
             if (isValidated()) {
                 if (linearLayoutPutAwayLocation.getVisibility() != View.VISIBLE) {
-                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), "", "", "", userId);
+                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), "", "", "", userId, loadingAreaId, wareHouseID);
                 } else {
-                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), aisle, rack, bin, userId);
+                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), aisle, rack, bin, userId, loadingAreaId, wareHouseID);
                 }
                 movePresenter.callMoveServcie(updateMoveLocationInput);
             }
         } else {
             if (isOfflineValidated()) {
-                updateMoveLocationInput = new UpdateMoveLocationInput(textViewNumberOffline.getText().toString(), aisle, rack, bin, userId);
+                updateMoveLocationInput = new UpdateMoveLocationInput(textViewNumberOffline.getText().toString(), aisle, rack, bin, userId, loadingAreaId, wareHouseID);
                 saveDataOffline(updateMoveLocationInput);
             }
         }
@@ -187,9 +195,9 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             for (int i = 0; i < locationList.size(); i++) {
                 if (locationId.equals(locationList.get(i).getLocationID())) {
                     try {
-                        setSpinnerAisleData(Integer.parseInt(locationList.get(i).getAisle()));
-                        setSpinnerRackData(Integer.parseInt(locationList.get(i).getRack()));
-                        setSpinnerBinData(Integer.parseInt(locationList.get(i).getBin()));
+                        setSpinnerAisleData(locationList.get(i).getAisle());
+                        setSpinnerRackData(locationList.get(i).getRack());
+                        setSpinnerBinData(locationList.get(i).getBin());
                     } catch (NumberFormatException numberFormatException) {
                         Log.d("NumberFormatException", numberFormatException.toString());
                         numberFormatException.printStackTrace();
@@ -215,40 +223,40 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         bin = binList.get(position).getId();
     }
 
-    void setSpinnerAisleData(int item) {
+    void setSpinnerAisleData(String item) {
         SpinnerAdapter aisleListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, aisleList);
         spinnerAisle.setAdapter(aisleListAdapter);
-        if (item > 0) {
+        if (!item.equals("0")) {
             for (int j = 0; j < aisleList.size(); j++) {
-                if (aisleList.get(j).getId().equals(item + "")) {
+                if (aisleList.get(j).getId().equals(item)) {
                     spinnerAisle.setSelection(j);
-                    aisle = aisleList.get(j).getId() + "";
+                    aisle = aisleList.get(j).getId();
                 }
             }
         }
     }
 
-    void setSpinnerRackData(int item) {
+    void setSpinnerRackData(String item) {
         SpinnerAdapter rackListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, rackList);
         spinnerRack.setAdapter(rackListAdapter);
-        if (item > 0) {
+        if (!item.equals("0")) {
             for (int j = 0; j < rackList.size(); j++) {
-                if (rackList.get(j).getId().equals(item + "")) {
+                if (rackList.get(j).getId().equals(item)) {
                     spinnerRack.setSelection(j);
-                    rack = rackList.get(j).getId() + "";
+                    rack = rackList.get(j).getId();
                 }
             }
         }
     }
 
-    void setSpinnerBinData(int item) {
+    void setSpinnerBinData(String item) {
         SpinnerAdapter binListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, binList);
         spinnerBin.setAdapter(binListAdapter);
-        if (item > 0) {
+        if (!item.equals("0")) {
             for (int j = 0; j < binList.size(); j++) {
-                if (binList.get(j).getId().equals(item + "")) {
+                if (binList.get(j).getId().equals(item)) {
                     spinnerBin.setSelection(j);
-                    bin = binList.get(j).getId() + "";
+                    bin = binList.get(j).getId();
                 }
             }
         }
@@ -257,7 +265,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 
     @Override
     public void onUpdateMoveSuccess(UniversalResponse response) {
-        hideProgress();
+            hideProgress();
         if (response.getStatus().equals(getString(R.string.success))) {
             CustomToast.showToast(this, response.getMessage());
             onButtonCancelClick();
@@ -301,11 +309,34 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         stillageLayout.textViewitemDesc.setText(body.getDescription());
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewNumber.setText(body.getStickerID());
+
+        wareHouseID = body.getWareHouseID();
         if (body.getAssignedLocation().equals("")) {
             linearLayoutAssignedLocation.setVisibility(View.GONE);
         } else {
             linearLayoutAssignedLocation.setVisibility(View.VISIBLE);
             textViewAssignedLocation.setText(body.getAssignedLocation());
+            setSpinnerAisleData(body.getAssignedAisleId());
+            setSpinnerRackData(body.getAssignedRackId());
+            setSpinnerBinData(body.getAssignedBinId());
+            linearLayoutCurrentLocation.setVisibility(View.GONE);
+            linearLayoutMovingLocation.setVisibility(View.GONE);
+        }
+
+        if (body.getStillageLocationName().equals(getResources().getString(R.string.prduction_line_))) {
+            linearLayoutPutAwayLocation.setVisibility(View.GONE);
+            linearLayoutCurrentLocation.setVisibility(View.VISIBLE);
+            linearLayoutMovingLocation.setVisibility(View.VISIBLE);
+            aisle = "";
+            rack = "";
+            bin = "";
+            textViewMovingLocation.setText(textViewMovingLocation.getText().toString() + ": " + body.getLoadingAreaId());
+            loadingAreaId = body.getLoadingAreaId();
+        } else {
+            linearLayoutPutAwayLocation.setVisibility(View.VISIBLE);
+            linearLayoutCurrentLocation.setVisibility(View.GONE);
+            linearLayoutMovingLocation.setVisibility(View.GONE);
+            loadingAreaId = "";
         }
 
     }

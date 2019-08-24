@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Stillages</string>
+    <string name="app_name">FG Tracking App</string>
     <string name="enter_pin">Enter Pin:</string>
     <string name="login">Login</string>
     <string name="plz_enter_pin">Please Enter Login Pin</string>
@@ -146,7 +146,7 @@
     <string name="scan_type_loading_plan">Scan/Type Truck Assignment Report:</string>
     <string name="scan_type">Scan/Type</string>
     <string name="loading_plan_not_matched_with_tar">Loading Plan didn\'t matched with TAR</string>
-    <string name="load_quantiy_must_be_lower_than_tobeload">Load Quantity Must Be Smaller Equals To/Than To Be Load Quantity</string>
+    <string name="load_quantiy_must_be_lower_than_tobeload">Load Quantity Must Not Greater Than \'To Be Load Quantity\'</string>
     <string name="to_be_load_quantity">To be loaded qty from this stillage:</string>
     <string name="enter_update_quantity">Enter Update Quantity</string>
     <string name="item_updated_successfully">Item Updated Successfully</string>
@@ -194,5 +194,7 @@
     <string name="production_journal_back_confirmation">All changes will be discarded!</string>
     <string name="are_you_sure_you_want_to_go_back">Are you sure you want to go back?</string>
     <string name="cw_goods_quantity">CW Goods Quantity</string>
+    <string name="prduction_line_">Production Line</string>
+    <string name="zone">Zone:</string>
 
 </resources>

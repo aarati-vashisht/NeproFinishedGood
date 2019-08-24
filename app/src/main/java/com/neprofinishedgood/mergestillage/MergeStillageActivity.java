@@ -73,7 +73,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     StillageLayout parentStillageLayout;
     StillageLayout childStillageLayout;
 
-    int mergeQty, childQty, parentQty, parentStdQty;
+    float mergeQty, childQty, parentQty, parentStdQty;
     private IMergeStillageInterface iMergeStillageInterface;
     long delay = 1000;
     long scanStillageLastTexxt = 0;
@@ -156,8 +156,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                         showProgress(MergeStillageActivity.this);
                         iMergeStillageInterface.callScanStillageService(new MoveInput(editTextScanChildStillage.getText().toString().trim(), userId));
                     }
-                }
-                else {
+                } else {
                     CustomToast.showToast(this, getString(R.string.child_and_parent_cannot_be_same));
                     editTextScanChildStillage.setText("");
                 }
@@ -219,24 +218,24 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     @OnTextChanged(value = R.id.editTextMergeQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextMergeQuantityChanged(Editable text) {
         if (!text.toString().equals("")) {
-            mergeQty = Integer.parseInt(text.toString());
-            childQty = Integer.parseInt(childStillageLayout.textViewQuantity.getText().toString());
-            parentQty = Integer.parseInt(parentStillageLayout.textViewQuantity.getText().toString());
-            parentStdQty = Integer.parseInt(parentStillageLayout.textViewStdQuantity.getText().toString());
+            mergeQty = Float.parseFloat(text.toString());
+            childQty = Float.parseFloat(childStillageLayout.textViewQuantity.getText().toString());
+            parentQty = Float.parseFloat(parentStillageLayout.textViewQuantity.getText().toString());
+            parentStdQty = Float.parseFloat(parentStillageLayout.textViewStdQuantity.getText().toString());
             if (mergeQty > childQty || mergeQty == 0) {
                 editTextMergeQuantity.setError(getString(R.string.invalid_merge_quantity));
                 editTextMergeQuantity.requestFocus();
                 buttonMerge.setEnabled(false);
-                textViewQuantitySum.setText(parentQty);
+                textViewQuantitySum.setText(round(parentQty) + "");
             } else if ((mergeQty + parentQty) > parentStdQty) {
                 editTextMergeQuantity.setError(getString(R.string.invalid_merge_quantity));
                 editTextMergeQuantity.requestFocus();
                 buttonMerge.setEnabled(false);
-                textViewQuantitySum.setText(parentQty);
+                textViewQuantitySum.setText(round(parentQty) + "");
             } else {
                 buttonMerge.setEnabled(true);
-                int sum = mergeQty + parentQty;
-                textViewQuantitySum.setText(sum + "");
+                float sum = mergeQty + parentQty;
+                textViewQuantitySum.setText(round(sum) + "");
             }
         } else {
             buttonMerge.setEnabled(false);
@@ -247,8 +246,8 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     boolean isValidated() {
         String text = editTextMergeQuantity.getText().toString().trim();
         if (!text.equals("")) {
-            int mergeQty = Integer.parseInt(text);
-            int childQty = Integer.parseInt(childStillageLayout.textViewQuantity.getText().toString());
+            float mergeQty = Float.parseFloat(text);
+            float childQty = Float.parseFloat(childStillageLayout.textViewQuantity.getText().toString());
 
             if (mergeQty > childQty || mergeQty == 0) {
                 editTextMergeQuantity.setError(getString(R.string.invalid_merge_quantity));
@@ -319,9 +318,9 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     }
 
     void mergeClick(String discard) {
-        String changeParentQty = mergeQty + parentQty + "";
+        String changeParentQty = round(mergeQty + parentQty) + "";
         parentStillageLayout.textViewQuantity.setText(changeParentQty);
-        String changeChildQty = Integer.parseInt(childStillageLayout.textViewQuantity.getText().toString()) - mergeQty + "";
+        String changeChildQty = round(Float.parseFloat(childStillageLayout.textViewQuantity.getText().toString())) - mergeQty + "";
         childStillageLayout.textViewQuantity.setText(changeChildQty);
         if ((mergeQty + parentQty) == parentStdQty) {
             //nothing to merge parent is full
@@ -342,7 +341,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
             ///add more items to merge
             showAddMoreALert();
         }
-        textViewQuantitySum.setText(mergeQty + parentQty + "");
+        textViewQuantitySum.setText(round(mergeQty + parentQty) + "");
     }
 
     private void showAddMoreALert() {
@@ -432,17 +431,17 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                 editTextScanChildStillage.setEnabled(false);
                 editTextMergeQuantity.requestFocus();
 
-                int parentRemainQty, childQty;
+                float parentRemainQty, childQty;
 
-                parentRemainQty = Integer.parseInt(parentStillageLayout.textViewStdQuantity.getText().toString())
-                        - Integer.parseInt(parentStillageLayout.textViewQuantity.getText().toString());
+                parentRemainQty = Float.parseFloat(parentStillageLayout.textViewStdQuantity.getText().toString())
+                        - Float.parseFloat(parentStillageLayout.textViewQuantity.getText().toString());
 
-                childQty = Integer.parseInt(childStillageLayout.textViewQuantity.getText().toString());
+                childQty = Float.parseFloat(childStillageLayout.textViewQuantity.getText().toString());
 
                 if (childQty <= parentRemainQty) {
-                    editTextMergeQuantity.setText(childQty + "");
+                    editTextMergeQuantity.setText(round(childQty) + "");
                 } else if (childQty > parentRemainQty) {
-                    editTextMergeQuantity.setText(parentRemainQty + "");
+                    editTextMergeQuantity.setText(round(parentRemainQty) + "");
                 }
                 editTextMergeQuantity.setSelection(editTextMergeQuantity.getText().toString().length());
             } else {

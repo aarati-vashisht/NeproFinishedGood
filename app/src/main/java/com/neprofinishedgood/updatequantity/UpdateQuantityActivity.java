@@ -157,12 +157,12 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
     @OnTextChanged(value = R.id.editTextQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextQuantityChanged(Editable text) {
-        int stillageQty, stillageStdQty, editQty;
+        float stillageQty, stillageStdQty, editQty;
 
         if (!text.toString().equals("")) {
-            editQty = Integer.parseInt(text.toString());
+            editQty = Float.parseFloat(text.toString());
             if (stillageLayout.textViewStdQuantity.getText().toString().length() > 0) {
-                stillageStdQty = Integer.parseInt(stillageLayout.textViewStdQuantity.getText().toString());
+                stillageStdQty = Float.parseFloat(stillageLayout.textViewStdQuantity.getText().toString());
                 if (editQty > stillageStdQty) {
                     editTextQuantity.setError(getString(R.string.quantity_must_not_greater_than_stillage_std_qty));
                     editTextQuantity.requestFocus();

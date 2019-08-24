@@ -23,7 +23,7 @@ public class ScanStillageResponse {
 
     @SerializedName("StandardQty")
     @Expose
-    private Integer standardQty;
+    private float standardQty;
 
     @SerializedName("ItemId")
     @Expose
@@ -35,7 +35,7 @@ public class ScanStillageResponse {
 
     @SerializedName("ItemStdQty")
     @Expose
-    private Integer itemStdQty;
+    private float itemStdQty;
 
     @SerializedName("AssignedLocation")
     @Expose
@@ -87,6 +87,80 @@ public class ScanStillageResponse {
     @SerializedName("StillageLocation")
     @Expose
     private String stillageLocation;
+
+
+
+
+
+
+
+    @SerializedName("AssignedAisleId")
+    @Expose
+    private String assignedAisleId;
+    @SerializedName("AssignedRackId")
+    @Expose
+    private String assignedRackId;
+    @SerializedName("AssignedBinId")
+    @Expose
+    private String assignedBinId;
+
+
+
+    @SerializedName("StillageLocationName")
+    @Expose
+    private String stillageLocationName;
+
+
+    @SerializedName("LoadingAreaId")
+    @Expose
+    private String loadingAreaId;
+
+    public String getLoadingAreaId() {
+        return loadingAreaId;
+    }
+
+    public void setLoadingAreaId(String loadingAreaId) {
+        this.loadingAreaId = loadingAreaId;
+    }
+
+
+    public String getStillageLocationName() {
+        return stillageLocationName;
+    }
+
+    public void setStillageLocationName(String stillageLocationName) {
+        this.stillageLocationName = stillageLocationName;
+    }
+
+
+
+
+    public String getAssignedAisleId() {
+        return assignedAisleId;
+    }
+
+    public void setAssignedAisleId(String assignedAisleId) {
+        this.assignedAisleId = assignedAisleId;
+    }
+
+    public String getAssignedRackId() {
+        return assignedRackId;
+    }
+
+    public void setAssignedRackId(String assignedRackId) {
+        this.assignedRackId = assignedRackId;
+    }
+
+    public String getAssignedBinId() {
+        return assignedBinId;
+    }
+
+    public void setAssignedBinId(String assignedBinId) {
+        this.assignedBinId = assignedBinId;
+    }
+
+
+
 
 
 
@@ -162,11 +236,11 @@ public class ScanStillageResponse {
         this.stickerID = stickerID;
     }
 
-    public Integer getStandardQty() {
+    public float getStandardQty() {
         return standardQty;
     }
 
-    public void setStandardQty(Integer standardQty) {
+    public void setStandardQty(float standardQty) {
         this.standardQty = standardQty;
     }
 
@@ -186,11 +260,11 @@ public class ScanStillageResponse {
         this.description = description;
     }
 
-    public Integer getItemStdQty() {
+    public float getItemStdQty() {
         return itemStdQty;
     }
 
-    public void setItemStdQty(Integer itemStdQty) {
+    public void setItemStdQty(float itemStdQty) {
         this.itemStdQty = itemStdQty;
     }
 

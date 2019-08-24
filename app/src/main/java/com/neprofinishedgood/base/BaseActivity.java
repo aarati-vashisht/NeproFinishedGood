@@ -30,6 +30,7 @@ import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.NetworkHandleService;
 import com.neprofinishedgood.utils.SharedPref;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -220,6 +221,13 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public void onBackPressed() {
         super.onBackPressed();
 
+    }
+
+    public static float round(float number) {
+        int decimalPlace = 2;
+        BigDecimal bd = new BigDecimal(number);
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
 }
