@@ -77,7 +77,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if(text.toString().trim().length() == 8) {
+            if(text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(MoveActivity.this)) {
                     showProgress(MoveActivity.this);
                     String stillageTxt = editTextScanStillage.getText().toString().trim();
@@ -125,7 +125,8 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
             overridePendingTransition(0, 0);
         } else {
             editTextScanStillage.setText("");
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
 
         }
 
@@ -135,7 +136,8 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -148,11 +150,13 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     public void onAssignedSuccess(AssignedStillages body) {
         hideProgress();
         if (body.getStatus().equals(getString(R.string.success))) {
-            CustomToast.showToast(this, body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, body.getMessage());
             if (body.getStillageList().size() > 0) {
                 setAdapter(body.getStillageList());
             }
         } else {
+            showSuccessDialog(body.getMessage());
             // CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
         }
     }

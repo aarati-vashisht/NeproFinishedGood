@@ -302,7 +302,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim() + ",";
+//                childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim() + ",";
                 mergeClick(getResources().getString(R.string.discard));
             }
         });
@@ -479,7 +479,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         editTextMergeQuantity.setText("");
 
         editTextScanParentStillage.setEnabled(true);
-        editTextScanChildStillage.setEnabled(false);
+        editTextScanChildStillage.setEnabled(true);
 
         linearLayoutScanParentDetail.setVisibility(View.GONE);
         linearLayoutScanParentDetail.setAnimation(fadeOut);

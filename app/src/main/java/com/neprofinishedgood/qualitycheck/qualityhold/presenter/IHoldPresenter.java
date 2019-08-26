@@ -8,6 +8,7 @@ import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.model.QualityInput;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,9 +52,9 @@ public class IHoldPresenter implements IHoldInterface {
     }
 
     @Override
-    public void callHoldUnholdService(MoveInput moveInput) {
+    public void callHoldUnholdService(QualityInput qualityInput) {
         ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
-        Call<UniversalResponse> call = apiInterface.updatedHoldUnHoldStillage(moveInput);
+        Call<UniversalResponse> call = apiInterface.updatedHoldUnHoldStillage(qualityInput);
         call.enqueue(new Callback<UniversalResponse>() {
             @Override
             public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {

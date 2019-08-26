@@ -16,8 +16,11 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.assign.AssignActivity;
+import com.neprofinishedgood.assign.adapter.SpinnerZoneAdapter;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
+import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.move.adapter.MoveAdapter;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
@@ -34,6 +37,7 @@ import com.neprofinishedgood.utils.StillageLayout;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,13 +83,21 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     @BindView(R.id.linearLayoutOfflineData)
     LinearLayout linearLayoutOfflineData;
 
+    @BindView(R.id.spinnerZone)
+    Spinner spinnerZone;
+
     StillageLayout stillageLayout;
 
     private static IMovePresenter movePresenter;
     long delay = 1000;
     long dropLocationLastText = 0;
     private MoveAdapter adapter;
-    String aisle = "", rack = "", bin = "", stillageData, loadingAreaId = "", wareHouseID = "";
+    String aisle = "", rack = "", bin = "", zone = "", stillageData, loadingAreaId = "", wareHouseID = "";
+
+    public List<UniversalSpinner> aisleList = new ArrayList<>();
+    public List<UniversalSpinner> rackList = new ArrayList<>();
+    public List<UniversalSpinner> binList = new ArrayList<>();
+    public ArrayList<UniversalSpinner> zoneList = new ArrayList<>();
 
     String stillageNumber;
 
@@ -123,10 +135,15 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             setSpinnerAisleData("0");
             setSpinnerRackData("0");
             setSpinnerBinData("0");
+            setSpinnerZoneData("0");
         } else {
-            setSpinnerAisleData(response.getAisle());
-            setSpinnerRackData(response.getRack());
-            setSpinnerBinData(response.getBin());
+            if (response.getZone().equals("")) {
+                setSpinnerAisleData(response.getAisle());
+                setSpinnerRackData(response.getRack());
+                setSpinnerBinData(response.getBin());
+            } else {
+                setSpinnerZoneData(response.getZone());
+            }
         }
 
     }
@@ -138,15 +155,15 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         if (offlineData == null) {
             if (isValidated()) {
                 if (linearLayoutPutAwayLocation.getVisibility() != View.VISIBLE) {
-                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), "", "", "", userId, loadingAreaId, wareHouseID);
+                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), "", "", "", userId, loadingAreaId, wareHouseID, zone);
                 } else {
-                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), aisle, rack, bin, userId, loadingAreaId, wareHouseID);
+                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), aisle, rack, bin, userId, loadingAreaId, wareHouseID, zone);
                 }
                 movePresenter.callMoveServcie(updateMoveLocationInput);
             }
         } else {
             if (isOfflineValidated()) {
-                updateMoveLocationInput = new UpdateMoveLocationInput(textViewNumberOffline.getText().toString(), aisle, rack, bin, userId, loadingAreaId, wareHouseID);
+                updateMoveLocationInput = new UpdateMoveLocationInput(textViewNumberOffline.getText().toString(), aisle, rack, bin, userId, loadingAreaId, wareHouseID, zone);
                 saveDataOffline(updateMoveLocationInput);
             }
         }
@@ -181,7 +198,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             if (NetworkChangeReceiver.isInternetConnected(MoveStillageActivity.this)) {
                 showProgress(MoveStillageActivity.this);
                 if (System.currentTimeMillis() > (dropLocationLastText + delay - 500)) {
-                    movePresenter.callLocationService(new LocationInput(editTextDropLocation.getText().toString(), userId));
+                    movePresenter.callLocationService(new LocationInput(editTextDropLocation.getText().toString(), userId, wareHouseID));
                 }
             } else {
                 setLocationOffline();
@@ -211,17 +228,45 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     @OnItemSelected(R.id.spinnerAisle)
     public void spinnerAisleSelected(Spinner spinner, int position) {
         aisle = aisleList.get(position).getId();
+        if (position > 0) {
+            zone = "";
+            spinnerZone.setSelection(0);
+        }
     }
 
     @OnItemSelected(R.id.spinnerRack)
     public void spinnerRackSelected(Spinner spinner, int position) {
         rack = rackList.get(position).getId();
+        if (position > 0) {
+            zone = "";
+            spinnerZone.setSelection(0);
+        }
     }
 
     @OnItemSelected(R.id.spinnerBin)
     public void spinnerBinSelected(Spinner spinner, int position) {
         bin = binList.get(position).getId();
+        if (position > 0) {
+            zone = "";
+            spinnerZone.setSelection(0);
+        }
     }
+
+    @OnItemSelected(R.id.spinnerZone)
+    public void spinnerZoneSelected(Spinner spinner, int position) {
+        if (position > 0) {
+            zone = zoneList.get(position).getId();
+            aisle = "";
+            rack = "";
+            bin = "";
+            spinnerAisle.setSelection(0);
+            spinnerRack.setSelection(0);
+            spinnerBin.setSelection(0);
+        } else {
+            zone = "";
+        }
+    }
+
 
     void setSpinnerAisleData(String item) {
         SpinnerAdapter aisleListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, aisleList);
@@ -262,25 +307,41 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         }
     }
 
+    void setSpinnerZoneData(String item) {
+        SpinnerZoneAdapter zoneListAdapter = new SpinnerZoneAdapter(MoveStillageActivity.this, R.layout.spinner_picking_item_layout, zoneList);
+        spinnerZone.setAdapter(zoneListAdapter);
+        if (!item.equals("0")) {
+            for (int j = 0; j < zoneList.size(); j++) {
+                if (zoneList.get(j).getId().equals(item)) {
+                    spinnerZone.setSelection(j);
+                    zone = zoneList.get(j).getId();
+                }
+            }
+        }
+    }
+
 
     @Override
     public void onUpdateMoveSuccess(UniversalResponse response) {
-            hideProgress();
+        hideProgress();
         if (response.getStatus().equals(getString(R.string.success))) {
-            CustomToast.showToast(this, response.getMessage());
+            showSuccessDialog(response.getMessage());
+//            CustomToast.showToast(this, response.getMessage());
             onButtonCancelClick();
             clearAllSpinnerData();
             finish();
             MoveActivity.getInstance().getAllAssignedData();
         } else {
-            CustomToast.showToast(this, response.getMessage());
+            showSuccessDialog(response.getMessage());
+//            CustomToast.showToast(this, response.getMessage());
         }
     }
 
     @Override
     public void onUpdateMoveFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -290,7 +351,8 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             initData(response);
         } else {
             editTextDropLocation.setText("");
-            CustomToast.showToast(this, response.getMessage());
+            showSuccessDialog(response.getMessage());
+//            CustomToast.showToast(this, response.getMessage());
         }
     }
 
@@ -298,7 +360,8 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     public void onLocationFailure(String message) {
         hideProgress();
         editTextDropLocation.setText("");
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
 
     }
 
@@ -309,6 +372,25 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         stillageLayout.textViewitemDesc.setText(body.getDescription());
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewNumber.setText(body.getStickerID());
+
+        zoneList = body.getZoneList();
+        aisleList = body.getAisleList();
+        rackList = body.getRackList();
+        binList = body.getBinList();
+
+        if (aisleList == null || rackList == null || binList == null || zoneList == null) {
+            aisleList = new ArrayList<>();
+            rackList = new ArrayList<>();
+            binList = new ArrayList<>();
+            zoneList = new ArrayList<>();
+        }
+
+        aisleList.add(0, new UniversalSpinner("Select Aisle", ""));
+        rackList.add(0, new UniversalSpinner("Select Rack", ""));
+        binList.add(0, new UniversalSpinner("Select Bin", ""));
+        zoneList.add(0, new UniversalSpinner("", "Select Zone"));
+
+        initData(null);
 
         wareHouseID = body.getWareHouseID();
         if (body.getAssignedLocation().equals("")) {
@@ -395,7 +477,8 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         moveList.add(data);
         String json = gson.toJson(moveList);
         SharedPref.saveMoveData(json);
-        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
+        showSuccessDialog(getResources().getString(R.string.data_saved_offline));
+//        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
         onButtonCancelClick();
         clearAllSpinnerData();
         finish();

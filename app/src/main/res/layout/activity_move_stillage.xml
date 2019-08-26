@@ -8,126 +8,70 @@
     android:orientation="vertical"
     tools:context=".move.MoveStillageActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/linearLayoutScanDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <include
-                android:id="@+id/stillageDetail"
-                layout="@layout/stillage_layout" />
-
-
-        </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_marginBottom="45dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:orientation="horizontal"
-            android:paddingStart="5dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="8dp"
-            android:visibility="gone"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/linearLayoutOfflineData">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/stillage_number"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewNumberOffline"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:text="S00001"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutCurrentLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="@color/colorPrimaryDark"
-                android:padding="5dp"
-                android:text="Current Location "
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewCurrentLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Production Line"
-                android:textColor="@color/black"
-                android:textSize="10sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutMovingLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="@color/colorPrimaryDark"
-                android:padding="5dp"
-                android:text="Moving Location "
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewMovingLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Loading Area"
-                android:textColor="@color/black"
-                android:textSize="10sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutPutAwayLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
 
             <LinearLayout
-                android:id="@+id/linearLayoutAssignedLocation"
+                android:id="@+id/linearLayoutScanDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <include
+                    android:id="@+id/stillageDetail"
+                    layout="@layout/stillage_layout" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutOfflineData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/colorPrimaryDark"
+                android:orientation="horizontal"
+                android:paddingStart="5dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="8dp"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stillage_number"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewNumberOffline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:text="S00001"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCurrentLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -139,155 +83,263 @@
                     android:layout_marginBottom="5dp"
                     android:background="@color/colorPrimaryDark"
                     android:padding="5dp"
-                    android:text="@string/assigned_location"
+                    android:text="Current Location "
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textViewAssignedLocation"
+                    android:id="@+id/textViewCurrentLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Location: Site 1 WareHouse 2 Aisle 1 Rack 2 Bin 3"
+                    android:text="Production Line"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryDark"
-                android:padding="5dp"
-                android:text="@string/enter_putaway_location"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
             <LinearLayout
+                android:id="@+id/linearLayoutMovingLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="5dp"
+                    android:text="Moving Location "
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewMovingLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/scan_stillage"
+                    android:text="Loading Area"
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutPutAwayLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutAssignedLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:padding="5dp"
+                        android:text="@string/assigned_location"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textViewAssignedLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Location: Site 1 WareHouse 2 Aisle 1 Rack 2 Bin 3"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="5dp"
+                    android:text="@string/enter_putaway_location"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="29dp"
-                    android:background="@drawable/edittext_drawable"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/editTextDropLocation"
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:maxLines="1"
-                        android:padding="5dp"
-                        android:textSize="10sp" />
+                        android:text="@string/scan_stillage"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="12sp" />
 
-                    <ImageButton
-                        android:id="@+id/imageButtonClose"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/cross"
-                        android:foreground="?selectableItemBackground"
-                        android:onClick="imageButtonCloseClick" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="29dp"
+                        android:background="@drawable/edittext_drawable"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/editTextDropLocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:maxLines="1"
+                            android:padding="5dp"
+                            android:textSize="10sp" />
+
+                        <ImageButton
+                            android:id="@+id/imageButtonClose"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/cross"
+                            android:foreground="?selectableItemBackground"
+                            android:onClick="imageButtonCloseClick" />
+                    </LinearLayout>
+
+
                 </LinearLayout>
 
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/aisle"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
-
-                <Spinner
-                    android:id="@+id/spinnerAisle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="58dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/spinner_background"
-                    android:maxLines="1"
-                    android:textSize="10sp"
-                    android:visibility="visible" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/aisle"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                    <Spinner
+                        android:id="@+id/spinnerAisle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="58dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/spinner_background"
+                        android:maxLines="1"
+                        android:textSize="10sp"
+                        android:visibility="visible" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/rack"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
+                </LinearLayout>
 
-
-                <Spinner
-                    android:id="@+id/spinnerRack"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="58dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/spinner_background"
-                    android:maxLines="1"
-                    android:textSize="10sp" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bin"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rack"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
 
 
-                <Spinner
-                    android:id="@+id/spinnerBin"
+                    <Spinner
+                        android:id="@+id/spinnerRack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="58dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/spinner_background"
+                        android:maxLines="1"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="68dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/spinner_background"
-                    android:maxLines="1"
-                    android:textSize="10sp" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bin"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+
+                    <Spinner
+                        android:id="@+id/spinnerBin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="68dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/spinner_background"
+                        android:maxLines="1"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/or"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linearLayoutBin"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="OR"/>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutZone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/or"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="@string/zone"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+
+                    <Spinner
+                        android:id="@+id/spinnerZone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="2.9"
+                        android:background="@drawable/spinner_background"
+                        android:maxLines="1"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/linearLayoutEnterQtyButtons"

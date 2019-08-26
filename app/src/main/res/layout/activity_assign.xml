@@ -10,7 +10,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="45dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -214,12 +215,23 @@
 
                         </LinearLayout>
 
+                        <TextView
+                            android:id="@+id/or"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/linearLayoutBin"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:text="OR"/>
+
                         <LinearLayout
                             android:id="@+id/linearLayoutZone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/linearLayoutBin"
-                            android:layout_marginTop="10dp"
+                            android:layout_below="@+id/or"
                             android:orientation="horizontal">
 
                             <TextView
@@ -350,46 +362,46 @@
 
                 </FrameLayout>
 
-                <LinearLayout
-                    android:id="@+id/linearLayoutAssignLocationButtons"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <com.neprofinishedgood.custom_views.CustomButton
-                        android:id="@+id/buttonAssign"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="20dp"
-                        android:background="@drawable/button_ripple_effect"
-                        android:gravity="center"
-                        android:text="@string/assign"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                    <com.neprofinishedgood.custom_views.CustomButton
-                        android:id="@+id/buttonUnAssign"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="20dp"
-                        android:background="@drawable/button_ripple_effect"
-                        android:gravity="center"
-                        android:text="@string/unassign"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
             </RelativeLayout>
 
         </LinearLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAssignLocationButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.neprofinishedgood.custom_views.CustomButton
+            android:id="@+id/buttonAssign"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/button_ripple_effect"
+            android:gravity="center"
+            android:text="@string/assign"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <com.neprofinishedgood.custom_views.CustomButton
+            android:id="@+id/buttonUnAssign"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/button_ripple_effect"
+            android:gravity="center"
+            android:text="@string/unassign"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

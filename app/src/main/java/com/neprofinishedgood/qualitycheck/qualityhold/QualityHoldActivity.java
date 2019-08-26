@@ -17,6 +17,7 @@ import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.model.QualityInput;
 import com.neprofinishedgood.qualitycheck.qualityhold.presenter.IHoldPresenter;
 import com.neprofinishedgood.qualitycheck.qualityhold.presenter.IHoldView;
 import com.neprofinishedgood.utils.Constants;
@@ -173,15 +174,15 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     @OnClick(R.id.buttonHold)
     public void onButtonHoldClick() {
         showProgress(this);
-        MoveInput moveInput = new MoveInput(stillageLayout.textViewNumber.getText().toString().trim(), userId);
-        iHoldPresenter.callHoldUnholdService(moveInput);
+        QualityInput qualityInput = new QualityInput(stillageLayout.textViewNumber.getText().toString().trim(), userId, "1");
+        iHoldPresenter.callHoldUnholdService(qualityInput);
     }
 
     @OnClick(R.id.buttonUnhold)
     public void onButtonUnholdClick() {
         showProgress(this);
-        MoveInput moveInput = new MoveInput(stillageLayout.textViewNumber.getText().toString().trim(), userId);
-        iHoldPresenter.callHoldUnholdService(moveInput);
+        QualityInput qualityInput = new QualityInput(stillageLayout.textViewNumber.getText().toString().trim(), userId, "0");
+        iHoldPresenter.callHoldUnholdService(qualityInput);
     }
 
 }
