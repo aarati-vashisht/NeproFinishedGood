@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScanStillageResponse {
@@ -87,6 +88,9 @@ public class ScanStillageResponse {
     @SerializedName("StillageLocation")
     @Expose
     private String stillageLocation;
+    @SerializedName("ZoneList")
+    @Expose
+    private ArrayList<UniversalSpinner> zoneList = null;
 
 
 
@@ -323,5 +327,13 @@ public class ScanStillageResponse {
 
     public void setStillageLocation(String stillageLocation) {
         this.stillageLocation = stillageLocation;
+    }
+
+    public ArrayList<UniversalSpinner> getZoneList() {
+        return zoneList;
+    }
+
+    public void setZoneList(ArrayList<UniversalSpinner> zoneList) {
+        this.zoneList = zoneList;
     }
 }

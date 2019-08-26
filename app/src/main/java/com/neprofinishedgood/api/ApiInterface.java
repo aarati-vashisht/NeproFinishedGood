@@ -23,6 +23,7 @@ import com.neprofinishedgood.productionjournal.model.ProductionJournalPickinngDa
 import com.neprofinishedgood.productionjournal.model.ProductionJournalRouteDataInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
 import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
+import com.neprofinishedgood.qualitycheck.model.QualityInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedCompleteInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
@@ -72,7 +73,7 @@ public interface ApiInterface {
     Call<UniversalResponse> completeRejectedStillage(@Body RejectedCompleteInput rejectedCompleteInput);
 
     @POST("UpdatedHoldUnHoldStillage")
-    Call<UniversalResponse> updatedHoldUnHoldStillage(@Body MoveInput moveInput);
+    Call<UniversalResponse> updatedHoldUnHoldStillage(@Body QualityInput qualityInput);
 
     @POST("GetAssigningData")
     Call<ScanStillageResponse> getAssigningData(@Body MoveInput moveInput);

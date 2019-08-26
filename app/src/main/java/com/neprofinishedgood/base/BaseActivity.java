@@ -50,6 +50,8 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<UniversalSpinner> warehouseList = new ArrayList<>();
     public List<LocationList> locationList = new ArrayList<>();
 
+    public int scanStillageLength = 8;
+
     AlertDialog.Builder builder;
 
     boolean isOffline = false;

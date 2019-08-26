@@ -16,6 +16,12 @@ public class LocationData {
     @SerializedName("Bin")
     @Expose
     private String bin;
+    @SerializedName("Zone")
+    @Expose
+    private String zone;
+    @SerializedName("ZoneName")
+    @Expose
+    private String zoneName;
     @SerializedName("Status")
     @Expose
     private String status;
@@ -63,4 +69,19 @@ public class LocationData {
         this.message = message;
     }
 
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
+
+    public String getZoneName() {
+        return zoneName;
+    }
+
+    public void setZoneName(String zoneName) {
+        this.zoneName = zoneName;
+    }
 }
