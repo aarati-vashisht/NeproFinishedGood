@@ -57,7 +57,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutMove)
     public void onLinearLayouPutAwayClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsMove() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, MoveActivity.class));
         }
@@ -66,7 +67,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutLookUp)
     public void onlinearLayoutLookUpClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsLookUp() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, LookUpActivity.class));
         }
@@ -75,7 +77,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutQualityCheck)
     public void onlinearLayoutQualityCheckClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsQualityCheck() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, QualityCheckDashboardActivity.class));
         }
@@ -84,7 +87,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutAssign)
     public void onlinearLayoutAssignLocationAndFltClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsAssignedPlannedAndUnplanned() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, AssignActivity.class));
         }
@@ -93,7 +97,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutPickAndLoad)
     public void onlinearLayoutPutAndHoldClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsPickAndCount() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, PickAndLoadActivity.class));
         }
@@ -102,7 +107,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutTransferStillage)
     public void onlinearLayoutReturnStillageClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsReturnStillage() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, TransferStillageActivity.class));
         }
@@ -111,7 +117,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutReceiveStillage)
     public void onlinearLayoutReceiveReturnStillageClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsRecieveReturnStillage() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, ReceiveStillageActivity.class));
         }
@@ -120,7 +127,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutMergeStillage)
     public void onlinearLayoutMergeStillageClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsMergeStillage() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, MergeStillageActivity.class));
         }
@@ -129,7 +137,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutRAF)
     public void setlinearLayoutCountingClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsReportAsFinished() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, RAFActivity.class));
         }
@@ -138,7 +147,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutUpdateQuantity)
     public void setlinearLayoutUpdateQuantityClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsUpdateQty() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, UpdateQuantityActivity.class));
         }
@@ -147,7 +157,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutProductionJournal)
     public void setlinearLayoutProductionJournalClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsProductionJournal() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, ProductionJournal.class));
         }
@@ -156,7 +167,8 @@ public class DashBoardAcivity extends BaseActivity {
     @OnClick(R.id.linearLayoutWorkOrderStartEnd)
     public void setlinearLayoutWorkOrderStartEndClick() {
         if (loginResponse.getUserLoginResponse().get(0).getIsWorkOrderStartEnd() == 0) {
-            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
+            showSuccessDialog("You Don't Have right to Access It");
+//            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, WorkOrderStartEndActivity.class));
         }

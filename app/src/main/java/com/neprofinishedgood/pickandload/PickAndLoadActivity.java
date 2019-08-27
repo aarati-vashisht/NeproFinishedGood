@@ -54,7 +54,8 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
             showProgress(this);
             iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
         } else {
-            CustomToast.showToast(PickAndLoadActivity.this, getString(R.string.no_internet));
+            showSuccessDialog(getString(R.string.no_internet));
+//            CustomToast.showToast(PickAndLoadActivity.this, getString(R.string.no_internet));
         }
     }
 
@@ -103,7 +104,8 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     public static PickAndLoadActivity getInstance() {
@@ -129,13 +131,15 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
     @Override
     public void onCancelFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
     public void onCancelSuccess(UniversalResponse body) {
         hideProgress();
-        CustomToast.showToast(this, body.getMessage());
+        showSuccessDialog(body.getMessage());
+//        CustomToast.showToast(this, body.getMessage());
         showProgress(this);
         List<LoadingPlanList> loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
         loadingPlanDetailLists.clear();

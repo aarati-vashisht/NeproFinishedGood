@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
+import com.neprofinishedgood.assign.model.AisleInput;
 import com.neprofinishedgood.assign.model.AssignedUnAssignedInput;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.LocationData;
@@ -103,6 +104,64 @@ public class AssignPresenter implements IAssignInterFace {
             unplannedView.onAssigneUnassignedFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             unplannedView.onAssigneUnassignedSuccess(body);
+        }
+    }
+
+
+
+
+
+    @Override
+    public void callAisleSelectionService(AisleInput aisleInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<ScanStillageResponse> call = apiInterface.getRack(aisleInput);
+        call.enqueue(new Callback<ScanStillageResponse>() {
+            @Override
+            public void onResponse(Call<ScanStillageResponse> call, Response<ScanStillageResponse> response) {
+                getAisleSelectionResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ScanStillageResponse> call, Throwable t) {
+                getAisleSelectionResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getAisleSelectionResponse(ScanStillageResponse body) {
+            if (body == null) {
+            unplannedView.onAisleSelectionFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            unplannedView.onAisleSelectionSuccess(body);
+        }
+    }
+
+    @Override
+    public void callRackSelectionService(AisleInput aisleInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<ScanStillageResponse> call = apiInterface.getBin(aisleInput);
+        call.enqueue(new Callback<ScanStillageResponse>() {
+            @Override
+            public void onResponse(Call<ScanStillageResponse> call, Response<ScanStillageResponse> response) {
+                getRackSelectionResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ScanStillageResponse> call, Throwable t) {
+                getRackSelectionResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getRackSelectionResponse(ScanStillageResponse body) {
+        if (body == null) {
+            unplannedView.onRackSelectionFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            unplannedView.onRackSelectionSuccess(body);
         }
     }
 }

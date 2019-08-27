@@ -10,12 +10,21 @@ public class LocationData {
     @SerializedName("Aisle")
     @Expose
     private String aisle;
+    @SerializedName("AisleName")
+    @Expose
+    private String aisleName;
     @SerializedName("Rack")
     @Expose
     private String rack;
+    @SerializedName("RackName")
+    @Expose
+    private String rackName;
     @SerializedName("Bin")
     @Expose
     private String bin;
+    @SerializedName("BinName")
+    @Expose
+    private String binName;
     @SerializedName("Zone")
     @Expose
     private String zone;
@@ -83,5 +92,29 @@ public class LocationData {
 
     public void setZoneName(String zoneName) {
         this.zoneName = zoneName;
+    }
+
+    public String getAisleName() {
+        return aisleName;
+    }
+
+    public void setAisleName(String aisleName) {
+        this.aisleName = aisleName;
+    }
+
+    public String getRackName() {
+        return rackName;
+    }
+
+    public void setRackName(String rackName) {
+        this.rackName = rackName;
+    }
+
+    public String getBinName() {
+        return binName;
+    }
+
+    public void setBinName(String binName) {
+        this.binName = binName;
     }
 }

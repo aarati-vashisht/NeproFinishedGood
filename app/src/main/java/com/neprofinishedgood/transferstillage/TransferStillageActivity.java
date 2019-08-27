@@ -107,7 +107,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if (text.toString().trim().length() == 8) {
+            if (text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
                     showProgress(TransferStillageActivity.this);
                     iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
@@ -131,7 +131,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 //            if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
 //                showProgress(TransferStillageActivity.this);
 //                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-//                    iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                    iTransferInterface.callScanStillageService(new AisleInput(editTextScanStillage.getText().toString().trim(), userId));
 //
 //                }
 //            } else {
@@ -152,7 +152,8 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -160,14 +161,22 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
             hideProgress();
             if (body.getIsTransfered() == 1) {
-                CustomToast.showToast(this, getString(R.string.this_stillage_already_transfred));
+                showSuccessDialog(getString(R.string.this_stillage_already_transfred));
+//                CustomToast.showToast(this, getString(R.string.this_stillage_already_transfred));
                 editTextScanStillage.setText("");
             } else {
-                setData(body);
+                if (body.getStandardQty() > 0) {
+                    setData(body);
+                }
+                else{
+                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                    editTextScanStillage.setText("");
+                }
             }
         } else {
             hideProgress();
-            CustomToast.showToast(this, body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, body.getMessage());
             editTextScanStillage.setText("");
         }
     }
@@ -176,7 +185,8 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     public void onUpdateTransferFailure(String message) {
         hideProgress();
         if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
-            CustomToast.showToast(this, message);
+            showSuccessDialog(message);
+//            CustomToast.showToast(this, message);
             onButtonCancelClick();
         }
     }
@@ -185,7 +195,8 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     public void onUpdateTransferSuccess(UniversalResponse body) {
         hideProgress();
         if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
-            CustomToast.showToast(this, body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, body.getMessage());
             editTextScanStillage.setEnabled(true);
             editTextScanStillage.setText("");
             editTextScanStillage.requestFocus();
@@ -276,7 +287,8 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         transferList.add(data);
         String json = gson.toJson(transferList);
         SharedPref.saveTransferData(json);
-        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
+        showSuccessDialog(getResources().getString(R.string.data_saved_offline));
+//        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
         disableVisibility();
     }
 

@@ -1,5 +1,6 @@
 package com.neprofinishedgood.assign.presenter;
 
+import com.neprofinishedgood.assign.model.AisleInput;
 import com.neprofinishedgood.assign.model.AssignedUnAssignedInput;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.LocationData;
@@ -19,4 +20,10 @@ public interface IAssignInterFace {
     void callAssigneUnassignedServcie(AssignedUnAssignedInput assignedUnAssignedInput);
 
     void getAssigneUnassigned(UniversalResponse body);
+
+    void callAisleSelectionService(AisleInput aisleInput);
+    void getAisleSelectionResponse(ScanStillageResponse stillageResponse);
+
+    void callRackSelectionService(AisleInput aisleInput);
+    void getRackSelectionResponse(ScanStillageResponse stillageResponse);
 }

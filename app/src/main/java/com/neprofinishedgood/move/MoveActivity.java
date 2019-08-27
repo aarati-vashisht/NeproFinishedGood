@@ -46,7 +46,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     RecyclerView recyclerViewStillage;
 
 
-    private IPlannedUnplannedPresenter iPlannedUnplannedPresenter;
+    public IPlannedUnplannedPresenter iPlannedUnplannedPresenter;
     long delay = 1500;
     long scanStillageLastTexxt = 0;
     private MoveAdapter adapter;
@@ -77,7 +77,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if(text.toString().trim().length() == scanStillageLength) {
+            if (text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(MoveActivity.this)) {
                     showProgress(MoveActivity.this);
                     String stillageTxt = editTextScanStillage.getText().toString().trim();
@@ -104,7 +104,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
 //                if (NetworkChangeReceiver.isInternetConnected(MoveActivity.this)) {
 //                    showProgress(MoveActivity.this);
 //                    String stillageTxt = editTextScanStillage.getText().toString().trim();
-//                    iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(stillageTxt, userId));
+//                    iPlannedUnplannedPresenter.callScanStillageService(new AisleInput(stillageTxt, userId));
 //                } else {
 //                    offlineProcess();
 //                }
@@ -118,11 +118,16 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            Gson gson = new Gson();
-            String putExtraData = gson.toJson(body);
-            startActivity(new Intent(this, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
-            editTextScanStillage.setText("");
-            overridePendingTransition(0, 0);
+            if (body.getStandardQty() > 0) {
+                Gson gson = new Gson();
+                String putExtraData = gson.toJson(body);
+                startActivity(new Intent(this, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+                editTextScanStillage.setText("");
+                overridePendingTransition(0, 0);
+            }else{
+                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                editTextScanStillage.setText("");
+            }
         } else {
             editTextScanStillage.setText("");
             showSuccessDialog(body.getMessage());
@@ -143,14 +148,14 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     @Override
     public void onAssignedFailure(String message) {
         hideProgress();
-
+        showSuccessDialog(message);
     }
 
     @Override
     public void onAssignedSuccess(AssignedStillages body) {
         hideProgress();
         if (body.getStatus().equals(getString(R.string.success))) {
-            showSuccessDialog(body.getMessage());
+//            showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(this, body.getMessage());
             if (body.getStillageList().size() > 0) {
                 setAdapter(body.getStillageList());

@@ -53,12 +53,13 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if (text.toString().trim().length() == 8) {
+            if (text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(LookUpActivity.this)) {
                     showProgress(LookUpActivity.this);
                     iLookUpInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                 } else {
-                    CustomToast.showToast(LookUpActivity.this, getString(R.string.no_internet));
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    CustomToast.showToast(LookUpActivity.this, getString(R.string.no_internet));
                 }
             }
         }
@@ -78,7 +79,7 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
 //            if (NetworkChangeReceiver.isInternetConnected(LookUpActivity.this)) {
 //                showProgress(LookUpActivity.this);
 //                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-//                    iLookUpInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                    iLookUpInterface.callScanStillageService(new AisleInput(editTextScanStillage.getText().toString().trim(), userId));
 //                }
 //            } else {
 //                CustomToast.showToast(LookUpActivity.this, getString(R.string.no_internet));
@@ -100,17 +101,26 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
     public void onSuccess(ScanStillageResponse body) {
         hideProgress();
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-            setData(body);
-            editTextScanStillage.setEnabled(false);
+            if (body.getStandardQty() > 0) {
+                setData(body);
+                editTextScanStillage.setEnabled(false);
+            }
+            else{
+                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                editTextScanStillage.setText("");
+            }
+
         } else {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanStillage.setText("");
         }
     }

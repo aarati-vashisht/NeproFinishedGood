@@ -51,8 +51,10 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<LocationList> locationList = new ArrayList<>();
 
     public int scanStillageLength = 8;
+    public int scanWorkOrderLength = 9;
+    public int scanLocationLength = 11;
 
-    AlertDialog.Builder builder;
+    public AlertDialog.Builder builder;
 
     boolean isOffline = false;
 
@@ -174,7 +176,8 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                 return true;
             case R.id.logout_menu:
                 SharedPref.clearPrefs();
-                CustomToast.showToast(this, getResources().getString(R.string.logout_successfully));
+                showSuccessDialog(getResources().getString(R.string.logout_successfully));
+//                CustomToast.showToast(this, getResources().getString(R.string.logout_successfully));
                 startActivity(new Intent(this, LoginActivity.class));
                 finishAffinity();
                 return true;

@@ -114,7 +114,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if (text.toString().trim().length() == 8) {
+            if (text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(RejectQuantityActivity.this)) {
                     showProgress(RejectQuantityActivity.this);
                     if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
@@ -141,7 +141,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
 //            if (NetworkChangeReceiver.isInternetConnected(RejectQuantityActivity.this)) {
 //                showProgress(RejectQuantityActivity.this);
 //                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-//                    iqaInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                    iqaInterface.callScanStillageService(new AisleInput(editTextScanStillage.getText().toString().trim(), userId));
 //                }
 //            } else {
 //                setDataOffline();
@@ -153,7 +153,8 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -161,9 +162,15 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            setData(body);
+            if (body.getStandardQty() > 0) {
+                setData(body);
+            }else{
+                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                editTextScanStillage.setText("");
+            }
         } else {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanStillage.setText("");
         }
     }
@@ -172,7 +179,8 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     public void onUpdateRejectedFailure(String message) {
         hideProgress();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
-            CustomToast.showToast(this, message);
+            showSuccessDialog(message);
+//            CustomToast.showToast(this, message);
         }
     }
 
@@ -182,7 +190,8 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         // initData();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (body.getStatus().equals(getResources().getString(R.string.success))) {
-                CustomToast.showToast(getApplicationContext(), getString(R.string.items_rejected_successfully));
+                showSuccessDialog(getString(R.string.items_rejected_successfully));
+//                CustomToast.showToast(getApplicationContext(), getString(R.string.items_rejected_successfully));
                 linearLayoutScanDetail.setVisibility(View.GONE);
                 editTextScanStillage.setEnabled(true);
                 editTextScanStillage.setText("");
@@ -192,7 +201,8 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
                     finish();
                 }
             } else {
-                CustomToast.showToast(getApplicationContext(), body.getMessage());
+                showSuccessDialog(body.getMessage());
+//                CustomToast.showToast(getApplicationContext(), body.getMessage());
             }
         }
         spinnerRejectReason.setSelection(0);
@@ -214,18 +224,18 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewNumber.setText(body.getStickerID());
         editTextRejectQuantity.setText(body.getStandardQty() + "");
-        editTextRejectQuantity.setSelection((body.getStandardQty()+"").length());
+        editTextRejectQuantity.setSelection((body.getStandardQty() + "").length());
         editTextRejectQuantity.requestFocus();
         setSpinnerShiftData();
 
     }
 
     @OnTextChanged(value = R.id.editTextRejectQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    public void onEditTextRejectQuantityChanged(Editable text){
-        if(!text.toString().equals("")){
+    public void onEditTextRejectQuantityChanged(Editable text) {
+        if (!text.toString().equals("")) {
             float rejectQty = round(Float.parseFloat(text.toString().trim()));
-            float stillageQty = round(Float.parseFloat((this.body.getStandardQty()+"").trim()));
-            if(rejectQty>stillageQty){
+            float stillageQty = round(Float.parseFloat((this.body.getStandardQty() + "").trim()));
+            if (rejectQty > stillageQty) {
                 editTextRejectQuantity.setText("");
                 editTextRejectQuantity.setError("Invalid reject quantity!");
                 editTextRejectQuantity.requestFocus();
@@ -379,7 +389,8 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         rejectList.add(data);
         String json = gson.toJson(rejectList);
         SharedPref.saveRejectData(json);
-        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
+        showSuccessDialog(getResources().getString(R.string.data_saved_offline));
+//        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
         onButtonCancelClick();
         disableVisibility();
     }

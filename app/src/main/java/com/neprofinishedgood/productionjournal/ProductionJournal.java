@@ -116,7 +116,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public void onEditTextScanWorkOrderChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanWorkOrderhandler.postDelayed(stillageRunnable, delay);
-            if (text.toString().trim().length() == 9) {
+            if (text.toString().trim().length() == scanWorkOrderLength) {
                 if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.this)) {
                     showProgress(ProductionJournal.this);
                     if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {

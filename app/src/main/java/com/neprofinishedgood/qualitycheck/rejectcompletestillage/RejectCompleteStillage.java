@@ -110,7 +110,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if (text.toString().trim().length() == 8) {
+            if (text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(RejectCompleteStillage.this)) {
                     showProgress(RejectCompleteStillage.this);
                     if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
@@ -136,7 +136,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
 //            if (NetworkChangeReceiver.isInternetConnected(RejectCompleteStillage.this)) {
 //                showProgress(RejectCompleteStillage.this);
 //                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-//                    iQACompletePresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                    iQACompletePresenter.callScanStillageService(new AisleInput(editTextScanStillage.getText().toString().trim(), userId));
 //                }
 //            } else {
 //                setDataOffline();
@@ -148,7 +148,8 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -156,9 +157,15 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            setData(body);
+            if (body.getStandardQty() > 0) {
+                setData(body);
+            } else {
+                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                editTextScanStillage.setText("");
+            }
         } else {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanStillage.setText("");
         }
     }
@@ -167,7 +174,8 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
     public void onUpdateRejectedFailure(String message) {
         hideProgress();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
-            CustomToast.showToast(this, message);
+            showSuccessDialog(message);
+//            CustomToast.showToast(this, message);
         }
     }
 
@@ -177,7 +185,8 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
         // initData();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (body.getStatus().equals(getResources().getString(R.string.success))) {
-                CustomToast.showToast(getApplicationContext(), getString(R.string.items_rejected_successfully));
+                showSuccessDialog(body.getMessage());
+//                CustomToast.showToast(getApplicationContext(), getString(R.string.items_rejected_successfully));
                 linearLayoutScanDetail.setVisibility(View.GONE);
                 editTextScanStillage.setEnabled(true);
                 editTextScanStillage.setText("");
@@ -187,7 +196,8 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
                     finish();
                 }
             } else {
-                CustomToast.showToast(getApplicationContext(), body.getMessage());
+                showSuccessDialog(body.getMessage());
+//                CustomToast.showToast(getApplicationContext(), body.getMessage());
             }
         }
         spinnerRejectReason.setSelection(0);
@@ -326,7 +336,8 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
         rejectList.add(data);
         String json = gson.toJson(rejectList);
         SharedPref.saveCompleteRejectData(json);
-        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
+        showSuccessDialog(getResources().getString(R.string.data_saved_offline));
+//        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
         onButtonCancelClick();
         editTextScanStillage.setEnabled(true);
         disableVisibility();
