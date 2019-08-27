@@ -61,7 +61,8 @@ public class LoginActivity extends BaseActivity implements ILoginView {
 
     private boolean isValidate() {
         if (pinViewLogin.getText().toString().equals("")) {
-            CustomToast.showToast(this, getString(R.string.plz_enter_pin));
+            showSuccessDialog(getString(R.string.plz_enter_pin));
+//            CustomToast.showToast(this, getString(R.string.plz_enter_pin));
             return false;
         }
         return true;
@@ -72,14 +73,16 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     public void onSuccess(LoginResponse body) {
         hideProgress();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            CustomToast.showToast(this, getString(R.string.login_successfully));
+            showSuccessDialog(getString(R.string.login_successfully));
+//            CustomToast.showToast(this, getString(R.string.login_successfully));
             Gson gson = new Gson();
             String loginData = gson.toJson(body);
             SharedPref.saveLoginUSer(loginData);
             startActivity(new Intent(this, DashBoardAcivity.class));
             finishAffinity();
         } else {
-            CustomToast.showToast(this, getString(R.string.invalid_pin));
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, getString(R.string.invalid_pin));
             pinViewLogin.requestFocus(3);
         }
 
@@ -88,6 +91,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 }

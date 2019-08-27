@@ -65,12 +65,13 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if (text.toString().trim().length() == 8) {
+            if (text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(ReceiveStillageActivity.this)) {
                     showProgress(ReceiveStillageActivity.this);
                     iRecieveTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                 } else {
-                    CustomToast.showToast(ReceiveStillageActivity.this, getString(R.string.no_internet));
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    CustomToast.showToast(ReceiveStillageActivity.this, getString(R.string.no_internet));
                     editTextScanStillage.setText("");
                 }
             }
@@ -91,7 +92,7 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
 //            if (NetworkChangeReceiver.isInternetConnected(ReceiveStillageActivity.this)) {
 //                showProgress(ReceiveStillageActivity.this);
 //                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-//                    iRecieveTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                    iRecieveTransferInterface.callScanStillageService(new AisleInput(editTextScanStillage.getText().toString().trim(), userId));
 //
 //                }
 //            } else {
@@ -120,7 +121,8 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -128,13 +130,21 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
             hideProgress();
             if (body.getIsRecieved() == 1) {
-                CustomToast.showToast(this, getString(R.string.this_stillage_already_recieved));
+                showSuccessDialog(getString(R.string.this_stillage_already_recieved));
+//                CustomToast.showToast(this, getString(R.string.this_stillage_already_recieved));
             } else {
-                setData(body);
+                if (body.getStandardQty() > 0) {
+                    setData(body);
+                }
+                else{
+                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                    editTextScanStillage.setText("");
+                }
             }
         } else {
             hideProgress();
-            CustomToast.showToast(this, body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, body.getMessage());
             editTextScanStillage.setText("");
         }
     }
@@ -151,14 +161,16 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
     @Override
     public void onUpdateRecieveTransferFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
 
     }
 
     @Override
     public void onUpdateRecieveTransferSuccess(UniversalResponse body) {
         hideProgress();
-        CustomToast.showToast(this, body.getMessage());
+        showSuccessDialog(body.getMessage());
+//        CustomToast.showToast(this, body.getMessage());
         relativeLayoutScanDetail.setVisibility(View.GONE);
     }
 

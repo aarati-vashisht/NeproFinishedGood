@@ -17,4 +17,10 @@ public interface IAssignView {
     void onAssigneUnassignedFailure(String message);
 
     void onAssigneUnassignedSuccess(UniversalResponse body);
+
+    void onAisleSelectionSuccess(ScanStillageResponse body);
+    void onAisleSelectionFailure(String message);
+
+    void onRackSelectionSuccess(ScanStillageResponse body);
+    void onRackSelectionFailure(String message);
 }

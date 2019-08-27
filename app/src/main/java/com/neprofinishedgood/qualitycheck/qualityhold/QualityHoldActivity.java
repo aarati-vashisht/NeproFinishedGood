@@ -79,7 +79,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if (text.toString().trim().length() == 8) {
+            if (text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(QualityHoldActivity.this)) {
                     showProgress(QualityHoldActivity.this);
                     if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
@@ -87,7 +87,8 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
                     }
                 } else {
                     editTextScanStillage.setText("");
-                    CustomToast.showToast(QualityHoldActivity.this, getString(R.string.no_internet));
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    CustomToast.showToast(QualityHoldActivity.this, getString(R.string.no_internet));
                 }
             }
         }
@@ -108,7 +109,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
 //            if (NetworkChangeReceiver.isInternetConnected(QualityHoldActivity.this)) {
 //                showProgress(QualityHoldActivity.this);
 //                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-//                    iHoldPresenter.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                    iHoldPresenter.callScanStillageService(new AisleInput(editTextScanStillage.getText().toString().trim(), userId));
 //                }
 //            } else {
 //                editTextScanStillage.setText("");
@@ -121,7 +122,8 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, getString(R.string.no_data_found));
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, getString(R.string.no_data_found));
     }
 
     @Override
@@ -129,9 +131,16 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            setData(body);
+            if (body.getStandardQty() > 0) {
+                setData(body);
+            }
+            else{
+                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                editTextScanStillage.setText("");
+            }
         } else {
-            CustomToast.showToast(this, getString(R.string.no_data_found));
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, getString(R.string.no_data_found));
             editTextScanStillage.setText("");
         }
     }
@@ -139,7 +148,8 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     @Override
     public void onHoldUnholdFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -148,7 +158,8 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
         linearLayoutScanDetail.setVisibility(View.GONE);
         editTextScanStillage.setEnabled(true);
         editTextScanStillage.setText("");
-        CustomToast.showToast(this, body.getMessage());
+        showSuccessDialog(body.getMessage());
+//        CustomToast.showToast(this, body.getMessage());
     }
 
     void setData(ScanStillageResponse body) {

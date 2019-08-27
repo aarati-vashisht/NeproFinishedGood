@@ -102,7 +102,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     public void oneditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler2.postDelayed(stillageRunnable2, delay);
-            if (text.toString().trim().length() == 8) {
+            if (text.toString().trim().length() == scanStillageLength) {
                 scanStillageNo = text.toString();
                 loadingPlanStillagesAdapter.getFilter().filter(scanStillageNo);
                 editTextScanStillage.setText("");
@@ -165,7 +165,8 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
                 } else {
                     editTextScanLoadingPlan.setText("");
                     editTextScanLoadingPlan.requestFocus();
-                    CustomToast.showToast(PickAndLoadStillageActivity.this, getString(R.string.loading_plan_not_matched_with_tar));
+                    showSuccessDialog(getString(R.string.loading_plan_not_matched_with_tar));
+//                    CustomToast.showToast(PickAndLoadStillageActivity.this, getString(R.string.loading_plan_not_matched_with_tar));
                 }
 
 
@@ -177,7 +178,8 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -186,7 +188,8 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         hideProgress();
         if (body.getDriverName() == null || body.getGateNo() == null || body.getLoadingPlanList1() == null ||
                 body.getLoadingPlanNo() == null || body.getTruckID() == null) {
-            CustomToast.showToast(PickAndLoadStillageActivity.this, getString(R.string.no_data_found));
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(PickAndLoadStillageActivity.this, getString(R.string.no_data_found));
             textViewGateNumber.setText("");
 //            textViewLoadingPlan.setText("");
             textViewTruckDriver.setText("");
@@ -207,7 +210,8 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     @Override
     public void onUpdateLoadingPlanDetailsFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -229,12 +233,14 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
             } catch (ConcurrentModificationException e) {
                 e.printStackTrace();
             }
-            CustomToast.showToast(this, body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, body.getMessage());
             showProgress(this);
             //  PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
             iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId));
         } else {
-            CustomToast.showToast(this, body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, body.getMessage());
         }
 
     }
@@ -317,14 +323,16 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     @Override
     public void onEndPickFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
     public void onEndPickSuccess(UniversalResponse body) {
         hideProgress();
         if (body.getStatus().equals(getString(R.string.success))) {
-            CustomToast.showToast(this, body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, body.getMessage());
             loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
             for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
                 if (loadingPlanList.getLoadingNumber().equals(loadingPlan)) {
@@ -340,7 +348,8 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
             PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
             finish();
         } else {
-            CustomToast.showToast(this, body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, body.getMessage());
         }
     }
 }

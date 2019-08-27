@@ -107,6 +107,23 @@ public class ScanStillageResponse {
     @SerializedName("AssignedBinId")
     @Expose
     private String assignedBinId;
+    @SerializedName("AssignedZoneId")
+    @Expose
+    private String assignedZoneId;
+
+
+    @SerializedName("AssignedAisleName")
+    @Expose
+    private String assignedAisleName;
+    @SerializedName("AssignedRackName")
+    @Expose
+    private String assignedRackName;
+    @SerializedName("AssignedBinName")
+    @Expose
+    private String assignedBinName;
+    @SerializedName("AssignedZoneName")
+    @Expose
+    private String assignedZoneName;
 
 
 
@@ -335,5 +352,45 @@ public class ScanStillageResponse {
 
     public void setZoneList(ArrayList<UniversalSpinner> zoneList) {
         this.zoneList = zoneList;
+    }
+
+    public String getAssignedAisleName() {
+        return assignedAisleName;
+    }
+
+    public void setAssignedAisleName(String assignedAisleName) {
+        this.assignedAisleName = assignedAisleName;
+    }
+
+    public String getAssignedRackName() {
+        return assignedRackName;
+    }
+
+    public void setAssignedRackName(String assignedRackName) {
+        this.assignedRackName = assignedRackName;
+    }
+
+    public String getAssignedBinName() {
+        return assignedBinName;
+    }
+
+    public void setAssignedBinName(String assignedBinName) {
+        this.assignedBinName = assignedBinName;
+    }
+
+    public String getAssignedZoneId() {
+        return assignedZoneId;
+    }
+
+    public void setAssignedZoneId(String assignedZoneId) {
+        this.assignedZoneId = assignedZoneId;
+    }
+
+    public String getAssignedZoneName() {
+        return assignedZoneName;
+    }
+
+    public void setAssignedZoneName(String assignedZoneName) {
+        this.assignedZoneName = assignedZoneName;
     }
 }

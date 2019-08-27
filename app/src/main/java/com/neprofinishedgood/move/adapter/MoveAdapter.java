@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.move.MoveActivity;
 import com.neprofinishedgood.move.MoveStillageActivity;
+import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.utils.Constants;
 
@@ -90,9 +92,11 @@ public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.ViewHolder> {
         @Override
         public void onClick(View v) {
             if (v == mView) {
-                Gson gson = new Gson();
-                String putExtraData = gson.toJson(stillageDatumListFiltered.get(getAdapterPosition()));
-                context.startActivity(new Intent(context, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+                MoveActivity.getInstance().showProgress(MoveActivity.getInstance());
+                MoveActivity.getInstance().iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(stillageDatumListFiltered.get(getAdapterPosition()).getStickerID(),  MoveActivity.getInstance().userId));
+//                Gson gson = new Gson();
+//                String putExtraData = gson.toJson(stillageDatumListFiltered.get(getAdapterPosition()));
+//                context.startActivity(new Intent(context, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
             }
 
         }

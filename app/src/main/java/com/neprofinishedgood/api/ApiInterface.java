@@ -1,5 +1,6 @@
 package com.neprofinishedgood.api;
 
+import com.neprofinishedgood.assign.model.AisleInput;
 import com.neprofinishedgood.assign.model.AssignedUnAssignedInput;
 import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalResponse;
@@ -148,5 +149,12 @@ public interface ApiInterface {
 
     @POST("SubmitRouteJournalData")
     Call<UniversalResponse> submitRouteJournalData(@Body ProductionJournalRouteDataInput productionJournalRouteDataInput);
+
+
+    @POST("GetRack")
+    Call<ScanStillageResponse> getRack(@Body AisleInput aisleInput);
+
+    @POST("GetBin")
+    Call<ScanStillageResponse> getBin(@Body AisleInput aisleInput);
 
 }

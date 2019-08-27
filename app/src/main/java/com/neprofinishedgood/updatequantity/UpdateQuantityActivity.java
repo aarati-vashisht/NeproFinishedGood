@@ -104,7 +104,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if (text.toString().trim().length() == 8) {
+            if (text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
                     showProgress(UpdateQuantityActivity.this);
                     iUpdateQtyInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
@@ -128,7 +128,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 //            if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
 //                showProgress(UpdateQuantityActivity.this);
 //                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-//                    iUpdateQtyInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                    iUpdateQtyInterface.callScanStillageService(new AisleInput(editTextScanStillage.getText().toString().trim(), userId));
 //                }
 //            } else {
 //                setDataOffline();
@@ -222,17 +222,27 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
     public void onSuccess(ScanStillageResponse body) {
         hideProgress();
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-            setData(body);
-            editTextScanStillage.setEnabled(false);
+
+            if (body.getStandardQty() > 0) {
+                setData(body);
+                editTextScanStillage.setEnabled(false);
+            }
+            else{
+                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                editTextScanStillage.setText("");
+            }
+
         } else {
-            CustomToast.showToast(this, body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(this, body.getMessage());
             editTextScanStillage.setText("");
         }
     }
@@ -256,7 +266,8 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     public void onUpdateQtyFailure(String message) {
         hideProgress();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
-            CustomToast.showToast(this, message);
+            showSuccessDialog(message);
+            //            CustomToast.showToast(this, message);
             onButtonCancelClick();
         }
     }
@@ -268,10 +279,12 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (body.getStatus().equals(getResources().getString(R.string.success))) {
-                CustomToast.showToast(this, body.getMessage());
+                showSuccessDialog(body.getMessage());
+//                CustomToast.showToast(this, body.getMessage());
                 onButtonCancelClick();
             } else {
-                CustomToast.showToast(getApplicationContext(), body.getMessage());
+                showSuccessDialog(body.getMessage());
+//                CustomToast.showToast(getApplicationContext(), body.getMessage());
             }
         }
         spinnerReason.setSelection(0);
@@ -314,7 +327,8 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         updateList.add(data);
         String json = gson.toJson(updateList);
         SharedPref.saveUpdateData(json);
-        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
+        showSuccessDialog(getResources().getString(R.string.data_saved_offline));
+//        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
         onButtonCancelClick();
         disableVisibility();
     }

@@ -1,5 +1,7 @@
 package com.neprofinishedgood.move;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -18,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.assign.AssignActivity;
 import com.neprofinishedgood.assign.adapter.SpinnerZoneAdapter;
+import com.neprofinishedgood.assign.model.AisleInput;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.base.model.UniversalSpinner;
@@ -85,6 +88,49 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 
     @BindView(R.id.spinnerZone)
     Spinner spinnerZone;
+
+    @BindView(R.id.linearLayoutAisle)
+    LinearLayout linearLayoutAisle;
+
+    @BindView(R.id.linearLayoutRack)
+    LinearLayout linearLayoutRack;
+
+    @BindView(R.id.linearLayoutBin)
+    LinearLayout linearLayoutBin;
+
+    @BindView(R.id.linearLayoutZone)
+    LinearLayout linearLayoutZone;
+
+    @BindView(R.id.linearLayoutAisleName)
+    LinearLayout linearLayoutAisleName;
+
+    @BindView(R.id.linearLayoutRackName)
+    LinearLayout linearLayoutRackName;
+
+    @BindView(R.id.linearLayoutBinName)
+    LinearLayout linearLayoutBinName;
+
+    @BindView(R.id.linearLayoutZoneName)
+    LinearLayout linearLayoutZoneName;
+
+    @BindView(R.id.textViewOr)
+    TextView textViewOr;
+
+    @BindView(R.id.textViewAisle)
+    TextView textViewAisle;
+
+    @BindView(R.id.textViewRack)
+    TextView textViewRack;
+
+    @BindView(R.id.textViewBin)
+    TextView textViewBin;
+
+    @BindView(R.id.textViewZone)
+    TextView textViewZone;
+
+    @BindView(R.id.linearLayoutLocationScanDetail)
+    LinearLayout linearLayoutLocationScanDetail;
+
 
     StillageLayout stillageLayout;
 
@@ -159,6 +205,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
                 } else {
                     updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), aisle, rack, bin, userId, loadingAreaId, wareHouseID, zone);
                 }
+                showProgress(this);
                 movePresenter.callMoveServcie(updateMoveLocationInput);
             }
         } else {
@@ -180,31 +227,38 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     @OnTextChanged(value = R.id.editTextDropLocation, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void oneditTextDropLocationChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            dropLocationhandler.postDelayed(dropLocationRunnable, delay);
-        }
-
-    }
-
-    @OnTextChanged(value = R.id.editTextDropLocation, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void onEditTextDropLocationTEXTCHANGED(Editable text) {
-        dropLocationhandler.removeCallbacks(dropLocationRunnable);
-
-    }
-
-    //for call service on text change
-    Handler dropLocationhandler = new Handler();
-    private Runnable dropLocationRunnable = new Runnable() {
-        public void run() {
-            if (NetworkChangeReceiver.isInternetConnected(MoveStillageActivity.this)) {
-                showProgress(MoveStillageActivity.this);
-                if (System.currentTimeMillis() > (dropLocationLastText + delay - 500)) {
+            if(text.toString().trim().length() == scanLocationLength) {
+//            dropLocationhandler.postDelayed(dropLocationRunnable, delay);
+                if (NetworkChangeReceiver.isInternetConnected(MoveStillageActivity.this)) {
+                    showProgress(MoveStillageActivity.this);
                     movePresenter.callLocationService(new LocationInput(editTextDropLocation.getText().toString(), userId, wareHouseID));
+                } else {
+                    setLocationOffline();
                 }
-            } else {
-                setLocationOffline();
             }
         }
-    };
+    }
+
+//    @OnTextChanged(value = R.id.editTextDropLocation, callback = OnTextChanged.Callback.TEXT_CHANGED)
+//    public void onEditTextDropLocationTEXTCHANGED(Editable text) {
+//        dropLocationhandler.removeCallbacks(dropLocationRunnable);
+//
+//    }
+//
+//    //for call service on text change
+//    Handler dropLocationhandler = new Handler();
+//    private Runnable dropLocationRunnable = new Runnable() {
+//        public void run() {
+//            if (NetworkChangeReceiver.isInternetConnected(MoveStillageActivity.this)) {
+//                showProgress(MoveStillageActivity.this);
+//                if (System.currentTimeMillis() > (dropLocationLastText + delay - 500)) {
+//                    movePresenter.callLocationService(new LocationInput(editTextDropLocation.getText().toString(), userId, wareHouseID));
+//                }
+//            } else {
+//                setLocationOffline();
+//            }
+//        }
+//    };
 
     void setLocationOffline() {
         String locationId = editTextDropLocation.getText().toString();
@@ -231,6 +285,8 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         if (position > 0) {
             zone = "";
             spinnerZone.setSelection(0);
+            showProgress(this);
+            movePresenter.callAisleSelectionService(new AisleInput(aisle, wareHouseID, ""));
         }
     }
 
@@ -240,6 +296,8 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         if (position > 0) {
             zone = "";
             spinnerZone.setSelection(0);
+            showProgress(this);
+            movePresenter.callRackSelectionService(new AisleInput(aisle, wareHouseID, rack));
         }
     }
 
@@ -320,6 +378,30 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         }
     }
 
+    @OnClick(R.id.imageViewLoacationCancel)
+    void onImageViewLoacationCancelClick() {
+        linearLayoutAisle.setVisibility(View.VISIBLE);
+        linearLayoutRack.setVisibility(View.VISIBLE);
+        linearLayoutBin.setVisibility(View.VISIBLE);
+        linearLayoutZone.setVisibility(View.VISIBLE);
+        textViewOr.setVisibility(View.VISIBLE);
+        linearLayoutLocationScanDetail.setVisibility(View.GONE);
+
+        textViewAisle.setText("");
+        textViewRack.setText("");
+        textViewBin.setText("");
+        textViewZone.setText("");
+
+        aisle = "";
+        rack = "";
+        bin = "";
+        zone = "";
+        spinnerAisle.setSelection(0);
+
+        editTextDropLocation.setEnabled(true);
+        editTextDropLocation.setText("");
+    }
+
 
     @Override
     public void onUpdateMoveSuccess(UniversalResponse response) {
@@ -327,14 +409,28 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         if (response.getStatus().equals(getString(R.string.success))) {
             showSuccessDialog(response.getMessage());
 //            CustomToast.showToast(this, response.getMessage());
-            onButtonCancelClick();
-            clearAllSpinnerData();
-            finish();
-            MoveActivity.getInstance().getAllAssignedData();
+
         } else {
             showSuccessDialog(response.getMessage());
 //            CustomToast.showToast(this, response.getMessage());
         }
+    }
+
+    public void showSuccessDialog(String message) {
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        onButtonCancelClick();
+                        clearAllSpinnerData();
+                        finish();
+                        MoveActivity.getInstance().getAllAssignedData();
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
@@ -348,11 +444,53 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     public void onLocationSuccess(LocationData response) {
         hideProgress();
         if (response.getStatus().equals(getString(R.string.success))) {
-            initData(response);
+            linearLayoutAisle.setVisibility(View.GONE);
+            linearLayoutRack.setVisibility(View.GONE);
+            linearLayoutBin.setVisibility(View.GONE);
+            linearLayoutZone.setVisibility(View.GONE);
+            textViewOr.setVisibility(View.GONE);
+            linearLayoutLocationScanDetail.setVisibility(View.VISIBLE);
+
+            if (response.getZoneName().equals("")) {
+                textViewAisle.setText(response.getAisleName());
+                textViewRack.setText(response.getRackName());
+                textViewBin.setText(response.getBinName());
+                linearLayoutZoneName.setVisibility(View.GONE);
+                textViewZone.setText("");
+                aisle = response.getAisle();
+                rack = response.getRack();
+                bin = response.getBin();
+
+                linearLayoutAisleName.setVisibility(View.VISIBLE);
+                linearLayoutRackName.setVisibility(View.VISIBLE);
+                linearLayoutBinName.setVisibility(View.VISIBLE);
+            } else {
+                zone = response.getZone();
+                textViewZone.setText(response.getZoneName());
+                linearLayoutZoneName.setVisibility(View.VISIBLE);
+                linearLayoutAisleName.setVisibility(View.GONE);
+                linearLayoutRackName.setVisibility(View.GONE);
+                linearLayoutBinName.setVisibility(View.GONE);
+                textViewAisle.setText("");
+                textViewRack.setText("");
+                textViewBin.setText("");
+            }
+
+            rackList = new ArrayList<>();
+            binList = new ArrayList<>();
+            setSpinnerRackData("0");
+            setSpinnerBinData("0");
+            spinnerZone.setSelection(0);
+            spinnerAisle.setSelection(0);
+            editTextDropLocation.setEnabled(false);
+
+//            initData(response);
         } else {
+            editTextDropLocation.setEnabled(true);
             editTextDropLocation.setText("");
             showSuccessDialog(response.getMessage());
 //            CustomToast.showToast(this, response.getMessage());
+            editTextDropLocation.setText("");
         }
     }
 
@@ -365,6 +503,48 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 
     }
 
+    @Override
+    public void onAisleSelectionSuccess(ScanStillageResponse body) {
+        hideProgress();
+        if (body.getStatus().equals(getString(R.string.success))) {
+            rackList = body.getRackList();
+            if (rackList == null) {
+                rackList = new ArrayList<>();
+            }
+            rackList.add(0, new UniversalSpinner("Select Rack", ""));
+            setSpinnerRackData("0");
+        } else {
+            showSuccessDialog(body.getMessage());
+        }
+    }
+
+    @Override
+    public void onAisleSelectionFailure(String message) {
+        hideProgress();
+        showSuccessDialog(message);
+    }
+
+    @Override
+    public void onRackSelectionSuccess(ScanStillageResponse body) {
+        hideProgress();
+        if (body.getStatus().equals(getString(R.string.success))) {
+            binList = body.getBinList();
+            if (binList == null) {
+                binList = new ArrayList<>();
+            }
+            binList.add(0, new UniversalSpinner("Select Bin", ""));
+            setSpinnerBinData("0");
+        } else {
+            showSuccessDialog(body.getMessage());
+        }
+    }
+
+    @Override
+    public void onRackSelectionFailure(String message) {
+        hideProgress();
+        showSuccessDialog(message);
+    }
+
     //set response data
     void setData(ScanStillageResponse body) {
         stillageLayout.textViewitem.setText(body.getItemId());
@@ -375,19 +555,21 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 
         zoneList = body.getZoneList();
         aisleList = body.getAisleList();
-        rackList = body.getRackList();
-        binList = body.getBinList();
+//        rackList = body.getRackList();
+//        binList = body.getBinList();
 
-        if (aisleList == null || rackList == null || binList == null || zoneList == null) {
+        if (aisleList == null) {
             aisleList = new ArrayList<>();
-            rackList = new ArrayList<>();
-            binList = new ArrayList<>();
+        }
+//            rackList = new ArrayList<>();
+//            binList = new ArrayList<>();
+        if (zoneList == null) {
             zoneList = new ArrayList<>();
         }
 
         aisleList.add(0, new UniversalSpinner("Select Aisle", ""));
-        rackList.add(0, new UniversalSpinner("Select Rack", ""));
-        binList.add(0, new UniversalSpinner("Select Bin", ""));
+//        rackList.add(0, new UniversalSpinner("Select Rack", ""));
+//        binList.add(0, new UniversalSpinner("Select Bin", ""));
         zoneList.add(0, new UniversalSpinner("", "Select Zone"));
 
         initData(null);
@@ -395,12 +577,51 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         wareHouseID = body.getWareHouseID();
         if (body.getAssignedLocation().equals("")) {
             linearLayoutAssignedLocation.setVisibility(View.GONE);
+            linearLayoutAisle.setVisibility(View.VISIBLE);
+            linearLayoutRack.setVisibility(View.VISIBLE);
+            linearLayoutBin.setVisibility(View.VISIBLE);
+            textViewOr.setVisibility(View.VISIBLE);
+            linearLayoutZone.setVisibility(View.VISIBLE);
+            linearLayoutLocationScanDetail.setVisibility(View.GONE);
         } else {
+//            editTextDropLocation.setEnabled(false);
             linearLayoutAssignedLocation.setVisibility(View.VISIBLE);
             textViewAssignedLocation.setText(body.getAssignedLocation());
-            setSpinnerAisleData(body.getAssignedAisleId());
-            setSpinnerRackData(body.getAssignedRackId());
-            setSpinnerBinData(body.getAssignedBinId());
+//            linearLayoutLocationScanDetail.setVisibility(View.VISIBLE);
+//            if (body.getAssignedZoneName().equals("")) {
+//                textViewAisle.setText(body.getAssignedAisleName());
+//                textViewRack.setText(body.getAssignedRackName());
+//                textViewBin.setText(body.getAssignedBinName());
+//                linearLayoutZoneName.setVisibility(View.GONE);
+//                textViewZone.setText("");
+//                aisle = body.getAssignedAisleId();
+//                rack = body.getAssignedRackId();
+//                bin = body.getAssignedBinId();
+//
+//                linearLayoutAisleName.setVisibility(View.VISIBLE);
+//                linearLayoutRackName.setVisibility(View.VISIBLE);
+//                linearLayoutBinName.setVisibility(View.VISIBLE);
+//            } else {
+//                zone = body.getAssignedZoneId();
+//                textViewZone.setText(body.getAssignedZoneName());
+//                linearLayoutZoneName.setVisibility(View.VISIBLE);
+//                linearLayoutAisleName.setVisibility(View.GONE);
+//                linearLayoutRackName.setVisibility(View.GONE);
+//                linearLayoutBinName.setVisibility(View.GONE);
+//                textViewAisle.setText("");
+//                textViewRack.setText("");
+//                textViewBin.setText("");
+//            }
+
+//            linearLayoutAisle.setVisibility(View.GONE);
+//            linearLayoutRack.setVisibility(View.GONE);
+//            linearLayoutBin.setVisibility(View.GONE);
+//            textViewOr.setVisibility(View.GONE);
+//            linearLayoutZone.setVisibility(View.GONE);
+
+//            setSpinnerAisleData(body.getAssignedAisleId());
+//            setSpinnerRackData(body.getAssignedRackId());
+//            setSpinnerBinData(body.getAssignedBinId());
             linearLayoutCurrentLocation.setVisibility(View.GONE);
             linearLayoutMovingLocation.setVisibility(View.GONE);
         }
@@ -425,13 +646,34 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 
     boolean isValidated() {
         if (linearLayoutPutAwayLocation.getVisibility() == View.VISIBLE) {
-            if (spinnerAisle.getSelectedItemPosition() != 0 || spinnerRack.getSelectedItemPosition() != 0 || spinnerBin.getSelectedItemPosition() != 0 || !editTextDropLocation.getText().toString().equalsIgnoreCase("")) {
-                return true;
+            if (linearLayoutLocationScanDetail.getVisibility() == View.GONE) {
+                if (spinnerZone.getSelectedItemPosition() == 0) {
+                    if (spinnerAisle.getSelectedItemPosition() == 0) {
+                        TextView textView = (TextView) spinnerAisle.getSelectedView();
+                        textView.setError(getString(R.string.select_aisle));
+                        textView.requestFocus();
+                        return false;
+                    }
+
+                    if (spinnerRack.getSelectedItemPosition() == 0) {
+                        TextView textView = (TextView) spinnerRack.getSelectedView();
+                        textView.setError(getString(R.string.select_rack));
+                        textView.requestFocus();
+                        return false;
+                    }
+
+                    if (spinnerBin.getSelectedItemPosition() == 0) {
+                        TextView textView = (TextView) spinnerBin.getSelectedView();
+                        textView.setError(getString(R.string.select_bin));
+                        textView.requestFocus();
+                        return false;
+                    }
+                    return true;
+                } else {
+                    return true;
+                }
             } else {
-                TextView textView = (TextView) spinnerAisle.getSelectedView();
-                textView.setError(getString(R.string.select_aisle));
-                textView.requestFocus();
-                return false;
+                return true;
             }
         } else {
             return true;
@@ -442,13 +684,6 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         spinnerAisle.setAdapter(null);
         spinnerRack.setAdapter(null);
         spinnerBin.setAdapter(null);
-        editTextDropLocation.setText("");
-    }
-
-    public void imageButtonCloseClick(View view) {
-        spinnerAisle.setVisibility(View.VISIBLE);
-        spinnerBin.setVisibility(View.VISIBLE);
-        spinnerRack.setVisibility(View.VISIBLE);
         editTextDropLocation.setText("");
     }
 

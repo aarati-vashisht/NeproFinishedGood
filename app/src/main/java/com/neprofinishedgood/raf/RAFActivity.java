@@ -87,6 +87,8 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         irafInterface = new IRAFPresenter(this, this);
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         callService();
+        checkBoxAutoRoute.setChecked(true);
+        checkBoxAutoPicking.setChecked(true);
     }
 
     void setSpinnerShiftData() {
@@ -104,7 +106,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if (text.toString().trim().length() == 8) {
+            if (text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(RAFActivity.this)) {
                     showProgress(RAFActivity.this);
                     if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
@@ -131,7 +133,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
 //            if (NetworkChangeReceiver.isInternetConnected(RAFActivity.this)) {
 //                showProgress(RAFActivity.this);
 //                if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-//                    irafInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                    irafInterface.callScanStillageService(new AisleInput(editTextScanStillage.getText().toString().trim(), userId));
 //                }
 //            } else {
 //                setDataOffline();
@@ -143,7 +145,8 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -151,9 +154,16 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            setData(body);
+            if (body.getStandardQty() > 0) {
+                setData(body);
+            }
+            else{
+                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                editTextScanStillage.setText("");
+            }
         } else {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanStillage.setText("");
         }
     }
@@ -162,7 +172,8 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     public void onUpdateRAFFailure(String message) {
         hideProgress();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
-            CustomToast.showToast(this, message);
+            showSuccessDialog(message);
+//            CustomToast.showToast(this, message);
         }
     }
 
@@ -174,7 +185,8 @@ public class RAFActivity extends BaseActivity implements IRAFView {
                 showSuccessDialog(body.getMessage());
                 onButtonCancelClick();
             } else {
-                CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
+                showSuccessDialog(body.getMessage());
+//                CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
             }
         }
     }
@@ -292,7 +304,8 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         rafList.add(data);
         String json = gson.toJson(rafList);
         SharedPref.saveRafData(json);
-        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
+        showSuccessDialog(getResources().getString(R.string.data_saved_offline));
+//        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
         onButtonCancelClick();
         editTextScanStillage.setEnabled(true);
         disableVisibility();

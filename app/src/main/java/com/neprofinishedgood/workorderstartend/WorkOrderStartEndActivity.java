@@ -87,7 +87,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     public void onEditTextScanWorkOrderChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanWorkOrderhandler.postDelayed(workOrderRunnable, delay);
-            if(text.toString().trim().length() == 9) {
+            if(text.toString().trim().length() == scanWorkOrderLength) {
                 if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
                     showProgress(WorkOrderStartEndActivity.this);
                     if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
