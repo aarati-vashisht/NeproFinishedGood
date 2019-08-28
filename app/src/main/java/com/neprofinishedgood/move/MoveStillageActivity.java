@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -158,6 +159,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         movePresenter = new IMovePresenter(this, this);
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
+        editTextDropLocation.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         getIntentData();
     }
 

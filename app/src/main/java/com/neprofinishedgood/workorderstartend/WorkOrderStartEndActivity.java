@@ -94,7 +94,8 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                         iWorkOrderStartEndInterface.callScanWorkOrderService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId));
                     }
                 } else {
-                    CustomToast.showToast(WorkOrderStartEndActivity.this, getString(R.string.no_internet));
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    CustomToast.showToast(WorkOrderStartEndActivity.this, getString(R.string.no_internet));
                 }
             }
         }
@@ -125,7 +126,8 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @Override
     public void onWorkOrderScanFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -135,7 +137,8 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
             setData(body);
             editTextScanWorkOrder.setEnabled(false);
         } else {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanWorkOrder.setText("");
         }
     }
@@ -180,34 +183,40 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @Override
     public void onWorkOrderStartFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
     public void onWorkOrderStartSuccess(UniversalResponse body) {
         hideProgress();
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
               disableViews();
         } else {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
         }
     }
 
     @Override
     public void onWorkOrderEndFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
     public void onWorkOrderEndSuccess(UniversalResponse body) {
         hideProgress();
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
             disableViews();
         } else {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
         }
     }
 

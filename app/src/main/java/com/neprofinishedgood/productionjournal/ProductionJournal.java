@@ -124,7 +124,8 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
                         iProductionJournalInterface.callScanWorkOrderService(workOrderInput);
                     }
                 } else {
-                    CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
                 }
             }
         }
@@ -195,7 +196,8 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @Override
     public void onFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
         editTextScanWorkOrder.setText("");
     }
 
@@ -205,7 +207,8 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             setData(body);
         } else {
-            CustomToast.showToast(getApplicationContext(), body.getMessage());
+            showSuccessDialog(body.getMessage());
+//            CustomToast.showToast(getApplicationContext(), body.getMessage());
             editTextScanWorkOrder.setText("");
         }
     }
@@ -213,13 +216,15 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @Override
     public void onSubmitPickingProcessFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
     public void onSubmitPickingProcessSuccess(UniversalResponse body) {
         hideProgress();
-        CustomToast.showToast(this, body.getMessage());
+        showSuccessDialog(body.getMessage());
+//        CustomToast.showToast(this, body.getMessage());
 //        disableViews();
         finish();
         startActivity(new Intent(ProductionJournal.this, ProductionJournal.class));
@@ -228,13 +233,15 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @Override
     public void onSubmitRouteProcessFailure(String message) {
         hideProgress();
-        CustomToast.showToast(this, message);
+        showSuccessDialog(message);
+//        CustomToast.showToast(this, message);
     }
 
     @Override
     public void onSubmitRouteProcessSuccess(UniversalResponse body) {
         hideProgress();
-        CustomToast.showToast(this, body.getMessage());
+        showSuccessDialog(body.getMessage());
+//        CustomToast.showToast(this, body.getMessage());
 //        disableViews();
         finish();
         startActivity(new Intent(ProductionJournal.this, ProductionJournal.class));

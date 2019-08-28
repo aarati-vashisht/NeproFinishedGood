@@ -88,7 +88,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
         for (int j = 0; j < PickAndLoadStillageActivity.getInstance().warehouseList.size(); j++) {
             if (PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getId().equals(stillageDatumListFiltered.get(position).getWareHouseID() + "")) {
-                holder.textViewWarehouse.setText(PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getName());
+                holder.textViewWarehouse.setText(PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getId()+" | "+PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getName());
             }
         }
         holder.textViewNumber.setText(stillageDatumListFiltered.get(position).getStillageNO());
@@ -229,7 +229,8 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                         SharedPref.saveLoadinGplanDetailList(saveLoadingPlanListData);
                         notifyDataSetChanged();
                         PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
-                        CustomToast.showToast(context, stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.picked_successfullt));
+                        PickAndLoadStillageActivity.getInstance().showSuccessDialog(stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.picked_successfullt));
+//                        CustomToast.showToast(context, stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.picked_successfullt));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -255,7 +256,8 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                     SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
                 }
             }
-            CustomToast.showToast(context, stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.stillage_unpicked));
+            PickAndLoadStillageActivity.getInstance().showSuccessDialog(stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.stillage_unpicked));
+//            CustomToast.showToast(context, stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.stillage_unpicked));
             notifyDataSetChanged();
         }
     }
@@ -343,7 +345,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                     PickAndLoadStillageActivity.getInstance().stillageNoToDelete = stillageDatumListFiltered.get(position).getStillageNO();
                     UpdateLoadInput updateLoadInput = new UpdateLoadInput(stillageDatumListFiltered.get(position).getStillageNO(), PickAndLoadStillageActivity.getInstance().userId, PickAndLoadStillageActivity.getInstance().scanLoadingPlanList.getTLPHID() + "", reason, stillageDatumListFiltered.get(position).getItemId() + "", editTextLoadQuantity.getText().toString().trim(), PickAndLoadStillageActivity.getInstance().isCompleted);
                     PickAndLoadStillageActivity.getInstance().iPickAndLoadItemInterFace.callUpdateLoadService(updateLoadInput);
-                    CustomToast.showToast(context, context.getString(R.string.stillage_loaded_successfully));
+//                    CustomToast.showToast(context, context.getString(R.string.stillage_loaded_successfully));
                 }
             }
         });

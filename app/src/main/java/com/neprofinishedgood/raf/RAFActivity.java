@@ -87,8 +87,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         irafInterface = new IRAFPresenter(this, this);
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         callService();
-        checkBoxAutoRoute.setChecked(true);
-        checkBoxAutoPicking.setChecked(true);
+
     }
 
     void setSpinnerShiftData() {
@@ -210,6 +209,8 @@ public class RAFActivity extends BaseActivity implements IRAFView {
 //        editTextQuantity.setSelection(body.getStandardQty().toString().length());
 //        editTextQuantity.requestFocus();
         quantity = body.getStandardQty() + "";
+        checkBoxAutoRoute.setChecked(true);
+        checkBoxAutoPicking.setChecked(true);
     }
 
     @OnItemSelected(R.id.spinnerShift)
