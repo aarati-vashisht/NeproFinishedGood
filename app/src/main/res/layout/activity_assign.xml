@@ -523,7 +523,8 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <com.neprofinishedgood.custom_views.CustomButton
             android:id="@+id/buttonAssign"

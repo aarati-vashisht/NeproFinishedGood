@@ -3,6 +3,7 @@ package com.neprofinishedgood.productionjournal.ui.main;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -228,12 +229,12 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     boolean isValidated() {
         if (spinnerItem.getSelectedItemPosition() == 0) {
-            TextView textView = (TextView) spinnerItem.getSelectedView();
-            textView.setError(getString(R.string.select_item));
-            textView.requestFocus();
+//            TextView textView = (TextView)spinnerItem.getSelectedView();
+//            textView.setError(getString(R.string.select_item));
+//            textView.requestFocus();
             return false;
         }
-        if (editTextQuantity.getText().toString().equals("")) {
+        if (editTextQuantity.getText().toString().equals("") || editTextQuantity.getText().toString().equals(".")) {
             editTextQuantity.setError(getString(R.string.enter_quantity));
             editTextQuantity.requestFocus();
             return false;
@@ -250,12 +251,18 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     @OnClick(R.id.buttonConfirm)
     public void onButtonSubmitClick() {
-        showConfirmationAlert();
+        if (ProductionJournal.getInstance().addedPickingListDatumList.size() > 0) {
+            showConfirmationAlert();
+        } else{
+            showErrorDialog("Picking list is empty!");
+        }
     }
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
-        ProductionJournal.getInstance().disableViews();
+        ProductionJournal.getInstance().finish();
+        startActivity(new Intent(ProductionJournal.getInstance(), ProductionJournal.class));
+//        ProductionJournal.getInstance().disableViews();
     }
 
     public void showConfirmationAlert() {
@@ -282,4 +289,16 @@ public class PickingListFragment extends Fragment implements IPickingListView {
         alert.show();
     }
 
+    public void showErrorDialog(String message) {
+        builder = new AlertDialog.Builder(ProductionJournal.getInstance());
+        builder.setMessage(message);
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

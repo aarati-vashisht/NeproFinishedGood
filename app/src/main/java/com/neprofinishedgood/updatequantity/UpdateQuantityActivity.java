@@ -159,7 +159,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     public void onEditTextQuantityChanged(Editable text) {
         float stillageQty, stillageStdQty, editQty;
 
-        if (!text.toString().equals("")) {
+        if (!text.toString().equals("") && !text.toString().equals(".")) {
             editQty = Float.parseFloat(text.toString());
             if (stillageLayout.textViewStdQuantity.getText().toString().length() > 0) {
                 stillageStdQty = Float.parseFloat(stillageLayout.textViewStdQuantity.getText().toString());

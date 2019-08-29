@@ -47,16 +47,16 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public AppCompatEditText editTextScanWorkOrder;
 
     @BindView(R.id.linearLayoutWorkOrderNumber)
-    public  LinearLayout linearLayoutWorkOrderNumber;
+    public LinearLayout linearLayoutWorkOrderNumber;
 
     @BindView(R.id.view_pager)
-    public  ViewPager view_pager;
+    public ViewPager view_pager;
 
     @BindView(R.id.tabs)
     public TabLayout tabs;
 
     @BindView(R.id.textViewWorkOrderNumber)
-    public  TextView textViewWorkOrderNumber;
+    public TextView textViewWorkOrderNumber;
 
     @BindView(R.id.textViewitem)
     public TextView textViewitem;
@@ -65,10 +65,10 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public TextView textViewItemId;
 
     @BindView(R.id.textViewQuatity)
-    public  TextView textViewQuatity;
+    public TextView textViewQuatity;
 
     @BindView(R.id.cardView)
-    public  CardView cardView;
+    public CardView cardView;
 
     long scanStillageLastTexxt = 0;
     long delay = 1500;
@@ -85,6 +85,9 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
 
     static ProductionJournal instance;
     AlertDialog.Builder builder;
+
+    boolean isPickingSuccess = false;
+    boolean isRoutingSuccess = false;
 
     public static ProductionJournal getInstance() {
         return instance;
@@ -216,6 +219,8 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @Override
     public void onSubmitPickingProcessFailure(String message) {
         hideProgress();
+        isPickingSuccess = false;
+        isRoutingSuccess = false;
         showSuccessDialog(message);
 //        CustomToast.showToast(this, message);
     }
@@ -223,16 +228,23 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @Override
     public void onSubmitPickingProcessSuccess(UniversalResponse body) {
         hideProgress();
-        showSuccessDialog(body.getMessage());
 //        CustomToast.showToast(this, body.getMessage());
 //        disableViews();
-        finish();
-        startActivity(new Intent(ProductionJournal.this, ProductionJournal.class));
+        if (body.getStatus().equals(getString(R.string.success))) {
+            isPickingSuccess = true;
+        } else {
+            isRoutingSuccess = false;
+            isPickingSuccess = false;
+        }
+        showSuccessDialog(body.getMessage());
+
     }
 
     @Override
     public void onSubmitRouteProcessFailure(String message) {
         hideProgress();
+        isPickingSuccess = false;
+        isRoutingSuccess = false;
         showSuccessDialog(message);
 //        CustomToast.showToast(this, message);
     }
@@ -240,11 +252,16 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @Override
     public void onSubmitRouteProcessSuccess(UniversalResponse body) {
         hideProgress();
-        showSuccessDialog(body.getMessage());
+
 //        CustomToast.showToast(this, body.getMessage());
 //        disableViews();
-        finish();
-        startActivity(new Intent(ProductionJournal.this, ProductionJournal.class));
+        if (body.getStatus().equals(getString(R.string.success))) {
+            isRoutingSuccess = true;
+        } else {
+            isPickingSuccess = false;
+            isRoutingSuccess = false;
+        }
+        showSuccessDialog(body.getMessage());
     }
 
     @Override
@@ -270,6 +287,23 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
                 })
                 .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void showSuccessDialog(String message) {
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (isPickingSuccess || isRoutingSuccess) {
+                            finish();
+                            startActivity(new Intent(ProductionJournal.this, ProductionJournal.class));
+                        }
                         dialog.cancel();
                     }
                 });

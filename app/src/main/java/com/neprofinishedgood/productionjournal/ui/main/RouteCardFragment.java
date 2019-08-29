@@ -3,6 +3,7 @@ package com.neprofinishedgood.productionjournal.ui.main;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -213,7 +214,7 @@ public class RouteCardFragment extends Fragment {
             textView.requestFocus();
             return false;
         }
-        if (editTextQuantity.getText().toString().equals("")) {
+        if (editTextQuantity.getText().toString().equals("") || editTextQuantity.getText().toString().equals(".")) {
             editTextQuantity.setError(getString(R.string.enter_quantity));
             editTextQuantity.requestFocus();
             return false;
@@ -235,12 +236,18 @@ public class RouteCardFragment extends Fragment {
 
     @OnClick(R.id.buttonConfirm)
     public void onButtonSubmitClick() {
-        showConfirmationAlert();
+        if (ProductionJournal.getInstance().addedRoutingListDatumList.size() > 0) {
+            showConfirmationAlert();
+        } else {
+            showErrorDialog("Route operation list is empty!");
+        }
     }
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
-        ProductionJournal.getInstance().disableViews();
+        ProductionJournal.getInstance().finish();
+        startActivity(new Intent(ProductionJournal.getInstance(), ProductionJournal.class));
+//        ProductionJournal.getInstance().disableViews();
     }
 
     public void showConfirmationAlert() {
@@ -260,6 +267,19 @@ public class RouteCardFragment extends Fragment {
                     }
                 })
                 .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void showErrorDialog(String message) {
+        builder = new AlertDialog.Builder(ProductionJournal.getInstance());
+        builder.setMessage(message);
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
