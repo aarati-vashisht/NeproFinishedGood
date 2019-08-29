@@ -197,5 +197,6 @@
     <string name="prduction_line_">Production Line</string>
     <string name="zone">Zone:</string>
     <string name="stillage_discarded">This stillage is discarded!</string>
+    <string name="operation_invalid">Operation Invalid</string>
 
 </resources>

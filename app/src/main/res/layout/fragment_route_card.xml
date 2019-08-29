@@ -190,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".8"
                 android:background="@drawable/edittext_drawable"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:padding="5dp"
                 android:layout_marginStart="3dp"

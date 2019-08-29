@@ -305,7 +305,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (editTextLoadQuantity.getText().toString().trim().length() > 0)
+                if (editTextLoadQuantity.getText().toString().trim().length() > 0 && !editTextLoadQuantity.getText().toString().equals("."))
                     if (Float.parseFloat(editTextLoadQuantity.getText().toString().trim()) < stillageDatumListFiltered.get(position).getPickingQty()) {
                         linearLayoutRejectReason.setVisibility(View.VISIBLE);
                         linearLayoutRejectReason.setAnimation(PickAndLoadStillageActivity.getInstance().fadeIn);

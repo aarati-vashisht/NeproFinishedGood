@@ -219,7 +219,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
 
     @OnTextChanged(value = R.id.editTextMergeQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextMergeQuantityChanged(Editable text) {
-        if (!text.toString().equals("")) {
+        if (!text.toString().equals("") && !text.toString().equals(".")) {
             mergeQty = Float.parseFloat(text.toString());
             childQty = Float.parseFloat(childStillageLayout.textViewQuantity.getText().toString());
             parentQty = Float.parseFloat(parentStillageLayout.textViewQuantity.getText().toString());

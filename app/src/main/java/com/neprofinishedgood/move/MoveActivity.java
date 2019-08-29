@@ -148,7 +148,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     @Override
     public void onAssignedFailure(String message) {
         hideProgress();
-        showSuccessDialog(message);
+//        showSuccessDialog(message);
     }
 
     @Override
@@ -161,7 +161,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
                 setAdapter(body.getStillageList());
             }
         } else {
-            showSuccessDialog(body.getMessage());
+//            showSuccessDialog(body.getMessage());
             // CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
         }
     }

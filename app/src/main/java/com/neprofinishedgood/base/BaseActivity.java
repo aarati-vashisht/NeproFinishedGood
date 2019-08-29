@@ -51,6 +51,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<LocationList> locationList = new ArrayList<>();
 
     public int scanStillageLength = 8;
+//    public int scanStillageLength = 13;
     public int scanWorkOrderLength = 9;
     public int scanLocationLength = 11;
 
@@ -211,6 +212,22 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public void showSuccessDialog(String message){
         builder = new AlertDialog.Builder(this);
         builder.setMessage(message);
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        isOffline = true;
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void showSuccessDialog(String title, String message){
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setIcon(R.drawable.ic_warning);
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

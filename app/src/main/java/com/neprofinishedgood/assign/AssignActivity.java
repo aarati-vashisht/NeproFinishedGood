@@ -116,6 +116,9 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     @BindView(R.id.linearLayoutZoneName)
     LinearLayout linearLayoutZoneName;
 
+    @BindView(R.id.linearLayoutAssignLocationButtons)
+    LinearLayout linearLayoutAssignLocationButtons;
+
     @BindView(R.id.textViewOr)
     TextView textViewOr;
 
@@ -390,6 +393,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
 
     void setData(ScanStillageResponse body) {
         relativeLayoutScanDetail.setVisibility(View.VISIBLE);
+        linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
 
         editTextScanStillage.setEnabled(false);
         stillageLayout.textViewitem.setText(body.getItemId());
@@ -576,11 +580,12 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (body.getStandardQty() > 0) {
                 setData(body);
-            }
-            else{
+            } else {
                 showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                 editTextScanStillage.setText("");
             }
+        } else if (body.getStatus().equals(getResources().getString(R.string.operation_invalid))) {
+            showSuccessDialog(body.getStatus(), body.getMessage());
         } else {
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(this, body.getMessage());
@@ -666,6 +671,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (response.getStatus().equals(getString(R.string.success))) {
                 relativeLayoutScanDetail.setVisibility(View.GONE);
+                linearLayoutAssignLocationButtons.setVisibility(View.GONE);
                 editTextScanStillage.setEnabled(true);
                 editTextScanStillage.setText("");
                 showSuccessDialog(response.getMessage());
@@ -736,10 +742,12 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         linearLayoutOfflineData.setVisibility(View.VISIBLE);
         stillageDetail.setVisibility(View.GONE);
         relativeLayoutScanDetail.setVisibility(View.VISIBLE);
+        linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
     }
 
     void disableVisibility() {
         relativeLayoutScanDetail.setVisibility(View.GONE);
+        linearLayoutAssignLocationButtons.setVisibility(View.GONE);
         editTextScanStillage.setEnabled(true);
         editTextScanStillage.setText("");
         linearLayoutOfflineData.setVisibility(View.GONE);

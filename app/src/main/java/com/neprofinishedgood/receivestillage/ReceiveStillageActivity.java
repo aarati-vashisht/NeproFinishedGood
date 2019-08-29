@@ -107,7 +107,7 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
         showProgress(this);
         iRecieveTransferInterface.callUpdateRecieveTransferStillage(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
         //CustomToast.showToast(ReceiveStillageActivity.this, getResources().getString(R.string.item_received_successfully));
-        finish();
+
     }
 
     @OnClick(R.id.buttonCancel)
@@ -121,6 +121,8 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
     @Override
     public void onFailure(String message) {
         hideProgress();
+        editTextScanStillage.setText("");
+        editTextScanStillage.setEnabled(true);
         showSuccessDialog(message);
 //        CustomToast.showToast(this, message);
     }
@@ -130,15 +132,19 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
             hideProgress();
             if (body.getIsRecieved() == 1) {
+                editTextScanStillage.setText("");
+                editTextScanStillage.setEnabled(true);
                 showSuccessDialog(getString(R.string.this_stillage_already_recieved));
 //                CustomToast.showToast(this, getString(R.string.this_stillage_already_recieved));
             } else {
                 if (body.getStandardQty() > 0) {
                     setData(body);
+                    editTextScanStillage.setEnabled(false);
                 }
                 else{
                     showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                     editTextScanStillage.setText("");
+                    editTextScanStillage.setEnabled(true);
                 }
             }
         } else {
@@ -146,6 +152,7 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(this, body.getMessage());
             editTextScanStillage.setText("");
+            editTextScanStillage.setEnabled(true);
         }
     }
 
@@ -172,6 +179,8 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
         showSuccessDialog(body.getMessage());
 //        CustomToast.showToast(this, body.getMessage());
         relativeLayoutScanDetail.setVisibility(View.GONE);
+        editTextScanStillage.setText("");
+        editTextScanStillage.setEnabled(true);
     }
 
 }

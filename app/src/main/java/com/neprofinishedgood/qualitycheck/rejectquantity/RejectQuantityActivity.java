@@ -232,14 +232,20 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
 
     @OnTextChanged(value = R.id.editTextRejectQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextRejectQuantityChanged(Editable text) {
-        if (!text.toString().equals("")) {
+        if (!text.toString().equals("") && !text.toString().equals(".")) {
             float rejectQty = round(Float.parseFloat(text.toString().trim()));
             float stillageQty = round(Float.parseFloat((this.body.getStandardQty() + "").trim()));
             if (rejectQty > stillageQty) {
                 editTextRejectQuantity.setText("");
                 editTextRejectQuantity.setError("Invalid reject quantity!");
                 editTextRejectQuantity.requestFocus();
+                buttonReject.setEnabled(false);
+            }else {
+                buttonReject.setEnabled(true);
             }
+        }
+        else{
+            buttonReject.setEnabled(false);
         }
     }
 
@@ -270,6 +276,12 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     }
 
     boolean isValidated() {
+        if (spinnerShift.getSelectedItemPosition() == 0) {
+            TextView textView = (TextView) spinnerShift.getSelectedView();
+            textView.setError(getString(R.string.select_shift));
+            textView.requestFocus();
+            return false;
+        }
         if (editTextRejectQuantity.getText().toString().equals("0") || editTextRejectQuantity.getText().toString().equals("")) {
             editTextRejectQuantity.setError(getResources().getString(R.string.enter_reject_quantity));
             editTextRejectQuantity.requestFocus();
@@ -281,12 +293,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
             textView.requestFocus();
             return false;
         }
-        if (spinnerShift.getSelectedItemPosition() == 0) {
-            TextView textView = (TextView) spinnerShift.getSelectedView();
-            textView.setError(getString(R.string.select_shift));
-            textView.requestFocus();
-            return false;
-        }
+
         return true;
     }
 
