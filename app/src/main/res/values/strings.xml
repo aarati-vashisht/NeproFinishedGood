@@ -191,8 +191,8 @@
     <string name="select_item">Select Item</string>
     <string name="select_operation">Select Operation</string>
     <string name="enter_hours">Enter Hours</string>
-    <string name="production_journal_back_confirmation">All changes will be discarded!</string>
-    <string name="are_you_sure_you_want_to_go_back">Are you sure you want to go back?</string>
+    <string name="production_journal_back_confirmation">All the informations will be lost!</string>
+    <string name="are_you_sure_you_want_to_go_back">Do you still want to continue?</string>
     <string name="cw_goods_quantity">CW Goods Quantity</string>
     <string name="prduction_line_">Production Line</string>
     <string name="zone">Zone:</string>

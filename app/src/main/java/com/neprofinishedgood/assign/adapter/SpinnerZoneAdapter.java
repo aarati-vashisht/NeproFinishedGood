@@ -49,24 +49,29 @@ public class SpinnerZoneAdapter extends ArrayAdapter<UniversalSpinner> {
         View v = convertView;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(res, null);
-        TextView textView = v.findViewById(R.id.text);
         TextView textView1 = v.findViewById(R.id.text1);
         String str = universalSpinnerList.get(position).getId();
         String str1 = universalSpinnerList.get(position).getName();
-        textView.setText(str);
-        textView1.setText(str1);
+        if (position == 0) {
+            textView1.setText(str);
+        } else {
+            textView1.setText(str + " | " + str1);
+        }
         return v;
 
     }
 
     private View createItemView(int position, View convertView, ViewGroup parent) {
         final View view = mInflater.inflate(res, parent, false);
-
-        TextView text = view.findViewById(R.id.text);
         TextView text1 = view.findViewById(R.id.text1);
 
-        text.setText(universalSpinnerList.get(position).getId());
-        text1.setText(universalSpinnerList.get(position).getName());
+        String str = universalSpinnerList.get(position).getId();
+        String str1 = universalSpinnerList.get(position).getName();
+        if (position == 0) {
+            text1.setText(str);
+        } else {
+            text1.setText(str + " | " + str1);
+        }
 
         return view;
     }
