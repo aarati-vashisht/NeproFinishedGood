@@ -1,10 +1,13 @@
 package com.neprofinishedgood.assign;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -196,7 +199,22 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     }
 
     void setSpinnerAisleData(String item) {
-        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, aisleList);
+        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, aisleList){
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView tv = (TextView) super.getView(position, convertView, parent);
+
+                if(position == 0){
+                    tv.setTextColor(Color.WHITE);
+                    tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+                }else{
+                    tv.setTextColor(Color.BLACK);
+                    tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
+                }
+
+                return tv;
+            }
+        };
+
         spinnerAisle.setAdapter(aisleListAdapter);
         if (!item.equals("0")) {
             for (int j = 0; j < aisleList.size(); j++) {
@@ -235,7 +253,21 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     }
 
     void setSpinnerZoneData(String item) {
-        SpinnerZoneAdapter zoneListAdapter = new SpinnerZoneAdapter(AssignActivity.this, R.layout.spinner_picking_item_layout, zoneList);
+        SpinnerZoneAdapter zoneListAdapter = new SpinnerZoneAdapter(AssignActivity.this, R.layout.spinner_layout, zoneList){
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView tv = (TextView) super.getView(position, convertView, parent);
+
+                if(position == 0){
+                    tv.setTextColor(Color.WHITE);
+                    tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+                }else{
+                    tv.setTextColor(Color.BLACK);
+                    tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
+                }
+
+                return tv;
+            }
+        };
         spinnerZone.setAdapter(zoneListAdapter);
         if (!item.equals("0")) {
             for (int j = 0; j < zoneList.size(); j++) {
@@ -260,6 +292,11 @@ public class AssignActivity extends BaseActivity implements IAssignView {
             spinnerZone.setSelection(0);
             showProgress(this);
             iAssAndUAssInterface.callAisleSelectionService(new AisleInput(aisle, wareHouseID, ""));
+        }
+        if (position == 0) {
+            spinner.setBackgroundResource(R.drawable.first_spinner);
+        }else{
+            spinner.setBackgroundResource(R.drawable.spinner_background);
         }
 
     }
@@ -296,6 +333,11 @@ public class AssignActivity extends BaseActivity implements IAssignView {
             spinnerBin.setSelection(0);
         } else {
             zone = "";
+        }
+        if (position == 0) {
+            spinner.setBackgroundResource(R.drawable.first_spinner);
+        }else{
+            spinner.setBackgroundResource(R.drawable.spinner_background);
         }
     }
 
