@@ -88,7 +88,7 @@
                             android:layout_height="35dp"
                             android:layout_marginStart="20dp"
                             android:gravity="center"
-                            android:text="@string/unhold"
+                            android:text="@string/release"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textSize="12sp" />

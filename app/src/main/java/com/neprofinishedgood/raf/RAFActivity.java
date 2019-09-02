@@ -1,5 +1,6 @@
 package com.neprofinishedgood.raf;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -19,6 +20,8 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
+import com.neprofinishedgood.move.MoveStillageActivity;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.raf.model.RafInput;
@@ -140,7 +143,6 @@ public class RAFActivity extends BaseActivity implements IRAFView {
 //        }
 //    };
 
-
     @Override
     public void onFailure(String message) {
         hideProgress();
@@ -154,6 +156,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (body.getStandardQty() > 0) {
+                isScanned = true;
                 setData(body);
             }
             else{
@@ -181,6 +184,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         hideProgress();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (body.getStatus().equals(getString(R.string.success))) {
+                isScanned = false;
                 showSuccessDialog(body.getMessage());
                 onButtonCancelClick();
             } else {
@@ -259,6 +263,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
+        isScanned = false;
         linearLayoutScanDetail.setVisibility(View.GONE);
         linearLayoutEnterQtyButtons.setVisibility(View.GONE);
         editTextScanStillage.setEnabled(true);
@@ -267,6 +272,22 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         checkBoxAutoPicking.setChecked(false);
     }
 
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(RAFActivity.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(RAFActivity.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
 
     void setDataOffline() {
         textViewNumberOffline.setText(editTextScanStillage.getText().toString());

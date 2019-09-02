@@ -199,14 +199,14 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     }
 
     void setSpinnerAisleData(String item) {
-        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, aisleList){
+        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(AssignActivity.this, R.layout.spinner_layout, aisleList) {
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView tv = (TextView) super.getView(position, convertView, parent);
 
-                if(position == 0){
+                if (position == 0) {
                     tv.setTextColor(Color.WHITE);
                     tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-                }else{
+                } else {
                     tv.setTextColor(Color.BLACK);
                     tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
                 }
@@ -253,14 +253,14 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     }
 
     void setSpinnerZoneData(String item) {
-        SpinnerZoneAdapter zoneListAdapter = new SpinnerZoneAdapter(AssignActivity.this, R.layout.spinner_layout, zoneList){
+        SpinnerZoneAdapter zoneListAdapter = new SpinnerZoneAdapter(AssignActivity.this, R.layout.spinner_layout, zoneList) {
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView tv = (TextView) super.getView(position, convertView, parent);
 
-                if(position == 0){
+                if (position == 0) {
                     tv.setTextColor(Color.WHITE);
                     tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-                }else{
+                } else {
                     tv.setTextColor(Color.BLACK);
                     tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
                 }
@@ -295,7 +295,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         }
         if (position == 0) {
             spinner.setBackgroundResource(R.drawable.first_spinner);
-        }else{
+        } else {
             spinner.setBackgroundResource(R.drawable.spinner_background);
         }
 
@@ -336,7 +336,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         }
         if (position == 0) {
             spinner.setBackgroundResource(R.drawable.first_spinner);
-        }else{
+        } else {
             spinner.setBackgroundResource(R.drawable.spinner_background);
         }
     }

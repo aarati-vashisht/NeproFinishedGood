@@ -2,12 +2,16 @@ package com.neprofinishedgood.move;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -26,6 +30,7 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.MoveAdapter;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.LocationData;
@@ -34,6 +39,7 @@ import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.move.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.move.presenter.IMovePresenter;
 import com.neprofinishedgood.move.presenter.IMoveView;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
@@ -161,6 +167,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         ButterKnife.bind(stillageLayout, stillageDetail);
         editTextDropLocation.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         getIntentData();
+        isScanned = true;
     }
 
     private void getIntentData() {
@@ -229,7 +236,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     @OnTextChanged(value = R.id.editTextDropLocation, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void oneditTextDropLocationChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
-            if(text.toString().trim().length() == scanLocationLength) {
+            if (text.toString().trim().length() == scanLocationLength) {
 //            dropLocationhandler.postDelayed(dropLocationRunnable, delay);
                 if (NetworkChangeReceiver.isInternetConnected(MoveStillageActivity.this)) {
                     showProgress(MoveStillageActivity.this);
@@ -290,6 +297,11 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             showProgress(this);
             movePresenter.callAisleSelectionService(new AisleInput(aisle, wareHouseID, ""));
         }
+        if (position == 0) {
+            spinner.setBackgroundResource(R.drawable.first_spinner);
+        } else {
+            spinner.setBackgroundResource(R.drawable.spinner_background);
+        }
     }
 
     @OnItemSelected(R.id.spinnerRack)
@@ -325,11 +337,30 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         } else {
             zone = "";
         }
+        if (position == 0) {
+            spinner.setBackgroundResource(R.drawable.first_spinner);
+        } else {
+            spinner.setBackgroundResource(R.drawable.spinner_background);
+        }
     }
 
 
     void setSpinnerAisleData(String item) {
-        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, aisleList);
+        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, aisleList){
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView tv = (TextView) super.getView(position, convertView, parent);
+
+                if (position == 0) {
+                    tv.setTextColor(Color.WHITE);
+                    tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+                } else {
+                    tv.setTextColor(Color.BLACK);
+                    tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
+                }
+
+                return tv;
+            }
+        };
         spinnerAisle.setAdapter(aisleListAdapter);
         if (!item.equals("0")) {
             for (int j = 0; j < aisleList.size(); j++) {
@@ -368,7 +399,21 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     }
 
     void setSpinnerZoneData(String item) {
-        SpinnerZoneAdapter zoneListAdapter = new SpinnerZoneAdapter(MoveStillageActivity.this, R.layout.spinner_picking_item_layout, zoneList);
+        SpinnerZoneAdapter zoneListAdapter = new SpinnerZoneAdapter(MoveStillageActivity.this, R.layout.spinner_layout, zoneList){
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView tv = (TextView) super.getView(position, convertView, parent);
+
+                if (position == 0) {
+                    tv.setTextColor(Color.WHITE);
+                    tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+                } else {
+                    tv.setTextColor(Color.BLACK);
+                    tv.setTypeface(tv.getTypeface(), Typeface.NORMAL);
+                }
+
+                return tv;
+            }
+        };
         spinnerZone.setAdapter(zoneListAdapter);
         if (!item.equals("0")) {
             for (int j = 0; j < zoneList.size(); j++) {
@@ -687,6 +732,23 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         spinnerRack.setAdapter(null);
         spinnerBin.setAdapter(null);
         editTextDropLocation.setText("");
+    }
+
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(MoveStillageActivity.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(MoveStillageActivity.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
     }
 
     void setDataOffline() {

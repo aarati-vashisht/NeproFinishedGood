@@ -216,7 +216,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
     }
 
     void setSpinnerItemData() {
-        itemAdapter = new SpinnerItemAdapter(getActivity(), R.layout.spinner_picking_item_layout, ProductionJournal.getInstance().pickingListDatumList);
+        itemAdapter = new SpinnerItemAdapter(getActivity(), R.layout.spinner_layout, ProductionJournal.getInstance().pickingListDatumList);
         spinnerItem.setAdapter(itemAdapter);
     }
 
@@ -229,9 +229,9 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     boolean isValidated() {
         if (spinnerItem.getSelectedItemPosition() == 0) {
-//            TextView textView = (TextView)spinnerItem.getSelectedView();
-//            textView.setError(getString(R.string.select_item));
-//            textView.requestFocus();
+            TextView textView = (TextView)spinnerItem.getSelectedView();
+            textView.setError(getString(R.string.select_item));
+            textView.requestFocus();
             return false;
         }
         if (editTextQuantity.getText().toString().equals("") || editTextQuantity.getText().toString().equals(".")) {
