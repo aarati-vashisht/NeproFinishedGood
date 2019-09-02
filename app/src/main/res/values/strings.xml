@@ -50,7 +50,7 @@
     <string name="enter_reason">Enter Reason</string>
     <string name="mark">Mark</string>
     <string name="button_hold">Hold</string>
-    <string name="unhold">Unhold</string>
+    <string name="release">Release</string>
     <string name="items_hold">Item Hold</string>
     <string name="items_unhold">Item Unhold</string>
     <string name="assign_location">Assign Location/Zone?</string>
@@ -136,10 +136,10 @@
     <string name="item_transferred_successfully">Item Transferred Successfully</string>
     <string name="discard">Discard</string>
     <string name="nodiscard">No Discard</string>
-    <string name="this_stillage_already_merged">This Stillage Already Merged</string>
-    <string name="this_stillage_already_recieved">This Stillage Already Received</string>
-    <string name="this_stillage_already_transfred">This Stillage Already Transferred</string>
-    <string name="proceed_offline">Do You Want To Proceed In Offline Mode</string>
+    <string name="this_stillage_already_merged">This stillage is already merged</string>
+    <string name="this_stillage_already_recieved">This stillage is already received</string>
+    <string name="this_stillage_already_transfred">This stillage already transferred</string>
+    <string name="proceed_offline">Do You Want To Proceed In Offline Mode?</string>
     <string name="data_saved_offline">Data Saved Offline</string>
     <string name="child_and_parent_cannot_be_same">Child And Parent Stillage Can\'t  Be Same</string>
     <string name="no_internet">No Internet!</string>
@@ -191,8 +191,8 @@
     <string name="select_item">Select Item</string>
     <string name="select_operation">Select Operation</string>
     <string name="enter_hours">Enter Hours</string>
-    <string name="production_journal_back_confirmation">All the informations will be lost!</string>
-    <string name="are_you_sure_you_want_to_go_back">Do you still want to continue?</string>
+    <string name="back_confirmation">All the informations will be lost!</string>
+    <string name="do_you_still_want_to_go_back">Do you still want to continue?</string>
     <string name="cw_goods_quantity">CW Goods Quantity</string>
     <string name="prduction_line_">Production Line</string>
     <string name="zone">Zone:</string>

@@ -21,11 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.productionjournal.ProductionJournal;
-import com.neprofinishedgood.productionjournal.adapter.PickingListAdapter;
 import com.neprofinishedgood.productionjournal.adapter.RouteCardAdapter;
-import com.neprofinishedgood.productionjournal.adapter.SpinnerItemAdapter;
 import com.neprofinishedgood.productionjournal.adapter.SpinnerOperationAdapter;
-import com.neprofinishedgood.productionjournal.model.ItemPicked;
 import com.neprofinishedgood.productionjournal.model.ProductionJournalRouteDataInput;
 import com.neprofinishedgood.productionjournal.model.RouteCardPicked;
 

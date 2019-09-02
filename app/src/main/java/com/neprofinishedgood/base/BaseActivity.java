@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,11 +22,8 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.model.LocationList;
 import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalSpinner;
-import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.login.LoginActivity;
 import com.neprofinishedgood.login.model.LoginResponse;
-import com.neprofinishedgood.utils.NetworkChangeReceiver;
-import com.neprofinishedgood.utils.NetworkHandleService;
 import com.neprofinishedgood.utils.SharedPref;
 
 import java.math.BigDecimal;
@@ -51,7 +47,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<LocationList> locationList = new ArrayList<>();
 
     public int scanStillageLength = 8;
-//    public int scanStillageLength = 13;
+    //    public int scanStillageLength = 13;
     public int scanWorkOrderLength = 9;
     public int scanLocationLength = 11;
 
@@ -60,6 +56,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     boolean isOffline = false;
 
     static BaseActivity instance;
+    public boolean isScanned = false;
 
     public static BaseActivity getInstance() {
         return instance;
@@ -158,11 +155,6 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         }
     }
 
-    public void imageButtonBackClick(View view) {
-
-        finish();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.setting_menu, menu);
@@ -209,7 +201,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         alert.show();
     }
 
-    public void showSuccessDialog(String message){
+    public void showSuccessDialog(String message) {
         builder = new AlertDialog.Builder(this);
         builder.setMessage(message);
         builder.setCancelable(false)
@@ -223,7 +215,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         alert.show();
     }
 
-    public void showSuccessDialog(String title, String message){
+    public void showSuccessDialog(String title, String message) {
         builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
         builder.setMessage(message);
@@ -239,10 +231,45 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         alert.show();
     }
 
+    public void showBackAlert(Intent intent, boolean isFinishAffinity) {
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.back_confirmation));
+        builder.setMessage(getString(R.string.do_you_still_want_to_go_back));
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if(isFinishAffinity){
+                            finishAffinity();
+                        }else {
+                            finish();
+                        }
+                        if (intent != null) {
+                            startActivity(intent);
+                            overridePendingTransition(0, 0);
+                        }
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
 
+    public void imageButtonBackClick(View view) {
+        finish();
+    }
+
+    public void imageButtonHomeClick(View view) {
+        finish();
     }
 
     public static float round(float number) {

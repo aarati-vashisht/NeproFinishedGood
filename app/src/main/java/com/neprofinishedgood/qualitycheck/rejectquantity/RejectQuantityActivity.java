@@ -21,6 +21,9 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
+import com.neprofinishedgood.move.MoveActivity;
+import com.neprofinishedgood.move.MoveStillageActivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
@@ -163,6 +166,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (body.getStandardQty() > 0) {
+                isScanned = true;
                 setData(body);
             }else{
                 showSuccessDialog(getResources().getString(R.string.stillage_discarded));
@@ -190,7 +194,8 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         // initData();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (body.getStatus().equals(getResources().getString(R.string.success))) {
-                showSuccessDialog(getString(R.string.items_rejected_successfully));
+                isScanned = false;
+                showSuccessDialog(body.getMessage());
 //                CustomToast.showToast(getApplicationContext(), getString(R.string.items_rejected_successfully));
                 linearLayoutScanDetail.setVisibility(View.GONE);
                 editTextScanStillage.setEnabled(true);
@@ -268,6 +273,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
+        isScanned = false;
         linearLayoutScanDetail.setVisibility(View.GONE);
         linearLayoutScanDetail.setAnimation(fadeOut);
         editTextScanStillage.setText("");
@@ -311,6 +317,23 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, R.id.text1, shiftList);
         spinnerShift.setAdapter(arrayAdapter);
 
+    }
+
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(RejectQuantityActivity.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(RejectQuantityActivity.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
     }
 
 //    @OnTextChanged(value = R.id.editTextScanLot, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)

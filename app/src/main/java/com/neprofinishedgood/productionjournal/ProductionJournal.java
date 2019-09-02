@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
@@ -19,10 +18,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.productionjournal.model.ItemPicked;
 import com.neprofinishedgood.productionjournal.model.PickingListDatum;
-import com.neprofinishedgood.productionjournal.model.ProductionJournalRouteDataInput;
 import com.neprofinishedgood.productionjournal.model.RouteCardPicked;
 import com.neprofinishedgood.productionjournal.model.RoutingListDatum;
 import com.neprofinishedgood.productionjournal.model.WorkOrderInput;
@@ -88,6 +85,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
 
     boolean isPickingSuccess = false;
     boolean isRoutingSuccess = false;
+    private boolean isScanned = false;
 
     public static ProductionJournal getInstance() {
         return instance;
@@ -157,6 +155,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
 //    };
 
     void setData(WorkOrderResponse body) {
+        isScanned = true;
         cardView.setVisibility(View.VISIBLE);
         tabs.setVisibility(View.VISIBLE);
         view_pager.setVisibility(View.VISIBLE);
@@ -199,6 +198,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @Override
     public void onFailure(String message) {
         hideProgress();
+        isScanned = false;
         showSuccessDialog(message);
 //        CustomToast.showToast(this, message);
         editTextScanWorkOrder.setText("");
@@ -222,6 +222,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
         isPickingSuccess = false;
         isRoutingSuccess = false;
         showSuccessDialog(message);
+        isScanned = false;
 //        CustomToast.showToast(this, message);
     }
 
@@ -236,6 +237,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
             isRoutingSuccess = false;
             isPickingSuccess = false;
         }
+        isScanned = false;
         showSuccessDialog(body.getMessage());
 
     }
@@ -243,6 +245,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @Override
     public void onSubmitRouteProcessFailure(String message) {
         hideProgress();
+        isScanned = false;
         isPickingSuccess = false;
         isRoutingSuccess = false;
         showSuccessDialog(message);
@@ -261,23 +264,32 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
             isPickingSuccess = false;
             isRoutingSuccess = false;
         }
+        isScanned = false;
         showSuccessDialog(body.getMessage());
     }
 
     @Override
     public void onBackPressed() {
-        showBackAlert();
+        if (isScanned) {
+            showBackAlert();
+        } else {
+            finish();
+        }
     }
 
     @Override
     public void imageButtonBackClick(View view) {
-        showBackAlert();
+        if (isScanned) {
+            showBackAlert();
+        }else {
+            finish();
+        }
     }
 
     public void showBackAlert() {
         builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.production_journal_back_confirmation));
-        builder.setMessage(getString(R.string.are_you_sure_you_want_to_go_back));
+        builder.setTitle(getString(R.string.back_confirmation));
+        builder.setMessage(getString(R.string.do_you_still_want_to_go_back));
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
