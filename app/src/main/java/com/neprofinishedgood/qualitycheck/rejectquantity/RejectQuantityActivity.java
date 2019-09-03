@@ -91,6 +91,11 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     ScanStillageResponse body;
     private ArrayList<String> shiftList;
 
+    static RejectQuantityActivity instance;
+
+    public static RejectQuantityActivity getInstance() {
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +103,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         setContentView(R.layout.activity_reject_quantity);
         ButterKnife.bind(this);
         stillageLayout = new StillageLayout();
+        instance = this;
         ButterKnife.bind(stillageLayout, stillageDetail);
         String title = getIntent().getStringExtra("REJECT_TITLE");
         setTitle(title);
@@ -242,7 +248,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
             float stillageQty = round(Float.parseFloat((this.body.getStandardQty() + "").trim()));
             if (rejectQty > stillageQty) {
                 editTextRejectQuantity.setText("");
-                editTextRejectQuantity.setError("Invalid reject quantity!");
+                showSuccessDialog("Reject quantity must be less than stillage quantity!");
                 editTextRejectQuantity.requestFocus();
                 buttonReject.setEnabled(false);
             }else {
@@ -273,6 +279,10 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
+        showCancelAlert(2);
+    }
+
+    public void cancelClick(){
         isScanned = false;
         linearLayoutScanDetail.setVisibility(View.GONE);
         linearLayoutScanDetail.setAnimation(fadeOut);
@@ -329,6 +339,14 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     }
 
     public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
+    public void onBackPressed(){
         if (isScanned) {
             showBackAlert(null, false);
         } else {
@@ -421,7 +439,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         SharedPref.saveRejectData(json);
         showSuccessDialog(getResources().getString(R.string.data_saved_offline));
 //        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
-        onButtonCancelClick();
+        cancelClick();
         disableVisibility();
     }
 

@@ -91,7 +91,7 @@
                 layout="@layout/stillage_layout" />
 
             <TextView
-                android:id="@+id/textViewWarehouse"
+                android:id="@+id/textViewToWarehouse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/stillageDetail"
@@ -104,10 +104,10 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/linearLayoutWarehouse"
+                android:id="@+id/linearLayoutToWarehouse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textViewWarehouse"
+                android:layout_below="@id/textViewToWarehouse"
                 android:orientation="horizontal"
                 android:padding="5dp"
                 android:visibility="visible">

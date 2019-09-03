@@ -1,7 +1,7 @@
 package com.neprofinishedgood.transferstillage;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
@@ -18,10 +18,11 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
-import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 import com.neprofinishedgood.transferstillage.presenter.ITransferInterface;
 import com.neprofinishedgood.transferstillage.presenter.ITransferView;
@@ -60,6 +61,12 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @BindView(R.id.linearLayoutOfflineData)
     LinearLayout linearLayoutOfflineData;
 
+    @BindView(R.id.linearLayoutToWarehouse)
+    LinearLayout linearLayoutToWarehouse;
+
+    @BindView(R.id.textViewToWarehouse)
+    TextView textViewToWarehouse;
+
     @BindView(R.id.textViewNumberOffline)
     TextView textViewNumberOffline;
 
@@ -73,11 +80,19 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     private String warehouse;
     private String stillageWarehouse;
 
+    static TransferStillageActivity instance;
+    private String transferId;
+
+    public static TransferStillageActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer_stillage);
         ButterKnife.bind(this);
+        instance = this;
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.transfer));
@@ -160,15 +175,15 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     public void onSuccess(ScanStillageResponse body) {
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
             hideProgress();
-            if (body.getIsTransfered() == 1) {
+            if (!body.getTransferId().equals("") && body.getIsShiped().equals("1")) {
                 showSuccessDialog(getString(R.string.this_stillage_already_transfred));
 //                CustomToast.showToast(this, getString(R.string.this_stillage_already_transfred));
                 editTextScanStillage.setText("");
             } else {
                 if (body.getStandardQty() > 0) {
+                    isScanned = true;
                     setData(body);
-                }
-                else{
+                } else {
                     showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                     editTextScanStillage.setText("");
                 }
@@ -187,7 +202,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
             showSuccessDialog(message);
 //            CustomToast.showToast(this, message);
-            onButtonCancelClick();
+//            cancelClick();
         }
     }
 
@@ -196,42 +211,88 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         hideProgress();
         if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
             showSuccessDialog(body.getMessage());
-//            CustomToast.showToast(this, body.getMessage());
-            editTextScanStillage.setEnabled(true);
-            editTextScanStillage.setText("");
-            editTextScanStillage.requestFocus();
-            stillageDetail.setVisibility(View.GONE);
-            stillageDetail.setAnimation(fadeOut);
-            relativeLayoutScanDetail.setVisibility(View.GONE);
+            if (body.getTransferId().equals("")) {
+                cancelClick();
+            } else {
+                linearLayoutToWarehouse.setVisibility(View.GONE);
+                textViewToWarehouse.setVisibility(View.GONE);
+                buttonTransfer.setText(getString(R.string.ship));
+                transferId = body.getTransferId();
+            }
         }
     }
 
+    @Override
+    public void onShipFailure(String message) {
+        hideProgress();
+        showSuccessDialog(message);
+//        cancelClick();
+    }
+
+    @Override
+    public void onShipSuccess(UniversalResponse body) {
+        hideProgress();
+        showSuccessDialog(body.getMessage());
+        if (body.getStatus().equals(getString(R.string.success))) {
+            cancelClick();
+        }
+    }
+
+    void clearViews() {
+        isScanned = false;
+        editTextScanStillage.setEnabled(true);
+        editTextScanStillage.setText("");
+        editTextScanStillage.requestFocus();
+        stillageDetail.setVisibility(View.GONE);
+        stillageDetail.setAnimation(fadeOut);
+        relativeLayoutScanDetail.setVisibility(View.GONE);
+    }
+
     void setData(ScanStillageResponse body) {
+        editTextScanStillage.setEnabled(false);
         stillageWarehouse = body.getWareHouseID().trim();
         stillageDetail.setVisibility(View.VISIBLE);
         stillageDetail.setAnimation(fadeIn);
         relativeLayoutScanDetail.setVisibility(View.VISIBLE);
         stillageLayout.linearLayoutWarehouse.setVisibility(View.VISIBLE);
-        stillageLayout.textViewWarehouse.setText(body.getWareHouseID()+" | "+body.getWareHouseName());
+        stillageLayout.textViewWarehouse.setText(body.getWareHouseID() + " | " + body.getWareHouseName());
         stillageLayout.textViewitem.setText(body.getItemId());
         stillageLayout.textViewNumber.setText(body.getStickerID());
         stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewitemDesc.setText(body.getDescription());
+
+        if (body.getIsShiped().equals("0") && !body.getTransferId().equals("")) {
+            linearLayoutToWarehouse.setVisibility(View.GONE);
+            textViewToWarehouse.setVisibility(View.GONE);
+            buttonTransfer.setText(getString(R.string.ship));
+            transferId = body.getTransferId();
+        } else if (body.getIsShiped().equals("0") && body.getTransferId().equals("")) {
+            linearLayoutToWarehouse.setVisibility(View.VISIBLE);
+            textViewToWarehouse.setVisibility(View.VISIBLE);
+            buttonTransfer.setText(getString(R.string.transfer));
+        }
+
     }
 
     @OnClick(R.id.buttonTransfer)
     public void onButtonDropClick() {
 
         if (linearLayoutOfflineData.getVisibility() == View.GONE) {
-            if (spinnerWarehouse.getSelectedItemPosition() > 0) {
+            if (buttonTransfer.getText().toString().equals(getString(R.string.transfer))) {
+                if (spinnerWarehouse.getSelectedItemPosition() > 0) {
+                    showProgress(this);
+                    TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), warehouse, userId);
+                    iTransferInterface.callUpdateTransferStillage(transferInput);
+                } else {
+                    TextView textView = (TextView) spinnerWarehouse.getSelectedView();
+                    textView.setError(getString(R.string.select_warehouse));
+                    textView.requestFocus();
+                }
+            } else if (buttonTransfer.getText().toString().equals(getString(R.string.ship))) {
                 showProgress(this);
-                TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), warehouse, userId);
-                iTransferInterface.callUpdateTransferStillage(transferInput);
-            } else {
-                TextView textView = (TextView) spinnerWarehouse.getSelectedView();
-                textView.setError(getString(R.string.select_warehouse));
-                textView.requestFocus();
+                ShipInput shipInput = new ShipInput(editTextScanStillage.getText().toString().trim(), userId, transferId);
+                iTransferInterface.callShipStillage(shipInput);
             }
         } else {
             if (isOfflineValidated()) {
@@ -244,14 +305,44 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
+        showCancelAlert(5);
+    }
+
+    public void cancelClick() {
+        isScanned = false;
         editTextScanStillage.setText("");
         editTextScanStillage.setEnabled(true);
+        editTextScanStillage.requestFocus();
         relativeLayoutScanDetail.setVisibility(View.GONE);
         relativeLayoutScanDetail.setAnimation(fadeOut);
         linearLayoutOfflineData.setVisibility(View.GONE);
         linearLayoutOfflineData.setAnimation(fadeOut);
     }
 
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(TransferStillageActivity.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(TransferStillageActivity.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
+    public void onBackPressed() {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
 
     void setDataOffline() {
         textViewNumberOffline.setText(editTextScanStillage.getText().toString());

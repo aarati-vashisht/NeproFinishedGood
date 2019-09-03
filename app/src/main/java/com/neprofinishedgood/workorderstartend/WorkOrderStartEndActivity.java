@@ -2,6 +2,7 @@ package com.neprofinishedgood.workorderstartend;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -15,6 +16,8 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.workorderstartend.Presenter.IWorkOrderStartEndInterface;
 import com.neprofinishedgood.workorderstartend.Presenter.IWorkOrderStartEndPresenter;
@@ -87,7 +90,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     public void onEditTextScanWorkOrderChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
 //            scanWorkOrderhandler.postDelayed(workOrderRunnable, delay);
-            if(text.toString().trim().length() == scanWorkOrderLength) {
+            if (text.toString().trim().length() == scanWorkOrderLength) {
                 if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
                     showProgress(WorkOrderStartEndActivity.this);
                     if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
@@ -134,6 +137,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     public void onWorkOrderScanSuccess(WorkOrderScanResponse body) {
         hideProgress();
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+            isScanned = true;
             setData(body);
             editTextScanWorkOrder.setEnabled(false);
         } else {
@@ -191,9 +195,10 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     public void onWorkOrderStartSuccess(UniversalResponse body) {
         hideProgress();
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+            isScanned = false;
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(getApplicationContext(), body.getMessage());
-              disableViews();
+            disableViews();
         } else {
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(getApplicationContext(), body.getMessage());
@@ -211,6 +216,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     public void onWorkOrderEndSuccess(UniversalResponse body) {
         hideProgress();
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+            isScanned = false;
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(getApplicationContext(), body.getMessage());
             disableViews();
@@ -225,6 +231,31 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         linearLayoutWorkOrderScanDetail.setVisibility(View.GONE);
         editTextScanWorkOrder.setEnabled(true);
         editTextScanWorkOrder.setText("");
+    }
+
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(WorkOrderStartEndActivity.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(WorkOrderStartEndActivity.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
+    public void onBackPressed(){
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
     }
 
 }

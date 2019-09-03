@@ -77,11 +77,18 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     private String autoPick = "0";
     private String quantity = "";
 
+    static RAFActivity instance;
+
+    public static RAFActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_raf);
         ButterKnife.bind(this);
+        instance = this;
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
 
@@ -186,7 +193,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
             if (body.getStatus().equals(getString(R.string.success))) {
                 isScanned = false;
                 showSuccessDialog(body.getMessage());
-                onButtonCancelClick();
+                cancelClick();
             } else {
                 showSuccessDialog(body.getMessage());
 //                CustomToast.showToast(this, getString(R.string.something_went_wrong_please_try_again));
@@ -263,6 +270,10 @@ public class RAFActivity extends BaseActivity implements IRAFView {
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
+        showCancelAlert(1);
+    }
+
+    public void cancelClick(){
         isScanned = false;
         linearLayoutScanDetail.setVisibility(View.GONE);
         linearLayoutEnterQtyButtons.setVisibility(View.GONE);
@@ -282,6 +293,14 @@ public class RAFActivity extends BaseActivity implements IRAFView {
     }
 
     public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
+    public void onBackPressed(){
         if (isScanned) {
             showBackAlert(null, false);
         } else {
@@ -328,7 +347,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
         SharedPref.saveRafData(json);
         showSuccessDialog(getResources().getString(R.string.data_saved_offline));
 //        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
-        onButtonCancelClick();
+        cancelClick();
         editTextScanStillage.setEnabled(true);
         disableVisibility();
     }

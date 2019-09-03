@@ -1,5 +1,6 @@
 package com.neprofinishedgood.receivestillage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -13,8 +14,10 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.receivestillage.presenter.IRecieveTransferInterface;
 import com.neprofinishedgood.receivestillage.presenter.IRecieveTransferView;
 import com.neprofinishedgood.receivestillage.presenter.RecieveTransferPresenter;
@@ -43,12 +46,18 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
     long scanStillageLastTexxt = 0;
     private IRecieveTransferInterface iRecieveTransferInterface;
 
+    static ReceiveStillageActivity instance;
+
+    public static ReceiveStillageActivity getInstance() {
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive_return_stillage);
         ButterKnife.bind(this);
+        instance = this;
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.recieve_return_stillage));
@@ -112,6 +121,11 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
+        showCancelAlert(6);
+    }
+
+    public void cancelClick(){
+        isScanned = false;
         editTextScanStillage.setText("");
         editTextScanStillage.setEnabled(true);
         relativeLayoutScanDetail.setVisibility(View.GONE);
@@ -138,6 +152,7 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
 //                CustomToast.showToast(this, getString(R.string.this_stillage_already_recieved));
             } else {
                 if (body.getStandardQty() > 0) {
+                    isScanned = true;
                     setData(body);
                     editTextScanStillage.setEnabled(false);
                 }
@@ -176,11 +191,37 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
     @Override
     public void onUpdateRecieveTransferSuccess(UniversalResponse body) {
         hideProgress();
+        isScanned = false;
         showSuccessDialog(body.getMessage());
 //        CustomToast.showToast(this, body.getMessage());
         relativeLayoutScanDetail.setVisibility(View.GONE);
         editTextScanStillage.setText("");
         editTextScanStillage.setEnabled(true);
+    }
+
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(ReceiveStillageActivity.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(ReceiveStillageActivity.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
+    public void onBackPressed(){
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
     }
 
 }

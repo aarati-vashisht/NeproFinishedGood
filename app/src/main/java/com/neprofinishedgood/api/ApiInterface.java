@@ -29,6 +29,7 @@ import com.neprofinishedgood.qualitycheck.model.RejectedCompleteInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
 import com.neprofinishedgood.raf.model.RafInput;
+import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 import com.neprofinishedgood.workorderstartend.model.WorkOrderScanInput;
@@ -156,5 +157,8 @@ public interface ApiInterface {
 
     @POST("GetBin")
     Call<ScanStillageResponse> getBin(@Body AisleInput aisleInput);
+
+    @POST("ShipTransfer")
+    Call<UniversalResponse> shipTransfer(@Body ShipInput shipInput);
 
 }

@@ -1,5 +1,6 @@
 package com.neprofinishedgood.assign;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -30,11 +31,13 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.LocationData;
 import com.neprofinishedgood.move.model.LocationInput;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
@@ -621,6 +624,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (body.getStandardQty() > 0) {
+                isScanned = true;
                 setData(body);
             } else {
                 showSuccessDialog(getResources().getString(R.string.stillage_discarded));
@@ -712,6 +716,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         hideProgress();
         if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (response.getStatus().equals(getString(R.string.success))) {
+                isScanned = false;
                 relativeLayoutScanDetail.setVisibility(View.GONE);
                 linearLayoutAssignLocationButtons.setVisibility(View.GONE);
                 editTextScanStillage.setEnabled(true);
@@ -771,6 +776,31 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     public void onRackSelectionFailure(String message) {
         hideProgress();
         showSuccessDialog(message);
+    }
+
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(AssignActivity.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(AssignActivity.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
+    public void onBackPressed(){
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
     }
 
     void setDataOffline() {

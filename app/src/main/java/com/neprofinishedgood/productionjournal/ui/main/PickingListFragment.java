@@ -229,7 +229,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
 
     boolean isValidated() {
         if (spinnerItem.getSelectedItemPosition() == 0) {
-            TextView textView = (TextView)spinnerItem.getSelectedView();
+            TextView textView = (TextView) spinnerItem.getSelectedView();
             textView.setError(getString(R.string.select_item));
             textView.requestFocus();
             return false;
@@ -238,6 +238,13 @@ public class PickingListFragment extends Fragment implements IPickingListView {
             editTextQuantity.setError(getString(R.string.enter_quantity));
             editTextQuantity.requestFocus();
             return false;
+        } else if (!editTextQuantity.getText().toString().equals("") || !editTextQuantity.getText().toString().equals(".")) {
+            float qty = Float.parseFloat(editTextQuantity.getText().toString());
+            if (qty <= 0) {
+                editTextQuantity.setError(getString(R.string.enter_quantity));
+                editTextQuantity.requestFocus();
+                return false;
+            }
         }
         return true;
     }
@@ -253,16 +260,14 @@ public class PickingListFragment extends Fragment implements IPickingListView {
     public void onButtonSubmitClick() {
         if (ProductionJournal.getInstance().addedPickingListDatumList.size() > 0) {
             showConfirmationAlert();
-        } else{
+        } else {
             showErrorDialog("Picking list is empty!");
         }
     }
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
-        ProductionJournal.getInstance().finish();
-        startActivity(new Intent(ProductionJournal.getInstance(), ProductionJournal.class));
-//        ProductionJournal.getInstance().disableViews();
+        ProductionJournal.getInstance().showCancelAlert(8);
     }
 
     public void showConfirmationAlert() {

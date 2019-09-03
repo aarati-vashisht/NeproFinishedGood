@@ -215,11 +215,25 @@ public class RouteCardFragment extends Fragment {
             editTextQuantity.setError(getString(R.string.enter_quantity));
             editTextQuantity.requestFocus();
             return false;
+        }else if (!editTextQuantity.getText().toString().equals("") || !editTextQuantity.getText().toString().equals(".")) {
+            float qty = Float.parseFloat(editTextQuantity.getText().toString());
+            if (qty <= 0) {
+                editTextQuantity.setError(getString(R.string.enter_quantity));
+                editTextQuantity.requestFocus();
+                return false;
+            }
         }
         if (editTextHours.getText().toString().equals("")) {
             editTextHours.setError(getString(R.string.enter_hours));
             editTextHours.requestFocus();
             return false;
+        }else if (!editTextHours.getText().toString().equals("") || !editTextHours.getText().toString().equals(".")) {
+            float qty = Float.parseFloat(editTextHours.getText().toString());
+            if (qty <= 0) {
+                editTextHours.setError(getString(R.string.enter_hours));
+                editTextHours.requestFocus();
+                return false;
+            }
         }
         return true;
     }
@@ -242,9 +256,7 @@ public class RouteCardFragment extends Fragment {
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
-        ProductionJournal.getInstance().finish();
-        startActivity(new Intent(ProductionJournal.getInstance(), ProductionJournal.class));
-//        ProductionJournal.getInstance().disableViews();
+        ProductionJournal.getInstance().showCancelAlert(8);
     }
 
     public void showConfirmationAlert() {
