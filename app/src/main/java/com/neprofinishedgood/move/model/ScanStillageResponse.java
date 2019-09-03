@@ -136,6 +136,34 @@ public class ScanStillageResponse {
     @Expose
     private String loadingAreaId;
 
+
+
+    @SerializedName("IsShiped")
+    @Expose
+    private String isShiped;
+    @SerializedName("TransferId")
+    @Expose
+    private String transferId;
+
+    public String getIsShiped() {
+        return isShiped;
+    }
+
+    public void setIsShiped(String isShiped) {
+        this.isShiped = isShiped;
+    }
+
+    public String getTransferId() {
+        return transferId;
+    }
+
+    public void setTransferId(String transferId) {
+        this.transferId = transferId;
+    }
+
+
+
+
     public String getLoadingAreaId() {
         return loadingAreaId;
     }

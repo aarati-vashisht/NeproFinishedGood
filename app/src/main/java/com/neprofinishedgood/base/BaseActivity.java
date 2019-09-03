@@ -24,6 +24,14 @@ import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.login.LoginActivity;
 import com.neprofinishedgood.login.model.LoginResponse;
+import com.neprofinishedgood.mergestillage.MergeStillageActivity;
+import com.neprofinishedgood.productionjournal.ProductionJournal;
+import com.neprofinishedgood.qualitycheck.rejectcompletestillage.RejectCompleteStillage;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
+import com.neprofinishedgood.raf.RAFActivity;
+import com.neprofinishedgood.receivestillage.ReceiveStillageActivity;
+import com.neprofinishedgood.transferstillage.TransferStillageActivity;
+import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 import com.neprofinishedgood.utils.SharedPref;
 
 import java.math.BigDecimal;
@@ -238,14 +246,50 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(isFinishAffinity){
+                        if (isFinishAffinity) {
                             finishAffinity();
-                        }else {
+                        } else {
                             finish();
                         }
                         if (intent != null) {
                             startActivity(intent);
                             overridePendingTransition(0, 0);
+                        }
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void showCancelAlert(int activity) {
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.back_confirmation));
+        builder.setMessage(getString(R.string.do_you_still_want_to_go_back));
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (activity == 1) {
+                            RAFActivity.getInstance().cancelClick();
+                        } else if (activity == 2) {
+                            RejectQuantityActivity.getInstance().cancelClick();
+                        } else if (activity == 3) {
+                            RejectCompleteStillage.getInstance().cancelClick();
+                        } else if (activity == 4) {
+                            MergeStillageActivity.getInstance().cancelClick();
+                        } else if (activity == 5) {
+                            TransferStillageActivity.getInstance().cancelClick();
+                        } else if (activity == 6) {
+                            ReceiveStillageActivity.getInstance().cancelClick();
+                        } else if (activity == 7) {
+                            UpdateQuantityActivity.getInstance().cancelClick();
+                        } else if (activity == 8) {
+                            ProductionJournal.getInstance().cancelClick();
                         }
                         dialog.cancel();
                     }

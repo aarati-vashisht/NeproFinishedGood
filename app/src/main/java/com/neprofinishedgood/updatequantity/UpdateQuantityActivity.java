@@ -1,5 +1,6 @@
 package com.neprofinishedgood.updatequantity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -18,9 +19,11 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 import com.neprofinishedgood.updatequantity.presenter.IUpdateQtyInterface;
@@ -78,13 +81,19 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
     public static int i = 0;
 
-    @Override
+    static UpdateQuantityActivity instance;
 
+    public static UpdateQuantityActivity getInstance() {
+        return instance;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_quantity);
 
         ButterKnife.bind(this);
+        instance = this;
         setTitle(getString(R.string.update_quantity));
         iUpdateQtyInterface = new IUpdateQtyPresenter(this, this);
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
@@ -205,6 +214,11 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
+        showCancelAlert(7);
+    }
+
+    public void cancelClick(){
+        isScanned = false;
         linearLayoutScanDetail.setVisibility(View.GONE);
         linearLayoutScanDetail.setAnimation(fadeOut);
         linearLayoutReason.setVisibility(View.GONE);
@@ -232,6 +246,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
 
             if (body.getStandardQty() > 0) {
+                isScanned = true;
                 setData(body);
                 editTextScanStillage.setEnabled(false);
             }
@@ -268,7 +283,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             showSuccessDialog(message);
             //            CustomToast.showToast(this, message);
-            onButtonCancelClick();
+            cancelClick();
         }
     }
 
@@ -280,14 +295,40 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (body.getStatus().equals(getResources().getString(R.string.success))) {
                 showSuccessDialog(body.getMessage());
+                isScanned = false;
 //                CustomToast.showToast(this, body.getMessage());
-                onButtonCancelClick();
+                cancelClick();
             } else {
                 showSuccessDialog(body.getMessage());
 //                CustomToast.showToast(getApplicationContext(), body.getMessage());
             }
         }
         spinnerReason.setSelection(0);
+    }
+
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(UpdateQuantityActivity.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(UpdateQuantityActivity.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
+    public void onBackPressed(){
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
     }
 
 
@@ -329,7 +370,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         SharedPref.saveUpdateData(json);
         showSuccessDialog(getResources().getString(R.string.data_saved_offline));
 //        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
-        onButtonCancelClick();
+        cancelClick();
         disableVisibility();
     }
 

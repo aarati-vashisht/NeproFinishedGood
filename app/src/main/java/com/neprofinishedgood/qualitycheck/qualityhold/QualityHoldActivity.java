@@ -1,5 +1,6 @@
 package com.neprofinishedgood.qualitycheck.qualityhold;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -15,11 +16,13 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.qualitycheck.model.QualityInput;
 import com.neprofinishedgood.qualitycheck.qualityhold.presenter.IHoldPresenter;
 import com.neprofinishedgood.qualitycheck.qualityhold.presenter.IHoldView;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
@@ -132,6 +135,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (body.getStandardQty() > 0) {
+                isScanned = true;
                 setData(body);
             }
             else{
@@ -155,6 +159,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
     @Override
     public void onHoldUnholdSuccess(UniversalResponse body) {
         hideProgress();
+        isScanned = false;
         linearLayoutScanDetail.setVisibility(View.GONE);
         editTextScanStillage.setEnabled(true);
         editTextScanStillage.setText("");
@@ -196,4 +201,28 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
         iHoldPresenter.callHoldUnholdService(qualityInput);
     }
 
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(QualityHoldActivity.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(QualityHoldActivity.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
+    public void onBackPressed(){
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
 }

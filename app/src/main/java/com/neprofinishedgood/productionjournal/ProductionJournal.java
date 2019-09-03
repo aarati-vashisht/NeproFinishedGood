@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.productionjournal.model.ItemPicked;
 import com.neprofinishedgood.productionjournal.model.PickingListDatum;
 import com.neprofinishedgood.productionjournal.model.RouteCardPicked;
@@ -30,6 +31,7 @@ import com.neprofinishedgood.productionjournal.presenter.IProductionJournalView;
 import com.neprofinishedgood.productionjournal.ui.main.PickingListFragment;
 import com.neprofinishedgood.productionjournal.ui.main.RouteCardFragment;
 import com.neprofinishedgood.productionjournal.ui.main.SectionsPagerAdapter;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 
 import java.util.ArrayList;
@@ -85,7 +87,6 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
 
     boolean isPickingSuccess = false;
     boolean isRoutingSuccess = false;
-    private boolean isScanned = false;
 
     public static ProductionJournal getInstance() {
         return instance;
@@ -271,39 +272,10 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     @Override
     public void onBackPressed() {
         if (isScanned) {
-            showBackAlert();
+            showBackAlert(null, false);
         } else {
             finish();
         }
-    }
-
-    @Override
-    public void imageButtonBackClick(View view) {
-        if (isScanned) {
-            showBackAlert();
-        }else {
-            finish();
-        }
-    }
-
-    public void showBackAlert() {
-        builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.back_confirmation));
-        builder.setMessage(getString(R.string.do_you_still_want_to_go_back));
-        builder.setCancelable(false)
-                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
     public void showSuccessDialog(String message) {
@@ -315,11 +287,36 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
                         if (isPickingSuccess || isRoutingSuccess) {
                             finish();
                             startActivity(new Intent(ProductionJournal.this, ProductionJournal.class));
+                            overridePendingTransition(0,0);
                         }
                         dialog.cancel();
                     }
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public void cancelClick(){
+        isScanned = false;
+        ProductionJournal.getInstance().finish();
+        startActivity(new Intent(ProductionJournal.getInstance(), ProductionJournal.class));
+        ProductionJournal.getInstance().overridePendingTransition(0,0);
+    }
+
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(ProductionJournal.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(ProductionJournal.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
     }
 }

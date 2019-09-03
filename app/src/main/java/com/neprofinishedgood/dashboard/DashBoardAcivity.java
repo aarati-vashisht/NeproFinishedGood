@@ -2,12 +2,14 @@ package com.neprofinishedgood.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.assign.AssignActivity;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.productionjournal.ProductionJournal;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.raf.RAFActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.login.model.LoginResponse;
@@ -184,5 +186,9 @@ public class DashBoardAcivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finishAffinity();
+    }
+
+    public void imageButtonHomeClick(View view) {
+
     }
 }

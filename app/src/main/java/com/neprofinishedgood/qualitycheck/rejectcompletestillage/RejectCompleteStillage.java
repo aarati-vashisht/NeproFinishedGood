@@ -22,6 +22,7 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
@@ -30,6 +31,7 @@ import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.rejectcompletestillage.presenter.IQACompletePresenter;
 import com.neprofinishedgood.qualitycheck.rejectcompletestillage.presenter.IQACompleteView;
 import com.neprofinishedgood.qualitycheck.qualityhold.QualityHoldActivity;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.raf.model.StillageList;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
@@ -86,11 +88,19 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
 
     private ArrayList<String> shiftList;
 
+    static RejectCompleteStillage instance;
+
+    public static RejectCompleteStillage getInstance() {
+        return instance;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reject_complete_stillage);
         ButterKnife.bind(this);
+        instance = this;
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.reject_complete_stillage));
@@ -158,6 +168,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (body.getStandardQty() > 0) {
+                isScanned = true;
                 setData(body);
             } else {
                 showSuccessDialog(getResources().getString(R.string.stillage_discarded));
@@ -185,6 +196,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
         // initData();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (body.getStatus().equals(getResources().getString(R.string.success))) {
+                isScanned = false;
                 showSuccessDialog(body.getMessage());
 //                CustomToast.showToast(getApplicationContext(), getString(R.string.items_rejected_successfully));
                 linearLayoutScanDetail.setVisibility(View.GONE);
@@ -262,6 +274,11 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
+        showCancelAlert(3);
+    }
+
+    public void cancelClick(){
+        isScanned = false;
         linearLayoutScanDetail.setVisibility(View.GONE);
         linearLayoutScanDetail.setAnimation(fadeOut);
         editTextScanStillage.setText("");
@@ -285,7 +302,6 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
         return true;
     }
 
-
     @OnItemSelected(R.id.spinnerShift)
     public void spinnerShiftSelected(Spinner spinner, int position) {
         shift = shiftList.get(position);
@@ -300,6 +316,32 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, R.id.text1, shiftList);
         spinnerShift.setAdapter(arrayAdapter);
 
+    }
+
+
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(RejectCompleteStillage.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(RejectCompleteStillage.this, DashBoardAcivity.class));
+        }
+    }
+
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
+    public void onBackPressed(){
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
     }
 
 
@@ -338,7 +380,7 @@ public class RejectCompleteStillage extends BaseActivity implements IQACompleteV
         SharedPref.saveCompleteRejectData(json);
         showSuccessDialog(getResources().getString(R.string.data_saved_offline));
 //        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
-        onButtonCancelClick();
+        cancelClick();
         editTextScanStillage.setEnabled(true);
         disableVisibility();
     }

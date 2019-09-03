@@ -228,7 +228,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
-        finish();
+        showBackAlert(null, false);
         overridePendingTransition(0, 0);
 
     }
@@ -469,7 +469,6 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        onButtonCancelClick();
                         clearAllSpinnerData();
                         finish();
                         MoveActivity.getInstance().getAllAssignedData();
@@ -751,6 +750,14 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         }
     }
 
+    public void onBackPressed(){
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
     void setDataOffline() {
         stillageNumber = getIntent().getStringExtra(Constants.SELECTED_STILLAGE_OFFLINE);
         initData(null);
@@ -778,7 +785,6 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         SharedPref.saveMoveData(json);
         showSuccessDialog(getResources().getString(R.string.data_saved_offline));
 //        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
-        onButtonCancelClick();
         clearAllSpinnerData();
         finish();
     }

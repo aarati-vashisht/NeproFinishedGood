@@ -138,7 +138,7 @@
     <string name="nodiscard">No Discard</string>
     <string name="this_stillage_already_merged">This stillage is already merged</string>
     <string name="this_stillage_already_recieved">This stillage is already received</string>
-    <string name="this_stillage_already_transfred">This stillage already transferred</string>
+    <string name="this_stillage_already_transfred">This stillage is already transferred</string>
     <string name="proceed_offline">Do You Want To Proceed In Offline Mode?</string>
     <string name="data_saved_offline">Data Saved Offline</string>
     <string name="child_and_parent_cannot_be_same">Child And Parent Stillage Can\'t  Be Same</string>
@@ -198,5 +198,6 @@
     <string name="zone">Zone:</string>
     <string name="stillage_discarded">This stillage is discarded!</string>
     <string name="operation_invalid">Operation Invalid</string>
+    <string name="ship">Ship</string>
 
 </resources>

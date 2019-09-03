@@ -2,6 +2,7 @@ package com.neprofinishedgood.mergestillage;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -18,12 +19,14 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
 import com.neprofinishedgood.mergestillage.presenter.IMergeStillageInterface;
 import com.neprofinishedgood.mergestillage.presenter.IMergeStillageView;
 import com.neprofinishedgood.mergestillage.presenter.MergeStillagePresenter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
 
@@ -80,11 +83,18 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     private boolean isChild = false;
     String childToSend, childWareHouse, parentWareHouse = "";
 
+    static MergeStillageActivity instance;
+
+    public static MergeStillageActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merge_stillage);
         ButterKnife.bind(this);
+        instance = this;
         parentStillageLayout = new StillageLayout();
         childStillageLayout = new StillageLayout();
         ButterKnife.bind(parentStillageLayout, parentStillageDetail);
@@ -393,7 +403,12 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
+        showCancelAlert(4);
+    }
+
+    public void cancelClick(){
         isChild = false;
+        isScanned = false;
         editTextScanParentStillage.setText("");
         editTextScanChildStillage.setText("");
         editTextMergeQuantity.setText("");
@@ -411,8 +426,31 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         linearLayoutMergeStillage.setVisibility(View.GONE);
         linearLayoutAssignLocationButtons.setVisibility(View.GONE);
         linearLayoutQuantitySum.setVisibility(View.GONE);
+    }
 
+    public void imageButtonHomeClick(View view) {
+        if (isScanned) {
+            showBackAlert(new Intent(MergeStillageActivity.this, DashBoardAcivity.class), true);
+        } else {
+            finishAffinity();
+            startActivity(new Intent(MergeStillageActivity.this, DashBoardAcivity.class));
+        }
+    }
 
+    public void imageButtonBackClick(View view) {
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
+    }
+
+    public void onBackPressed(){
+        if (isScanned) {
+            showBackAlert(null, false);
+        } else {
+            finish();
+        }
     }
 
     @Override
@@ -469,6 +507,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                     editTextScanParentStillage.setEnabled(false);
                     setParentData(body);
                     if (body.getStandardQty() != body.getItemStdQty()) {
+                        isScanned = true;
                         linearLayoutScanChild.setVisibility(View.VISIBLE);
                         linearLayoutScanChild.setAnimation(fadeIn);
                         editTextScanChildStillage.requestFocus();
@@ -505,6 +544,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     public void onUpdateMergeStillageSuccess(UniversalResponse body) {
         hideProgress();
         childToSend = "";
+        isScanned = false;
         showSuccessDialog(body.getMessage());
 //        CustomToast.showToast(this, body.getMessage());
         editTextScanParentStillage.setText("");

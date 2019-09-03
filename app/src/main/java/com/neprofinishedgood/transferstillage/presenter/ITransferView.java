@@ -11,4 +11,8 @@ public interface ITransferView {
     void onUpdateTransferFailure(String message);
 
     void onUpdateTransferSuccess(UniversalResponse body);
+
+    void onShipFailure(String message);
+
+    void onShipSuccess(UniversalResponse body);
 }
