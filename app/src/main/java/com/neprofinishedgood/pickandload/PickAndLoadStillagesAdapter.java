@@ -47,7 +47,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
     private Context context;
     private View view;
     private String charString = "";
-    private String reason="";
+    private String reason = "";
 
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
     private List<LoadingPlanList> loadingPlanDetailLists;
@@ -82,13 +82,15 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         viewBinderHelper.bind(holder.swipeRevealLayout, stillageDatumListFiltered.get(position).getStillageNO());
 
         holder.textViewitem.setText(stillageDatumListFiltered.get(position).getItemName());
-        holder.textViewSite.setText(stillageDatumListFiltered.get(position).getSiteName());
+//        holder.textViewSite.setText(stillageDatumListFiltered.get(position).getSiteName());
+        holder.textViewSite.setVisibility(View.GONE);
+        holder.textViewSiteTitle.setVisibility(View.GONE);
         holder.textViewQuantity.setText(stillageDatumListFiltered.get(position).getStillageQty() + "");
-        holder.textViewStdQuatity.setText(stillageDatumListFiltered.get(position).getStillageStdQty() + "");
-
+        holder.textViewStdQuatity.setText(stillageDatumListFiltered.get(position).getPickingQty() + "");
+        holder.textViewStdQuatityTitle.setText("Loading Quantity");
         for (int j = 0; j < PickAndLoadStillageActivity.getInstance().warehouseList.size(); j++) {
             if (PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getId().equals(stillageDatumListFiltered.get(position).getWareHouseID() + "")) {
-                holder.textViewWarehouse.setText(PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getId()+" | "+PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getName());
+                holder.textViewWarehouse.setText(PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getName());
             }
         }
         holder.textViewNumber.setText(stillageDatumListFiltered.get(position).getStillageNO());
@@ -130,10 +132,14 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         TextView textViewitem;
         @BindView(R.id.textViewSite)
         TextView textViewSite;
+        @BindView(R.id.textViewSiteTitle)
+        TextView textViewSiteTitle;
         @BindView(R.id.textViewQuantity)
         TextView textViewQuantity;
         @BindView(R.id.textViewStdQuatity)
         TextView textViewStdQuatity;
+        @BindView(R.id.textViewStdQuatityTitle)
+        TextView textViewStdQuatityTitle;
         @BindView(R.id.textViewWarehouse)
         TextView textViewWarehouse;
         @BindView(R.id.textViewLocation)
@@ -282,8 +288,8 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         textViewQuantityToBeLoad.setText(stillageDatumListFiltered.get(position).getPickingQty() + "");
         editTextLoadQuantity.setText(textViewQuantityToBeLoad.getText().toString().trim());
         editTextLoadQuantity.requestFocus();
-        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(PickAndLoadStillageActivity.getInstance(), R.layout.spinner_layout, PickAndLoadStillageActivity.getInstance().reasonList);
-        spinnerRejectReason.setAdapter(aisleListAdapter);
+        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(PickAndLoadStillageActivity.getInstance(), R.layout.spinner_layout, PickAndLoadStillageActivity.getInstance().reasonList);
+        spinnerRejectReason.setAdapter(reasonListAdapter);
         spinnerRejectReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
