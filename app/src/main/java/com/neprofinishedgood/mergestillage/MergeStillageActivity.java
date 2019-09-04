@@ -161,7 +161,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                             showProgress(MergeStillageActivity.this);
                             iMergeStillageInterface.callScanStillageService(new MoveInput(editTextScanChildStillage.getText().toString().trim(), userId));
                         } else {
-                            editTextScanChildStillage.setError(getString(R.string.this_stillage_already_merged));
+                            showSuccessDialog(getString(R.string.this_stillage_already_merged));
                         }
                     } else {
                         showProgress(MergeStillageActivity.this);

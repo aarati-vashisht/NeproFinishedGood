@@ -200,6 +200,7 @@
                                 android:textSize="10sp" />
 
                             <TextView
+                                android:id="@+id/textViewSiteTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="20dp"
@@ -256,6 +257,7 @@
                                 android:textSize="10sp" />
 
                             <TextView
+                                android:id="@+id/textViewStdQuatityTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"

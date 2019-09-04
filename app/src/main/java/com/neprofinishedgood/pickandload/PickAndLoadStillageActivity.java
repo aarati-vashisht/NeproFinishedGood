@@ -1,5 +1,7 @@
 package com.neprofinishedgood.pickandload;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -188,13 +190,13 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         hideProgress();
         if (body.getDriverName() == null || body.getGateNo() == null || body.getLoadingPlanList1() == null ||
                 body.getLoadingPlanNo() == null || body.getTruckID() == null) {
-            showSuccessDialog(body.getMessage());
+            showSuccessDialog("There is no stillage in this loading plan", false);
 //            CustomToast.showToast(PickAndLoadStillageActivity.this, getString(R.string.no_data_found));
             textViewGateNumber.setText("");
 //            textViewLoadingPlan.setText("");
             textViewTruckDriver.setText("");
             textViewTruckNumber.setText("");
-            finish();
+
 //            PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
         } else {
             if (body.getLoadingPlanList1().size() <= 1) {
@@ -233,16 +235,33 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
             } catch (ConcurrentModificationException e) {
                 e.printStackTrace();
             }
-            showSuccessDialog(body.getMessage());
+            showSuccessDialog(body.getMessage(), true);
 //            CustomToast.showToast(this, body.getMessage());
-            showProgress(this);
-            //  PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
-            iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId));
+
         } else {
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(this, body.getMessage());
         }
 
+    }
+
+    public void showSuccessDialog(String message, boolean isAfterLoading) {
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (isAfterLoading) {
+                            showProgress(PickAndLoadStillageActivity.this);
+                            iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId));
+                        } else {
+                            finish();
+                        }
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
