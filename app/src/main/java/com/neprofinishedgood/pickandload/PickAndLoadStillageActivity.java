@@ -2,6 +2,7 @@ package com.neprofinishedgood.pickandload;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.dashboard.DashBoardAcivity;
+import com.neprofinishedgood.move.MoveStillageActivity;
 import com.neprofinishedgood.pickandload.model.LoadingPlanDetails;
 import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
@@ -370,5 +373,10 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(this, body.getMessage());
         }
+    }
+
+    public void imageButtonHomeClick(View view) {
+        finishAffinity();
+        startActivity(new Intent(PickAndLoadStillageActivity.this, DashBoardAcivity.class));
     }
 }

@@ -94,8 +94,11 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             }
         }
         holder.textViewNumber.setText(stillageDatumListFiltered.get(position).getStillageNO());
-        holder.textViewLocation.setText(stillageDatumListFiltered.get(position).getAisle() + "-" + stillageDatumListFiltered.get(position).getRack() + "-" + stillageDatumListFiltered.get(position).getBin());
-
+        if(stillageDatumListFiltered.get(position).getZone().equals("")) {
+            holder.textViewLocation.setText(stillageDatumListFiltered.get(position).getAisle() + "-" + stillageDatumListFiltered.get(position).getRack() + "-" + stillageDatumListFiltered.get(position).getBin());
+        }else{
+            holder.textViewLocation.setText(stillageDatumListFiltered.get(position).getZone());
+        }
         if (stillageDatumListFiltered.get(position).getStatus().equals("")) {
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.white));
         } else if (stillageDatumListFiltered.get(position).getStatus().equals("-1")) {

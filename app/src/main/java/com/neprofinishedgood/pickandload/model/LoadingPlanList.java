@@ -26,6 +26,9 @@ public class LoadingPlanList {
     @SerializedName("Bin")
     @Expose
     private String bin;
+    @SerializedName("Zone")
+    @Expose
+    private String zone;
     @SerializedName("StillageQty")
     @Expose
     private Integer stillageQty;
@@ -160,4 +163,11 @@ public class LoadingPlanList {
         this.wareHouseID = wareHouseID;
     }
 
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
 }
