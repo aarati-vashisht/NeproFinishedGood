@@ -1,5 +1,7 @@
 package com.neprofinishedgood.splash;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.Animation;
@@ -14,6 +16,7 @@ import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.login.LoginActivity;
 import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.utils.SharedPref;
+import com.scottyab.rootbeer.RootBeer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,5 +109,34 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        if(new RootBeer(SplashActivity.this).isRooted()){
+//            showAlertDialogAndExitApp("This device is rooted. You can't use this app.");
+//        }
+//        else {
+//            setLogoWork();
+//        }
+    }
 
+    public void showAlertDialogAndExitApp(String message) {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(SplashActivity.this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finishAffinity();
+                    }
+                });
+
+        alertDialog.show();
+    }
 }
