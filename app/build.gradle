@@ -42,4 +42,6 @@ dependencies {
     implementation 'com.kaopiz:kprogresshud:1.2.0'
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 
+    implementation 'com.scottyab:rootbeer-lib:0.0.7'
+
 }
