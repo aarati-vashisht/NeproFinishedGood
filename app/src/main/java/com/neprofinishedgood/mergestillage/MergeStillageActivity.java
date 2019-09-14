@@ -233,20 +233,19 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
             mergeQty = Float.parseFloat(text.toString());
             childQty = Float.parseFloat(childStillageLayout.textViewQuantity.getText().toString());
             parentQty = Float.parseFloat(parentStillageLayout.textViewQuantity.getText().toString());
-            parentStdQty = Float.parseFloat(parentStillageLayout.textViewStdQuantity.getText().toString());
+//            parentStdQty = Float.parseFloat(parentStillageLayout.textViewStdQuantity.getText().toString());
             if (mergeQty != 0) {
                 if (mergeQty > childQty) {
-                    showSuccessDialog("Merge quantity should be less than child stillage quantity.");
-//                    editTextMergeQuantity.setError(getString(R.string.invalid_merge_quantity));
+                    showSuccessDialog("Merge quantity should be less than or equal to child stillage quantity.");
                     editTextMergeQuantity.requestFocus();
                     buttonMerge.setEnabled(false);
                     textViewQuantitySum.setText(round(parentQty) + "");
-                } else if ((mergeQty + parentQty) > parentStdQty) {
-                    showSuccessDialog("Parent stillage quantity is exceeded parent standard stillage quantity.");
-//                    editTextMergeQuantity.setError(getString(R.string.invalid_merge_quantity));
-                    editTextMergeQuantity.requestFocus();
-                    buttonMerge.setEnabled(false);
-                    textViewQuantitySum.setText(round(parentQty) + "");
+//                } else if ((mergeQty + parentQty) > parentStdQty) {
+//                    showSuccessDialog("Parent stillage quantity is exceeded parent standard stillage quantity.");
+////                    editTextMergeQuantity.setError(getString(R.string.invalid_merge_quantity));
+//                    editTextMergeQuantity.requestFocus();
+//                    buttonMerge.setEnabled(false);
+//                    textViewQuantitySum.setText(round(parentQty) + "");
                 } else {
                     buttonMerge.setEnabled(true);
                     float sum = mergeQty + parentQty;
@@ -301,19 +300,19 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
 
     @OnClick(R.id.buttonMerge)
     public void onButtonMergeClick() {
-        if (parentQty == parentStdQty) {
-            buttonMerge.setEnabled(false);
-            relativeLayoutScanChildDetail.setVisibility(View.GONE);
-            relativeLayoutScanChildDetail.setAnimation(fadeOut);
-        } else {
-            if (isValidated()) {
-                if (mergeQty == childQty) {
-                    showDiscardStickerAlertDialog();
-                } else {
-                    mergeClick("");
-                }
+//        if (parentQty == parentStdQty) {
+//            buttonMerge.setEnabled(false);
+//            relativeLayoutScanChildDetail.setVisibility(View.GONE);
+//            relativeLayoutScanChildDetail.setAnimation(fadeOut);
+//        } else {
+        if (isValidated()) {
+            if (mergeQty == childQty) {
+                showDiscardStickerAlertDialog();
+            } else {
+                mergeClick("");
             }
         }
+//        }
 
     }
 
@@ -323,17 +322,9 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         builder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-//                childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim() + ",";
                 mergeClick(getResources().getString(R.string.discard));
             }
         });
-//        .setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim() + ",";
-//                mergeClick(getResources().getString(R.string.nodiscard));
-//            }
-//        })
         AlertDialog alert = builder.create();
         alert.show();
     }
@@ -343,25 +334,25 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         parentStillageLayout.textViewQuantity.setText(changeParentQty);
         String changeChildQty = round(Float.parseFloat(childStillageLayout.textViewQuantity.getText().toString())) - mergeQty + "";
         childStillageLayout.textViewQuantity.setText(changeChildQty);
-        if ((mergeQty + parentQty) == parentStdQty) {
-            //nothing to merge parent is full
-            //call service to add
-            childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim() + ",";
-            linearLayoutScanChild.setVisibility(View.VISIBLE);
-            relativeLayoutScanChildDetail.setVisibility(View.GONE);
-            relativeLayoutScanChildDetail.setAnimation(fadeOut);
-            buttonMerge.setText(getString(R.string.merge));
-            linearLayoutMergeStillage.setVisibility(View.GONE);
-            linearLayoutMergeStillage.setAnimation(fadeOut);
-            linearLayoutAssignLocationButtons.setAnimation(fadeOut);
-            linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
-            showProgress(this);
-            UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString(), "3");
-            iMergeStillageInterface.callUpdateMergeStillage(upgradeMergeInput);
-        } else {
-            ///add more items to merge
-            showAddMoreALert();
-        }
+//        if ((mergeQty + parentQty) == parentStdQty) {
+//            //nothing to merge parent is full
+//            //call service to add
+//            childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim() + ",";
+//            linearLayoutScanChild.setVisibility(View.VISIBLE);
+//            relativeLayoutScanChildDetail.setVisibility(View.GONE);
+//            relativeLayoutScanChildDetail.setAnimation(fadeOut);
+//            buttonMerge.setText(getString(R.string.merge));
+//            linearLayoutMergeStillage.setVisibility(View.GONE);
+//            linearLayoutMergeStillage.setAnimation(fadeOut);
+//            linearLayoutAssignLocationButtons.setAnimation(fadeOut);
+//            linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
+//            showProgress(this);
+//            UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString(), "3");
+//            iMergeStillageInterface.callUpdateMergeStillage(upgradeMergeInput);
+//        } else {
+        ///add more items to merge
+        showAddMoreALert();
+//        }
         textViewQuantitySum.setText(round(mergeQty + parentQty) + "");
     }
 
@@ -380,8 +371,6 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                 relativeLayoutScanChildDetail.setAnimation(fadeOut);
                 linearLayoutMergeStillage.setVisibility(View.GONE);
                 linearLayoutMergeStillage.setAnimation(fadeOut);
-//                linearLayoutAssignLocationButtons.setVisibility(View.GONE);
-//                linearLayoutAssignLocationButtons.setAnimation(fadeOut);
                 dialogInterface.dismiss();
             }
         });
@@ -406,7 +395,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         showCancelAlert(4);
     }
 
-    public void cancelClick(){
+    public void cancelClick() {
         isChild = false;
         isScanned = false;
         editTextScanParentStillage.setText("");
@@ -445,7 +434,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         }
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         if (isScanned) {
             showBackAlert(null, false);
         } else {
@@ -457,13 +446,11 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     public void onFailure(String message) {
         hideProgress();
         showSuccessDialog(message);
-//        CustomToast.showToast(this, message);
     }
 
     @Override
     public void onSuccess(ScanStillageResponse body) {
         hideProgress();
-        //  CustomToast.showToast(this, body.getMessage());
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (isChild) {
                 if (body.getStandardQty() > 0) {
@@ -482,18 +469,12 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                     editTextScanChildStillage.setEnabled(false);
                     editTextMergeQuantity.requestFocus();
 
-                    float parentRemainQty, childQty;
-
-                    parentRemainQty = Float.parseFloat(parentStillageLayout.textViewStdQuantity.getText().toString())
-                            - Float.parseFloat(parentStillageLayout.textViewQuantity.getText().toString());
+                    float childQty;
 
                     childQty = Float.parseFloat(childStillageLayout.textViewQuantity.getText().toString());
 
-                    if (childQty <= parentRemainQty) {
-                        editTextMergeQuantity.setText(round(childQty) + "");
-                    } else if (childQty > parentRemainQty) {
-                        editTextMergeQuantity.setText(round(parentRemainQty) + "");
-                    }
+                    editTextMergeQuantity.setText(round(childQty) + "");
+
                     editTextMergeQuantity.setSelection(editTextMergeQuantity.getText().toString().length());
                 } else {
                     showSuccessDialog(getResources().getString(R.string.stillage_discarded));
@@ -506,16 +487,13 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                     linearLayoutScanParentDetail.setAnimation(fadeIn);
                     editTextScanParentStillage.setEnabled(false);
                     setParentData(body);
-                    if (body.getStandardQty() != body.getItemStdQty()) {
-                        isScanned = true;
-                        linearLayoutScanChild.setVisibility(View.VISIBLE);
-                        linearLayoutScanChild.setAnimation(fadeIn);
-                        editTextScanChildStillage.requestFocus();
-                    } else {
-                        showSuccessDialog("Stillage is already full!", "Can not merge more items in this stillage.");
-                    }
+                    isScanned = true;
+                    linearLayoutScanChild.setVisibility(View.VISIBLE);
+                    linearLayoutScanChild.setAnimation(fadeIn);
+                    editTextScanChildStillage.requestFocus();
                     linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
                     linearLayoutAssignLocationButtons.setAnimation(fadeIn);
+                    buttonMerge.setEnabled(false);
                 } else {
                     showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                     editTextScanParentStillage.setText("");
@@ -523,7 +501,6 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
             }
         } else {
             showSuccessDialog(body.getMessage());
-//            CustomToast.showToast(getApplicationContext(), body.getMessage());
             if (isChild) {
                 editTextScanChildStillage.setText("");
             } else {
@@ -536,8 +513,6 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     public void onUpdateMergeStillageFailure(String message) {
         hideProgress();
         showSuccessDialog(message);
-//        CustomToast.showToast(this, message);
-
     }
 
     @Override
@@ -546,7 +521,6 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         childToSend = "";
         isScanned = false;
         showSuccessDialog(body.getMessage());
-//        CustomToast.showToast(this, body.getMessage());
         editTextScanParentStillage.setText("");
         editTextScanChildStillage.setText("");
         editTextMergeQuantity.setText("");
@@ -576,7 +550,8 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         relativeLayoutScanChildDetail.setVisibility(View.GONE);
         relativeLayoutScanChildDetail.setAnimation(fadeOut);
         linearLayoutMergeStillage.setVisibility(View.GONE);
-//        linearLayoutAssignLocationButtons.setVisibility(View.GONE);
         linearLayoutQuantitySum.setVisibility(View.GONE);
     }
+
+
 }

@@ -170,15 +170,15 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
         if (!text.toString().equals("") && !text.toString().equals(".")) {
             editQty = Float.parseFloat(text.toString());
-            if (stillageLayout.textViewStdQuantity.getText().toString().length() > 0) {
-                stillageStdQty = Float.parseFloat(stillageLayout.textViewStdQuantity.getText().toString());
-                if (editQty > stillageStdQty) {
-                    editTextQuantity.setError(getString(R.string.quantity_must_not_greater_than_stillage_std_qty));
-                    editTextQuantity.requestFocus();
-                    buttonConfirm.setEnabled(false);
-                    editTextQuantity.setText("");
-                }
-            }
+//            if (stillageLayout.textViewStdQuantity.getText().toString().length() > 0) {
+//                stillageStdQty = Float.parseFloat(stillageLayout.textViewStdQuantity.getText().toString());
+//                if (editQty > stillageStdQty) {
+//                    editTextQuantity.setError(getString(R.string.quantity_must_not_greater_than_stillage_std_qty));
+//                    editTextQuantity.requestFocus();
+//                    buttonConfirm.setEnabled(false);
+//                    editTextQuantity.setText("");
+//                }
+//            }
             if (editQty == 0) {
                 editTextQuantity.setError(getString(R.string.quantity_must_not_be_zero));
                 editTextQuantity.requestFocus();
@@ -263,7 +263,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     }
 
     boolean isValidated() {
-        if (editTextQuantity.getText().toString().equals("0")) {
+        if (editTextQuantity.getText().toString().equals("0") || editTextQuantity.getText().toString().equals(".")) {
             editTextQuantity.setError(getResources().getString(R.string.enter_update_quantity));
             editTextQuantity.requestFocus();
             return false;

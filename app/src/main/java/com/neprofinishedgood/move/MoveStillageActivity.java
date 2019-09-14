@@ -454,7 +454,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     public void onUpdateMoveSuccess(UniversalResponse response) {
         hideProgress();
         if (response.getStatus().equals(getString(R.string.success))) {
-            showSuccessDialog(response.getMessage());
+            showSuccessDialog(response.getMessage(), true);
 //            CustomToast.showToast(this, response.getMessage());
 
         } else {
@@ -463,15 +463,17 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         }
     }
 
-    public void showSuccessDialog(String message) {
+    public void showSuccessDialog(String message, boolean finish) {
         builder = new AlertDialog.Builder(this);
         builder.setMessage(message);
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        clearAllSpinnerData();
-                        finish();
-                        MoveActivity.getInstance().getAllAssignedData();
+                        if(finish) {
+                            clearAllSpinnerData();
+                            finish();
+                            MoveActivity.getInstance().getAllAssignedData();
+                        }
                         dialog.cancel();
                     }
                 });
@@ -668,25 +670,24 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 //            setSpinnerAisleData(body.getAssignedAisleId());
 //            setSpinnerRackData(body.getAssignedRackId());
 //            setSpinnerBinData(body.getAssignedBinId());
-            linearLayoutCurrentLocation.setVisibility(View.GONE);
-            linearLayoutMovingLocation.setVisibility(View.GONE);
+
         }
 
-        if (body.getStillageLocationName().equals(getResources().getString(R.string.prduction_line_))) {
-            linearLayoutPutAwayLocation.setVisibility(View.GONE);
-            linearLayoutCurrentLocation.setVisibility(View.VISIBLE);
-            linearLayoutMovingLocation.setVisibility(View.VISIBLE);
-            aisle = "";
-            rack = "";
-            bin = "";
-            textViewMovingLocation.setText(textViewMovingLocation.getText().toString() + ": " + body.getLoadingAreaId());
-            loadingAreaId = body.getLoadingAreaId();
-        } else {
+//        if (body.getStillageLocationName().equals(getResources().getString(R.string.prduction_line_))) {
+//            linearLayoutPutAwayLocation.setVisibility(View.GONE);
+//            linearLayoutCurrentLocation.setVisibility(View.VISIBLE);
+//            linearLayoutMovingLocation.setVisibility(View.VISIBLE);
+//            aisle = "";
+//            rack = "";
+//            bin = "";
+//            textViewMovingLocation.setText(textViewMovingLocation.getText().toString() + ": " + body.getLoadingAreaId());
+//            loadingAreaId = body.getLoadingAreaId();
+//        } else {
             linearLayoutPutAwayLocation.setVisibility(View.VISIBLE);
             linearLayoutCurrentLocation.setVisibility(View.GONE);
             linearLayoutMovingLocation.setVisibility(View.GONE);
             loadingAreaId = "";
-        }
+//        }
 
     }
 
