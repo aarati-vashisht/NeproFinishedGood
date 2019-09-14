@@ -38,4 +38,17 @@ public class Utils {
                     }
                 });
     }
+
+    public static boolean isStringIsFloatNum(String input)
+    {
+        try
+        {
+            Float.parseFloat(input);
+        }
+        catch(NumberFormatException ex)
+        {
+            return false;
+        }
+        return true;
+    }
 }

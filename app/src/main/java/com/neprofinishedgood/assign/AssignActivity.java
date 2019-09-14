@@ -630,8 +630,6 @@ public class AssignActivity extends BaseActivity implements IAssignView {
                 showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                 editTextScanStillage.setText("");
             }
-        } else if (body.getStatus().equals(getResources().getString(R.string.operation_invalid))) {
-            showSuccessDialog(body.getStatus(), body.getMessage());
         } else {
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(this, body.getMessage());
