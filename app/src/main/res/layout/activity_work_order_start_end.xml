@@ -29,7 +29,7 @@
                 android:id="@+id/editTextScanWorkOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxLines="1"
                 android:padding="5dp"
@@ -85,7 +85,7 @@
                         android:id="@+id/textViewWorkOrderNumber"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:maxLines="1"
                         android:text="WO-234534"
@@ -100,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:orientation="horizontal"
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp">
@@ -131,7 +131,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:orientation="horizontal"
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp">
@@ -161,7 +161,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:orientation="horizontal"
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp">
@@ -189,7 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:orientation="horizontal"
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp">
@@ -206,9 +206,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:layout_weight=".9"
+                        android:layout_weight=".73"
                         android:maxLines="1"
-                        android:text="20sdfsdfsdf"
+                        android:text="12345"
                         android:textColor="@color/gray_color"
                         android:textSize="10sp" />
 
@@ -234,10 +234,60 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutEndQuantities"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:gravity="left"
+                    android:gravity="start"
+                    android:orientation="horizontal"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/r_a_f_quantity"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/textViewRafQty"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1.2"
+                        android:maxLines="1"
+                        android:text="122345"
+                        android:textColor="@color/gray_color"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:singleLine="true"
+                        android:text="@string/balance_quantity"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/textViewBalanceQty"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:maxLines="1"
+                        android:text="123"
+                        android:textColor="@color/gray_color"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="start"
                     android:orientation="horizontal"
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
@@ -247,7 +297,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/site"
+                        android:text="@string/site_"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
@@ -256,7 +306,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_weight="1.2"
+                        android:layout_weight="1.04"
                         android:maxLines="1"
                         android:text="20sdfsdfsdf"
                         android:textColor="@color/gray_color"
