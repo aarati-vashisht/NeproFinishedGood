@@ -44,6 +44,35 @@ public class WorkOrderScanResponse {
 
 
 
+
+
+    @SerializedName("BalanceQuantity")
+    @Expose
+    private String balanceQuantity;
+    @SerializedName("RafQuantity")
+    @Expose
+    private String rafQuantity;
+
+    public String getBalanceQuantity() {
+        return balanceQuantity;
+    }
+
+    public void setBalanceQuantity(String balanceQuantity) {
+        this.balanceQuantity = balanceQuantity;
+    }
+
+    public String getRafQuantity() {
+        return rafQuantity;
+    }
+
+    public void setRafQuantity(String rafQuantity) {
+        this.rafQuantity = rafQuantity;
+    }
+
+
+
+
+
     public String getWorkOrderNo() {
         return workOrderNo;
     }

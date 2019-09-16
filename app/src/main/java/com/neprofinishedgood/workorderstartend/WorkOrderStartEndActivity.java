@@ -38,6 +38,9 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @BindView(R.id.linearLayoutButtons)
     LinearLayout linearLayoutButtons;
 
+    @BindView(R.id.linearLayoutEndQuantities)
+    LinearLayout linearLayoutEndQuantities;
+
     @BindView(R.id.editTextScanWorkOrder)
     AppCompatEditText editTextScanWorkOrder;
 
@@ -64,6 +67,12 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
 
     @BindView(R.id.textViewitemDesc)
     TextView textViewitemDesc;
+
+    @BindView(R.id.textViewBalanceQty)
+    TextView textViewBalanceQty;
+
+    @BindView(R.id.textViewRafQty)
+    TextView textViewRafQty;
 
     @BindView(R.id.buttonStart)
     CustomButton buttonStart;
@@ -162,10 +171,17 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         if (body.getStatusId().equals("1")) {
             buttonEnd.setEnabled(false);
             buttonStart.setEnabled(true);
+            linearLayoutEndQuantities.setVisibility(View.GONE);
         } else if ((body.getStatusId().equals("5"))) {
             buttonEnd.setEnabled(true);
             buttonStart.setEnabled(false);
+
+            linearLayoutEndQuantities.setVisibility(View.VISIBLE);
+
+//            textViewRafQty.setText(body.getRafQuantity());
+//            textViewBalanceQty.setText(body.getBalanceQuantity());
         } else {
+            linearLayoutEndQuantities.setVisibility(View.GONE);
             buttonStart.setEnabled(false);
             buttonEnd.setEnabled(false);
         }

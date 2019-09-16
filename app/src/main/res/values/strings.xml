@@ -199,5 +199,8 @@
     <string name="stillage_discarded">This stillage is discarded!</string>
     <string name="operation_invalid">Operation Invalid</string>
     <string name="ship">Ship</string>
+    <string name="site_">Site:</string>
+    <string name="r_a_f_quantity">RAF Quantity:</string>
+    <string name="balance_quantity">Balance Qyantity:</string>
 
 </resources>
