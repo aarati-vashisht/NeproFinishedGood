@@ -334,6 +334,10 @@ public class AssignActivity extends BaseActivity implements IAssignView {
             spinnerAisle.setSelection(0);
             spinnerRack.setSelection(0);
             spinnerBin.setSelection(0);
+            rackList = new ArrayList<>();
+            binList = new ArrayList<>();
+            setSpinnerRackData("0");
+            setSpinnerBinData("0");
         } else {
             zone = "";
         }

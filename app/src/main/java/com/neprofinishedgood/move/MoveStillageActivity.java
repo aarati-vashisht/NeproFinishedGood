@@ -334,6 +334,10 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
             spinnerAisle.setSelection(0);
             spinnerRack.setSelection(0);
             spinnerBin.setSelection(0);
+            rackList = new ArrayList<>();
+            binList = new ArrayList<>();
+            setSpinnerRackData("0");
+            setSpinnerBinData("0");
         } else {
             zone = "";
         }
@@ -346,7 +350,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 
 
     void setSpinnerAisleData(String item) {
-        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, aisleList){
+        SpinnerAdapter aisleListAdapter = new SpinnerAdapter(MoveStillageActivity.this, R.layout.spinner_layout, aisleList) {
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView tv = (TextView) super.getView(position, convertView, parent);
 
@@ -399,7 +403,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     }
 
     void setSpinnerZoneData(String item) {
-        SpinnerZoneAdapter zoneListAdapter = new SpinnerZoneAdapter(MoveStillageActivity.this, R.layout.spinner_layout, zoneList){
+        SpinnerZoneAdapter zoneListAdapter = new SpinnerZoneAdapter(MoveStillageActivity.this, R.layout.spinner_layout, zoneList) {
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView tv = (TextView) super.getView(position, convertView, parent);
 
@@ -469,7 +473,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(finish) {
+                        if (finish) {
                             clearAllSpinnerData();
                             finish();
                             MoveActivity.getInstance().getAllAssignedData();
@@ -683,10 +687,10 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
 //            textViewMovingLocation.setText(textViewMovingLocation.getText().toString() + ": " + body.getLoadingAreaId());
 //            loadingAreaId = body.getLoadingAreaId();
 //        } else {
-            linearLayoutPutAwayLocation.setVisibility(View.VISIBLE);
-            linearLayoutCurrentLocation.setVisibility(View.GONE);
-            linearLayoutMovingLocation.setVisibility(View.GONE);
-            loadingAreaId = "";
+        linearLayoutPutAwayLocation.setVisibility(View.VISIBLE);
+        linearLayoutCurrentLocation.setVisibility(View.GONE);
+        linearLayoutMovingLocation.setVisibility(View.GONE);
+        loadingAreaId = "";
 //        }
 
     }
@@ -751,7 +755,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
         }
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         if (isScanned) {
             showBackAlert(null, false);
         } else {

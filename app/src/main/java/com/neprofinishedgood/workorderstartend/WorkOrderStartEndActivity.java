@@ -19,6 +19,7 @@ import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
+import com.neprofinishedgood.utils.Utils;
 import com.neprofinishedgood.workorderstartend.Presenter.IWorkOrderStartEndInterface;
 import com.neprofinishedgood.workorderstartend.Presenter.IWorkOrderStartEndPresenter;
 import com.neprofinishedgood.workorderstartend.Presenter.IWorkOrderStartEndView;
@@ -178,8 +179,28 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
 
             linearLayoutEndQuantities.setVisibility(View.VISIBLE);
 
-//            textViewRafQty.setText(body.getRafQuantity());
-//            textViewBalanceQty.setText(body.getBalanceQuantity());
+            if (body.getRafQuantity().equals("")) {
+                textViewRafQty.setText(body.getRafQuantity());
+            } else {
+                if (Utils.isStringIsFloatNum(body.getRafQuantity())) {
+                    round(Float.parseFloat(body.getRafQuantity()));
+                    textViewRafQty.setText(round(Float.parseFloat(body.getRafQuantity())) + "");
+                } else {
+                    textViewRafQty.setText(body.getRafQuantity());
+                }
+            }
+
+            if (body.getBalanceQuantity().equals("")) {
+                textViewBalanceQty.setText(body.getBalanceQuantity());
+            } else {
+                if (Utils.isStringIsFloatNum(body.getBalanceQuantity())) {
+                    round(Float.parseFloat(body.getBalanceQuantity()));
+                    textViewBalanceQty.setText(round(Float.parseFloat(body.getBalanceQuantity())) + "");
+                } else {
+                    textViewBalanceQty.setText(body.getBalanceQuantity());
+                }
+            }
+
         } else {
             linearLayoutEndQuantities.setVisibility(View.GONE);
             buttonStart.setEnabled(false);
@@ -266,7 +287,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         }
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         if (isScanned) {
             showBackAlert(null, false);
         } else {
