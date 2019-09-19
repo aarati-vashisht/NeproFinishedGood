@@ -70,6 +70,9 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @BindView(R.id.linearLayoutToWarehouse)
     LinearLayout linearLayoutToWarehouse;
 
+    @BindView(R.id.linearLayoutToSite)
+    LinearLayout linearLayoutToSite;
+
     @BindView(R.id.textViewToWarehouse)
     TextView textViewToWarehouse;
 
@@ -230,6 +233,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
             if (body.getTransferId().equals("")) {
                 cancelClick();
             } else {
+                linearLayoutToSite.setVisibility(View.GONE);
                 linearLayoutToWarehouse.setVisibility(View.GONE);
                 textViewToWarehouse.setVisibility(View.GONE);
                 buttonTransfer.setText(getString(R.string.ship));
@@ -312,11 +316,13 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         }
 
         if (body.getIsShiped().equals("0") && !body.getTransferId().equals("")) {
+            linearLayoutToSite.setVisibility(View.GONE);
             linearLayoutToWarehouse.setVisibility(View.GONE);
             textViewToWarehouse.setVisibility(View.GONE);
             buttonTransfer.setText(getString(R.string.ship));
             transferId = body.getTransferId();
         } else if (body.getIsShiped().equals("0") && body.getTransferId().equals("")) {
+            linearLayoutToSite.setVisibility(View.VISIBLE);
             linearLayoutToWarehouse.setVisibility(View.VISIBLE);
             textViewToWarehouse.setVisibility(View.VISIBLE);
             buttonTransfer.setText(getString(R.string.transfer));
@@ -359,6 +365,10 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
     public void cancelClick() {
         isScanned = false;
+        SpinnerAdapter wareHouseListAdapter;
+        warehouseList = new ArrayList<>();
+        wareHouseListAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, warehouseList);
+        spinnerWarehouse.setAdapter(wareHouseListAdapter);
         editTextScanStillage.setText("");
         editTextScanStillage.setEnabled(true);
         editTextScanStillage.requestFocus();
