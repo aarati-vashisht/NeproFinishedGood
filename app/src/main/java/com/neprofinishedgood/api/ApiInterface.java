@@ -31,6 +31,8 @@ import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
 import com.neprofinishedgood.raf.model.RafInput;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
+import com.neprofinishedgood.transferstillage.model.WareHouseInput;
+import com.neprofinishedgood.transferstillage.model.WareHouseResponse;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 import com.neprofinishedgood.workorderstartend.model.WorkOrderScanInput;
 import com.neprofinishedgood.workorderstartend.model.WorkOrderScanResponse;
@@ -160,5 +162,8 @@ public interface ApiInterface {
 
     @POST("ShipTransfer")
     Call<UniversalResponse> shipTransfer(@Body ShipInput shipInput);
+
+    @POST("WareHouseData")
+    Call<WareHouseResponse> getWareHouse(@Body WareHouseInput wareHouseInput);
 
 }

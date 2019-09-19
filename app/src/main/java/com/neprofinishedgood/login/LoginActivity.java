@@ -73,8 +73,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     public void onSuccess(LoginResponse body) {
         hideProgress();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            showSuccessDialog(getString(R.string.login_successfully));
-//            CustomToast.showToast(this, getString(R.string.login_successfully));
+            CustomToast.showToast(this, getString(R.string.login_successfully));
             Gson gson = new Gson();
             String loginData = gson.toJson(body);
             SharedPref.saveLoginUSer(loginData);
@@ -82,7 +81,6 @@ public class LoginActivity extends BaseActivity implements ILoginView {
             finishAffinity();
         } else {
             showSuccessDialog(body.getMessage());
-//            CustomToast.showToast(this, getString(R.string.invalid_pin));
             pinViewLogin.requestFocus(3);
         }
 

@@ -22,6 +22,7 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.model.LocationList;
 import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalSpinner;
+import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.login.LoginActivity;
 import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.mergestillage.MergeStillageActivity;
@@ -177,8 +178,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                 return true;
             case R.id.logout_menu:
                 SharedPref.clearPrefs();
-                showSuccessDialog(getResources().getString(R.string.logout_successfully));
-//                CustomToast.showToast(this, getResources().getString(R.string.logout_successfully));
+                CustomToast.showToast(this, getResources().getString(R.string.logout_successfully));
                 startActivity(new Intent(this, LoginActivity.class));
                 finishAffinity();
                 return true;

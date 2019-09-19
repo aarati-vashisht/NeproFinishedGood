@@ -92,6 +92,10 @@ public class ScanStillageResponse {
     @Expose
     private ArrayList<UniversalSpinner> zoneList = null;
 
+    @SerializedName("SiteListData")
+    @Expose
+    private ArrayList<UniversalSpinner> siteListData = null;
+
 
 
 
@@ -420,5 +424,13 @@ public class ScanStillageResponse {
 
     public void setAssignedZoneName(String assignedZoneName) {
         this.assignedZoneName = assignedZoneName;
+    }
+
+    public ArrayList<UniversalSpinner> getSiteListData() {
+        return siteListData;
+    }
+
+    public void setSiteListData(ArrayList<UniversalSpinner> siteListData) {
+        this.siteListData = siteListData;
     }
 }
