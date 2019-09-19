@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
+import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
@@ -24,6 +25,8 @@ import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
+import com.neprofinishedgood.transferstillage.model.WareHouseInput;
+import com.neprofinishedgood.transferstillage.model.WareHouseResponse;
 import com.neprofinishedgood.transferstillage.presenter.ITransferInterface;
 import com.neprofinishedgood.transferstillage.presenter.ITransferView;
 import com.neprofinishedgood.transferstillage.presenter.TransferPresenter;
@@ -58,6 +61,9 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @BindView(R.id.spinnerWarehouse)
     Spinner spinnerWarehouse;
 
+    @BindView(R.id.spinnerSite)
+    Spinner spinnerSite;
+
     @BindView(R.id.linearLayoutOfflineData)
     LinearLayout linearLayoutOfflineData;
 
@@ -77,8 +83,11 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     long scanStillageLastTexxt = 0;
 
     private ITransferInterface iTransferInterface;
-    private String warehouse;
+    private String warehouse, siteId;
     private String stillageWarehouse;
+
+    ArrayList<UniversalSpinner> siteList;
+    ArrayList<UniversalSpinner> warehouseList;
 
     static TransferStillageActivity instance;
     private String transferId;
@@ -97,24 +106,33 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         ButterKnife.bind(stillageLayout, stillageDetail);
         setTitle(getString(R.string.transfer));
         iTransferInterface = new TransferPresenter(this, this);
-        initData();
+//        initData();
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         callService();
 
     }
 
-    private void initData() {
-        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, warehouseList);
-        spinnerWarehouse.setAdapter(reasonListAdapter);
-    }
+//    private void initData() {
+//        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, warehouseList);
+//        spinnerWarehouse.setAdapter(reasonListAdapter);
+//    }
 
     @OnItemSelected(R.id.spinnerWarehouse)
-    public void spinnerBinSelected(Spinner spinner, int position) {
+    public void onSpinnerWarehouseSelected(Spinner spinner, int position) {
         warehouse = warehouseList.get(position).getId().trim();
         if (warehouse.equalsIgnoreCase(stillageWarehouse)) {
             buttonTransfer.setEnabled(false);
         } else {
             buttonTransfer.setEnabled(true);
+        }
+    }
+
+    @OnItemSelected(R.id.spinnerSite)
+    public void onSpinnerSiteSelected(Spinner spinner, int position) {
+        siteId = siteList.get(position).getId().trim();
+        if (position > 0) {
+            showProgress(this);
+            iTransferInterface.callGetWareHouse(new WareHouseInput(siteId));
         }
     }
 
@@ -177,7 +195,6 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
             hideProgress();
             if (!body.getTransferId().equals("") && body.getIsShiped().equals("1")) {
                 showSuccessDialog(getString(R.string.this_stillage_already_transfred));
-//                CustomToast.showToast(this, getString(R.string.this_stillage_already_transfred));
                 editTextScanStillage.setText("");
             } else {
                 if (body.getStandardQty() > 0) {
@@ -191,7 +208,6 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         } else {
             hideProgress();
             showSuccessDialog(body.getMessage());
-//            CustomToast.showToast(this, body.getMessage());
             editTextScanStillage.setText("");
         }
     }
@@ -238,6 +254,31 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         }
     }
 
+    @Override
+    public void onGetWareHouseFailure(String message) {
+        hideProgress();
+        showSuccessDialog(message);
+    }
+
+    @Override
+    public void onGetWareHouseSuccess(WareHouseResponse body) {
+        hideProgress();
+        SpinnerAdapter wareHouseListAdapter;
+        if (body.getStatus().equals(getString(R.string.success))) {
+            if (body.getWareHouseListData() != null) {
+                warehouseList = body.getWareHouseListData();
+            } else {
+                warehouseList = new ArrayList<>();
+            }
+            warehouseList.add(0, new UniversalSpinner("Select Warehouse", "0"));
+            wareHouseListAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, warehouseList);
+            spinnerWarehouse.setAdapter(wareHouseListAdapter);
+
+        }else {
+            showSuccessDialog(body.getMessage());
+        }
+    }
+
     void clearViews() {
         isScanned = false;
         editTextScanStillage.setEnabled(true);
@@ -261,6 +302,14 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewitemDesc.setText(body.getDescription());
+
+        siteList = body.getSiteListData();
+        siteList.add(0, new UniversalSpinner("Select Site", "0"));
+
+        if (siteList != null) {
+            SpinnerAdapter siteAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, siteList);
+            spinnerSite.setAdapter(siteAdapter);
+        }
 
         if (body.getIsShiped().equals("0") && !body.getTransferId().equals("")) {
             linearLayoutToWarehouse.setVisibility(View.GONE);
@@ -347,7 +396,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     void setDataOffline() {
         textViewNumberOffline.setText(editTextScanStillage.getText().toString());
         setVisibilityInOfflineMode();
-        initData();
+//        initData();
 
     }
 

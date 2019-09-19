@@ -4,7 +4,7 @@
     <string name="login">Login</string>
     <string name="plz_enter_pin">Please Enter Login Pin</string>
     <string name="invalid_pin">Invalid Pin</string>
-    <string name="login_successfully">Logged In Successfully</string>
+    <string name="login_successfully">Logged in successfully</string>
     <string name="move">Move</string>
     <string name="reportasfinished">RAF</string>
     <string name="quality_check">Quality Check</string>

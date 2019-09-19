@@ -5,6 +5,8 @@ import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
+import com.neprofinishedgood.transferstillage.model.WareHouseInput;
+import com.neprofinishedgood.transferstillage.model.WareHouseResponse;
 
 public interface ITransferInterface {
     void callScanStillageService(MoveInput moveInput);
@@ -18,4 +20,8 @@ public interface ITransferInterface {
     void callShipStillage(ShipInput shipInput);
 
     void getShipStillageResponse(UniversalResponse body);
+
+    void callGetWareHouse(WareHouseInput wareHouseInput);
+
+    void getWareHouseResponse(WareHouseResponse body);
 }
