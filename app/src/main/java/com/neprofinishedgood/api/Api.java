@@ -10,8 +10,8 @@ public class Api {
 
 //        public static final String BASE_URL = "http://192.168.4.44:90/api/Nepro/";///client url
 //    public static final String BASE_URL = "http://192.168.4.44:90/api/Nepro/";///client url
-//    public static final String BASE_URL = "http://192.168.1.23:90/api/Nepro/";///client url
-    public static final String BASE_URL = "http://10.10.10.238:8012/api/Nepro/";///local url
+    public static final String BASE_URL = "http://192.168.1.23:90/api/Nepro/";///client url
+//    public static final String BASE_URL = "http://10.10.10.238:8012/api/Nepro/";///local url
 //    public static final String BASE_URL = "http://10.10.10.139:90/api/Nepro/";///changed local url
 
     private static Retrofit retrofit = null;
