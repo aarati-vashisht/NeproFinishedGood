@@ -299,6 +299,9 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         stillageDetail.setVisibility(View.VISIBLE);
         stillageDetail.setAnimation(fadeIn);
         relativeLayoutScanDetail.setVisibility(View.VISIBLE);
+
+        stillageLayout.linearLayoutLocation.setVisibility(View.VISIBLE);
+        stillageLayout.textViewLocation.setText(body.getLocation());
         stillageLayout.linearLayoutWarehouse.setVisibility(View.VISIBLE);
         stillageLayout.textViewWarehouse.setText(body.getWareHouseID() + " | " + body.getWareHouseName());
         stillageLayout.textViewitem.setText(body.getItemId());
