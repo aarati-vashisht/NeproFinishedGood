@@ -54,7 +54,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:maxLines="1"
-                    android:text="S00001"
+                    android:text="ST-00001"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:maxLines="2"
-                    android:text="S00001"
+                    android:text="117NWC2225734.JHF445"
                     android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:maxLines="2"
-                    android:text="S00001"
+                    android:text="UPVC CASING FLUSH 4 MTR"
                     android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
@@ -248,7 +248,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_weight=".20"
                         android:maxLines="1"
-                        android:text="20sdfsdfsdf"
+                        android:text="20"
                         android:textColor="@color/gray_color"
                         android:textSize="10sp" />
 
@@ -268,7 +268,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_weight=".20"
                         android:maxLines="1"
-                        android:text="20dffsf"
+                        android:text="20"
                         android:textColor="@color/gray_color"
                         android:textSize="10sp" />
                 </LinearLayout>

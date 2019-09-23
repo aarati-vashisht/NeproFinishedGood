@@ -40,6 +40,7 @@
     <string name="bin">Bin:</string>
     <string name="rack">Rack:</string>
     <string name="reject_quantity">QC Process Rejection</string>
+    <string name="reject_quantity_">Reject Quantity</string>
     <string name="reject_complete_stillage">Reject Complete Stillage</string>
     <string name="quality_hold_and_move"><![CDATA[Quality Hold]]></string>
     <string name="select_quality_check_operation">Select Quality Check Operation</string>
@@ -202,5 +203,6 @@
     <string name="site_">Site:</string>
     <string name="r_a_f_quantity">RAF Quantity:</string>
     <string name="balance_quantity">Balance Qyantity:</string>
+    <string name="finish">Finish</string>
 
 </resources>
