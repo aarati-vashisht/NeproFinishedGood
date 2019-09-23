@@ -173,7 +173,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.3"
-                            android:text="@string/reject_quantity"
+                            android:text="@string/reject_quantity_"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
 

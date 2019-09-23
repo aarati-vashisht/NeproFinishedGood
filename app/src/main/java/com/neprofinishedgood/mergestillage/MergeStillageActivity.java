@@ -70,6 +70,9 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     @BindView(R.id.buttonCancel)
     CustomButton buttonCancel;
 
+    @BindView(R.id.buttonFinish)
+    CustomButton buttonFinish;
+
     @BindView(R.id.textViewQuantitySum)
     TextView textViewQuantitySum;
 
@@ -217,7 +220,6 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         parentStillageLayout.textViewitemDesc.setText(body.getDescription());
     }
 
-
     void setChildData(ScanStillageResponse response) {
         childStillageLayout.textViewitem.setText(response.getItemId());
         childStillageLayout.textViewNumber.setText(response.getStickerID());
@@ -225,7 +227,6 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         childStillageLayout.textViewStdQuantity.setText(response.getItemStdQty() + "");
         childStillageLayout.textViewitemDesc.setText(response.getDescription());
     }
-
 
     @OnTextChanged(value = R.id.editTextMergeQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextMergeQuantityChanged(Editable text) {
@@ -371,6 +372,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                 relativeLayoutScanChildDetail.setAnimation(fadeOut);
                 linearLayoutMergeStillage.setVisibility(View.GONE);
                 linearLayoutMergeStillage.setAnimation(fadeOut);
+                buttonFinish.setVisibility(View.VISIBLE);
                 dialogInterface.dismiss();
             }
         });
@@ -392,12 +394,14 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
 
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
+
         showCancelAlert(4);
     }
 
     public void cancelClick() {
         isChild = false;
         isScanned = false;
+        childToSend = "";
         editTextScanParentStillage.setText("");
         editTextScanChildStillage.setText("");
         editTextMergeQuantity.setText("");
@@ -411,10 +415,18 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         relativeLayoutScanChildDetail.setVisibility(View.GONE);
         relativeLayoutScanChildDetail.setAnimation(fadeOut);
 
+        buttonFinish.setVisibility(View.GONE);
         linearLayoutScanChild.setVisibility(View.GONE);
         linearLayoutMergeStillage.setVisibility(View.GONE);
         linearLayoutAssignLocationButtons.setVisibility(View.GONE);
         linearLayoutQuantitySum.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.buttonFinish)
+    public void onButtonFinishClick(){
+        showProgress(MergeStillageActivity.this);
+        UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString(), "3");
+        iMergeStillageInterface.callUpdateMergeStillage(upgradeMergeInput);
     }
 
     public void imageButtonHomeClick(View view) {
@@ -524,6 +536,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         editTextScanParentStillage.setText("");
         editTextScanChildStillage.setText("");
         editTextMergeQuantity.setText("");
+        buttonFinish.setVisibility(View.GONE);
 
         editTextScanParentStillage.setEnabled(true);
         editTextScanChildStillage.setEnabled(true);
