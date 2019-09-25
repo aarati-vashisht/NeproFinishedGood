@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
     android:background="@color/background_color"
     android:orientation="vertical"
@@ -11,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -41,18 +42,18 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayoutOfflineData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@color/colorPrimaryDark"
             android:orientation="horizontal"
             android:paddingStart="5dp"
             android:paddingTop="8dp"
             android:paddingEnd="5dp"
             android:paddingBottom="8dp"
-            android:visibility="gone"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/linearLayoutOfflineData">
+            android:visibility="gone">
 
 
             <TextView
@@ -82,7 +83,7 @@
             android:id="@+id/relativeLayoutScanDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="6dp"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -90,75 +91,106 @@
                 android:id="@+id/stillageDetail"
                 layout="@layout/stillage_layout" />
 
-            <TextView
-                android:id="@+id/textViewToWarehouse"
+            <LinearLayout
+                android:id="@+id/linearLayoutLocationSelection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/stillageDetail"
-                android:background="@color/colorPrimaryDark"
-                android:elevation="5dp"
-                android:padding="5dp"
-                android:text="@string/to_warehouse"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/linearLayoutToSite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textViewToWarehouse"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:layout_marginTop="5dp"
-                android:visibility="visible">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/textViewToWarehouse"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1.1"
-                    android:text="@string/site"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:background="@color/colorPrimaryDark"
+                    android:elevation="5dp"
+                    android:padding="4dp"
+                    android:text="@string/to_warehouse"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/spinnerSite"
-                    style="@style/AppTheme"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/linearLayoutToSite"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="3"
-                    android:background="@drawable/spinner_background" />
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:padding="4dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1.1"
+                        android:text="@string/site"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerSite"
+                        style="@style/AppTheme"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/spinner_background" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutToWarehouse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="4dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1.1"
+                        android:text="@string/warehouse"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerWarehouse"
+                        style="@style/AppTheme"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/spinner_background" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayoutToWarehouse"
+                android:id="@+id/linearLayoutRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/linearLayoutToSite"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:visibility="visible">
+                android:layout_marginTop="0dp"
+                android:layout_below="@+id/linearLayoutLocationSelection">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1.1"
-                    android:text="@string/warehouse"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTransferList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="45dp"
+                    android:background="@android:color/transparent"
+                    android:layoutAnimation="@anim/layout_animation_fall_down"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:listitem="@layout/stillage_layout_transfer" />
 
-                <Spinner
-                    android:id="@+id/spinnerWarehouse"
-                    style="@style/AppTheme"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="3"
-                    android:background="@drawable/spinner_background" />
+                <!---->
+                <!--<include-->
+                    <!--android:id="@+id/stillageDetail"-->
+                    <!--layout="@layout/stillage_layout" />-->
 
             </LinearLayout>
 

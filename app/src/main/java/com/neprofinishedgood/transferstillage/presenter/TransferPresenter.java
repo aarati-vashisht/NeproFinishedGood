@@ -74,7 +74,13 @@ public class TransferPresenter implements ITransferInterface {
     @Override
     public void getUpdateTransferStillageResponse(UniversalResponse body) {
         if (body == null) {
-            iTransferView.onUpdateTransferFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+            try {
+                iTransferView.onUpdateTransferFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+            }catch (Exception e){
+                iTransferView.onUpdateTransferFailure("Something Went Wrong. Please Try Again");
+                e.printStackTrace();
+            }
+
         } else {
             iTransferView.onUpdateTransferSuccess(body);
         }

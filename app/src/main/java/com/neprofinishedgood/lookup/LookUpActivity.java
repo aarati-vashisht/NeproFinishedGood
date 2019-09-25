@@ -134,5 +134,17 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
         stillageLayout.textViewitemDesc.setText(body.getDescription());
         stillageLayout.linearLayoutLocation.setVisibility(View.VISIBLE);
         stillageLayout.textViewLocation.setText(body.getLocation());
+
+        stillageLayout.linearLayoutRafCheckbox.setVisibility(View.VISIBLE);
+        if(body.getIsCounted().equals("1")){
+            stillageLayout.checkboxRaf.setChecked(true);
+        }else{
+            stillageLayout.checkboxRaf.setChecked(false);
+        }
+        if(body.getIsHold().equals("1")){
+            stillageLayout.checkboxQcHold.setChecked(true);
+        }else{
+            stillageLayout.checkboxQcHold.setChecked(false);
+        }
     }
 }

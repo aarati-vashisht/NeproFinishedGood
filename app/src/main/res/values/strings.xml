@@ -204,5 +204,9 @@
     <string name="r_a_f_quantity">RAF Quantity:</string>
     <string name="balance_quantity">Balance Qyantity:</string>
     <string name="finish">Finish</string>
+    <string name="raf">RAF</string>
+    <string name="qc_hold">QC Hold</string>
+    <string name="already_scanned">This stillage is already scanned.</string>
+    <string name="cannot_transfer">Can\'t transfer to same warehouse.</string>
 
 </resources>
