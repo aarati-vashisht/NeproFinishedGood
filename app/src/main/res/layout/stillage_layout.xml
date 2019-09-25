@@ -275,6 +275,57 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/linearLayoutRafCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="5dp"
+                android:layout_marginTop="-10dp"
+                android:paddingEnd="5dp"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/raf"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <CheckBox
+                    android:id="@+id/checkboxRaf"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight=".20"
+                    android:maxLines="1"
+                    android:enabled="false"
+                    android:textColor="@color/gray_color"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:singleLine="true"
+                    android:text="@string/qc_hold"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <CheckBox
+                    android:id="@+id/checkboxQcHold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight=".20"
+                    android:enabled="false"
+                    android:maxLines="1"
+                    android:textColor="@color/gray_color"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

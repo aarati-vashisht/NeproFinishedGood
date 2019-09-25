@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -11,6 +12,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,9 +23,14 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
+import com.neprofinishedgood.move.MoveActivity;
+import com.neprofinishedgood.move.adapter.MoveAdapter;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.productionjournal.ProductionJournal;
+import com.neprofinishedgood.productionjournal.adapter.PickingListAdapter;
+import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseInput;
@@ -36,6 +44,7 @@ import com.neprofinishedgood.utils.StillageLayout;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,11 +82,19 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @BindView(R.id.linearLayoutToSite)
     LinearLayout linearLayoutToSite;
 
+    @BindView(R.id.linearLayoutRecyclerView)
+    LinearLayout linearLayoutRecyclerView;
+
     @BindView(R.id.textViewToWarehouse)
     TextView textViewToWarehouse;
 
     @BindView(R.id.textViewNumberOffline)
     TextView textViewNumberOffline;
+
+    @BindView(R.id.recyclerViewTransferList)
+    RecyclerView recyclerViewTransferList;
+
+    private TransferAdapter adapter;
 
     StillageLayout stillageLayout;
 
@@ -92,8 +109,14 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     ArrayList<UniversalSpinner> siteList;
     ArrayList<UniversalSpinner> warehouseList;
 
+    public ArrayList<String> stickersList;
+    public ArrayList<String> scannedWarehouseList;
+    ArrayList<ScanStillageResponse> stillageDetailsList;
+
     static TransferStillageActivity instance;
     private String transferId;
+
+    boolean isTransferMultiple = false;
 
     public static TransferStillageActivity getInstance() {
         return instance;
@@ -106,7 +129,14 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         ButterKnife.bind(this);
         instance = this;
         stillageLayout = new StillageLayout();
-        ButterKnife.bind(stillageLayout, stillageDetail);
+        if (isTransferMultiple) {
+            ButterKnife.bind(this);
+            setAdapter();
+            onEditTextScanStillageChanged();
+        } else {
+            ButterKnife.bind(stillageLayout, stillageDetail);
+            onEditTextScanStillageChangedSingle();
+        }
         setTitle(getString(R.string.transfer));
         iTransferInterface = new TransferPresenter(this, this);
 //        initData();
@@ -120,13 +150,42 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 //        spinnerWarehouse.setAdapter(reasonListAdapter);
 //    }
 
+    private void setAdapter() {
+
+        stickersList = new ArrayList<>();
+        scannedWarehouseList = new ArrayList<>();
+        stillageDetailsList = new ArrayList<>();
+
+        recyclerViewTransferList.setVisibility(View.VISIBLE);
+        adapter = new TransferAdapter(stillageDetailsList);
+        recyclerViewTransferList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerViewTransferList.setAdapter(adapter);
+        recyclerViewTransferList.setHasFixedSize(true);
+    }
+
     @OnItemSelected(R.id.spinnerWarehouse)
     public void onSpinnerWarehouseSelected(Spinner spinner, int position) {
         warehouse = warehouseList.get(position).getId().trim();
-        if (warehouse.equalsIgnoreCase(stillageWarehouse)) {
-            buttonTransfer.setEnabled(false);
+        if (isTransferMultiple) {
+            boolean isSameWarehouse = false;
+            for (int i = 0; i < scannedWarehouseList.size(); i++) {
+                if (scannedWarehouseList.get(i).equals(warehouse)) {
+                    isSameWarehouse = true;
+                    showSuccessDialog(getResources().getString(R.string.cannot_transfer));
+                    break;
+                }
+            }
+            if (isSameWarehouse) {
+                buttonTransfer.setEnabled(false);
+            } else {
+                buttonTransfer.setEnabled(true);
+            }
         } else {
-            buttonTransfer.setEnabled(true);
+            if (warehouse.equalsIgnoreCase(stillageWarehouse)) {
+                buttonTransfer.setEnabled(false);
+            } else {
+                buttonTransfer.setEnabled(true);
+            }
         }
     }
 
@@ -139,20 +198,90 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         }
     }
 
-    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    public void onEditTextScanStillageChanged(Editable text) {
-        if (!text.toString().trim().equals("")) {
+    public void onEditTextScanStillageChanged() {
+        editTextScanStillage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable text) {
+                if (!text.toString().trim().equals("")) {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
-            if (text.toString().trim().length() == scanStillageLength) {
-                if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
-                    showProgress(TransferStillageActivity.this);
-                    iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
-                } else {
-                    setDataOffline();
+                    boolean isStillageExist = false;
+                    for (int i = 0; i < stickersList.size(); i++) {
+                        if (stickersList.get(i).equals(text.toString().trim())) {
+                            isStillageExist = true;
+                            showSuccessDialog(getResources().getString(R.string.already_scanned));
+                            editTextScanStillage.setText("");
+                            break;
+                        }
+                    }
+                    if (!isStillageExist) {
+                        if (text.toString().trim().length() == scanStillageLength) {
+                            if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+                                showProgress(TransferStillageActivity.this);
+                                iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                            } else {
+                                setDataOffline();
+                            }
+                        }
+                    }
                 }
             }
-        }
+        });
     }
+
+    public void onEditTextScanStillageChangedSingle() {
+        editTextScanStillage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable text) {
+                if (!text.toString().trim().equals("")) {
+//            scanStillagehandler.postDelayed(stillageRunnable, delay);
+
+                    if (text.toString().trim().length() == scanStillageLength) {
+                        if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+                            showProgress(TransferStillageActivity.this);
+                            iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                        } else {
+                            setDataOffline();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+//    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+//    public void onEditTextScanStillageChanged(Editable text) {
+//        if (!text.toString().trim().equals("")) {
+////            scanStillagehandler.postDelayed(stillageRunnable, delay);
+//            if (text.toString().trim().length() == scanStillageLength) {
+//                if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+//                    showProgress(TransferStillageActivity.this);
+//                    iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+//                } else {
+//                    setDataOffline();
+//                }
+//            }
+//        }
+//    }
 
 //    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
 //    public void onEditTextScanStillageTEXTCHANGED(Editable text) {
@@ -199,10 +328,17 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
             if (!body.getTransferId().equals("") && body.getIsShiped().equals("1")) {
                 showSuccessDialog(getString(R.string.this_stillage_already_transfred));
                 editTextScanStillage.setText("");
+            } else if (body.getIsCounted().equals("0")) {
+                showSuccessDialog("Transfer can't be done as RAF is not posted of this stillage.");
+                editTextScanStillage.setText("");
             } else {
                 if (body.getStandardQty() > 0) {
                     isScanned = true;
-                    setData(body);
+                    if (isTransferMultiple) {
+                        setData(body);
+                    } else {
+                        setDataSingle(body);
+                    }
                 } else {
                     showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                     editTextScanStillage.setText("");
@@ -278,7 +414,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
             wareHouseListAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, warehouseList);
             spinnerWarehouse.setAdapter(wareHouseListAdapter);
 
-        }else {
+        } else {
             showSuccessDialog(body.getMessage());
         }
     }
@@ -294,6 +430,48 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     }
 
     void setData(ScanStillageResponse body) {
+
+        linearLayoutRecyclerView.setVisibility(View.VISIBLE);
+        stillageDetail.setVisibility(View.GONE);
+        editTextScanStillage.setText("");
+        editTextScanStillage.setEnabled(true);
+
+        stillageWarehouse = body.getWareHouseID().trim();
+        relativeLayoutScanDetail.setVisibility(View.VISIBLE);
+
+        stillageDetailsList.add(body);
+        adapter.notifyDataSetChanged();
+
+        stickersList.add(body.getStickerID());
+        scannedWarehouseList.add(body.getWareHouseID().trim());
+
+        siteList = body.getSiteListData();
+        siteList.add(0, new UniversalSpinner("Select Site", "0"));
+
+        if (siteList != null) {
+            SpinnerAdapter siteAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, siteList);
+            spinnerSite.setAdapter(siteAdapter);
+        }
+
+        if (body.getIsShiped().equals("0") && !body.getTransferId().equals("")) {
+            linearLayoutToSite.setVisibility(View.GONE);
+            linearLayoutToWarehouse.setVisibility(View.GONE);
+            textViewToWarehouse.setVisibility(View.GONE);
+            buttonTransfer.setText(getString(R.string.ship));
+            transferId = body.getTransferId();
+        } else if (body.getIsShiped().equals("0") && body.getTransferId().equals("")) {
+            linearLayoutToSite.setVisibility(View.VISIBLE);
+            linearLayoutToWarehouse.setVisibility(View.VISIBLE);
+            textViewToWarehouse.setVisibility(View.VISIBLE);
+            buttonTransfer.setText(getString(R.string.transfer));
+        }
+
+    }
+
+    void setDataSingle(ScanStillageResponse body) {
+        linearLayoutRecyclerView.setVisibility(View.GONE);
+        stillageDetail.setVisibility(View.VISIBLE);
+
         editTextScanStillage.setEnabled(false);
         stillageWarehouse = body.getWareHouseID().trim();
         stillageDetail.setVisibility(View.VISIBLE);
@@ -333,32 +511,62 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
     }
 
+    public void deleteAddedData(int position) {
+        stickersList.remove(position);
+        stillageDetailsList.remove(position);
+        adapter.notifyDataSetChanged();
+        if(stickersList.isEmpty()){
+            cancelClick();
+        }
+    }
+
     @OnClick(R.id.buttonTransfer)
     public void onButtonDropClick() {
 
-        if (linearLayoutOfflineData.getVisibility() == View.GONE) {
-            if (buttonTransfer.getText().toString().equals(getString(R.string.transfer))) {
-                if (spinnerWarehouse.getSelectedItemPosition() > 0) {
+        if (isTransferMultiple) {
+            if (linearLayoutOfflineData.getVisibility() == View.GONE) {
+                if (buttonTransfer.getText().toString().equals(getString(R.string.transfer))) {
+                    if (spinnerWarehouse.getSelectedItemPosition() > 0) {
+                        showProgress(this);
+                        TransferInput transferInput = new TransferInput("", stickersList, warehouse, userId);
+                        iTransferInterface.callUpdateTransferStillage(transferInput);
+                    } else {
+                        showSuccessDialog("Select site and warehouse");
+                    }
+                } else if (buttonTransfer.getText().toString().equals(getString(R.string.ship))) {
                     showProgress(this);
-                    TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), warehouse, userId);
-                    iTransferInterface.callUpdateTransferStillage(transferInput);
-                } else {
-                    TextView textView = (TextView) spinnerWarehouse.getSelectedView();
-                    textView.setError(getString(R.string.select_warehouse));
-                    textView.requestFocus();
+                    ShipInput shipInput = new ShipInput(editTextScanStillage.getText().toString().trim(), userId, transferId);
+                    iTransferInterface.callShipStillage(shipInput);
                 }
-            } else if (buttonTransfer.getText().toString().equals(getString(R.string.ship))) {
-                showProgress(this);
-                ShipInput shipInput = new ShipInput(editTextScanStillage.getText().toString().trim(), userId, transferId);
-                iTransferInterface.callShipStillage(shipInput);
+            } else {
+                if (isOfflineValidated()) {
+                    TransferInput transferInput = new TransferInput("", stickersList, warehouse, userId);
+                    saveDataOffline(transferInput);
+                }
             }
         } else {
-            if (isOfflineValidated()) {
-                TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), warehouse, userId);
-                saveDataOffline(transferInput);
+            stickersList = new ArrayList<>();
+            if (linearLayoutOfflineData.getVisibility() == View.GONE) {
+                if (buttonTransfer.getText().toString().equals(getString(R.string.transfer))) {
+                    if (spinnerWarehouse.getSelectedItemPosition() > 0) {
+                        showProgress(this);
+                        TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), stickersList, warehouse, userId);
+                        iTransferInterface.callUpdateTransferStillage(transferInput);
+                    } else {
+                        showSuccessDialog("Select site and warehouse");
+                    }
+                } else if (buttonTransfer.getText().toString().equals(getString(R.string.ship))) {
+                    showProgress(this);
+                    ShipInput shipInput = new ShipInput(editTextScanStillage.getText().toString().trim(), userId, transferId);
+                    iTransferInterface.callShipStillage(shipInput);
+                }
+            } else {
+                if (isOfflineValidated()) {
+                    TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), stickersList, warehouse, userId);
+                    saveDataOffline(transferInput);
+                }
             }
         }
-
     }
 
     @OnClick(R.id.buttonCancel)
@@ -367,6 +575,8 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     }
 
     public void cancelClick() {
+        setAdapter();
+        scannedWarehouseList = new ArrayList<>();
         isScanned = false;
         SpinnerAdapter wareHouseListAdapter;
         warehouseList = new ArrayList<>();

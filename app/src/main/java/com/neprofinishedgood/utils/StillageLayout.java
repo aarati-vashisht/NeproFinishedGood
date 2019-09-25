@@ -1,5 +1,6 @@
 package com.neprofinishedgood.utils;
 
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,6 +48,15 @@ public class StillageLayout {
 
     @BindView(R.id.linearLayoutWorkOrderNo)
     public LinearLayout linearLayoutWorkOrderNo;
+
+    @BindView(R.id.checkboxRaf)
+    public CheckBox checkboxRaf;
+
+    @BindView(R.id.checkboxQcHold)
+    public CheckBox checkboxQcHold;
+
+    @BindView(R.id.linearLayoutRafCheckbox)
+    public LinearLayout linearLayoutRafCheckbox;
 
 
 }

@@ -9,8 +9,6 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.qualitycheck.model.RejectedCompleteInput;
-import com.neprofinishedgood.qualitycheck.model.RejectedInput;
-import com.neprofinishedgood.qualitycheck.rejectquantity.presenter.IQAInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;

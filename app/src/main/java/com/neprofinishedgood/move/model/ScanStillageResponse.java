@@ -149,6 +149,10 @@ public class ScanStillageResponse {
     @Expose
     private String transferId;
 
+    @SerializedName("IsCounted")
+    @Expose
+    private String IsCounted;
+
     public String getIsShiped() {
         return isShiped;
     }
@@ -432,5 +436,13 @@ public class ScanStillageResponse {
 
     public void setSiteListData(ArrayList<UniversalSpinner> siteListData) {
         this.siteListData = siteListData;
+    }
+
+    public String getIsCounted() {
+        return IsCounted;
+    }
+
+    public void setIsCounted(String isCounted) {
+        IsCounted = isCounted;
     }
 }
