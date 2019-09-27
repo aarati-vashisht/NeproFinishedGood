@@ -23,16 +23,12 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
-import com.neprofinishedgood.move.MoveActivity;
-import com.neprofinishedgood.move.adapter.MoveAdapter;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
-import com.neprofinishedgood.productionjournal.ProductionJournal;
-import com.neprofinishedgood.productionjournal.adapter.PickingListAdapter;
 import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
-import com.neprofinishedgood.transferstillage.model.Stillage;
+import com.neprofinishedgood.transferstillage.model.TransferStillageDetail;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseResponse;
@@ -45,13 +41,11 @@ import com.neprofinishedgood.utils.StillageLayout;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
-import butterknife.OnTextChanged;
 
 public class TransferStillageActivity extends BaseActivity implements ITransferView {
 
@@ -110,14 +104,14 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     ArrayList<UniversalSpinner> siteList;
     ArrayList<UniversalSpinner> warehouseList;
 
-    public ArrayList<Stillage> stickersList;
+    public ArrayList<TransferStillageDetail> stickersList;
     public ArrayList<String> scannedWarehouseList;
     ArrayList<ScanStillageResponse> stillageDetailsList;
 
     static TransferStillageActivity instance;
     private String transferId;
 
-    boolean isTransferMultiple = false;
+    boolean isTransferMultiple = true;
 
     public static TransferStillageActivity getInstance() {
         return instance;
@@ -443,7 +437,14 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         stillageDetailsList.add(body);
         adapter.notifyDataSetChanged();
 
-        stickersList.add(new Stillage(body.getStickerID()));
+        String transId;
+        if (body.getTransferId() != null) {
+            transId = body.getTransferId();
+        } else {
+            transId = "";
+        }
+
+        stickersList.add(new TransferStillageDetail(body.getStickerID(), transId));
         scannedWarehouseList.add(body.getWareHouseID().trim());
 
         siteList = body.getSiteListData();
@@ -517,7 +518,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         stickersList.remove(position);
         stillageDetailsList.remove(position);
         adapter.notifyDataSetChanged();
-        if(stickersList.isEmpty()){
+        if (stickersList.isEmpty()) {
             cancelClick();
         }
     }
