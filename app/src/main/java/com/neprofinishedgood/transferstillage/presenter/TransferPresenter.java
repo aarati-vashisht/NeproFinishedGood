@@ -140,4 +140,22 @@ public class TransferPresenter implements ITransferInterface {
         }
     }
 
+    @Override
+    public void callNewTranferStillage(TransferInput transferInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.callNewTranferStillage(transferInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getUpdateTransferStillageResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getUpdateTransferStillageResponse(null);
+
+            }
+        });
+    }
+
 }

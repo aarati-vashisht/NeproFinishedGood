@@ -3,10 +3,10 @@ package com.neprofinishedgood.transferstillage.model;
 import java.util.ArrayList;
 
 public class TransferInput {
-    ArrayList<String> StickerNoList;
+    ArrayList<Stillage> StickerNoList;
     String StickerNo;
 
-    public TransferInput(String stickerNo, ArrayList<String>  stickerNoList, String wareHouseID, String userId) {
+    public TransferInput(String stickerNo, ArrayList<Stillage>  stickerNoList, String wareHouseID, String userId) {
         StickerNo = stickerNo;
         WareHouseID = wareHouseID;
         UserId = userId;

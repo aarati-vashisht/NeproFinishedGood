@@ -166,4 +166,9 @@ public interface ApiInterface {
     @POST("WareHouseData")
     Call<WareHouseResponse> getWareHouse(@Body WareHouseInput wareHouseInput);
 
+
+    @POST("NewTranferStillage")
+    Call<UniversalResponse> callNewTranferStillage(@Body TransferInput moveInput);
+
+
 }

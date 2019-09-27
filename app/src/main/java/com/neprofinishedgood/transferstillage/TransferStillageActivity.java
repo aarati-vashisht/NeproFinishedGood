@@ -32,6 +32,7 @@ import com.neprofinishedgood.productionjournal.ProductionJournal;
 import com.neprofinishedgood.productionjournal.adapter.PickingListAdapter;
 import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
+import com.neprofinishedgood.transferstillage.model.Stillage;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseResponse;
@@ -109,7 +110,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     ArrayList<UniversalSpinner> siteList;
     ArrayList<UniversalSpinner> warehouseList;
 
-    public ArrayList<String> stickersList;
+    public ArrayList<Stillage> stickersList;
     public ArrayList<String> scannedWarehouseList;
     ArrayList<ScanStillageResponse> stillageDetailsList;
 
@@ -216,7 +217,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
                     boolean isStillageExist = false;
                     for (int i = 0; i < stickersList.size(); i++) {
-                        if (stickersList.get(i).equals(text.toString().trim())) {
+                        if (stickersList.get(i).getStillageID().equals(text.toString().trim())) {
                             isStillageExist = true;
                             showSuccessDialog(getResources().getString(R.string.already_scanned));
                             editTextScanStillage.setText("");
@@ -442,7 +443,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         stillageDetailsList.add(body);
         adapter.notifyDataSetChanged();
 
-        stickersList.add(body.getStickerID());
+        stickersList.add(new Stillage(body.getStickerID()));
         scannedWarehouseList.add(body.getWareHouseID().trim());
 
         siteList = body.getSiteListData();
@@ -452,7 +453,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
             SpinnerAdapter siteAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, siteList);
             spinnerSite.setAdapter(siteAdapter);
         }
-
+//-------------------------------- it may change ----------------------------------------
         if (body.getIsShiped().equals("0") && !body.getTransferId().equals("")) {
             linearLayoutToSite.setVisibility(View.GONE);
             linearLayoutToWarehouse.setVisibility(View.GONE);
@@ -465,10 +466,11 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
             textViewToWarehouse.setVisibility(View.VISIBLE);
             buttonTransfer.setText(getString(R.string.transfer));
         }
-
+//---------------------------------------------------------------------------------------
     }
 
     void setDataSingle(ScanStillageResponse body) {
+        stickersList = new ArrayList<>();
         linearLayoutRecyclerView.setVisibility(View.GONE);
         stillageDetail.setVisibility(View.VISIBLE);
 
@@ -529,7 +531,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                     if (spinnerWarehouse.getSelectedItemPosition() > 0) {
                         showProgress(this);
                         TransferInput transferInput = new TransferInput("", stickersList, warehouse, userId);
-                        iTransferInterface.callUpdateTransferStillage(transferInput);
+                        iTransferInterface.callNewTranferStillage(transferInput);
                     } else {
                         showSuccessDialog("Select site and warehouse");
                     }
@@ -545,7 +547,6 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                 }
             }
         } else {
-            stickersList = new ArrayList<>();
             if (linearLayoutOfflineData.getVisibility() == View.GONE) {
                 if (buttonTransfer.getText().toString().equals(getString(R.string.transfer))) {
                     if (spinnerWarehouse.getSelectedItemPosition() > 0) {
