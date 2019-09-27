@@ -3,14 +3,14 @@ package com.neprofinishedgood.transferstillage.model;
 import java.util.ArrayList;
 
 public class TransferInput {
-    ArrayList<Stillage> StickerNoList;
+    ArrayList<TransferStillageDetail> StillageDetailsData;
     String StickerNo;
 
-    public TransferInput(String stickerNo, ArrayList<Stillage>  stickerNoList, String wareHouseID, String userId) {
+    public TransferInput(String stickerNo, ArrayList<TransferStillageDetail>  stillageDetailsData, String wareHouseID, String userId) {
         StickerNo = stickerNo;
         WareHouseID = wareHouseID;
         UserId = userId;
-        StickerNoList = stickerNoList;
+        StillageDetailsData = stillageDetailsData;
     }
 
     String WareHouseID;
