@@ -301,7 +301,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_weight=".20"
                     android:maxLines="1"
-                    android:enabled="false"
+                    android:alpha=".8"
+                    android:clickable="false"
                     android:textColor="@color/gray_color"
                     android:textSize="10sp" />
 
@@ -320,7 +321,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight=".20"
-                    android:enabled="false"
+                    android:alpha=".8"
+                    android:clickable="false"
                     android:maxLines="1"
                     android:textColor="@color/gray_color"
                     android:textSize="10sp" />

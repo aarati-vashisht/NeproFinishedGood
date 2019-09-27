@@ -24,4 +24,6 @@ public interface ITransferInterface {
     void callGetWareHouse(WareHouseInput wareHouseInput);
 
     void getWareHouseResponse(WareHouseResponse body);
+
+    void callNewTranferStillage(TransferInput transferInput);
 }
