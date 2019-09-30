@@ -1,6 +1,8 @@
 package com.neprofinishedgood.pickandload;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -10,7 +12,11 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -26,7 +32,7 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
-import com.neprofinishedgood.move.MoveStillageActivity;
+import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.pickandload.model.LoadingPlanDetails;
 import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
@@ -85,6 +91,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     boolean isAlreadyExist, isSearchOnStillages = false;
     private List<LoadingPlanList> loadingPlanDetailLists = new ArrayList<>();
     List<LoadingPlanList> loadingPlanList;
+    private String endPickReason = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -256,7 +263,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
                     public void onClick(DialogInterface dialog, int id) {
                         if (isAfterLoading) {
                             showProgress(PickAndLoadStillageActivity.this);
-                            iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId));
+                            iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId, ""));
                         } else {
                             finish();
                         }
@@ -332,14 +339,63 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
 //        textViewLoadingPlan.setText(loadingPlan);
         showProgress(this);
         setTitle(loadingPlan);
-        iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId));
+        iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId, ""));
 
     }
 
     @OnClick(R.id.buttonEndPick)
     public void buttonEndPickClick() {
-        showProgress(this);
-        iPickAndLoadItemInterFace.callEndPickService(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId));
+        alertDialogForEndPick(this);
+    }
+
+    public void alertDialogForEndPick(Context context) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.custom_alert_end_pick);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        CustomButton buttonEndPick = dialog.findViewById(R.id.buttonEndPick);
+        CustomButton buttonCancel = dialog.findViewById(R.id.buttonCancel);
+        Spinner spinnerEndPickReason = dialog.findViewById(R.id.spinnerEndPickReason);
+
+        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(PickAndLoadStillageActivity.getInstance(), R.layout.spinner_layout, reasonList);
+        spinnerEndPickReason.setAdapter(reasonListAdapter);
+
+        spinnerEndPickReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position <= 0){
+                    buttonEndPick.setEnabled(false);
+                }
+                else{
+                    buttonEndPick.setEnabled(true);
+                }
+                endPickReason = reasonList.get(position).getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        buttonEndPick.setOnClickListener(v -> {
+            if(spinnerEndPickReason.getSelectedItemPosition() <=0 ) {
+
+            }else{
+                showProgress(this);
+                iPickAndLoadItemInterFace.callEndPickService(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId, endPickReason));
+                dialog.cancel();
+            }
+        });
+
+        buttonCancel.setOnClickListener(v->{
+            dialog.cancel();
+        });
+
+        dialog.show();
+
     }
 
     @Override
@@ -353,8 +409,8 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     public void onEndPickSuccess(UniversalResponse body) {
         hideProgress();
         if (body.getStatus().equals(getString(R.string.success))) {
-            showSuccessDialog(body.getMessage());
-//            CustomToast.showToast(this, body.getMessage());
+//            showSuccessDialog(body.getMessage());
+            CustomToast.showToast(this, body.getMessage());
             loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
             for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
                 if (loadingPlanList.getLoadingNumber().equals(loadingPlan)) {

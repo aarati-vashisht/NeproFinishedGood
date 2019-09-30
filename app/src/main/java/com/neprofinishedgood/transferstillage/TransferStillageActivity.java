@@ -110,7 +110,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     static TransferStillageActivity instance;
     private String transferId;
 
-    boolean isTransferMultiple = true;
+    boolean isTransferMultiple = false;
 
     public static TransferStillageActivity getInstance() {
         return instance;

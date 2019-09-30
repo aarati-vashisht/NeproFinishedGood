@@ -94,9 +94,9 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             }
         }
         holder.textViewNumber.setText(stillageDatumListFiltered.get(position).getStillageNO());
-        if(stillageDatumListFiltered.get(position).getZone().equals("")) {
+        if (stillageDatumListFiltered.get(position).getZone().equals("")) {
             holder.textViewLocation.setText(stillageDatumListFiltered.get(position).getAisle() + "-" + stillageDatumListFiltered.get(position).getRack() + "-" + stillageDatumListFiltered.get(position).getBin());
-        }else{
+        } else {
             holder.textViewLocation.setText(stillageDatumListFiltered.get(position).getZone());
         }
         if (stillageDatumListFiltered.get(position).getStatus().equals("")) {
@@ -352,6 +352,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                     PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
                     stillageDatumListFiltered.get(position).setStatus("-2");
                     PickAndLoadStillageActivity.getInstance().stillageNoToDelete = stillageDatumListFiltered.get(position).getStillageNO();
+                    PickAndLoadStillageActivity.getInstance().showProgress(PickAndLoadStillageActivity.getInstance());
                     UpdateLoadInput updateLoadInput = new UpdateLoadInput(stillageDatumListFiltered.get(position).getStillageNO(), PickAndLoadStillageActivity.getInstance().userId, PickAndLoadStillageActivity.getInstance().scanLoadingPlanList.getTLPHID() + "", reason, stillageDatumListFiltered.get(position).getItemId() + "", editTextLoadQuantity.getText().toString().trim(), PickAndLoadStillageActivity.getInstance().isCompleted);
                     PickAndLoadStillageActivity.getInstance().iPickAndLoadItemInterFace.callUpdateLoadService(updateLoadInput);
 //                    CustomToast.showToast(context, context.getString(R.string.stillage_loaded_successfully));
