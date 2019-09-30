@@ -208,5 +208,6 @@
     <string name="qc_hold">QC Hold</string>
     <string name="already_scanned">This stillage is already scanned.</string>
     <string name="cannot_transfer">Can\'t transfer to same warehouse.</string>
+    <string name="select_reason_end_pick">Select Reason For End Pick</string>
 
 </resources>

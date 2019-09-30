@@ -98,7 +98,7 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
                 PickAndLoadActivity.getInstance().showProgress(PickAndLoadActivity.getInstance());
                 PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callCancelLoadingPlan
                         (new LoadingPlanInput(stillageDatumListFiltered.get(getAdapterPosition()).getTLPHID() + "",
-                                PickAndLoadActivity.getInstance().userId));
+                                PickAndLoadActivity.getInstance().userId, ""));
 //                CustomToast.showToast(context, "deleted successfully " + getAdapterPosition());
             }
 
