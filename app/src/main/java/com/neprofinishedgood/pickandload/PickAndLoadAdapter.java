@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
@@ -35,6 +37,7 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
     private Context context;
     private View view;
     String customerName;
+    private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
 
     public PickAndLoadAdapter(List<ScanLoadingPlanList> stillageDatumList) {
         this.stillageDatumList = stillageDatumList;
@@ -51,6 +54,10 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        viewBinderHelper.bind(holder.swipeRevealLayout, stillageDatumListFiltered.get(position).getLoadingPlanNo());
+        holder.swipeRevealLayout.close(true);
+        viewBinderHelper.setOpenOnlyOne(true);
+
         holder.textViewLoadingPlan.setText(stillageDatumListFiltered.get(position).getLoadingPlanNo());
         holder.textViewCustomer.setText(stillageDatumListFiltered.get(position).getCustomerId());
 
@@ -74,6 +81,8 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
         CardView cardView;
         @BindView(R.id.back_layout)
         FrameLayout back_layout;
+        @BindView(R.id.swipeRevealLayout)
+        SwipeRevealLayout swipeRevealLayout;
 
         public ViewHolder(View view) {
             super(view);

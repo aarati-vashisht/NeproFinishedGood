@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.productionjournal.ProductionJournal;
@@ -30,6 +32,7 @@ public class RouteCardAdapter extends RecyclerView.Adapter<RouteCardAdapter.View
     private List<RouteCardPicked> routeListDatumListFiltered;
     private Context context;
     private View view;
+    private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
 
     public RouteCardAdapter(List<RouteCardPicked> pickingListDatumList) {
         this.pickingListDatumList = pickingListDatumList;
@@ -46,6 +49,10 @@ public class RouteCardAdapter extends RecyclerView.Adapter<RouteCardAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        viewBinderHelper.bind(holder.swipeRevealLayout, routeListDatumListFiltered.get(position).getOperationId());
+        holder.swipeRevealLayout.close(true);
+        viewBinderHelper.setOpenOnlyOne(true);
+
         holder.textViewItemName.setText(routeListDatumListFiltered.get(position).getOperationName());
         holder.textViewQuantity.setText(routeListDatumListFiltered.get(position).getQuantity());
     }
@@ -66,6 +73,8 @@ public class RouteCardAdapter extends RecyclerView.Adapter<RouteCardAdapter.View
         CardView cardView;
         @BindView(R.id.back_layout)
         FrameLayout back_layout;
+        @BindView(R.id.swipeRevealLayout)
+        SwipeRevealLayout swipeRevealLayout;
 
         public ViewHolder(View view) {
             super(view);
