@@ -40,18 +40,18 @@
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/cardview_background"
             android:foreground="?android:attr/selectableItemBackground"
             android:orientation="vertical"
             android:paddingStart="5dp"
-            android:paddingTop="5dp"
+            android:paddingTop="3dp"
             android:paddingEnd="5dp"
-            android:paddingBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:paddingBottom="5dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="3dp"
-            app:cardElevation="5dp"
+            app:cardElevation="3dp"
             android:visibility="gone">
 
             <LinearLayout
@@ -64,14 +64,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorPrimaryDark"
-                    android:elevation="5dp"
+                    android:elevation="3dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".8"
-                        android:padding="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingTop="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="3dp"
                         android:text="@string/work_order_number"
                         android:textColor="@color/white"
                         android:textSize="12sp"
@@ -82,7 +85,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:padding="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingTop="3dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="3dp"
                         android:text="WO-00001 "
                         android:textColor="@color/white"
                         android:textSize="12sp"
@@ -93,7 +99,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="3dp"
                     android:gravity="left"
                     android:orientation="horizontal"
                     android:paddingStart="5dp"
@@ -123,9 +129,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingStart="5dp"
-                    android:paddingTop="8dp"
+                    android:paddingTop="3dp"
                     android:paddingEnd="5dp"
-                    android:paddingBottom="8dp">
+                    android:paddingBottom="3dp">
 
                         <TextView
                             android:layout_width="wrap_content"

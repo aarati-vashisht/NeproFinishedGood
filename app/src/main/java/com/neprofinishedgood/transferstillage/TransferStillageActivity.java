@@ -370,16 +370,22 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
         if (isTransferMultiple) {
             if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
-                if (body.getStillageNotSH() != null) {
-                    if (!body.getStillageNotSH().equals("")) {
-                        unShipedStillages = body.getStillageNotSH().split(",");
-                        showSuccessDialog("Some stillages have not been shipped");
+                if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+                    if (body.getStillageNotSH() != null) {
+                        if (!body.getStillageNotSH().equals("")) {
+                            unShippedStillgesFound(body);
+                        } else {
+                            showSuccessDialog(body.getMessage());
+                            cancelClick();
+                        }
+                    } else {
+                        showSuccessDialog(body.getMessage());
+                        cancelClick();
                     }
+                } else {
+                    showSuccessDialog(body.getMessage());
+
                 }
-//                showSuccessDialog(body.getMessage());
-//                if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-//                    cancelClick();
-//                }
             }
         } else {
             if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
@@ -395,6 +401,26 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                 }
             }
         }
+    }
+
+    void unShippedStillgesFound(UniversalResponse body) {
+        ArrayList<TransferStillageDetail> stickersListLocal = new ArrayList<>();
+        ArrayList<ScanStillageResponse> stillageDetailsListLocal = new ArrayList<>();
+        unShipedStillages = body.getStillageNotSH().split(",");
+        showSuccessDialog("Some stillages have not been shipped");
+        for (int i = 0; i < unShipedStillages.length; i++) {
+            for (int j = 0; j < unShipedStillages.length; j++) {
+                if (unShipedStillages[i].equals(stickersList.get(j).getStillageID())) {
+                    stickersListLocal.add(stickersList.get(j));
+                }
+                if (unShipedStillages[i].equals(stillageDetailsList.get(j).getStickerID())) {
+                    stillageDetailsListLocal.add(stillageDetailsList.get(j));
+                }
+            }
+        }
+        stickersList = stickersListLocal;
+        stillageDetailsList = stillageDetailsListLocal;
+        adapter.notifyDataSetChanged();
     }
 
     @Override

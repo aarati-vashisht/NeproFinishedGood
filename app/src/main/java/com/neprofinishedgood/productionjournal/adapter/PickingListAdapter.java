@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.productionjournal.ProductionJournal;
@@ -29,6 +31,7 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
     private List<ItemPicked> pickingListDatumListFiltered;
     private Context context;
     private View view;
+    private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
 
     public PickingListAdapter(List<ItemPicked> pickingListDatumList) {
         this.pickingListDatumList = pickingListDatumList;
@@ -45,6 +48,11 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
+        viewBinderHelper.bind(holder.swipeRevealLayout, pickingListDatumListFiltered.get(position).getItemId());
+        holder.swipeRevealLayout.close(true);
+        viewBinderHelper.setOpenOnlyOne(true);
+
         holder.textViewItemName.setText(pickingListDatumListFiltered.get(position).getItemName());
         holder.textViewQuantity.setText(pickingListDatumListFiltered.get(position).getQuantity());
     }
@@ -65,6 +73,9 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
         CardView cardView;
         @BindView(R.id.back_layout)
         FrameLayout back_layout;
+        @BindView(R.id.swipeRevealLayout)
+        SwipeRevealLayout swipeRevealLayout;
+
 
         public ViewHolder(View view) {
             super(view);
