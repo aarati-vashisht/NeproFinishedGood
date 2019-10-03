@@ -81,6 +81,11 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
     public void onBindViewHolder(final ViewHolder holder, int position) {
         viewBinderHelper.bind(holder.swipeRevealLayout, stillageDatumListFiltered.get(position).getStillageNO());
 
+        viewHolder = holder;
+        holder.swipeRevealLayout.close(true);
+
+        viewBinderHelper.setOpenOnlyOne(true);
+
         holder.textViewitem.setText(stillageDatumListFiltered.get(position).getItemName());
 //        holder.textViewSite.setText(stillageDatumListFiltered.get(position).getSiteName());
         holder.textViewSite.setVisibility(View.GONE);
@@ -363,6 +368,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                viewHolder.swipeRevealLayout.setLockDrag(false);
                 stillageDatumListFiltered.get(position).setStatus("-1");
                 PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
             }

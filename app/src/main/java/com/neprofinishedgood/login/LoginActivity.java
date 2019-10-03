@@ -60,7 +60,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     }
 
     private boolean isValidate() {
-        if (pinViewLogin.getText().toString().equals("")) {
+        if (pinViewLogin.getText().toString().equals("") || pinViewLogin.getText().toString().length() != 4) {
             showSuccessDialog(getString(R.string.plz_enter_pin));
 //            CustomToast.showToast(this, getString(R.string.plz_enter_pin));
             return false;
@@ -82,6 +82,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
         } else {
             showSuccessDialog(body.getMessage());
             pinViewLogin.requestFocus(3);
+            pinViewLogin.setText("");
         }
 
     }
@@ -90,6 +91,8 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     public void onFailure(String message) {
         hideProgress();
         showSuccessDialog(message);
+        pinViewLogin.setText("");
+        pinViewLogin.requestFocus(3);
 //        CustomToast.showToast(this, message);
     }
 }

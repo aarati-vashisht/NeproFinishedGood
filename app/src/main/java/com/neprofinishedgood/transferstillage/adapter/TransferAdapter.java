@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.transferstillage.TransferStillageActivity;
@@ -25,6 +27,7 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
     private List<ScanStillageResponse> stillageDetailsListFiltered;
     private Context context;
     private View view;
+    private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
 
     public TransferAdapter(List<ScanStillageResponse> pickingListDatumList) {
         this.stillageDetailsList = pickingListDatumList;
@@ -41,11 +44,18 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final TransferAdapter.ViewHolder holder, int position) {
+
+        viewBinderHelper.bind(holder.swipeRevealLayout, stillageDetailsListFiltered.get(position).getStickerID());
+
+        holder.swipeRevealLayout.close(true);
+
+        viewBinderHelper.setOpenOnlyOne(true);
+
         holder.textViewLocation.setText(stillageDetailsListFiltered.get(position).getLocation());
         holder.textViewitem.setText(stillageDetailsListFiltered.get(position).getItemId());
         holder.textViewNumber.setText(stillageDetailsListFiltered.get(position).getStickerID());
-        holder.textViewQuantity.setText(stillageDetailsListFiltered.get(position).getStandardQty()+"");
-        holder.textViewStdQuatity.setText(stillageDetailsListFiltered.get(position).getItemStdQty()+"");
+        holder.textViewQuantity.setText(stillageDetailsListFiltered.get(position).getStandardQty() + "");
+        holder.textViewStdQuatity.setText(stillageDetailsListFiltered.get(position).getItemStdQty() + "");
         holder.textViewitemDesc.setText(stillageDetailsListFiltered.get(position).getDescription());
         holder.textViewWarehouse.setText(stillageDetailsListFiltered.get(position).getWareHouseID() + " | " + stillageDetailsListFiltered.get(position).getWareHouseName());
 
@@ -85,6 +95,9 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
 
         @BindView(R.id.back_layout)
         FrameLayout back_layout;
+
+        @BindView(R.id.swipeRevealLayout)
+        SwipeRevealLayout swipeRevealLayout;
 
         public ViewHolder(View view) {
             super(view);
