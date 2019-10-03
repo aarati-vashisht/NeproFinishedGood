@@ -110,7 +110,9 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     static TransferStillageActivity instance;
     private String transferId;
 
-    boolean isTransferMultiple = false;
+    boolean isTransferMultiple = true;
+
+    String unShipedStillages[];
 
     public static TransferStillageActivity getInstance() {
         return instance;
@@ -365,12 +367,19 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @Override
     public void onUpdateTransferSuccess(UniversalResponse body) {
         hideProgress();
+
         if (isTransferMultiple) {
             if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {
-                showSuccessDialog(body.getMessage());
-                if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-                    cancelClick();
+                if (body.getStillageNotSH() != null) {
+                    if (!body.getStillageNotSH().equals("")) {
+                        unShipedStillages = body.getStillageNotSH().split(",");
+                        showSuccessDialog("Some stillages have not been shipped");
+                    }
                 }
+//                showSuccessDialog(body.getMessage());
+//                if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+//                    cancelClick();
+//                }
             }
         } else {
             if (relativeLayoutScanDetail.getVisibility() == View.VISIBLE) {

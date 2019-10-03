@@ -16,6 +16,10 @@ public class UniversalResponse {
     @Expose
     private String transferId;
 
+    @SerializedName("StillageNotSH")
+    @Expose
+    private String stillageNotSH;
+
     public String getStatus() {
         return status;
     }
@@ -38,5 +42,13 @@ public class UniversalResponse {
 
     public void setTransferId(String transferId) {
         this.transferId = transferId;
+    }
+
+    public String getStillageNotSH() {
+        return stillageNotSH;
+    }
+
+    public void setStillageNotSH(String stillageNotSH) {
+        this.stillageNotSH = stillageNotSH;
     }
 }
