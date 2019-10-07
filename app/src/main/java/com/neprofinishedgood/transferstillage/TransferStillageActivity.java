@@ -1,11 +1,18 @@
 package com.neprofinishedgood.transferstillage;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -26,6 +33,8 @@ import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.pickandload.PickAndLoadStillageActivity;
+import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferStillageDetail;
@@ -80,6 +89,9 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @BindView(R.id.linearLayoutRecyclerView)
     LinearLayout linearLayoutRecyclerView;
 
+    @BindView(R.id.linearLayoutLocationSelection)
+    LinearLayout linearLayoutLocationSelection;
+
     @BindView(R.id.textViewToWarehouse)
     TextView textViewToWarehouse;
 
@@ -109,10 +121,13 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
     static TransferStillageActivity instance;
     private String transferId;
+    private String toBeTransferWHID = "";
 
     boolean isTransferMultiple = true;
 
     String unShipedStillages[];
+
+    Spinner spinnerWarehouseDialog;
 
     public static TransferStillageActivity getInstance() {
         return instance;
@@ -335,13 +350,29 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                     if (stillageWarehouseId.equals(body.getWareHouseID().trim())) {
                         isScanned = true;
                         if (isTransferMultiple) {
-                            setData(body);
+
+
+                            boolean isSameTransWH = true;
+                            if (!body.getTransferId().equals("")) {
+                                if (toBeTransferWHID.equals("")) {
+                                    toBeTransferWHID = body.getToBeTransferWHID();
+                                    isSameTransWH = true;
+                                } else if (!toBeTransferWHID.equals(body.getToBeTransferWHID())) {
+                                    showSuccessDialog("Can't transfer to different warehouse in single transfer operation.");
+                                    isSameTransWH = false;
+                                }
+                            }
+                            if (isSameTransWH) {
+                                setData(body);
+                            }
+
+
                         } else {
                             setDataSingle(body);
                         }
 
                     } else {
-                        showSuccessDialog("Can't scan stillage of different warehouseId.");
+                        showSuccessDialog("Can't scan stillage of different warehouse.");
                         editTextScanStillage.setText("");
                     }
                 } else {
@@ -421,6 +452,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         stickersList = stickersListLocal;
         stillageDetailsList = stillageDetailsListLocal;
         adapter.notifyDataSetChanged();
+        buttonTransfer.setVisibility(View.GONE);
     }
 
     @Override
@@ -456,7 +488,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
             }
             warehouseList.add(0, new UniversalSpinner("Select Warehouse", "0"));
             wareHouseListAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, warehouseList);
-            spinnerWarehouse.setAdapter(wareHouseListAdapter);
+            spinnerWarehouseDialog.setAdapter(wareHouseListAdapter);
 
         } else {
             showSuccessDialog(body.getMessage());
@@ -475,6 +507,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
     void setData(ScanStillageResponse body) {
 
+        linearLayoutLocationSelection.setVisibility(View.GONE);
         linearLayoutRecyclerView.setVisibility(View.VISIBLE);
         stillageDetail.setVisibility(View.GONE);
         editTextScanStillage.setText("");
@@ -583,13 +616,18 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         if (isTransferMultiple) {
             if (linearLayoutOfflineData.getVisibility() == View.GONE) {
                 if (buttonTransfer.getText().toString().equals(getString(R.string.transfer))) {
-                    if (spinnerWarehouse.getSelectedItemPosition() > 0) {
-                        showProgress(this);
-                        TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId);
-                        iTransferInterface.callNewTranferStillage(transferInput);
+                    if (toBeTransferWHID.equals("")) {
+                        alertDialogForTransfer(TransferStillageActivity.this);
                     } else {
-                        showSuccessDialog("Select site and warehouse");
+                        showBackAlert();
                     }
+//                    if (spinnerWarehouse.getSelectedItemPosition() > 0) {
+//                        showProgress(this);
+//                        TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId);
+//                        iTransferInterface.callNewTranferStillage(transferInput);
+//                    } else {
+//                        showSuccessDialog("Select site and warehouse");
+//                    }
                 } else if (buttonTransfer.getText().toString().equals(getString(R.string.ship))) {
                     showProgress(this);
                     ShipInput shipInput = new ShipInput(editTextScanStillage.getText().toString().trim(), userId, transferId);
@@ -625,12 +663,105 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         }
     }
 
+    public void alertDialogForTransfer(Context context) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.custom_alert_warehouse_selection);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        CustomButton buttonTransfer = dialog.findViewById(R.id.buttonTransfer);
+        CustomButton buttonCancel = dialog.findViewById(R.id.buttonCancel);
+        Spinner spinnerSite = dialog.findViewById(R.id.spinnerSite);
+        spinnerWarehouseDialog = dialog.findViewById(R.id.spinnerWarehouse);
+
+        if (siteList != null) {
+            SpinnerAdapter siteAdapter = new SpinnerAdapter(TransferStillageActivity.getInstance(), R.layout.spinner_layout, siteList);
+            spinnerSite.setAdapter(siteAdapter);
+        }
+
+        spinnerSite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position <= 0) {
+                    buttonTransfer.setEnabled(false);
+                } else {
+                    siteId = siteList.get(position).getId().trim();
+                    showProgress(TransferStillageActivity.getInstance());
+                    iTransferInterface.callGetWareHouse(new WareHouseInput(siteId));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinnerWarehouseDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                warehouseId = warehouseList.get(position).getId().trim();
+                if (warehouseId.equalsIgnoreCase(stillageWarehouseId)) {
+                    showSuccessDialog(getResources().getString(R.string.cannot_transfer));
+                    buttonTransfer.setEnabled(false);
+                } else {
+                    buttonTransfer.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        buttonTransfer.setOnClickListener(v -> {
+            if (spinnerWarehouseDialog.getSelectedItemPosition() > 0) {
+                showProgress(this);
+                TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId);
+                iTransferInterface.callNewTranferStillage(transferInput);
+                dialog.cancel();
+            } else {
+                showSuccessDialog("Select site and warehouse");
+            }
+        });
+
+        buttonCancel.setOnClickListener(v -> {
+            dialog.cancel();
+        });
+
+        dialog.show();
+
+    }
+
+    public void showBackAlert() {
+        builder = new AlertDialog.Builder(this);
+//        builder.setTitle();
+        builder.setMessage("These stillages will be transfered to " + toBeTransferWHID + " Warehouse! ");
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     @OnClick(R.id.buttonCancel)
     public void onButtonCancelClick() {
         showCancelAlert(5);
     }
 
     public void cancelClick() {
+        buttonTransfer.setVisibility(View.VISIBLE);
         stillageWarehouseId = "";
         warehouseId = "";
         siteId = "";

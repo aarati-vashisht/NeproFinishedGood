@@ -153,6 +153,10 @@ public class ScanStillageResponse {
     @Expose
     private String IsCounted;
 
+    @SerializedName("ToBeTransferWHID")
+    @Expose
+    private String toBeTransferWHID;
+
     public String getIsShiped() {
         return isShiped;
     }
@@ -444,5 +448,13 @@ public class ScanStillageResponse {
 
     public void setIsCounted(String isCounted) {
         IsCounted = isCounted;
+    }
+
+    public String getToBeTransferWHID() {
+        return toBeTransferWHID;
+    }
+
+    public void setToBeTransferWHID(String toBeTransferWHID) {
+        this.toBeTransferWHID = toBeTransferWHID;
     }
 }
