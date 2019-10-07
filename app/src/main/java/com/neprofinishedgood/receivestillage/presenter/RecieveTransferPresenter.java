@@ -19,7 +19,7 @@ public class RecieveTransferPresenter implements IRecieveTransferInterface {
 
     public RecieveTransferPresenter(IRecieveTransferView iRecieveTransferView, Activity activity) {
         this.iRecieveTransferView = iRecieveTransferView;
-
+        this.activity = activity;
     }
 
     @Override

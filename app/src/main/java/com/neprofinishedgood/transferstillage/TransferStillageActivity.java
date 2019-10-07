@@ -316,7 +316,6 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 //        }
 //    };
 
-
     public void imageButtonCloseClick(View view) {
         relativeLayoutScanDetail.startAnimation(fadeOut);
         relativeLayoutScanDetail.setVisibility(View.GONE);
@@ -351,7 +350,6 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                         isScanned = true;
                         if (isTransferMultiple) {
 
-
                             boolean isSameTransWH = true;
                             if (!body.getTransferId().equals("")) {
                                 if (toBeTransferWHID.equals("")) {
@@ -365,7 +363,6 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                             if (isSameTransWH) {
                                 setData(body);
                             }
-
 
                         } else {
                             setDataSingle(body);
@@ -449,9 +446,11 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                 }
             }
         }
+        editTextScanStillage.setEnabled(false);
         stickersList = stickersListLocal;
         stillageDetailsList = stillageDetailsListLocal;
         adapter.notifyDataSetChanged();
+        adapter.lockDelete = true;
         buttonTransfer.setVisibility(View.GONE);
     }
 
@@ -608,6 +607,20 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         if (stickersList.isEmpty()) {
             cancelClick();
         }
+
+        boolean isTransIdFound = false;
+        for (int i = 0; i < stillageDetailsList.size(); i++) {
+            if (!stillageDetailsList.get(i).getTransferId().equals("")) {
+                isTransIdFound = true;
+                break;
+            }
+            else{
+                isTransIdFound = false;
+            }
+        }
+        if(!isTransIdFound){
+            toBeTransferWHID = "";
+        }
     }
 
     @OnClick(R.id.buttonTransfer)
@@ -615,12 +628,11 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
         if (isTransferMultiple) {
             if (linearLayoutOfflineData.getVisibility() == View.GONE) {
-                if (buttonTransfer.getText().toString().equals(getString(R.string.transfer))) {
-                    if (toBeTransferWHID.equals("")) {
-                        alertDialogForTransfer(TransferStillageActivity.this);
-                    } else {
-                        showBackAlert();
-                    }
+                if (toBeTransferWHID.equals("")) {
+                    alertTransferWarehouseSelection(TransferStillageActivity.this);
+                } else {
+                    showTransferAlert();
+                }
 //                    if (spinnerWarehouse.getSelectedItemPosition() > 0) {
 //                        showProgress(this);
 //                        TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId);
@@ -628,11 +640,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 //                    } else {
 //                        showSuccessDialog("Select site and warehouse");
 //                    }
-                } else if (buttonTransfer.getText().toString().equals(getString(R.string.ship))) {
-                    showProgress(this);
-                    ShipInput shipInput = new ShipInput(editTextScanStillage.getText().toString().trim(), userId, transferId);
-                    iTransferInterface.callShipStillage(shipInput);
-                }
+
             } else {
                 if (isOfflineValidated()) {
                     TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId);
@@ -663,7 +671,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         }
     }
 
-    public void alertDialogForTransfer(Context context) {
+    public void alertTransferWarehouseSelection(Context context) {
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -735,22 +743,17 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
     }
 
-    public void showBackAlert() {
+    public void showTransferAlert() {
         builder = new AlertDialog.Builder(this);
-//        builder.setTitle();
         builder.setMessage("These stillages will be transfered to " + toBeTransferWHID + " Warehouse! ");
         builder.setCancelable(false)
-                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        dialog.cancel();
-                    }
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
+                    showProgress(TransferStillageActivity.this);
+                    TransferInput transferInput = new TransferInput("", stickersList, toBeTransferWHID, userId);
+                    iTransferInterface.callNewTranferStillage(transferInput);
+                    dialog.cancel();
                 })
-                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                .setNegativeButton(getString(R.string.no), (dialog, id) -> dialog.cancel());
         AlertDialog alert = builder.create();
         alert.show();
     }
@@ -761,6 +764,8 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     }
 
     public void cancelClick() {
+        toBeTransferWHID = "";
+        adapter.lockDelete = false;
         buttonTransfer.setVisibility(View.VISIBLE);
         stillageWarehouseId = "";
         warehouseId = "";

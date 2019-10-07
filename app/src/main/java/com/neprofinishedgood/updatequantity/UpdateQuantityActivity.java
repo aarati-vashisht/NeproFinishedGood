@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
@@ -49,6 +50,10 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     LinearLayout linearLayoutEnterQuantity;
     @BindView(R.id.linearLayoutReason)
     LinearLayout linearLayoutReason;
+    @BindView(R.id.linearLayoutVariance)
+    LinearLayout linearLayoutVariance;
+    @BindView(R.id.textViewVariance)
+    AppCompatTextView textViewVariance;
     @BindView(R.id.linearLayoutButtons)
     LinearLayout linearLayoutButtons;
     @BindView(R.id.editTextScanStillage)
@@ -150,10 +155,16 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         linearLayoutScanDetail.setAnimation(fadeIn);
         linearLayoutReason.setVisibility(View.VISIBLE);
         linearLayoutReason.setAnimation(fadeIn);
+//        linearLayoutVariance.setVisibility(View.VISIBLE);
+//        linearLayoutVariance.setAnimation(fadeIn);
         linearLayoutEnterQuantity.setVisibility(View.VISIBLE);
         linearLayoutEnterQuantity.setAnimation(fadeIn);
         linearLayoutButtons.setVisibility(View.VISIBLE);
         linearLayoutButtons.setAnimation(fadeIn);
+
+//        stillageLayout.linearLayoutStatus.setVisibility(View.VISIBLE);
+//        stillageLayout.textViewWorkOrderStatus.setText("");
+//        stillageLayout.checkboxRafStatus.setEnabled(true);
 
         stillageLayout.textViewitem.setText(body.getItemId());
         stillageLayout.textViewNumber.setText(body.getStickerID());
@@ -166,10 +177,15 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
     @OnTextChanged(value = R.id.editTextQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextQuantityChanged(Editable text) {
-        float stillageQty, stillageStdQty, editQty;
+        float stillageQty = 0, stillageStdQty, editQty;
 
         if (!text.toString().equals("") && !text.toString().equals(".")) {
             editQty = Float.parseFloat(text.toString());
+            if (stillageLayout.textViewQuantity.getText().toString().length() > 0) {
+                stillageQty = Float.parseFloat(stillageLayout.textViewQuantity.getText().toString());
+            }
+            textViewVariance.setText(editQty-stillageQty+"");
+            buttonConfirm.setEnabled(true);
 //            if (stillageLayout.textViewStdQuantity.getText().toString().length() > 0) {
 //                stillageStdQty = Float.parseFloat(stillageLayout.textViewStdQuantity.getText().toString());
 //                if (editQty > stillageStdQty) {
@@ -179,15 +195,16 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 //                    editTextQuantity.setText("");
 //                }
 //            }
-            if (editQty == 0) {
-                editTextQuantity.setError(getString(R.string.quantity_must_not_be_zero));
-                editTextQuantity.requestFocus();
-                buttonConfirm.setEnabled(false);
-            } else {
-                buttonConfirm.setEnabled(true);
-            }
+//            if (editQty == 0) {
+//                editTextQuantity.setError(getString(R.string.quantity_must_not_be_zero));
+//                editTextQuantity.requestFocus();
+//                buttonConfirm.setEnabled(false);
+//            } else {
+//                buttonConfirm.setEnabled(true);
+//            }
         } else {
             buttonConfirm.setEnabled(false);
+            textViewVariance.setText("");
         }
     }
 
@@ -198,15 +215,16 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
     @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
+        String variance = textViewVariance.getText().toString();
         if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
             if (isValidated()) {
                 showProgress(this);
-                UpdateQtyInput updateQtyInput = new UpdateQtyInput(editTextScanStillage.getText().toString(), editTextQuantity.getText().toString(), reason, userId);
+                UpdateQtyInput updateQtyInput = new UpdateQtyInput(editTextScanStillage.getText().toString(), editTextQuantity.getText().toString(), reason, userId, variance);
                 iUpdateQtyInterface.callUpdateQtyStillageService(updateQtyInput);
             }
         } else {
             if (isOfflineValidated()) {
-                UpdateQtyInput updateQtyInput = new UpdateQtyInput(editTextScanStillage.getText().toString(), editTextQuantity.getText().toString(), reason, userId);
+                UpdateQtyInput updateQtyInput = new UpdateQtyInput(editTextScanStillage.getText().toString(), editTextQuantity.getText().toString(), reason, userId, variance);
                 saveDataOffline(updateQtyInput);
             }
         }
@@ -223,6 +241,8 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         linearLayoutScanDetail.setAnimation(fadeOut);
         linearLayoutReason.setVisibility(View.GONE);
         linearLayoutReason.setAnimation(fadeOut);
+        linearLayoutVariance.setVisibility(View.GONE);
+        linearLayoutVariance.setAnimation(fadeOut);
         linearLayoutEnterQuantity.setVisibility(View.GONE);
         linearLayoutEnterQuantity.setAnimation(fadeOut);
         linearLayoutButtons.setVisibility(View.GONE);
@@ -263,15 +283,16 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     }
 
     boolean isValidated() {
-        if (editTextQuantity.getText().toString().equals("0") || editTextQuantity.getText().toString().equals(".")) {
+        if (/*editTextQuantity.getText().toString().equals("0") ||*/ editTextQuantity.getText().toString().equals(".")) {
             editTextQuantity.setError(getResources().getString(R.string.enter_update_quantity));
             editTextQuantity.requestFocus();
             return false;
         }
         if (spinnerReason.getSelectedItemPosition() == 0) {
-            TextView textView = (TextView) spinnerReason.getSelectedView();
-            textView.setError(getString(R.string.select_reason));
-            textView.requestFocus();
+            showSuccessDialog(getString(R.string.select_reason));
+//            TextView textView = (TextView) spinnerReason.getSelectedView();
+//            textView.setError(getString(R.string.select_reason));
+//            textView.requestFocus();
             return false;
         }
         return true;
@@ -290,8 +311,6 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     @Override
     public void onUpdateQtySuccess(UniversalResponse body) {
         hideProgress();
-        Log.d("afghsd  " + i, new Gson().toJson(body));
-
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             if (body.getStatus().equals(getResources().getString(R.string.success))) {
                 showSuccessDialog(body.getMessage());
@@ -348,6 +367,8 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
         linearLayoutReason.setVisibility(View.VISIBLE);
         linearLayoutReason.setAnimation(fadeIn);
+//        linearLayoutVariance.setVisibility(View.VISIBLE);
+//        linearLayoutVariance.setAnimation(fadeIn);
         linearLayoutEnterQuantity.setVisibility(View.VISIBLE);
         linearLayoutEnterQuantity.setAnimation(fadeIn);
         linearLayoutButtons.setVisibility(View.VISIBLE);

@@ -210,5 +210,8 @@
     <string name="cannot_transfer">Can\'t transfer to same warehouse.</string>
     <string name="select_reason_end_pick">Select Reason For End Pick</string>
     <string name="select_site_warehouse"><![CDATA[Select Site & Warehouse]]></string>
+    <string name="variance">Variance</string>
+    <string name="raf_status">RAF Status:</string>
+    <string name="wo_status">WO Status:</string>
 
 </resources>
