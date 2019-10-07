@@ -29,6 +29,8 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
     private View view;
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
 
+    public boolean lockDelete = false;
+
     public TransferAdapter(List<ScanStillageResponse> pickingListDatumList) {
         this.stillageDetailsList = pickingListDatumList;
         this.stillageDetailsListFiltered = pickingListDatumList;
@@ -50,6 +52,8 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
         holder.swipeRevealLayout.close(true);
 
         viewBinderHelper.setOpenOnlyOne(true);
+
+        holder.swipeRevealLayout.setLockDrag(lockDelete);
 
         holder.textViewLocation.setText(stillageDetailsListFiltered.get(position).getLocation());
         holder.textViewitem.setText(stillageDetailsListFiltered.get(position).getItemId());

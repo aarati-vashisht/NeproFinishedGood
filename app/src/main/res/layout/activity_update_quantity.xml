@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayoutScan"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -157,6 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.3"
                 android:text="@string/reason"
+                android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -168,6 +169,40 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="3"
                 android:background="@drawable/spinner_background" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutVariance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:layout_below="@+id/linearLayoutReason"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.3"
+                android:text="@string/variance"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewVariance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="3"
+                android:background="@color/colorPrimaryDark"
+                android:inputType="numberDecimal"
+                android:text="0"
+                android:textColor="#ffffff"
+                android:padding="5dp"
+                android:textSize="10sp" />
+
 
         </LinearLayout>
 

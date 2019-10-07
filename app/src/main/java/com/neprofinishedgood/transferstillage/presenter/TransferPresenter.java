@@ -23,7 +23,7 @@ public class TransferPresenter implements ITransferInterface {
 
     public TransferPresenter(ITransferView iTransferView, Activity activity) {
         this.iTransferView = iTransferView;
-
+        this.activity = activity;
     }
 
     @Override
