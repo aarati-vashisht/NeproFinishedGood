@@ -155,16 +155,16 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         linearLayoutScanDetail.setAnimation(fadeIn);
         linearLayoutReason.setVisibility(View.VISIBLE);
         linearLayoutReason.setAnimation(fadeIn);
-//        linearLayoutVariance.setVisibility(View.VISIBLE);
-//        linearLayoutVariance.setAnimation(fadeIn);
+        linearLayoutVariance.setVisibility(View.VISIBLE);
+        linearLayoutVariance.setAnimation(fadeIn);
         linearLayoutEnterQuantity.setVisibility(View.VISIBLE);
         linearLayoutEnterQuantity.setAnimation(fadeIn);
         linearLayoutButtons.setVisibility(View.VISIBLE);
         linearLayoutButtons.setAnimation(fadeIn);
 
-//        stillageLayout.linearLayoutStatus.setVisibility(View.VISIBLE);
-//        stillageLayout.textViewWorkOrderStatus.setText("");
-//        stillageLayout.checkboxRafStatus.setEnabled(true);
+        stillageLayout.linearLayoutStatus.setVisibility(View.VISIBLE);
+        stillageLayout.textViewWorkOrderStatus.setText("");
+        stillageLayout.checkboxRafStatus.setEnabled(true);
 
         stillageLayout.textViewitem.setText(body.getItemId());
         stillageLayout.textViewNumber.setText(body.getStickerID());
@@ -257,7 +257,6 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     public void onFailure(String message) {
         hideProgress();
         showSuccessDialog(message);
-//        CustomToast.showToast(this, message);
     }
 
     @Override
@@ -277,7 +276,6 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
         } else {
             showSuccessDialog(body.getMessage());
-//            CustomToast.showToast(this, body.getMessage());
             editTextScanStillage.setText("");
         }
     }
@@ -290,9 +288,6 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         }
         if (spinnerReason.getSelectedItemPosition() == 0) {
             showSuccessDialog(getString(R.string.select_reason));
-//            TextView textView = (TextView) spinnerReason.getSelectedView();
-//            textView.setError(getString(R.string.select_reason));
-//            textView.requestFocus();
             return false;
         }
         return true;
@@ -303,7 +298,6 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         hideProgress();
         if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
             showSuccessDialog(message);
-            //            CustomToast.showToast(this, message);
             cancelClick();
         }
     }
@@ -315,11 +309,9 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
             if (body.getStatus().equals(getResources().getString(R.string.success))) {
                 showSuccessDialog(body.getMessage());
                 isScanned = false;
-//                CustomToast.showToast(this, body.getMessage());
                 cancelClick();
             } else {
                 showSuccessDialog(body.getMessage());
-//                CustomToast.showToast(getApplicationContext(), body.getMessage());
             }
         }
         spinnerReason.setSelection(0);
@@ -390,7 +382,6 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         String json = gson.toJson(updateList);
         SharedPref.saveUpdateData(json);
         showSuccessDialog(getResources().getString(R.string.data_saved_offline));
-//        CustomToast.showToast(this, getResources().getString(R.string.data_saved_offline));
         cancelClick();
         disableVisibility();
     }
