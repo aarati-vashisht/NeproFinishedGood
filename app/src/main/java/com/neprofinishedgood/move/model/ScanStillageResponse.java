@@ -74,20 +74,22 @@ public class ScanStillageResponse {
     @Expose
     private String isHold;
 
-
-
     @SerializedName("AisleList")
     @Expose
     private List<UniversalSpinner> aisleList = null;
+
     @SerializedName("BinList")
     @Expose
     private List<UniversalSpinner> binList = null;
+
     @SerializedName("RackList")
     @Expose
     private List<UniversalSpinner> rackList = null;
+
     @SerializedName("StillageLocation")
     @Expose
     private String stillageLocation;
+
     @SerializedName("ZoneList")
     @Expose
     private ArrayList<UniversalSpinner> zoneList = null;
@@ -96,55 +98,50 @@ public class ScanStillageResponse {
     @Expose
     private ArrayList<UniversalSpinner> siteListData = null;
 
-
-
-
-
-
-
     @SerializedName("AssignedAisleId")
     @Expose
     private String assignedAisleId;
+
     @SerializedName("AssignedRackId")
     @Expose
     private String assignedRackId;
+
     @SerializedName("AssignedBinId")
     @Expose
     private String assignedBinId;
+
     @SerializedName("AssignedZoneId")
     @Expose
     private String assignedZoneId;
 
-
     @SerializedName("AssignedAisleName")
     @Expose
     private String assignedAisleName;
+
     @SerializedName("AssignedRackName")
     @Expose
     private String assignedRackName;
+
     @SerializedName("AssignedBinName")
     @Expose
     private String assignedBinName;
+
     @SerializedName("AssignedZoneName")
     @Expose
     private String assignedZoneName;
-
-
 
     @SerializedName("StillageLocationName")
     @Expose
     private String stillageLocationName;
 
-
     @SerializedName("LoadingAreaId")
     @Expose
     private String loadingAreaId;
 
-
-
     @SerializedName("IsShiped")
     @Expose
     private String isShiped;
+
     @SerializedName("TransferId")
     @Expose
     private String transferId;
@@ -156,6 +153,10 @@ public class ScanStillageResponse {
     @SerializedName("ToBeTransferWHID")
     @Expose
     private String toBeTransferWHID;
+
+    @SerializedName("WoStatus")
+    @Expose
+    private String woStatus;
 
     public String getIsShiped() {
         return isShiped;
@@ -173,9 +174,6 @@ public class ScanStillageResponse {
         this.transferId = transferId;
     }
 
-
-
-
     public String getLoadingAreaId() {
         return loadingAreaId;
     }
@@ -184,7 +182,6 @@ public class ScanStillageResponse {
         this.loadingAreaId = loadingAreaId;
     }
 
-
     public String getStillageLocationName() {
         return stillageLocationName;
     }
@@ -192,9 +189,6 @@ public class ScanStillageResponse {
     public void setStillageLocationName(String stillageLocationName) {
         this.stillageLocationName = stillageLocationName;
     }
-
-
-
 
     public String getAssignedAisleId() {
         return assignedAisleId;
@@ -219,11 +213,6 @@ public class ScanStillageResponse {
     public void setAssignedBinId(String assignedBinId) {
         this.assignedBinId = assignedBinId;
     }
-
-
-
-
-
 
     public String getWareHouseID() {
         return wareHouseID;
@@ -353,7 +342,6 @@ public class ScanStillageResponse {
         WorkOrderNo = workOrderNo;
     }
 
-
     public List<UniversalSpinner> getAisleList() {
         return aisleList;
     }
@@ -456,5 +444,13 @@ public class ScanStillageResponse {
 
     public void setToBeTransferWHID(String toBeTransferWHID) {
         this.toBeTransferWHID = toBeTransferWHID;
+    }
+
+    public String getWoStatus() {
+        return woStatus;
+    }
+
+    public void setWoStatus(String woStatus) {
+        this.woStatus = woStatus;
     }
 }
