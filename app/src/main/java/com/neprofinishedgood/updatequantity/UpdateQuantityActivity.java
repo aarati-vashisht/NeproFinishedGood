@@ -151,28 +151,37 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 //    };
 
     void setData(ScanStillageResponse body) {
-        linearLayoutScanDetail.setVisibility(View.VISIBLE);
-        linearLayoutScanDetail.setAnimation(fadeIn);
-        linearLayoutReason.setVisibility(View.VISIBLE);
-        linearLayoutReason.setAnimation(fadeIn);
-        linearLayoutVariance.setVisibility(View.VISIBLE);
-        linearLayoutVariance.setAnimation(fadeIn);
-        linearLayoutEnterQuantity.setVisibility(View.VISIBLE);
-        linearLayoutEnterQuantity.setAnimation(fadeIn);
-        linearLayoutButtons.setVisibility(View.VISIBLE);
-        linearLayoutButtons.setAnimation(fadeIn);
+        try {
+            linearLayoutScanDetail.setVisibility(View.VISIBLE);
+            linearLayoutScanDetail.setAnimation(fadeIn);
+            linearLayoutReason.setVisibility(View.VISIBLE);
+            linearLayoutReason.setAnimation(fadeIn);
+            linearLayoutVariance.setVisibility(View.VISIBLE);
+            linearLayoutVariance.setAnimation(fadeIn);
+            linearLayoutEnterQuantity.setVisibility(View.VISIBLE);
+            linearLayoutEnterQuantity.setAnimation(fadeIn);
+            linearLayoutButtons.setVisibility(View.VISIBLE);
+            linearLayoutButtons.setAnimation(fadeIn);
 
-        stillageLayout.linearLayoutStatus.setVisibility(View.VISIBLE);
-        stillageLayout.textViewWorkOrderStatus.setText("");
-        stillageLayout.checkboxRafStatus.setEnabled(true);
+            stillageLayout.linearLayoutStatus.setVisibility(View.VISIBLE);
+            stillageLayout.textViewWorkOrderStatus.setText(body.getWoStatus());
+            if (body.getIsCounted().equals("1")) {
+                stillageLayout.checkboxRafStatus.setChecked(true);
+            } else {
+                stillageLayout.checkboxRafStatus.setChecked(false);
+            }
 
-        stillageLayout.textViewitem.setText(body.getItemId());
-        stillageLayout.textViewNumber.setText(body.getStickerID());
-        stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
-        stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
-        stillageLayout.textViewitemDesc.setText(body.getDescription());
+            stillageLayout.textViewitem.setText(body.getItemId());
+            stillageLayout.textViewNumber.setText(body.getStickerID());
+            stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
+            stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
+            stillageLayout.textViewitemDesc.setText(body.getDescription());
 
-        editTextQuantity.setText(stillageLayout.textViewQuantity.getText().toString());
+            editTextQuantity.setText(stillageLayout.textViewQuantity.getText().toString());
+        }catch (Exception e){
+            showSuccessDialog(e.getMessage());
+            cancelClick();
+        }
     }
 
     @OnTextChanged(value = R.id.editTextQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -266,8 +275,8 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
             if (body.getStandardQty() > 0) {
                 isScanned = true;
-                setData(body);
                 editTextScanStillage.setEnabled(false);
+                setData(body);
             }
             else{
                 showSuccessDialog(getResources().getString(R.string.stillage_discarded));

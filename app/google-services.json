@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "843512602314",
+    "firebase_url": "https://neprofgapp.firebaseio.com",
+    "project_id": "neprofgapp",
+    "storage_bucket": "neprofgapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843512602314:android:c133c06846c404bed49e33",
+        "android_client_info": {
+          "package_name": "com.neprofinishedgood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "843512602314-hq34ku23jfkofg3ip88gq0tei34fd3v4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANCO7TKRRmjiWTn8To8U4ft-88-Ad9GnQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "843512602314-hq34ku23jfkofg3ip88gq0tei34fd3v4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
