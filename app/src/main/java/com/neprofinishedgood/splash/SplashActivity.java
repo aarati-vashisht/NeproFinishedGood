@@ -47,37 +47,50 @@ public class SplashActivity extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 Gson gson = new Gson();
                 LoginResponse loginResponse = gson.fromJson(SharedPref.getLoginUser(), LoginResponse.class);
+
                 imageViewAppLogo.clearAnimation();
-                if (loginResponse != null) {
-                    if (Integer.parseInt(loginResponse.getUserLoginResponse().get(0).getUserId()) > 0) {
-                        if (DashBoardAcivity.getInstance() != null) {
-                            DashBoardAcivity.getInstance().finish();
-                            DashBoardAcivity.instance = null;
-                        } else {
-                            Intent intent = new Intent(SplashActivity.this, DashBoardAcivity.class);
-                            startActivity(intent);
-                            finishAffinity();
-                        }
-                    } else {
-                        if (LoginActivity.getInstance() != null) {
-                            LoginActivity.getInstance().finish();
-                            LoginActivity.instance = null;
-                        } else {
-                            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finishAffinity();
-                        }
-                    }
+                if (LoginActivity.getInstance() != null) {
+                    LoginActivity.getInstance().finish();
+                    LoginActivity.instance = null;
                 } else {
-                    if (LoginActivity.getInstance() != null) {
-                        LoginActivity.getInstance().finish();
-                        LoginActivity.instance = null;
-                    } else {
-                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finishAffinity();
-                    }
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finishAffinity();
                 }
+
+//                Gson gson = new Gson();
+//                LoginResponse loginResponse = gson.fromJson(SharedPref.getLoginUser(), LoginResponse.class);
+//                imageViewAppLogo.clearAnimation();
+//                if (loginResponse != null) {
+//                    if (Integer.parseInt(loginResponse.getUserLoginResponse().get(0).getUserId()) > 0) {
+//                        if (DashBoardAcivity.getInstance() != null) {
+//                            DashBoardAcivity.getInstance().finish();
+//                            DashBoardAcivity.instance = null;
+//                        } else {
+//                            Intent intent = new Intent(SplashActivity.this, DashBoardAcivity.class);
+//                            startActivity(intent);
+//                            finishAffinity();
+//                        }
+//                    } else {
+//                        if (LoginActivity.getInstance() != null) {
+//                            LoginActivity.getInstance().finish();
+//                            LoginActivity.instance = null;
+//                        } else {
+//                            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+//                            startActivity(intent);
+//                            finishAffinity();
+//                        }
+//                    }
+//                } else {
+//                    if (LoginActivity.getInstance() != null) {
+//                        LoginActivity.getInstance().finish();
+//                        LoginActivity.instance = null;
+//                    } else {
+//                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+//                        startActivity(intent);
+//                        finishAffinity();
+//                    }
+//                }
             }
 
             @Override

@@ -21,7 +21,7 @@ public class Api {
     public static Retrofit getClient() {
 
         if (retrofit == null) {
-            client = new OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES).connectTimeout(1, TimeUnit.MINUTES).build();
+            client = new OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES).connectTimeout(5, TimeUnit.MINUTES).build();
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(client)

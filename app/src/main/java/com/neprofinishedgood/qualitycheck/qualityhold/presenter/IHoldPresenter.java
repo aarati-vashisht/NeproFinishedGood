@@ -27,7 +27,7 @@ public class IHoldPresenter implements IHoldInterface {
     @Override
     public void callScanStillageService(MoveInput moveInput) {
         ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
-        Call<ScanStillageResponse> call = apiInterface.rejectedStillageDetails(moveInput);
+        Call<ScanStillageResponse> call = apiInterface.scanLookUpStillage(moveInput);
         call.enqueue(new Callback<ScanStillageResponse>() {
             @Override
             public void onResponse(Call<ScanStillageResponse> call, Response<ScanStillageResponse> response) {
