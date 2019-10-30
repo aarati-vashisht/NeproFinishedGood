@@ -210,49 +210,44 @@
 
                         </LinearLayout>
 
-                       <!-- <TextView
-                            android:id="@+id/textViewEnterQuantity"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/linearLayoutAutoPicking"
-                            android:background="@color/colorPrimaryDark"
-                            android:elevation="5dp"
-                            android:padding="5dp"
-                            android:text="@string/confirm_r_a_f_quantity"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:id="@+id/linearLayoutQuantity"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/textViewEnterQuantity"
-                            android:layout_marginTop="4dp"
-                            android:orientation="horizontal"
-                            android:padding="5dp">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@string/quantity"
-                                android:textColor="@color/black"
-                                android:textSize="12sp" />
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/editTextQuantity"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_weight="3"
-                                android:background="@drawable/edittext_drawable"
-                                android:inputType="numberDecimal"
-                                android:padding="5dp"
-                                android:textSize="10sp" />
-
-
-                        </LinearLayout>-->
+                        <!-- <TextView
+                             android:id="@+id/textViewEnterQuantity"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_below="@+id/linearLayoutAutoPicking"
+                             android:background="@color/colorPrimaryDark"
+                             android:elevation="5dp"
+                             android:padding="5dp"
+                             android:text="@string/confirm_r_a_f_quantity"
+                             android:textColor="@color/white"
+                             android:textSize="12sp"
+                             android:textStyle="bold" />
+                         <LinearLayout
+                             android:id="@+id/linearLayoutQuantity"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_below="@+id/textViewEnterQuantity"
+                             android:layout_marginTop="4dp"
+                             android:orientation="horizontal"
+                             android:padding="5dp">
+                             <TextView
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1"
+                                 android:text="@string/quantity"
+                                 android:textColor="@color/black"
+                                 android:textSize="12sp" />
+                             <androidx.appcompat.widget.AppCompatEditText
+                                 android:id="@+id/editTextQuantity"
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginStart="10dp"
+                                 android:layout_weight="3"
+                                 android:background="@drawable/edittext_drawable"
+                                 android:inputType="numberDecimal"
+                                 android:padding="5dp"
+                                 android:textSize="10sp" />
+                         </LinearLayout>-->
 
                     </RelativeLayout>
 

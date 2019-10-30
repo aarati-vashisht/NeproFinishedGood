@@ -9,6 +9,8 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.neprofinishedgood.R;
@@ -41,6 +43,12 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
 
     @BindView(R.id.linearLayoutEndQuantities)
     LinearLayout linearLayoutEndQuantities;
+
+    @BindView(R.id.linearLayoutRoutePick)
+    LinearLayout linearLayoutRoutePick;
+
+    @BindView(R.id.linearLayoutStartQty)
+    LinearLayout linearLayoutStartQty;
 
     @BindView(R.id.editTextScanWorkOrder)
     AppCompatEditText editTextScanWorkOrder;
@@ -81,6 +89,22 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @BindView(R.id.buttonEnd)
     CustomButton buttonEnd;
 
+    @BindView(R.id.radioGroupStartQty)
+    RadioGroup radioGroupStartQty;
+
+    @BindView(R.id.radioButtonFullQty)
+    RadioButton radioButtonFullQty;
+
+    @BindView(R.id.radioButtonZeroQty)
+    RadioButton radioButtonZeroQty;
+
+    @BindView(R.id.radioButtonPartialQty)
+    RadioButton radioButtonPartialQty;
+
+    @BindView(R.id.editTextPartialQty)
+    AppCompatEditText editTextPartialQty;
+
+
     IWorkOrderStartEndInterface iWorkOrderStartEndInterface;
 
     long delay = 1000;
@@ -94,6 +118,15 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         ButterKnife.bind(this);
         editTextScanWorkOrder.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         iWorkOrderStartEndInterface = new IWorkOrderStartEndPresenter(this, this);
+
+        radioGroupStartQty.setOnCheckedChangeListener((group, checkedId) -> {
+            if(checkedId == radioButtonPartialQty.getId()){
+                editTextPartialQty.setVisibility(View.VISIBLE);
+            }
+            else {
+                editTextPartialQty.setVisibility(View.GONE);
+            }
+        });
     }
 
     @OnTextChanged(value = R.id.editTextScanWorkOrder, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -158,6 +191,10 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     }
 
     void setData(WorkOrderScanResponse body) {
+        linearLayoutRoutePick.setVisibility(View.VISIBLE);
+        linearLayoutStartQty.setVisibility(View.VISIBLE);
+        radioButtonFullQty.setChecked(true);
+
         linearLayoutButtons.setVisibility(View.VISIBLE);
         linearLayoutWorkOrderScanDetail.setVisibility(View.VISIBLE);
         textViewWorkOrderNumber.setText(body.getWorkOrderNo());
