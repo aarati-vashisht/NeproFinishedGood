@@ -323,6 +323,9 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                     if (Float.parseFloat(editTextLoadQuantity.getText().toString().trim()) < stillageDatumListFiltered.get(position).getPickingQty()) {
                         linearLayoutRejectReason.setVisibility(View.VISIBLE);
                         linearLayoutRejectReason.setAnimation(PickAndLoadStillageActivity.getInstance().fadeIn);
+                    } else {
+                        linearLayoutRejectReason.setVisibility(View.GONE);
+                        linearLayoutRejectReason.setAnimation(PickAndLoadStillageActivity.getInstance().fadeOut);
                     }
             }
 
@@ -331,47 +334,41 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
             }
         });
-        buttonConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                float quatityToLoad;
-                if (editTextLoadQuantity.getText().toString().trim().equals("")) {
-                    quatityToLoad = 0;
-                } else {
-                    quatityToLoad = Float.parseFloat(editTextLoadQuantity.getText().toString().trim());
-                }
-                int stdQuantity = stillageDatumListFiltered.get(position).getStillageQty();
-                if (editTextLoadQuantity.getText().toString().trim().length() == 0) {
-                    editTextLoadQuantity.setError(context.getResources().getString(R.string.please_add_load_quantity));
-                    editTextLoadQuantity.requestFocus();
-                }
-                if (Float.parseFloat(editTextLoadQuantity.getText().toString().trim()) > stillageDatumListFiltered.get(position).getPickingQty()) {
-                    editTextLoadQuantity.setError(context.getResources().getString(R.string.load_quantiy_must_be_lower_than_tobeload));
-                    editTextLoadQuantity.requestFocus();
-                } else if (quatityToLoad > stdQuantity) {
-                    editTextLoadQuantity.setError(context.getResources().getString(R.string.quantity_must_not_greater_than_stillage_qty));
-                    editTextLoadQuantity.requestFocus();
-                } else {
-                    dialog.cancel();
-                    notifyDataSetChanged();
-                    PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
-                    stillageDatumListFiltered.get(position).setStatus("-2");
-                    PickAndLoadStillageActivity.getInstance().stillageNoToDelete = stillageDatumListFiltered.get(position).getStillageNO();
-                    PickAndLoadStillageActivity.getInstance().showProgress(PickAndLoadStillageActivity.getInstance());
-                    UpdateLoadInput updateLoadInput = new UpdateLoadInput(stillageDatumListFiltered.get(position).getStillageNO(), PickAndLoadStillageActivity.getInstance().userId, PickAndLoadStillageActivity.getInstance().scanLoadingPlanList.getTLPHID() + "", reason, stillageDatumListFiltered.get(position).getItemId() + "", editTextLoadQuantity.getText().toString().trim(), PickAndLoadStillageActivity.getInstance().isCompleted);
-                    PickAndLoadStillageActivity.getInstance().iPickAndLoadItemInterFace.callUpdateLoadService(updateLoadInput);
+        buttonConfirm.setOnClickListener(v -> {
+            float quatityToLoad;
+            if (editTextLoadQuantity.getText().toString().trim().equals("")) {
+                quatityToLoad = 0;
+            } else {
+                quatityToLoad = Float.parseFloat(editTextLoadQuantity.getText().toString().trim());
+            }
+            int stdQuantity = stillageDatumListFiltered.get(position).getStillageQty();
+            if (editTextLoadQuantity.getText().toString().trim().length() == 0) {
+                editTextLoadQuantity.setError(context.getResources().getString(R.string.please_add_load_quantity));
+                editTextLoadQuantity.requestFocus();
+            }
+            if (Float.parseFloat(editTextLoadQuantity.getText().toString().trim()) > stillageDatumListFiltered.get(position).getPickingQty()) {
+                editTextLoadQuantity.setError(context.getResources().getString(R.string.load_quantiy_must_be_lower_than_tobeload));
+                editTextLoadQuantity.requestFocus();
+            } else if (quatityToLoad > stdQuantity) {
+                editTextLoadQuantity.setError(context.getResources().getString(R.string.quantity_must_not_greater_than_stillage_qty));
+                editTextLoadQuantity.requestFocus();
+            } else {
+                dialog.cancel();
+                notifyDataSetChanged();
+                PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
+                stillageDatumListFiltered.get(position).setStatus("-2");
+                PickAndLoadStillageActivity.getInstance().stillageNoToDelete = stillageDatumListFiltered.get(position).getStillageNO();
+                PickAndLoadStillageActivity.getInstance().showProgress(PickAndLoadStillageActivity.getInstance());
+                UpdateLoadInput updateLoadInput = new UpdateLoadInput(stillageDatumListFiltered.get(position).getStillageNO(), PickAndLoadStillageActivity.getInstance().userId, PickAndLoadStillageActivity.getInstance().scanLoadingPlanList.getTLPHID() + "", reason, stillageDatumListFiltered.get(position).getItemId() + "", editTextLoadQuantity.getText().toString().trim(), PickAndLoadStillageActivity.getInstance().isCompleted);
+                PickAndLoadStillageActivity.getInstance().iPickAndLoadItemInterFace.callUpdateLoadService(updateLoadInput);
 //                    CustomToast.showToast(context, context.getString(R.string.stillage_loaded_successfully));
-                }
             }
         });
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                viewHolder.swipeRevealLayout.setLockDrag(false);
-                stillageDatumListFiltered.get(position).setStatus("-1");
-                PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
-            }
+        buttonCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+            viewHolder.swipeRevealLayout.setLockDrag(false);
+            stillageDatumListFiltered.get(position).setStatus("-1");
+            PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
         });
         dialog.show();
 
