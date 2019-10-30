@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,6 +31,7 @@ import com.neprofinishedgood.workorderstartend.model.WorkOrderScanResponse;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
@@ -104,6 +106,20 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @BindView(R.id.editTextPartialQty)
     AppCompatEditText editTextPartialQty;
 
+    @BindView(R.id.checkBoxAutoRoute)
+    CheckBox checkBoxAutoRoute;
+
+    @BindView(R.id.checkBoxAutoPicking)
+    CheckBox checkBoxAutoPicking;
+
+    private String autoRoute = "0";
+    private String autoPick = "0";
+
+    private String startQty = "0";
+
+    static String getStartQty = "0";
+
+    private int selectedRadio = 0;
 
     IWorkOrderStartEndInterface iWorkOrderStartEndInterface;
 
@@ -120,11 +136,15 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         iWorkOrderStartEndInterface = new IWorkOrderStartEndPresenter(this, this);
 
         radioGroupStartQty.setOnCheckedChangeListener((group, checkedId) -> {
-            if(checkedId == radioButtonPartialQty.getId()){
-                editTextPartialQty.setVisibility(View.VISIBLE);
-            }
-            else {
+            if (checkedId == radioButtonFullQty.getId()) {
+                selectedRadio = 0;
                 editTextPartialQty.setVisibility(View.GONE);
+            } else if (checkedId == radioButtonZeroQty.getId()) {
+                selectedRadio = 1;
+                editTextPartialQty.setVisibility(View.GONE);
+            } else if (checkedId == radioButtonPartialQty.getId()) {
+                selectedRadio = 2;
+                editTextPartialQty.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -137,7 +157,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                 if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
                     showProgress(WorkOrderStartEndActivity.this);
                     if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                        iWorkOrderStartEndInterface.callScanWorkOrderService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId));
+                        iWorkOrderStartEndInterface.callScanWorkOrderService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, "", "", ""));
                     }
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
@@ -191,10 +211,6 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     }
 
     void setData(WorkOrderScanResponse body) {
-        linearLayoutRoutePick.setVisibility(View.VISIBLE);
-        linearLayoutStartQty.setVisibility(View.VISIBLE);
-        radioButtonFullQty.setChecked(true);
-
         linearLayoutButtons.setVisibility(View.VISIBLE);
         linearLayoutWorkOrderScanDetail.setVisibility(View.VISIBLE);
         textViewWorkOrderNumber.setText(body.getWorkOrderNo());
@@ -207,10 +223,24 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         textViewitemDesc.setText(body.getItemDescription());
 
         if (body.getStatusId().equals("1")) {
+
+            linearLayoutRoutePick.setVisibility(View.VISIBLE);
+            linearLayoutStartQty.setVisibility(View.VISIBLE);
+            checkBoxAutoPicking.setChecked(false);
+            checkBoxAutoRoute.setChecked(false);
+            editTextPartialQty.setText("");
+
+            getStartQty = body.getQuantity();
+            radioButtonFullQty.setChecked(true);
+
             buttonEnd.setEnabled(false);
             buttonStart.setEnabled(true);
             linearLayoutEndQuantities.setVisibility(View.GONE);
         } else if ((body.getStatusId().equals("5"))) {
+
+            linearLayoutRoutePick.setVisibility(View.GONE);
+            linearLayoutStartQty.setVisibility(View.GONE);
+
             buttonEnd.setEnabled(true);
             buttonStart.setEnabled(false);
 
@@ -239,23 +269,66 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
             }
 
         } else {
+
+            linearLayoutRoutePick.setVisibility(View.GONE);
+            linearLayoutStartQty.setVisibility(View.GONE);
+
             linearLayoutEndQuantities.setVisibility(View.GONE);
             buttonStart.setEnabled(false);
             buttonEnd.setEnabled(false);
         }
     }
 
+    @OnCheckedChanged(R.id.checkBoxAutoPicking)
+    public void onCheckBoxAutoPickingChanged() {
+        if (checkBoxAutoPicking.isChecked()) {
+            autoPick = "1";
+        } else {
+            autoPick = "0";
+        }
+    }
+
+    @OnCheckedChanged(R.id.checkBoxAutoRoute)
+    public void onCheckBoxAutoRouteChanged() {
+        if (checkBoxAutoRoute.isChecked()) {
+            autoRoute = "1";
+        } else {
+            autoRoute = "0";
+        }
+    }
+
+    boolean isValidated() {
+        if (selectedRadio == 0) {
+            startQty = getStartQty;
+        } else if (selectedRadio == 1) {
+            startQty = "0";
+        } else if (selectedRadio == 2) {
+            String strQty = editTextPartialQty.getText().toString();
+            if (strQty.isEmpty() || strQty.equals(".") || strQty.equals("0")) {
+                editTextPartialQty.setError("Enter Partial Quantity!");
+                editTextPartialQty.requestFocus();
+                return false;
+            } else {
+                startQty = strQty;
+            }
+        }
+
+        return true;
+    }
+
     @OnClick(R.id.buttonStart)
     public void onButtonStartClick() {
-        showProgress(this);
-        WorkOrderScanInput workOrderScanInput = new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId);
-        iWorkOrderStartEndInterface.callWorkOrderStartService(workOrderScanInput);
+        if (isValidated()) {
+            showProgress(this);
+            WorkOrderScanInput workOrderScanInput = new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, autoRoute, autoPick, startQty);
+            iWorkOrderStartEndInterface.callWorkOrderStartService(workOrderScanInput);
+        }
     }
 
     @OnClick(R.id.buttonEnd)
     public void onButtonEndClick() {
         showProgress(this);
-        iWorkOrderStartEndInterface.callWorkOrderEndService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId));
+        iWorkOrderStartEndInterface.callWorkOrderEndService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, "", "", ""));
     }
 
     @Override
@@ -301,6 +374,9 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     }
 
     private void disableViews() {
+        linearLayoutRoutePick.setVisibility(View.GONE);
+        linearLayoutStartQty.setVisibility(View.GONE);
+
         linearLayoutButtons.setVisibility(View.GONE);
         linearLayoutWorkOrderScanDetail.setVisibility(View.GONE);
         editTextScanWorkOrder.setEnabled(true);

@@ -434,6 +434,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_drawable"
                 android:maxLines="1"
+                android:inputType="numberDecimal"
                 android:layout_marginTop="5dp"
                 android:hint="Enter Partial Quantity"
                 android:padding="5dp"
