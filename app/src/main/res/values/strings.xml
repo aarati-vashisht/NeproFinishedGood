@@ -213,5 +213,8 @@
     <string name="variance">Variance</string>
     <string name="raf_status">RAF Status:</string>
     <string name="wo_status">WO Status:</string>
+    <string name="qty_exceeded">Entered quantity is more than the work order quantity</string>
+    <string name="enter_qty">Enter Partial Quantity!</string>
+    <string name="quantity_already">Quantity started :</string>
 
 </resources>

@@ -41,17 +41,15 @@ public class WorkOrderScanResponse {
     @SerializedName("Message")
     @Expose
     private String message;
-
-
-
-
-
     @SerializedName("BalanceQuantity")
     @Expose
     private String balanceQuantity;
     @SerializedName("RafQuantity")
     @Expose
     private String rafQuantity;
+    @SerializedName("StartedQty")
+    @Expose
+    private String startedQty;
 
     public String getBalanceQuantity() {
         return balanceQuantity;
@@ -68,10 +66,6 @@ public class WorkOrderScanResponse {
     public void setRafQuantity(String rafQuantity) {
         this.rafQuantity = rafQuantity;
     }
-
-
-
-
 
     public String getWorkOrderNo() {
         return workOrderNo;
@@ -167,5 +161,13 @@ public class WorkOrderScanResponse {
 
     public void setStatusId(String statusId) {
         this.statusId = statusId;
+    }
+
+    public String getStartedQty() {
+        return startedQty;
+    }
+
+    public void setStartedQty(String startedQty) {
+        this.startedQty = startedQty;
     }
 }
