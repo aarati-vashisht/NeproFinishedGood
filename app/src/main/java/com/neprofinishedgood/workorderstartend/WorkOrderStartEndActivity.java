@@ -52,6 +52,9 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @BindView(R.id.linearLayoutStartQty)
     LinearLayout linearLayoutStartQty;
 
+    @BindView(R.id.linearLayoutDetailStartedQty)
+    LinearLayout linearLayoutDetailStartedQty;
+
     @BindView(R.id.editTextScanWorkOrder)
     AppCompatEditText editTextScanWorkOrder;
 
@@ -84,6 +87,9 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
 
     @BindView(R.id.textViewRafQty)
     TextView textViewRafQty;
+
+    @BindView(R.id.textViewQtyStarted)
+    TextView textViewQtyStarted;
 
     @BindView(R.id.buttonStart)
     CustomButton buttonStart;
@@ -120,6 +126,9 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     static String getStartQty = "0";
 
     private int selectedRadio = 0;
+
+    float maxStartQty;
+    float woQty;
 
     IWorkOrderStartEndInterface iWorkOrderStartEndInterface;
 
@@ -221,21 +230,50 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         textViewSite.setText(body.getSite());
         textViewStatus.setText(body.getWOStatus());
         textViewitemDesc.setText(body.getItemDescription());
+        textViewQtyStarted.setText(body.getStartedQty());
 
-        if (body.getStatusId().equals("1")) {
+        if (body.getQuantity() != null) {
+            if (!body.getQuantity().equals("")) {
+                woQty = Float.parseFloat(body.getQuantity());
+            } else {
+                woQty = 0;
+            }
+        } else {
+            woQty = 0;
+        }
 
-            linearLayoutRoutePick.setVisibility(View.VISIBLE);
-            linearLayoutStartQty.setVisibility(View.VISIBLE);
-            checkBoxAutoPicking.setChecked(false);
-            checkBoxAutoRoute.setChecked(false);
-            editTextPartialQty.setText("");
+        if (body.getStartedQty() != null) {
+            if (!body.getStartedQty().equals("")) {
+                maxStartQty = woQty - Float.parseFloat(body.getStartedQty());
+            } else {
+                maxStartQty = woQty;
+            }
+        } else {
+            maxStartQty = woQty;
+        }
 
-            getStartQty = body.getQuantity();
-            radioButtonFullQty.setChecked(true);
+        if (body.getStatusId().equals("1") || body.getStatusId().equals("4")) {
+            if (maxStartQty != 0) {
+                linearLayoutRoutePick.setVisibility(View.VISIBLE);
+                linearLayoutStartQty.setVisibility(View.VISIBLE);
+                checkBoxAutoPicking.setChecked(false);
+                checkBoxAutoRoute.setChecked(false);
+                editTextPartialQty.setText("");
 
-            buttonEnd.setEnabled(false);
-            buttonStart.setEnabled(true);
-            linearLayoutEndQuantities.setVisibility(View.GONE);
+                getStartQty = body.getQuantity();
+                radioButtonFullQty.setChecked(true);
+
+                buttonEnd.setEnabled(false);
+                buttonStart.setEnabled(true);
+                linearLayoutEndQuantities.setVisibility(View.GONE);
+            } else{
+                linearLayoutRoutePick.setVisibility(View.GONE);
+                linearLayoutStartQty.setVisibility(View.GONE);
+
+                linearLayoutEndQuantities.setVisibility(View.GONE);
+                buttonStart.setEnabled(false);
+                buttonEnd.setEnabled(false);
+            }
         } else if ((body.getStatusId().equals("5"))) {
 
             linearLayoutRoutePick.setVisibility(View.GONE);
@@ -279,6 +317,17 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         }
     }
 
+    @OnTextChanged(value = R.id.editTextPartialQty, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void onEditTextPartialQtyChanged(Editable text) {
+        if (!text.toString().equals("")) {
+            if (Float.parseFloat(text.toString().trim()) > maxStartQty) {
+                editTextPartialQty.setText("");
+                showSuccessDialog(getResources().getString(R.string.qty_exceeded));
+                editTextPartialQty.requestFocus();
+            }
+        }
+    }
+
     @OnCheckedChanged(R.id.checkBoxAutoPicking)
     public void onCheckBoxAutoPickingChanged() {
         if (checkBoxAutoPicking.isChecked()) {
@@ -305,7 +354,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         } else if (selectedRadio == 2) {
             String strQty = editTextPartialQty.getText().toString();
             if (strQty.isEmpty() || strQty.equals(".") || strQty.equals("0")) {
-                editTextPartialQty.setError("Enter Partial Quantity!");
+                showSuccessDialog(getResources().getString(R.string.enter_qty));
                 editTextPartialQty.requestFocus();
                 return false;
             } else {

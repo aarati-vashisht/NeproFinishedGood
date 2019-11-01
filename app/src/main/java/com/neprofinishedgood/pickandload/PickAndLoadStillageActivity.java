@@ -200,7 +200,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         hideProgress();
         if (body.getDriverName() == null || body.getGateNo() == null || body.getLoadingPlanList1() == null ||
                 body.getLoadingPlanNo() == null || body.getTruckID() == null) {
-            showSuccessDialog("There is no stillage in this loading plan", false);
+            showSuccessDialog("There is no more stillage in this loading plan", false);
 //            CustomToast.showToast(PickAndLoadStillageActivity.this, getString(R.string.no_data_found));
             textViewGateNumber.setText("");
 //            textViewLoadingPlan.setText("");
