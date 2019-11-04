@@ -219,5 +219,11 @@
     <string name="full">Full</string>
     <string name="zero">Zero</string>
     <string name="partial">Partial</string>
+    <string name="select_any_one">Select any one</string>
+    <string name="select_to_make_transfer_journal">Select to make transfer journal</string>
+    <string name="select_to_make_transfer_order">Select to make transfer order</string>
+    <string name="raf_not_posted">Transfer can\'t be done as RAF is not posted of this stillage.</string>
+    <string name="warehouse_differ">Can\'t transfer to different warehouse in single transfer operation.</string>
+    <string name="transferred_to_another_wh">Can\'t transfer this stillage as it is already transferred to another warehouse but not shipped yet!</string>
 
 </resources>
