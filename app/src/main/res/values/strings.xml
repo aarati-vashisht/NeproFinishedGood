@@ -171,7 +171,7 @@
     <string name="scan_type_lot">Scan/Type Lot</string>
     <string name="production_line">Production Line:</string>
     <string name="warehouse_">Warehouse:</string>
-    <string name="quantity_">Quantity:</string>
+    <string name="quantity_">WO Quantity:</string>
     <string name="status">Status:</string>
     <string name="start">Start</string>
     <string name="end">End</string>
@@ -215,6 +215,9 @@
     <string name="wo_status">WO Status:</string>
     <string name="qty_exceeded">Entered quantity is more than the work order quantity</string>
     <string name="enter_qty">Enter Partial Quantity!</string>
-    <string name="quantity_already">Quantity started :</string>
+    <string name="quantity_already">Quantity Started :</string>
+    <string name="full">Full</string>
+    <string name="zero">Zero</string>
+    <string name="partial">Partial</string>
 
 </resources>

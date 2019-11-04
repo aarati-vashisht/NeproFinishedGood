@@ -22,6 +22,7 @@ import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,6 +38,7 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
     List<ScanLoadingPlanList> tempSavedList = new ArrayList<>();
     static PickAndLoadActivity instance;
     private boolean isExists = false;
+    public String LpNoToDelete = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,20 +76,23 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
                 recyclerViewLoadingPlans.setHasFixedSize(true);
                 List<ScanLoadingPlanList> savedLoadingPlanList = SharedPref.getLoadinGplanList();
                 tempSavedList = savedLoadingPlanList;
-                for (ScanLoadingPlanList savedLoadingPlan : savedLoadingPlanList) {
-                    for (ScanLoadingPlanList getLoadingPlan : scanLoadingPlanList) {
-                        if (savedLoadingPlan.getLoadingPlanNo().equals(getLoadingPlan.getLoadingPlanNo())) {
-                            isExists = true;
-                            break;
+                try {
+                    for (ScanLoadingPlanList savedLoadingPlan : savedLoadingPlanList) {
+                        for (ScanLoadingPlanList getLoadingPlan : scanLoadingPlanList) {
+                            if (savedLoadingPlan.getLoadingPlanNo().equals(getLoadingPlan.getLoadingPlanNo())) {
+                                isExists = true;
+                                break;
+                            }
+                        }
+                        if (!isExists) {
+                            tempSavedList.remove(savedLoadingPlan);
+                            isExists = false;
                         }
                     }
-                    if (!isExists) {
-                        tempSavedList.remove(savedLoadingPlan);
-                        isExists = false;
-                    }
+                    SharedPref.saveLoadinGplanList(new Gson().toJson(tempSavedList));
+                } catch (ConcurrentModificationException e){
+                    e.printStackTrace();
                 }
-                SharedPref.saveLoadinGplanList(new Gson().toJson(tempSavedList));
-
             } else {
                 SharedPref.saveLoadinGplanList("");
             }
@@ -142,9 +147,23 @@ public class PickAndLoadActivity extends BaseActivity implements IPickAndLoadVIe
 //        CustomToast.showToast(this, body.getMessage());
         showProgress(this);
         List<LoadingPlanList> loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
-        loadingPlanDetailLists.clear();
-        SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
+//        loadingPlanDetailLists.clear();
+//        SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
         iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
-    }
 
+        try {
+            List<LoadingPlanList> tempLoadingPlanDetailLists = new ArrayList<>();
+            for (int i = 0; i < loadingPlanDetailLists.size(); i++) {
+                if (loadingPlanDetailLists.get(i).getLoadingNumber().equals(LpNoToDelete)) {
+                    tempLoadingPlanDetailLists.add(loadingPlanDetailLists.get(i));
+                }
+            }
+            loadingPlanDetailLists.removeAll(tempLoadingPlanDetailLists);
+            tempLoadingPlanDetailLists.clear();
+            SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
+        } catch (ConcurrentModificationException e) {
+            e.printStackTrace();
+
+        }
+    }
 }

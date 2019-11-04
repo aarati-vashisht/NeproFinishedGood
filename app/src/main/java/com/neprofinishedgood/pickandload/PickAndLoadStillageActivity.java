@@ -232,16 +232,27 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         if (body.getStatus().equals(getString(R.string.success))) {
             loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
             try {
-                for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
-                    if (loadingPlanList.getStillageNO().equals(stillageNoToDelete)) {
-                        if (loadingPlanDetailLists.size() == 1) {
-                            loadingPlanDetailLists.clear();
-                        } else if (loadingPlanDetailLists.size() > 1) {
-                            loadingPlanDetailLists.remove(loadingPlanList);
-                        }
-                        SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
+//                for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
+//                    if (loadingPlanList.getStillageNO().equals(stillageNoToDelete)) {
+//                        if (loadingPlanDetailLists.size() == 1) {
+//                            loadingPlanDetailLists.clear();
+//                        } else if (loadingPlanDetailLists.size() > 1) {
+//                            loadingPlanDetailLists.remove(loadingPlanList);
+//                        }
+//                        SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
+//                    }
+//                }
+
+                List<LoadingPlanList> tempLoadingPlanDetailLists = new ArrayList<>();
+                for (int i = 0; i<loadingPlanDetailLists.size(); i++) {
+                    if (loadingPlanDetailLists.get(i).getStillageNO().equals(stillageNoToDelete)) {
+                        tempLoadingPlanDetailLists.add(loadingPlanDetailLists.get(i));
                     }
                 }
+                loadingPlanDetailLists.removeAll(tempLoadingPlanDetailLists);
+                tempLoadingPlanDetailLists.clear();
+
+                SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
             } catch (ConcurrentModificationException e) {
                 e.printStackTrace();
             }
@@ -412,16 +423,25 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
 //            showSuccessDialog(body.getMessage());
             CustomToast.showToast(this, body.getMessage());
             loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
-            for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
-                if (loadingPlanList.getLoadingNumber().equals(loadingPlan)) {
-                    if (loadingPlanDetailLists.size() == 1) {
-                        loadingPlanDetailLists.clear();
-                    } else if (loadingPlanDetailLists.size() > 1) {
-                        loadingPlanDetailLists.remove(loadingPlanList);
-                    }
+//            for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
+//                if (loadingPlanList.getLoadingNumber().equals(loadingPlan)) {
+//                    if (loadingPlanDetailLists.size() == 1) {
+//                        loadingPlanDetailLists.clear();
+//                    } else if (loadingPlanDetailLists.size() > 1) {
+//                        loadingPlanDetailLists.remove(loadingPlanList);
+//                    }
+//
+//                }
+//            }
 
+            List<LoadingPlanList> tempLoadingPlanDetailLists = new ArrayList<>();
+            for (int i = 0; i<loadingPlanDetailLists.size(); i++) {
+                if (loadingPlanDetailLists.get(i).getLoadingNumber().equals(loadingPlan)) {
+                    tempLoadingPlanDetailLists.add(loadingPlanDetailLists.get(i));
                 }
             }
+            loadingPlanDetailLists.removeAll(tempLoadingPlanDetailLists);
+            tempLoadingPlanDetailLists.clear();
             SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
             PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
             finish();
