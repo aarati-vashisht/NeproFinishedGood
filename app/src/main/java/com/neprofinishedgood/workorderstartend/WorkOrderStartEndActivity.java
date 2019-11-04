@@ -123,7 +123,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
 
     private String startQty = "0";
 
-    static String getStartQty = "0";
+    String getStartQty = "0";
 
     private int selectedRadio = 0;
 
@@ -230,7 +230,6 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         textViewSite.setText(body.getSite());
         textViewStatus.setText(body.getWOStatus());
         textViewitemDesc.setText(body.getItemDescription());
-        textViewQtyStarted.setText(body.getStartedQty());
 
         if (body.getQuantity() != null) {
             if (!body.getQuantity().equals("")) {
@@ -245,24 +244,33 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         if (body.getStartedQty() != null) {
             if (!body.getStartedQty().equals("")) {
                 maxStartQty = woQty - Float.parseFloat(body.getStartedQty());
+                textViewQtyStarted.setText(body.getStartedQty());
             } else {
                 maxStartQty = woQty;
+                textViewQtyStarted.setText("0");
             }
         } else {
             maxStartQty = woQty;
+            textViewQtyStarted.setText("0");
         }
 
         if (body.getStatusId().equals("1") || body.getStatusId().equals("4")) {
             if (maxStartQty != 0) {
+                if(maxStartQty!=woQty){
+                    radioButtonFullQty.setVisibility(View.GONE);
+                    radioButtonZeroQty.setVisibility(View.GONE);
+                    radioButtonPartialQty.setChecked(true);
+                } else {
+                    radioButtonFullQty.setVisibility(View.VISIBLE);
+                    radioButtonZeroQty.setVisibility(View.VISIBLE);
+                    radioButtonFullQty.setChecked(true);
+                }
                 linearLayoutRoutePick.setVisibility(View.VISIBLE);
                 linearLayoutStartQty.setVisibility(View.VISIBLE);
                 checkBoxAutoPicking.setChecked(false);
                 checkBoxAutoRoute.setChecked(false);
                 editTextPartialQty.setText("");
-
                 getStartQty = body.getQuantity();
-                radioButtonFullQty.setChecked(true);
-
                 buttonEnd.setEnabled(false);
                 buttonStart.setEnabled(true);
                 linearLayoutEndQuantities.setVisibility(View.GONE);
@@ -425,6 +433,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     private void disableViews() {
         linearLayoutRoutePick.setVisibility(View.GONE);
         linearLayoutStartQty.setVisibility(View.GONE);
+        editTextPartialQty.setText("");
 
         linearLayoutButtons.setVisibility(View.GONE);
         linearLayoutWorkOrderScanDetail.setVisibility(View.GONE);

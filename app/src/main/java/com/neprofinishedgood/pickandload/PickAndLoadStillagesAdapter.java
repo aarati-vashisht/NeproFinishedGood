@@ -352,6 +352,8 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             } else if (quatityToLoad > stdQuantity) {
                 editTextLoadQuantity.setError(context.getResources().getString(R.string.quantity_must_not_greater_than_stillage_qty));
                 editTextLoadQuantity.requestFocus();
+            } else if (Float.parseFloat(editTextLoadQuantity.getText().toString().trim()) < stillageDatumListFiltered.get(position).getPickingQty() && spinnerRejectReason.getSelectedItemPosition() == 0) {
+                PickAndLoadStillageActivity.getInstance().showSuccessDialog("Select reason!");
             } else {
                 dialog.cancel();
                 notifyDataSetChanged();

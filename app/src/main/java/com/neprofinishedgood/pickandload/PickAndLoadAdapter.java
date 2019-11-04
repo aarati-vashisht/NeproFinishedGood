@@ -104,6 +104,7 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
                 String putExtraData = gson.toJson(stillageDatumListFiltered.get(getAdapterPosition()));
                 context.startActivity(new Intent(context, PickAndLoadStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
             } else if (v == back_layout) {
+                PickAndLoadActivity.getInstance().LpNoToDelete = stillageDatumListFiltered.get(getAdapterPosition()).getLoadingPlanNo();
                 PickAndLoadActivity.getInstance().showProgress(PickAndLoadActivity.getInstance());
                 PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callCancelLoadingPlan
                         (new LoadingPlanInput(stillageDatumListFiltered.get(getAdapterPosition()).getTLPHID() + "",
