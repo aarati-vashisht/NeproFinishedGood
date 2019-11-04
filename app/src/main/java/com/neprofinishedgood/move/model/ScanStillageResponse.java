@@ -158,6 +158,10 @@ public class ScanStillageResponse {
     @Expose
     private String woStatus;
 
+    @SerializedName("IsTJ")
+    @Expose
+    private String isTJ;
+
     public String getIsShiped() {
         return isShiped;
     }
@@ -452,5 +456,13 @@ public class ScanStillageResponse {
 
     public void setWoStatus(String woStatus) {
         this.woStatus = woStatus;
+    }
+
+    public String getIsTJ() {
+        return isTJ;
+    }
+
+    public void setIsTJ(String isTJ) {
+        this.isTJ = isTJ;
     }
 }

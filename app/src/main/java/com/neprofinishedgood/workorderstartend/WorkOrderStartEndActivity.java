@@ -269,7 +269,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                 linearLayoutStartQty.setVisibility(View.VISIBLE);
                 checkBoxAutoPicking.setChecked(false);
                 checkBoxAutoRoute.setChecked(false);
-                editTextPartialQty.setText("");
+                editTextPartialQty.setText(maxStartQty+"");
                 getStartQty = body.getQuantity();
                 buttonEnd.setEnabled(false);
                 buttonStart.setEnabled(true);

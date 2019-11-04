@@ -6,15 +6,17 @@ public class TransferInput {
     ArrayList<TransferStillageDetail> StillageDetailsData;
     String StickerNo;
     String WareHouseID;
+    String SiteID;
     String UserId;
-    String MakeTJ;
+    String TJ;
 
-    public TransferInput(String stickerNo, ArrayList<TransferStillageDetail>  stillageDetailsData, String wareHouseID, String userId, String makeTJ) {
+    public TransferInput(String stickerNo, ArrayList<TransferStillageDetail>  stillageDetailsData, String wareHouseID, String userId, String tj, String siteID) {
         StickerNo = stickerNo;
         WareHouseID = wareHouseID;
         UserId = userId;
         StillageDetailsData = stillageDetailsData;
-        MakeTJ = makeTJ;
+        TJ = tj;
+        SiteID = siteID;
     }
 
 

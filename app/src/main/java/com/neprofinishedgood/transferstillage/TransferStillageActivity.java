@@ -15,6 +15,8 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -123,7 +125,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     static TransferStillageActivity instance;
     private String transferId;
     private String toBeTransferWHID = "";
-    String makeTJ = "0";
+    String makeTJ = "1";
 
     boolean isTransferMultiple = true;
 
@@ -155,7 +157,37 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 //        initData();
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         callService();
+        alert_TO_TJ_selection(this);
 
+    }
+
+    public void alert_TO_TJ_selection(Context context) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.custom_alert_to_tj_selection);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        CustomButton buttonOk = dialog.findViewById(R.id.buttonOk);
+        RadioGroup radioGroupTransferType = dialog.findViewById(R.id.radioGroupTransferType);
+        RadioButton radioButtonTJ = dialog.findViewById(R.id.radioButtonTJ);
+        RadioButton radioButtonTO = dialog.findViewById(R.id.radioButtonTO);
+
+        radioGroupTransferType.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == radioButtonTJ.getId()) {
+                makeTJ = "1";
+            } else if (checkedId == radioButtonTO.getId()) {
+                makeTJ = "0";
+            }
+        });
+
+        radioButtonTJ.setChecked(true);
+
+        buttonOk.setOnClickListener(v -> {
+            dialog.cancel();
+        });
+
+        dialog.show();
     }
 
 //    private void initData() {
@@ -330,6 +362,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     public void onFailure(String message) {
         hideProgress();
         showSuccessDialog(message);
+        editTextScanStillage.setText("");
 //        CustomToast.showToast(this, message);
     }
 
@@ -337,11 +370,14 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     public void onSuccess(ScanStillageResponse body) {
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
             hideProgress();
-            if (!body.getTransferId().equals("") && body.getIsShiped().equals("1")) {
+            if (body.getIsTJ().equals("1")) {
+                showSuccessDialog(getString(R.string.this_stillage_already_transfred));
+                editTextScanStillage.setText("");
+            } else if (!body.getTransferId().equals("") && body.getIsShiped().equals("1")) {
                 showSuccessDialog(getString(R.string.this_stillage_already_transfred));
                 editTextScanStillage.setText("");
             } else if (body.getIsCounted().equals("0")) {
-                showSuccessDialog("Transfer can't be done as RAF is not posted of this stillage.");
+                showSuccessDialog(getString(R.string.raf_not_posted));
                 editTextScanStillage.setText("");
             } else {
                 if (body.getStandardQty() > 0) {
@@ -352,20 +388,28 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                         isScanned = true;
                         if (isTransferMultiple) {
 
-                            boolean isSameTransWH = true;
-                            if (!body.getTransferId().equals("")) {
-                                if (toBeTransferWHID.equals("")) {
-                                    toBeTransferWHID = body.getToBeTransferWHID();
-                                    isSameTransWH = true;
-                                } else if (!toBeTransferWHID.equals(body.getToBeTransferWHID())) {
-                                    showSuccessDialog("Can't transfer to different warehouse in single transfer operation.");
-                                    isSameTransWH = false;
+                            if (makeTJ.equals("0")) {
+                                boolean isSameTransWH = true;
+                                if (!body.getTransferId().equals("")) {
+                                    if (toBeTransferWHID.equals("")) {
+                                        toBeTransferWHID = body.getToBeTransferWHID();
+                                        isSameTransWH = true;
+                                    } else if (!toBeTransferWHID.equals(body.getToBeTransferWHID())) {
+                                        showSuccessDialog(getString(R.string.warehouse_differ));
+                                        isSameTransWH = false;
+                                    }
+                                }
+                                if (isSameTransWH) {
+                                    setData(body);
+                                }
+                            } else {
+                                if (!body.getTransferId().equals("")) {
+                                    showSuccessDialog(getString(R.string.transferred_to_another_wh));
+                                    editTextScanStillage.setText("");
+                                }else {
+                                    setData(body);
                                 }
                             }
-                            if (isSameTransWH) {
-                                setData(body);
-                            }
-
                         } else {
                             setDataSingle(body);
                         }
@@ -615,12 +659,11 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
             if (!stillageDetailsList.get(i).getTransferId().equals("")) {
                 isTransIdFound = true;
                 break;
-            }
-            else{
+            } else {
                 isTransIdFound = false;
             }
         }
-        if(!isTransIdFound){
+        if (!isTransIdFound) {
             toBeTransferWHID = "";
         }
     }
@@ -645,7 +688,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
             } else {
                 if (isOfflineValidated()) {
-                    TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId,"");
+                    TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId, makeTJ, siteId);
                     saveDataOffline(transferInput);
                 }
             }
@@ -654,7 +697,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                 if (buttonTransfer.getText().toString().equals(getString(R.string.transfer))) {
                     if (spinnerWarehouse.getSelectedItemPosition() > 0) {
                         showProgress(this);
-                        TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), stickersList, warehouseId, userId,"");
+                        TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), stickersList, warehouseId, userId, "", "");
                         iTransferInterface.callUpdateTransferStillage(transferInput);
                     } else {
                         showSuccessDialog("Select site and warehouse");
@@ -666,7 +709,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                 }
             } else {
                 if (isOfflineValidated()) {
-                    TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), stickersList, warehouseId, userId,"");
+                    TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), stickersList, warehouseId, userId, "", "");
                     saveDataOffline(transferInput);
                 }
             }
@@ -684,8 +727,6 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         CustomButton buttonCancel = dialog.findViewById(R.id.buttonCancel);
         Spinner spinnerSite = dialog.findViewById(R.id.spinnerSite);
         spinnerWarehouseDialog = dialog.findViewById(R.id.spinnerWarehouse);
-
-        CheckBox checkboxTransferJournal = dialog.findViewById(R.id.checkboxTransferJournal);
 
         if (siteList != null) {
             SpinnerAdapter siteAdapter = new SpinnerAdapter(TransferStillageActivity.getInstance(), R.layout.spinner_layout, siteList);
@@ -730,13 +771,8 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
         buttonTransfer.setOnClickListener(v -> {
             if (spinnerWarehouseDialog.getSelectedItemPosition() > 0) {
-                if(checkboxTransferJournal.isChecked()){
-                    makeTJ = "1";
-                }else{
-                    makeTJ = "0";
-                }
                 showProgress(this);
-                TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId, makeTJ);
+                TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId, makeTJ, siteId);
                 iTransferInterface.callNewTranferStillage(transferInput);
                 dialog.cancel();
             } else {
@@ -758,7 +794,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
                     showProgress(TransferStillageActivity.this);
-                    TransferInput transferInput = new TransferInput("", stickersList, toBeTransferWHID, userId,"");
+                    TransferInput transferInput = new TransferInput("", stickersList, toBeTransferWHID, userId, makeTJ, siteId);
                     iTransferInterface.callNewTranferStillage(transferInput);
                     dialog.cancel();
                 })

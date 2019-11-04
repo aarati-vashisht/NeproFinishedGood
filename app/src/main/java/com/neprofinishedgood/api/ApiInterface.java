@@ -170,5 +170,6 @@ public interface ApiInterface {
     @POST("NewTranferStillage")
     Call<UniversalResponse> callNewTranferStillage(@Body TransferInput moveInput);
 
-
+    @POST("ScanTransferStillage")
+    Call<ScanStillageResponse> scanTransferStillage(@Body MoveInput moveInput);
 }
