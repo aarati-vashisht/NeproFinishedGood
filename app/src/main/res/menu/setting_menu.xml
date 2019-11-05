@@ -13,12 +13,12 @@
                 android:title="@string/logout"
                 android:tooltipText="@string/logout"
                 app:showAsAction="ifRoom" />
-            <item
-                android:id="@+id/settings_menu"
-                android:icon="@drawable/setting_icon"
-                android:title="@string/settings"
-                android:tooltipText="@string/settings"
-                app:showAsAction="ifRoom" />
+<!--            <item-->
+<!--                android:id="@+id/settings_menu"-->
+<!--                android:icon="@drawable/setting_icon"-->
+<!--                android:title="@string/settings"-->
+<!--                android:tooltipText="@string/settings"-->
+<!--                app:showAsAction="ifRoom" />-->
         </menu>
     </item>
 </menu>

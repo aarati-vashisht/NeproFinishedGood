@@ -223,11 +223,11 @@
     <string name="select_to_make_transfer_order">Transfer Order</string>
     <string name="raf_not_posted">Transfer can\'t be done as RAF is not posted of this stillage.</string>
     <string name="warehouse_differ">Can\'t transfer to different warehouse in single transfer operation.</string>
-    <string name="transferred_to_another_wh">This stillage has already TO id created but not shipped.</string>
+    <string name="transferred_to_another_wh">This stillage already has Transfer Order ID created but not shipped yet.</string>
     <string name="this_stillage_already_tj_transfred">This stillage is already transferred through TJ process.</string>
     <string name="this_stillage_already_to_transfred">This stillage is already transferred through TO process.</string>
-    <string name="transfer_journal_process">Transfer Journal Process</string>
-    <string name="transfer_order_process">Transfer Order Process</string>
+    <string name="transfer_journal_process">Transfer Journal</string>
+    <string name="transfer_order_process">Transfer Order</string>
     <string name="data_error">Data Error!</string>
 
 </resources>
