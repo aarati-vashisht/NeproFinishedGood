@@ -208,73 +208,121 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @Override
     public void onWorkOrderScanSuccess(WorkOrderScanResponse body) {
         hideProgress();
-        if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-            isScanned = true;
-            setData(body);
-            editTextScanWorkOrder.setEnabled(false);
-        } else {
-            showSuccessDialog(body.getMessage());
+        try {
+            if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+                isScanned = true;
+                setData(body);
+                editTextScanWorkOrder.setEnabled(false);
+            } else {
+                showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(getApplicationContext(), body.getMessage());
+                editTextScanWorkOrder.setText("");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            showSuccessDialog(getString(R.string.data_error));
             editTextScanWorkOrder.setText("");
         }
     }
 
     void setData(WorkOrderScanResponse body) {
-        linearLayoutButtons.setVisibility(View.VISIBLE);
-        linearLayoutWorkOrderScanDetail.setVisibility(View.VISIBLE);
-        textViewWorkOrderNumber.setText(body.getWorkOrderNo());
-        textViewitem.setText(body.getItemId());
-        textViewProductionLine.setText(body.getProductionLine());
-        textViewWarehouse.setText(body.getWareHouse());
-        textViewQuantity.setText(body.getQuantity());
-        textViewSite.setText(body.getSite());
-        textViewStatus.setText(body.getWOStatus());
-        textViewitemDesc.setText(body.getItemDescription());
+        try {
+            linearLayoutButtons.setVisibility(View.VISIBLE);
+            linearLayoutWorkOrderScanDetail.setVisibility(View.VISIBLE);
+            textViewWorkOrderNumber.setText(body.getWorkOrderNo());
+            textViewitem.setText(body.getItemId());
+            textViewProductionLine.setText(body.getProductionLine());
+            textViewWarehouse.setText(body.getWareHouse());
+            textViewQuantity.setText(body.getQuantity());
+            textViewSite.setText(body.getSite());
+            textViewStatus.setText(body.getWOStatus());
+            textViewitemDesc.setText(body.getItemDescription());
 
-        if (body.getQuantity() != null) {
-            if (!body.getQuantity().equals("")) {
-                woQty = Float.parseFloat(body.getQuantity());
+            if (body.getQuantity() != null) {
+                if (!body.getQuantity().equals("")) {
+                    woQty = Float.parseFloat(body.getQuantity());
+                } else {
+                    woQty = 0;
+                }
             } else {
                 woQty = 0;
             }
-        } else {
-            woQty = 0;
-        }
 
-        if (body.getStartedQty() != null) {
-            if (!body.getStartedQty().equals("")) {
-                maxStartQty = woQty - Float.parseFloat(body.getStartedQty());
-                textViewQtyStarted.setText(body.getStartedQty());
+            if (body.getStartedQty() != null) {
+                if (!body.getStartedQty().equals("")) {
+                    maxStartQty = woQty - Float.parseFloat(body.getStartedQty());
+                    textViewQtyStarted.setText(body.getStartedQty());
+                } else {
+                    maxStartQty = woQty;
+                    textViewQtyStarted.setText("0");
+                }
             } else {
                 maxStartQty = woQty;
                 textViewQtyStarted.setText("0");
             }
-        } else {
-            maxStartQty = woQty;
-            textViewQtyStarted.setText("0");
-        }
 
-        if (body.getStatusId().equals("1") || body.getStatusId().equals("4")) {
-            if (maxStartQty != 0) {
-                if(maxStartQty!=woQty){
-                    radioButtonFullQty.setVisibility(View.GONE);
-                    radioButtonZeroQty.setVisibility(View.GONE);
-                    radioButtonPartialQty.setChecked(true);
+            if (body.getStatusId().equals("1") || body.getStatusId().equals("4")) {
+                if (maxStartQty != 0) {
+                    if (maxStartQty != woQty) {
+                        radioButtonFullQty.setVisibility(View.GONE);
+                        radioButtonZeroQty.setVisibility(View.GONE);
+                        radioButtonPartialQty.setChecked(true);
+                    } else {
+                        radioButtonFullQty.setVisibility(View.VISIBLE);
+                        radioButtonZeroQty.setVisibility(View.VISIBLE);
+                        radioButtonFullQty.setChecked(true);
+                    }
+                    linearLayoutRoutePick.setVisibility(View.VISIBLE);
+                    linearLayoutStartQty.setVisibility(View.VISIBLE);
+                    checkBoxAutoPicking.setChecked(false);
+                    checkBoxAutoRoute.setChecked(false);
+                    editTextPartialQty.setText(maxStartQty + "");
+                    getStartQty = body.getQuantity();
+                    buttonEnd.setEnabled(false);
+                    buttonStart.setEnabled(true);
+                    linearLayoutEndQuantities.setVisibility(View.GONE);
                 } else {
-                    radioButtonFullQty.setVisibility(View.VISIBLE);
-                    radioButtonZeroQty.setVisibility(View.VISIBLE);
-                    radioButtonFullQty.setChecked(true);
+                    linearLayoutRoutePick.setVisibility(View.GONE);
+                    linearLayoutStartQty.setVisibility(View.GONE);
+
+                    linearLayoutEndQuantities.setVisibility(View.GONE);
+                    buttonStart.setEnabled(false);
+                    buttonEnd.setEnabled(false);
                 }
-                linearLayoutRoutePick.setVisibility(View.VISIBLE);
-                linearLayoutStartQty.setVisibility(View.VISIBLE);
-                checkBoxAutoPicking.setChecked(false);
-                checkBoxAutoRoute.setChecked(false);
-                editTextPartialQty.setText(maxStartQty+"");
-                getStartQty = body.getQuantity();
-                buttonEnd.setEnabled(false);
-                buttonStart.setEnabled(true);
-                linearLayoutEndQuantities.setVisibility(View.GONE);
-            } else{
+            } else if ((body.getStatusId().equals("5"))) {
+
+                linearLayoutRoutePick.setVisibility(View.GONE);
+                linearLayoutStartQty.setVisibility(View.GONE);
+
+                buttonEnd.setEnabled(true);
+                buttonStart.setEnabled(false);
+
+                linearLayoutEndQuantities.setVisibility(View.VISIBLE);
+
+                if (body.getRafQuantity().equals("")) {
+                    textViewRafQty.setText(body.getRafQuantity());
+                } else {
+                    if (Utils.isStringIsFloatNum(body.getRafQuantity())) {
+                        round(Float.parseFloat(body.getRafQuantity()));
+                        textViewRafQty.setText(round(Float.parseFloat(body.getRafQuantity())) + "");
+                    } else {
+                        textViewRafQty.setText(body.getRafQuantity());
+                    }
+                }
+
+                if (body.getBalanceQuantity().equals("")) {
+                    textViewBalanceQty.setText(body.getBalanceQuantity());
+                } else {
+                    if (Utils.isStringIsFloatNum(body.getBalanceQuantity())) {
+                        round(Float.parseFloat(body.getBalanceQuantity()));
+                        textViewBalanceQty.setText(round(Float.parseFloat(body.getBalanceQuantity())) + "");
+                    } else {
+                        textViewBalanceQty.setText(body.getBalanceQuantity());
+                    }
+                }
+
+            } else {
+
                 linearLayoutRoutePick.setVisibility(View.GONE);
                 linearLayoutStartQty.setVisibility(View.GONE);
 
@@ -282,46 +330,10 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                 buttonStart.setEnabled(false);
                 buttonEnd.setEnabled(false);
             }
-        } else if ((body.getStatusId().equals("5"))) {
-
-            linearLayoutRoutePick.setVisibility(View.GONE);
-            linearLayoutStartQty.setVisibility(View.GONE);
-
-            buttonEnd.setEnabled(true);
-            buttonStart.setEnabled(false);
-
-            linearLayoutEndQuantities.setVisibility(View.VISIBLE);
-
-            if (body.getRafQuantity().equals("")) {
-                textViewRafQty.setText(body.getRafQuantity());
-            } else {
-                if (Utils.isStringIsFloatNum(body.getRafQuantity())) {
-                    round(Float.parseFloat(body.getRafQuantity()));
-                    textViewRafQty.setText(round(Float.parseFloat(body.getRafQuantity())) + "");
-                } else {
-                    textViewRafQty.setText(body.getRafQuantity());
-                }
-            }
-
-            if (body.getBalanceQuantity().equals("")) {
-                textViewBalanceQty.setText(body.getBalanceQuantity());
-            } else {
-                if (Utils.isStringIsFloatNum(body.getBalanceQuantity())) {
-                    round(Float.parseFloat(body.getBalanceQuantity()));
-                    textViewBalanceQty.setText(round(Float.parseFloat(body.getBalanceQuantity())) + "");
-                } else {
-                    textViewBalanceQty.setText(body.getBalanceQuantity());
-                }
-            }
-
-        } else {
-
-            linearLayoutRoutePick.setVisibility(View.GONE);
-            linearLayoutStartQty.setVisibility(View.GONE);
-
-            linearLayoutEndQuantities.setVisibility(View.GONE);
-            buttonStart.setEnabled(false);
-            buttonEnd.setEnabled(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showSuccessDialog(getString(R.string.data_error));
+            editTextScanWorkOrder.setText("");
         }
     }
 
@@ -376,16 +388,25 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @OnClick(R.id.buttonStart)
     public void onButtonStartClick() {
         if (isValidated()) {
-            showProgress(this);
-            WorkOrderScanInput workOrderScanInput = new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, autoRoute, autoPick, startQty);
-            iWorkOrderStartEndInterface.callWorkOrderStartService(workOrderScanInput);
+            if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
+                showProgress(this);
+
+                WorkOrderScanInput workOrderScanInput = new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, autoRoute, autoPick, startQty);
+                iWorkOrderStartEndInterface.callWorkOrderStartService(workOrderScanInput);
+            } else {
+                showSuccessDialog(getString(R.string.no_internet));
+            }
         }
     }
 
     @OnClick(R.id.buttonEnd)
     public void onButtonEndClick() {
-        showProgress(this);
-        iWorkOrderStartEndInterface.callWorkOrderEndService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, "", "", ""));
+        if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
+            showProgress(this);
+            iWorkOrderStartEndInterface.callWorkOrderEndService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, "", "", ""));
+        } else {
+            showSuccessDialog(getString(R.string.no_internet));
+        }
     }
 
     @Override

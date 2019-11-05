@@ -37,7 +37,7 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
     private Context context;
     private View view;
     String customerName;
-    private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+//    private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
 
     public PickAndLoadAdapter(List<ScanLoadingPlanList> stillageDatumList) {
         this.stillageDatumList = stillageDatumList;
@@ -54,9 +54,9 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        viewBinderHelper.bind(holder.swipeRevealLayout, stillageDatumListFiltered.get(position).getLoadingPlanNo());
-        holder.swipeRevealLayout.close(true);
-        viewBinderHelper.setOpenOnlyOne(true);
+//        viewBinderHelper.bind(holder.swipeRevealLayout, stillageDatumListFiltered.get(position).getLoadingPlanNo());
+//        holder.swipeRevealLayout.close(true);
+//        viewBinderHelper.setOpenOnlyOne(true);
 
         holder.textViewLoadingPlan.setText(stillageDatumListFiltered.get(position).getLoadingPlanNo());
         holder.textViewCustomer.setText(stillageDatumListFiltered.get(position).getCustomerId());
@@ -79,17 +79,17 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
 
         @BindView(R.id.cardView)
         CardView cardView;
-        @BindView(R.id.back_layout)
-        FrameLayout back_layout;
-        @BindView(R.id.swipeRevealLayout)
-        SwipeRevealLayout swipeRevealLayout;
+//        @BindView(R.id.back_layout)
+//        FrameLayout back_layout;
+//        @BindView(R.id.swipeRevealLayout)
+//        SwipeRevealLayout swipeRevealLayout;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             ButterKnife.bind(this, view);
             cardView.setOnClickListener(this);
-            back_layout.setOnClickListener(this);
+//            back_layout.setOnClickListener(this);
         }
 
         @Override
@@ -103,14 +103,15 @@ public class PickAndLoadAdapter extends RecyclerView.Adapter<PickAndLoadAdapter.
                 Gson gson = new Gson();
                 String putExtraData = gson.toJson(stillageDatumListFiltered.get(getAdapterPosition()));
                 context.startActivity(new Intent(context, PickAndLoadStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
-            } else if (v == back_layout) {
-                PickAndLoadActivity.getInstance().LpNoToDelete = stillageDatumListFiltered.get(getAdapterPosition()).getLoadingPlanNo();
-                PickAndLoadActivity.getInstance().showProgress(PickAndLoadActivity.getInstance());
-                PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callCancelLoadingPlan
-                        (new LoadingPlanInput(stillageDatumListFiltered.get(getAdapterPosition()).getTLPHID() + "",
-                                PickAndLoadActivity.getInstance().userId, ""));
-//                CustomToast.showToast(context, "deleted successfully " + getAdapterPosition());
             }
+//            else if (v == back_layout) {
+//                PickAndLoadActivity.getInstance().LpNoToDelete = stillageDatumListFiltered.get(getAdapterPosition()).getLoadingPlanNo();
+//                PickAndLoadActivity.getInstance().showProgress(PickAndLoadActivity.getInstance());
+//                PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callCancelLoadingPlan
+//                        (new LoadingPlanInput(stillageDatumListFiltered.get(getAdapterPosition()).getTLPHID() + "",
+//                                PickAndLoadActivity.getInstance().userId, ""));
+////                CustomToast.showToast(context, "deleted successfully " + getAdapterPosition());
+//            }
 
         }
     }

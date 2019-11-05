@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.chauthai.swipereveallayout.SwipeRevealLayout
+   <!-- <com.chauthai.swipereveallayout.SwipeRevealLayout
         android:id="@+id/swipeRevealLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
 
 
             </LinearLayout>
-        </FrameLayout>
+        </FrameLayout>-->
 
         <FrameLayout
             android:id="@+id/front_layout"
@@ -107,5 +107,5 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </FrameLayout>
-    </com.chauthai.swipereveallayout.SwipeRevealLayout>
+<!--    </com.chauthai.swipereveallayout.SwipeRevealLayout>-->
 </RelativeLayout>

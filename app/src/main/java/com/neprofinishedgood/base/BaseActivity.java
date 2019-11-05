@@ -34,6 +34,7 @@ import com.neprofinishedgood.receivestillage.ReceiveStillageActivity;
 import com.neprofinishedgood.transferstillage.TransferStillageActivity;
 import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 import com.neprofinishedgood.utils.SharedPref;
+import com.neprofinishedgood.utils.Utils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         setActionBarData();
         instance = this;
         gson = new Gson();
+        Utils.hideSoftKeyboard(this);
         LoginResponse loginResponse = gson.fromJson(SharedPref.getLoginUser(), LoginResponse.class);
         if (loginResponse != null) {
             userId = loginResponse.getUserLoginResponse().get(0).getUserId();
