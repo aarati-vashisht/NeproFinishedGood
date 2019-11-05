@@ -101,6 +101,9 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @BindView(R.id.textViewNumberOffline)
     TextView textViewNumberOffline;
 
+    @BindView(R.id.textViewTransferType)
+    TextView textViewTransferType;
+
     @BindView(R.id.recyclerViewTransferList)
     RecyclerView recyclerViewTransferList;
 
@@ -176,8 +179,10 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         radioGroupTransferType.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == radioButtonTJ.getId()) {
                 makeTJ = "1";
+                textViewTransferType.setText(getString(R.string.transfer_journal_process));
             } else if (checkedId == radioButtonTO.getId()) {
                 makeTJ = "0";
+                textViewTransferType.setText(getString(R.string.transfer_order_process));
             }
         });
 
@@ -371,10 +376,10 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
             hideProgress();
             if (body.getIsTJ().equals("1")) {
-                showSuccessDialog(getString(R.string.this_stillage_already_transfred));
+                showSuccessDialog(getString(R.string.this_stillage_already_tj_transfred));
                 editTextScanStillage.setText("");
             } else if (!body.getTransferId().equals("") && body.getIsShiped().equals("1")) {
-                showSuccessDialog(getString(R.string.this_stillage_already_transfred));
+                showSuccessDialog(getString(R.string.this_stillage_already_to_transfred));
                 editTextScanStillage.setText("");
             } else if (body.getIsCounted().equals("0")) {
                 showSuccessDialog(getString(R.string.raf_not_posted));
