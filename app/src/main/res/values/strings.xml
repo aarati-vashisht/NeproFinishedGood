@@ -228,5 +228,6 @@
     <string name="this_stillage_already_to_transfred">This stillage is already transferred through TO process.</string>
     <string name="transfer_journal_process">Transfer Journal Process</string>
     <string name="transfer_order_process">Transfer Order Process</string>
+    <string name="data_error">Data Error!</string>
 
 </resources>

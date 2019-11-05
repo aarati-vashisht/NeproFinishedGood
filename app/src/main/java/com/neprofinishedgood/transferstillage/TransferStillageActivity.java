@@ -243,8 +243,12 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     public void onSpinnerSiteSelected(Spinner spinner, int position) {
         siteId = siteList.get(position).getId().trim();
         if (position > 0) {
-            showProgress(this);
-            iTransferInterface.callGetWareHouse(new WareHouseInput(siteId));
+            if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+                showProgress(this);
+                iTransferInterface.callGetWareHouse(new WareHouseInput(siteId));
+            } else {
+                showSuccessDialog(getString(R.string.no_internet));
+            }
         }
     }
 
@@ -279,8 +283,11 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                                 showProgress(TransferStillageActivity.this);
                                 iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                             } else {
-                                setDataOffline();
+                                showSuccessDialog(getString(R.string.no_internet));
                             }
+//                            } else {
+//                                setDataOffline();
+//                            }
                         }
                     }
                 }
@@ -310,8 +317,11 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                             showProgress(TransferStillageActivity.this);
                             iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                         } else {
-                            setDataOffline();
+                            showSuccessDialog(getString(R.string.no_internet));
                         }
+//                        } else {
+//                            setDataOffline();
+//                        }
                     }
                 }
             }
@@ -373,64 +383,71 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
     @Override
     public void onSuccess(ScanStillageResponse body) {
-        if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-            hideProgress();
-            if (body.getIsTJ().equals("1")) {
-                showSuccessDialog(getString(R.string.this_stillage_already_tj_transfred));
-                editTextScanStillage.setText("");
-            } else if (!body.getTransferId().equals("") && body.getIsShiped().equals("1")) {
-                showSuccessDialog(getString(R.string.this_stillage_already_to_transfred));
-                editTextScanStillage.setText("");
-            } else if (body.getIsCounted().equals("0")) {
-                showSuccessDialog(getString(R.string.raf_not_posted));
-                editTextScanStillage.setText("");
-            } else {
-                if (body.getStandardQty() > 0) {
-                    if (stillageWarehouseId == "") {
-                        stillageWarehouseId = body.getWareHouseID().trim();
-                    }
-                    if (stillageWarehouseId.equals(body.getWareHouseID().trim())) {
-                        isScanned = true;
-                        if (isTransferMultiple) {
+        try {
+            if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
+                hideProgress();
+                if (body.getIsTJ().equals("1")) {
+                    showSuccessDialog(getString(R.string.this_stillage_already_tj_transfred));
+                    editTextScanStillage.setText("");
+                } else if (!body.getTransferId().equals("") && body.getIsShiped().equals("1")) {
+                    showSuccessDialog(getString(R.string.this_stillage_already_to_transfred));
+                    editTextScanStillage.setText("");
+                } else if (body.getIsCounted().equals("0")) {
+                    showSuccessDialog(getString(R.string.raf_not_posted));
+                    editTextScanStillage.setText("");
+                } else {
+                    if (body.getStandardQty() > 0) {
+                        if (stillageWarehouseId == "") {
+                            stillageWarehouseId = body.getWareHouseID().trim();
+                        }
+                        if (stillageWarehouseId.equals(body.getWareHouseID().trim())) {
+                            isScanned = true;
+                            if (isTransferMultiple) {
 
-                            if (makeTJ.equals("0")) {
-                                boolean isSameTransWH = true;
-                                if (!body.getTransferId().equals("")) {
-                                    if (toBeTransferWHID.equals("")) {
-                                        toBeTransferWHID = body.getToBeTransferWHID();
-                                        isSameTransWH = true;
-                                    } else if (!toBeTransferWHID.equals(body.getToBeTransferWHID())) {
-                                        showSuccessDialog(getString(R.string.warehouse_differ));
-                                        isSameTransWH = false;
+                                if (makeTJ.equals("0")) {
+                                    boolean isSameTransWH = true;
+                                    if (!body.getTransferId().equals("")) {
+                                        if (toBeTransferWHID.equals("")) {
+                                            toBeTransferWHID = body.getToBeTransferWHID();
+                                            isSameTransWH = true;
+                                        } else if (!toBeTransferWHID.equals(body.getToBeTransferWHID())) {
+                                            showSuccessDialog(getString(R.string.warehouse_differ));
+                                            isSameTransWH = false;
+                                        }
+                                    }
+                                    if (isSameTransWH) {
+                                        setData(body);
+                                    }
+                                } else {
+                                    if (!body.getTransferId().equals("")) {
+                                        showSuccessDialog(getString(R.string.transferred_to_another_wh));
+                                        editTextScanStillage.setText("");
+                                    } else {
+                                        setData(body);
                                     }
                                 }
-                                if (isSameTransWH) {
-                                    setData(body);
-                                }
                             } else {
-                                if (!body.getTransferId().equals("")) {
-                                    showSuccessDialog(getString(R.string.transferred_to_another_wh));
-                                    editTextScanStillage.setText("");
-                                }else {
-                                    setData(body);
-                                }
+                                setDataSingle(body);
                             }
-                        } else {
-                            setDataSingle(body);
-                        }
 
+                        } else {
+                            showSuccessDialog("Can't scan stillage of different warehouse.");
+                            editTextScanStillage.setText("");
+                        }
                     } else {
-                        showSuccessDialog("Can't scan stillage of different warehouse.");
+                        showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                         editTextScanStillage.setText("");
                     }
-                } else {
-                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
-                    editTextScanStillage.setText("");
                 }
+            } else {
+                hideProgress();
+                showSuccessDialog(body.getMessage());
+                editTextScanStillage.setText("");
             }
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             hideProgress();
-            showSuccessDialog(body.getMessage());
+            showSuccessDialog(getString(R.string.data_error));
             editTextScanStillage.setText("");
         }
     }
@@ -556,41 +573,41 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     }
 
     void setData(ScanStillageResponse body) {
+        try {
+            linearLayoutLocationSelection.setVisibility(View.GONE);
+            linearLayoutRecyclerView.setVisibility(View.VISIBLE);
+            stillageDetail.setVisibility(View.GONE);
+            editTextScanStillage.setText("");
+            editTextScanStillage.setEnabled(true);
 
-        linearLayoutLocationSelection.setVisibility(View.GONE);
-        linearLayoutRecyclerView.setVisibility(View.VISIBLE);
-        stillageDetail.setVisibility(View.GONE);
-        editTextScanStillage.setText("");
-        editTextScanStillage.setEnabled(true);
+            stillageWarehouseId = body.getWareHouseID().trim();
+            relativeLayoutScanDetail.setVisibility(View.VISIBLE);
 
-        stillageWarehouseId = body.getWareHouseID().trim();
-        relativeLayoutScanDetail.setVisibility(View.VISIBLE);
+            stillageDetailsList.add(body);
+            adapter.notifyDataSetChanged();
 
-        stillageDetailsList.add(body);
-        adapter.notifyDataSetChanged();
-
-        String transId;
-        if (body.getTransferId() != null) {
-            transId = body.getTransferId();
-        } else {
-            transId = "";
-        }
-
-        stickersList.add(new TransferStillageDetail(body.getStickerID(), transId));
-
-        if (siteList == null) {
-            siteList = new ArrayList<>();
-        }
-
-        if (siteList.isEmpty()) {
-            siteList = body.getSiteListData();
-            siteList.add(0, new UniversalSpinner("Select Site", "0"));
-
-            if (siteList != null) {
-                SpinnerAdapter siteAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, siteList);
-                spinnerSite.setAdapter(siteAdapter);
+            String transId;
+            if (body.getTransferId() != null) {
+                transId = body.getTransferId();
+            } else {
+                transId = "";
             }
-        }
+
+            stickersList.add(new TransferStillageDetail(body.getStickerID(), transId));
+
+            if (siteList == null) {
+                siteList = new ArrayList<>();
+            }
+
+            if (siteList.isEmpty()) {
+                siteList = body.getSiteListData();
+                siteList.add(0, new UniversalSpinner("Select Site", "0"));
+
+                if (siteList != null) {
+                    SpinnerAdapter siteAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, siteList);
+                    spinnerSite.setAdapter(siteAdapter);
+                }
+            }
 //-------------------------------- it may change ----------------------------------------
 //        if (body.getIsShiped().equals("0") && !body.getTransferId().equals("")) {
 //            linearLayoutToSite.setVisibility(View.GONE);
@@ -605,50 +622,60 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 //            buttonTransfer.setText(getString(R.string.transfer));
 //        }
 //---------------------------------------------------------------------------------------
+        } catch (Exception e) {
+            e.printStackTrace();
+            showSuccessDialog(getString(R.string.data_error));
+            editTextScanStillage.setText("");
+        }
     }
 
     void setDataSingle(ScanStillageResponse body) {
-        stickersList = new ArrayList<>();
-        linearLayoutRecyclerView.setVisibility(View.GONE);
-        stillageDetail.setVisibility(View.VISIBLE);
+        try {
+            stickersList = new ArrayList<>();
+            linearLayoutRecyclerView.setVisibility(View.GONE);
+            stillageDetail.setVisibility(View.VISIBLE);
 
-        editTextScanStillage.setEnabled(false);
-        stillageWarehouseId = body.getWareHouseID().trim();
-        stillageDetail.setVisibility(View.VISIBLE);
-        stillageDetail.setAnimation(fadeIn);
-        relativeLayoutScanDetail.setVisibility(View.VISIBLE);
+            editTextScanStillage.setEnabled(false);
+            stillageWarehouseId = body.getWareHouseID().trim();
+            stillageDetail.setVisibility(View.VISIBLE);
+            stillageDetail.setAnimation(fadeIn);
+            relativeLayoutScanDetail.setVisibility(View.VISIBLE);
 
-        stillageLayout.linearLayoutLocation.setVisibility(View.VISIBLE);
-        stillageLayout.textViewLocation.setText(body.getLocation());
-        stillageLayout.linearLayoutWarehouse.setVisibility(View.VISIBLE);
-        stillageLayout.textViewWarehouse.setText(body.getWareHouseID() + " | " + body.getWareHouseName());
-        stillageLayout.textViewitem.setText(body.getItemId());
-        stillageLayout.textViewNumber.setText(body.getStickerID());
-        stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
-        stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
-        stillageLayout.textViewitemDesc.setText(body.getDescription());
+            stillageLayout.linearLayoutLocation.setVisibility(View.VISIBLE);
+            stillageLayout.textViewLocation.setText(body.getLocation());
+            stillageLayout.linearLayoutWarehouse.setVisibility(View.VISIBLE);
+            stillageLayout.textViewWarehouse.setText(body.getWareHouseID() + " | " + body.getWareHouseName());
+            stillageLayout.textViewitem.setText(body.getItemId());
+            stillageLayout.textViewNumber.setText(body.getStickerID());
+            stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
+            stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
+            stillageLayout.textViewitemDesc.setText(body.getDescription());
 
-        siteList = body.getSiteListData();
-        siteList.add(0, new UniversalSpinner("Select Site", "0"));
+            siteList = body.getSiteListData();
+            siteList.add(0, new UniversalSpinner("Select Site", "0"));
 
-        if (siteList != null) {
-            SpinnerAdapter siteAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, siteList);
-            spinnerSite.setAdapter(siteAdapter);
+            if (siteList != null) {
+                SpinnerAdapter siteAdapter = new SpinnerAdapter(TransferStillageActivity.this, R.layout.spinner_layout, siteList);
+                spinnerSite.setAdapter(siteAdapter);
+            }
+
+            if (body.getIsShiped().equals("0") && !body.getTransferId().equals("")) {
+                linearLayoutToSite.setVisibility(View.GONE);
+                linearLayoutToWarehouse.setVisibility(View.GONE);
+                textViewToWarehouse.setVisibility(View.GONE);
+                buttonTransfer.setText(getString(R.string.ship));
+                transferId = body.getTransferId();
+            } else if (body.getIsShiped().equals("0") && body.getTransferId().equals("")) {
+                linearLayoutToSite.setVisibility(View.VISIBLE);
+                linearLayoutToWarehouse.setVisibility(View.VISIBLE);
+                textViewToWarehouse.setVisibility(View.VISIBLE);
+                buttonTransfer.setText(getString(R.string.transfer));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showSuccessDialog(getString(R.string.data_error));
+            editTextScanStillage.setText("");
         }
-
-        if (body.getIsShiped().equals("0") && !body.getTransferId().equals("")) {
-            linearLayoutToSite.setVisibility(View.GONE);
-            linearLayoutToWarehouse.setVisibility(View.GONE);
-            textViewToWarehouse.setVisibility(View.GONE);
-            buttonTransfer.setText(getString(R.string.ship));
-            transferId = body.getTransferId();
-        } else if (body.getIsShiped().equals("0") && body.getTransferId().equals("")) {
-            linearLayoutToSite.setVisibility(View.VISIBLE);
-            linearLayoutToWarehouse.setVisibility(View.VISIBLE);
-            textViewToWarehouse.setVisibility(View.VISIBLE);
-            buttonTransfer.setText(getString(R.string.transfer));
-        }
-
     }
 
     public void deleteAddedData(int position) {
@@ -701,16 +728,24 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
             if (linearLayoutOfflineData.getVisibility() == View.GONE) {
                 if (buttonTransfer.getText().toString().equals(getString(R.string.transfer))) {
                     if (spinnerWarehouse.getSelectedItemPosition() > 0) {
-                        showProgress(this);
-                        TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), stickersList, warehouseId, userId, "", "");
-                        iTransferInterface.callUpdateTransferStillage(transferInput);
+                        if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+                            showProgress(this);
+                            TransferInput transferInput = new TransferInput(editTextScanStillage.getText().toString().trim(), stickersList, warehouseId, userId, "", "");
+                            iTransferInterface.callUpdateTransferStillage(transferInput);
+                        } else {
+                            showSuccessDialog(getString(R.string.no_internet));
+                        }
                     } else {
                         showSuccessDialog("Select site and warehouse");
                     }
                 } else if (buttonTransfer.getText().toString().equals(getString(R.string.ship))) {
-                    showProgress(this);
-                    ShipInput shipInput = new ShipInput(editTextScanStillage.getText().toString().trim(), userId, transferId);
-                    iTransferInterface.callShipStillage(shipInput);
+                    if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+                        showProgress(this);
+                        ShipInput shipInput = new ShipInput(editTextScanStillage.getText().toString().trim(), userId, transferId);
+                        iTransferInterface.callShipStillage(shipInput);
+                    } else {
+                        showSuccessDialog(getString(R.string.no_internet));
+                    }
                 }
             } else {
                 if (isOfflineValidated()) {
@@ -745,8 +780,12 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                     buttonTransfer.setEnabled(false);
                 } else {
                     siteId = siteList.get(position).getId().trim();
-                    showProgress(TransferStillageActivity.getInstance());
-                    iTransferInterface.callGetWareHouse(new WareHouseInput(siteId));
+                    if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+                        showProgress(TransferStillageActivity.getInstance());
+                        iTransferInterface.callGetWareHouse(new WareHouseInput(siteId));
+                    } else {
+                        showSuccessDialog(getString(R.string.no_internet));
+                    }
                 }
             }
 
@@ -776,10 +815,14 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
         buttonTransfer.setOnClickListener(v -> {
             if (spinnerWarehouseDialog.getSelectedItemPosition() > 0) {
-                showProgress(this);
-                TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId, makeTJ, siteId);
-                iTransferInterface.callNewTranferStillage(transferInput);
-                dialog.cancel();
+                if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+                    showProgress(this);
+                    TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId, makeTJ, siteId);
+                    iTransferInterface.callNewTranferStillage(transferInput);
+                    dialog.cancel();
+                } else {
+                    showSuccessDialog(getString(R.string.no_internet));
+                }
             } else {
                 showSuccessDialog("Select site and warehouse");
             }
@@ -798,10 +841,14 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         builder.setMessage("These stillages will be transfered to " + toBeTransferWHID + " Warehouse! ");
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
-                    showProgress(TransferStillageActivity.this);
-                    TransferInput transferInput = new TransferInput("", stickersList, toBeTransferWHID, userId, makeTJ, siteId);
-                    iTransferInterface.callNewTranferStillage(transferInput);
-                    dialog.cancel();
+                    if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
+                        showProgress(TransferStillageActivity.this);
+                        TransferInput transferInput = new TransferInput("", stickersList, toBeTransferWHID, userId, makeTJ, siteId);
+                        iTransferInterface.callNewTranferStillage(transferInput);
+                        dialog.cancel();
+                    } else {
+                        showSuccessDialog(getString(R.string.no_internet));
+                    }
                 })
                 .setNegativeButton(getString(R.string.no), (dialog, id) -> dialog.cancel());
         AlertDialog alert = builder.create();
