@@ -139,7 +139,6 @@
     <string name="nodiscard">No Discard</string>
     <string name="this_stillage_already_merged">This stillage is already merged</string>
     <string name="this_stillage_already_recieved">This stillage is already received</string>
-    <string name="this_stillage_already_transfred">This stillage is already transferred</string>
     <string name="proceed_offline">Do You Want To Proceed In Offline Mode?</string>
     <string name="data_saved_offline">Data Saved Offline</string>
     <string name="child_and_parent_cannot_be_same">Child And Parent Stillage Can\'t  Be Same</string>
@@ -213,17 +212,21 @@
     <string name="variance">Variance</string>
     <string name="raf_status">RAF Status:</string>
     <string name="wo_status">WO Status:</string>
-    <string name="qty_exceeded">Entered quantity is more than the work order quantity</string>
+    <string name="qty_exceeded">Entered quantity is more than the work order quantity.</string>
     <string name="enter_qty">Enter Partial Quantity!</string>
     <string name="quantity_already">Quantity Started :</string>
     <string name="full">Full</string>
     <string name="zero">Zero</string>
     <string name="partial">Partial</string>
-    <string name="select_any_one">Select any one</string>
-    <string name="select_to_make_transfer_journal">Select to make transfer journal</string>
-    <string name="select_to_make_transfer_order">Select to make transfer order</string>
+    <string name="select_any_one">Select any one :</string>
+    <string name="select_to_make_transfer_journal">Transfer Journal</string>
+    <string name="select_to_make_transfer_order">Transfer Order</string>
     <string name="raf_not_posted">Transfer can\'t be done as RAF is not posted of this stillage.</string>
     <string name="warehouse_differ">Can\'t transfer to different warehouse in single transfer operation.</string>
-    <string name="transferred_to_another_wh">Can\'t transfer this stillage as it is already transferred to another warehouse but not shipped yet!</string>
+    <string name="transferred_to_another_wh">This stillage has already TO id created but not shipped.</string>
+    <string name="this_stillage_already_tj_transfred">This stillage is already transferred through TJ process.</string>
+    <string name="this_stillage_already_to_transfred">This stillage is already transferred through TO process.</string>
+    <string name="transfer_journal_process">Transfer Journal Process</string>
+    <string name="transfer_order_process">Transfer Order Process</string>
 
 </resources>
