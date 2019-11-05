@@ -41,18 +41,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewTransferType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/colorPrimaryDark"
-            android:padding="5dp"
-            android:textAlignment="center"
-            android:text="@string/transfer_order_process"
-            android:textColor="@color/white"
-            android:textStyle="bold"/>
-
         <LinearLayout
             android:id="@+id/linearLayoutOfflineData"
             android:layout_width="match_parent"

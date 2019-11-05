@@ -101,9 +101,6 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
     @BindView(R.id.textViewNumberOffline)
     TextView textViewNumberOffline;
 
-    @BindView(R.id.textViewTransferType)
-    TextView textViewTransferType;
-
     @BindView(R.id.recyclerViewTransferList)
     RecyclerView recyclerViewTransferList;
 
@@ -179,10 +176,10 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         radioGroupTransferType.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == radioButtonTJ.getId()) {
                 makeTJ = "1";
-                textViewTransferType.setText(getString(R.string.transfer_journal_process));
+                setTitle(getString(R.string.transfer_journal_process));
             } else if (checkedId == radioButtonTO.getId()) {
                 makeTJ = "0";
-                textViewTransferType.setText(getString(R.string.transfer_order_process));
+                setTitle(getString(R.string.transfer_order_process));
             }
         });
 
