@@ -46,7 +46,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
         getSupportActionBar().hide();
         overridePendingTransition(0, 0);
         iLoginInterface = new ILoginPresenter(this, this);
-
+        SharedPref.clearPrefs();
     }
 
     @OnClick(R.id.buttonLogin)

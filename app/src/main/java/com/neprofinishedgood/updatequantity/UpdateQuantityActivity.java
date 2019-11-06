@@ -99,7 +99,9 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
         ButterKnife.bind(this);
         instance = this;
-        setTitle(getString(R.string.update_quantity));
+        String title = getIntent().getStringExtra("REJECT_TITLE");
+        setTitle(title);
+//        setTitle(getString(R.string.update_quantity));
         iUpdateQtyInterface = new IUpdateQtyPresenter(this, this);
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         callService();

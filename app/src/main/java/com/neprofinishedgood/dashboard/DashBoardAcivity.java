@@ -152,7 +152,8 @@ public class DashBoardAcivity extends BaseActivity {
             showSuccessDialog("You don't have right to access it");
 //            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
-            startActivity(new Intent(this, UpdateQuantityActivity.class));
+            startActivity(new Intent(this, UpdateQuantityActivity.class).
+                    putExtra("REJECT_TITLE", getString(R.string.update_quantity)));;
         }
     }
 

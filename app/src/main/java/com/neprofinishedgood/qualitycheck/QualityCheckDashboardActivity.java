@@ -8,6 +8,7 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.qualitycheck.qualityhold.QualityHoldActivity;
 import com.neprofinishedgood.qualitycheck.rejectcompletestillage.RejectCompleteStillage;
 import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
+import com.neprofinishedgood.updatequantity.UpdateQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 
 import butterknife.ButterKnife;
@@ -27,8 +28,10 @@ public class QualityCheckDashboardActivity extends BaseActivity {
 
     @OnClick(R.id.linearLayoutRejectQuantity)
     public void onLinearLayoutRejectQuantityClick() {
-        startActivity(new Intent(QualityCheckDashboardActivity.this, RejectQuantityActivity.class)
+        startActivity(new Intent(QualityCheckDashboardActivity.this, UpdateQuantityActivity.class)
                 .putExtra(REJECT_TITLE, getString(R.string.reject_quantity)));
+//        startActivity(new Intent(QualityCheckDashboardActivity.this, RejectQuantityActivity.class)
+//                .putExtra(REJECT_TITLE, getString(R.string.reject_quantity)));
     }
 
     @OnClick(R.id.linearLayoutRejectCompleteStillage)
