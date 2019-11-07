@@ -91,7 +91,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     boolean isAlreadyExist, isSearchOnStillages = false;
     private List<LoadingPlanList> loadingPlanDetailLists = new ArrayList<>();
     List<LoadingPlanList> loadingPlanList;
-    private String endPickReason = "";
+    private String endPickReason = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -365,40 +365,41 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.custom_alert_end_pick);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        endPickReason = endPickReason;
 
         CustomButton buttonEndPick = dialog.findViewById(R.id.buttonEndPick);
         CustomButton buttonCancel = dialog.findViewById(R.id.buttonCancel);
-        Spinner spinnerEndPickReason = dialog.findViewById(R.id.spinnerEndPickReason);
+//        Spinner spinnerEndPickReason = dialog.findViewById(R.id.spinnerEndPickReason);
 
-        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(PickAndLoadStillageActivity.getInstance(), R.layout.spinner_layout, reasonList);
-        spinnerEndPickReason.setAdapter(reasonListAdapter);
-
-        spinnerEndPickReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position <= 0){
-                    buttonEndPick.setEnabled(false);
-                }
-                else{
-                    buttonEndPick.setEnabled(true);
-                }
-                endPickReason = reasonList.get(position).getId();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(PickAndLoadStillageActivity.getInstance(), R.layout.spinner_layout, reasonList);
+//        spinnerEndPickReason.setAdapter(reasonListAdapter);
+//
+//        spinnerEndPickReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if(position <= 0){
+//                    buttonEndPick.setEnabled(false);
+//                }
+//                else{
+//                    buttonEndPick.setEnabled(true);
+//                }
+//                endPickReason = reasonList.get(position).getId();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
         buttonEndPick.setOnClickListener(v -> {
-            if(spinnerEndPickReason.getSelectedItemPosition() <=0 ) {
-
-            }else{
+//            if(spinnerEndPickReason.getSelectedItemPosition() <=0 ) {
+//
+//            }else{
                 showProgress(this);
-                iPickAndLoadItemInterFace.callEndPickService(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId, endPickReason));
                 dialog.cancel();
-            }
+                iPickAndLoadItemInterFace.callEndPickService(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId, endPickReason));
+//            }
         });
 
         buttonCancel.setOnClickListener(v->{

@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-
+<!--    android:text="@string/select_reason_end_pick"-->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:padding="7dp"
-        android:text="@string/select_reason_end_pick"
+        android:text="@string/confirm_end_pick"
         android:textColor="@color/white"
         android:textSize="12sp"
         android:textStyle="bold" />
@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/linearLayoutRejectQuantity"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="0dp"
@@ -41,6 +42,13 @@
             android:background="@drawable/spinner_background" />
 
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Are you sure to END PICK this Loading Plan?"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"/>
 
     <LinearLayout
         android:id="@+id/linearLayoutLoadQtyButtons"
@@ -57,7 +65,6 @@
             android:layout_height="35dp"
             android:background="@drawable/button_ripple_effect"
             android:gravity="center"
-            android:enabled="false"
             android:nextFocusDown="@id/buttonCancel"
             android:text="@string/end_pick"
             android:textAllCaps="false"

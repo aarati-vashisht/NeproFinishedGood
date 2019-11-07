@@ -229,5 +229,6 @@
     <string name="transfer_journal_process">Transfer Journal</string>
     <string name="transfer_order_process">Transfer Order</string>
     <string name="data_error">Data Error!</string>
+    <string name="confirm_end_pick">Confirm End Pick</string>
 
 </resources>
