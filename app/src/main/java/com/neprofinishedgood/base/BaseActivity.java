@@ -229,11 +229,9 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         builder.setMessage(message);
         builder.setIcon(R.drawable.ic_warning);
         builder.setCancelable(false)
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        isOffline = true;
-                        dialog.cancel();
-                    }
+                .setPositiveButton(getString(R.string.ok), (dialog, id) -> {
+                    isOffline = true;
+                    dialog.cancel();
                 });
         AlertDialog alert = builder.create();
         alert.show();

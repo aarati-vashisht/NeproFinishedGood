@@ -192,7 +192,7 @@
     <string name="select_operation">Select Operation</string>
     <string name="enter_hours">Enter Hours</string>
     <string name="back_confirmation">All the informations will be lost!</string>
-    <string name="do_you_still_want_to_go_back">Do you still want to continue?</string>
+    <string name="do_you_still_want_to_go_back">Do you still want to exit?</string>
     <string name="cw_goods_quantity">CW Goods Quantity</string>
     <string name="prduction_line_">Production Line</string>
     <string name="zone">Zone:</string>
@@ -229,5 +229,6 @@
     <string name="transfer_journal_process">Transfer Journal</string>
     <string name="transfer_order_process">Transfer Order</string>
     <string name="data_error">Data Error!</string>
+    <string name="confirm_end_pick">Confirm End Pick</string>
 
 </resources>
