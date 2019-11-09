@@ -1,6 +1,8 @@
 package com.neprofinishedgood.mergestillage;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +10,12 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
@@ -24,9 +30,13 @@ import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
 import com.neprofinishedgood.mergestillage.presenter.IMergeStillageInterface;
 import com.neprofinishedgood.mergestillage.presenter.IMergeStillageView;
 import com.neprofinishedgood.mergestillage.presenter.MergeStillagePresenter;
+import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
+import com.neprofinishedgood.transferstillage.TransferStillageActivity;
+import com.neprofinishedgood.transferstillage.model.TransferInput;
+import com.neprofinishedgood.transferstillage.model.WareHouseInput;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
 
@@ -85,6 +95,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
     long scanStillageLastTexxt = 0;
     private boolean isChild = false;
     String childToSend, childWareHouse, parentWareHouse = "";
+    String isParentRAF = "0";
 
     static MergeStillageActivity instance;
 
@@ -463,40 +474,50 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (isChild) {
                 if (body.getStandardQty() > 0) {
-                    childWareHouse = body.getWareHouseName();
-                    String childItem, parentItem;
-                    childItem = body.getItemId().trim();
-                    parentItem = parentStillageLayout.textViewitem.getText().toString().trim();
+                    if (body.getIsCounted().equals(isParentRAF)) {
+                        childWareHouse = body.getWareHouseName();
+                        String childItem, parentItem;
+                        childItem = body.getItemId().trim();
+                        parentItem = parentStillageLayout.textViewitem.getText().toString().trim();
 
-                    if (!childItem.equals(parentItem)) {
-                        showSuccessDialog(getResources().getString(R.string.child_and_parent_not_matched));
-                        editTextScanChildStillage.setText("");
-                    } else if (!childWareHouse.equals(parentWareHouse)) {
-                        showSuccessDialog(getResources().getString(R.string.child_and_parent_warehouse_not_matched));
-                        editTextScanChildStillage.setText("");
+                        if (!childItem.equals(parentItem)) {
+                            showSuccessDialog(getResources().getString(R.string.child_and_parent_not_matched));
+                            editTextScanChildStillage.setText("");
+                        } else if (!childWareHouse.equals(parentWareHouse)) {
+                            showSuccessDialog(getResources().getString(R.string.child_and_parent_warehouse_not_matched));
+                            editTextScanChildStillage.setText("");
+                        } else {
+
+                            relativeLayoutScanChildDetail.setVisibility(View.VISIBLE);
+                            relativeLayoutScanChildDetail.setAnimation(fadeIn);
+                            linearLayoutMergeStillage.setVisibility(View.VISIBLE);
+                            linearLayoutMergeStillage.setAnimation(fadeIn);
+
+
+                            linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
+                            linearLayoutAssignLocationButtons.setAnimation(fadeIn);
+                            linearLayoutQuantitySum.setVisibility(View.VISIBLE);
+                            textViewQuantitySum.setText(parentStillageLayout.textViewQuantity.getText().toString());
+                            setChildData(body);
+                            editTextScanChildStillage.setEnabled(false);
+                            editTextMergeQuantity.requestFocus();
+
+                            float childQty;
+
+                            childQty = Float.parseFloat(childStillageLayout.textViewQuantity.getText().toString());
+
+                            editTextMergeQuantity.setText(round(childQty) + "");
+
+                            editTextMergeQuantity.setSelection(editTextMergeQuantity.getText().toString().length());
+                        }
                     } else {
-
-                        relativeLayoutScanChildDetail.setVisibility(View.VISIBLE);
-                        relativeLayoutScanChildDetail.setAnimation(fadeIn);
-                        linearLayoutMergeStillage.setVisibility(View.VISIBLE);
-                        linearLayoutMergeStillage.setAnimation(fadeIn);
-
-
-                        linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
-                        linearLayoutAssignLocationButtons.setAnimation(fadeIn);
-                        linearLayoutQuantitySum.setVisibility(View.VISIBLE);
-                        textViewQuantitySum.setText(parentStillageLayout.textViewQuantity.getText().toString());
-                        setChildData(body);
-                        editTextScanChildStillage.setEnabled(false);
-                        editTextMergeQuantity.requestFocus();
-
-                        float childQty;
-
-                        childQty = Float.parseFloat(childStillageLayout.textViewQuantity.getText().toString());
-
-                        editTextMergeQuantity.setText(round(childQty) + "");
-
-                        editTextMergeQuantity.setSelection(editTextMergeQuantity.getText().toString().length());
+                        editTextScanChildStillage.setText("");
+                        if (isParentRAF.equals("1") && body.getIsCounted().equals("0")) {
+                            alertAttn(MergeStillageActivity.this,"Only RAF stillage can be merged as parent stillage is RAF posted.");
+                        }
+                        if (isParentRAF.equals("0") && body.getIsCounted().equals("1")) {
+                            alertAttn(MergeStillageActivity.this,"Only Non-RAF stillage can be merged as parent stillage is not RAF posted.");
+                        }
                     }
                 } else {
                     showSuccessDialog(getResources().getString(R.string.stillage_discarded));
@@ -504,6 +525,8 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                 }
             } else {
                 if (body.getStandardQty() > 0) {
+                    isParentRAF = body.getIsCounted();
+
                     parentWareHouse = body.getWareHouseName();
                     linearLayoutScanParentDetail.setVisibility(View.VISIBLE);
                     linearLayoutScanParentDetail.setAnimation(fadeIn);
@@ -575,6 +598,27 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         linearLayoutMergeStillage.setVisibility(View.GONE);
         linearLayoutQuantitySum.setVisibility(View.GONE);
     }
+
+    public void alertAttn(Context context, String message) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.custom_alert_attn_message);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        CustomButton buttonOk = dialog.findViewById(R.id.buttonOk);
+        TextView textViewMsg = dialog.findViewById(R.id.textViewMsg);
+
+        textViewMsg.setText(message);
+
+        buttonOk.setOnClickListener(v -> {
+            dialog.cancel();
+        });
+
+        dialog.show();
+
+    }
+
 
 
 }
