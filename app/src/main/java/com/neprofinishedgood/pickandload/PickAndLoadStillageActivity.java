@@ -365,7 +365,6 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.custom_alert_end_pick);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        endPickReason = endPickReason;
 
         CustomButton buttonEndPick = dialog.findViewById(R.id.buttonEndPick);
         CustomButton buttonCancel = dialog.findViewById(R.id.buttonCancel);
