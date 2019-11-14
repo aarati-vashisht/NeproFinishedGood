@@ -92,7 +92,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         holder.textViewSiteTitle.setVisibility(View.GONE);
         holder.textViewQuantity.setText(stillageDatumListFiltered.get(position).getStillageQty() + "");
         holder.textViewStdQuatity.setText(stillageDatumListFiltered.get(position).getPickingQty() + "");
-        holder.textViewStdQuatityTitle.setText("Loading Quantity");
+        holder.textViewStdQuatityTitle.setText("Loading Quantity:");
         for (int j = 0; j < PickAndLoadStillageActivity.getInstance().warehouseList.size(); j++) {
             if (PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getId().equals(stillageDatumListFiltered.get(position).getWareHouseID() + "")) {
                 holder.textViewWarehouse.setText(PickAndLoadStillageActivity.getInstance().warehouseList.get(j).getName());
@@ -264,12 +264,27 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         if (stillageDatumListFiltered.get(position).getStatus().equals("-1")) {
             stillageDatumListFiltered.get(position).setStatus("");
             loadingPlanDetailLists = SharedPref.getLoadinGplanDetailList();
-            for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
-                if (loadingPlanList.getStillageNO().equals(stillageDatumListFiltered.get(position).getStillageNO())) {
-                    loadingPlanDetailLists.remove(loadingPlanList);
-                    SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
+//            for (LoadingPlanList loadingPlanList : loadingPlanDetailLists) {
+//                if (loadingPlanList.getStillageNO().equals(stillageDatumListFiltered.get(position).getStillageNO())) {
+//                    loadingPlanDetailLists.remove(loadingPlanList);
+//                    SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
+//                }
+//            }
+
+
+            List<LoadingPlanList> tempLoadingPlanDetailLists = new ArrayList<>();
+            for (int i = 0; i<loadingPlanDetailLists.size(); i++) {
+                if (loadingPlanDetailLists.get(i).getStillageNO().equals(stillageDatumListFiltered.get(position).getStillageNO())) {
+                    tempLoadingPlanDetailLists.add(loadingPlanDetailLists.get(i));
                 }
             }
+            loadingPlanDetailLists.removeAll(tempLoadingPlanDetailLists);
+            tempLoadingPlanDetailLists.clear();
+            SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
+
+
+
+
             PickAndLoadStillageActivity.getInstance().showSuccessDialog(stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.stillage_unpicked));
 //            CustomToast.showToast(context, stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.stillage_unpicked));
             notifyDataSetChanged();
