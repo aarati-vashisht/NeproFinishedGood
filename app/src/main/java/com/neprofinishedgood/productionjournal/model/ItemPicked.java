@@ -2,14 +2,15 @@ package com.neprofinishedgood.productionjournal.model;
 
 public class ItemPicked {
 
-    String Shift, Date, ItemName, ItemId, Quantity;
+    String Shift, Date, ItemName, ItemId, Quantity, Unit;
 
-    public ItemPicked(String shift, String date, String itemName, String itemId, String quantity) {
+    public ItemPicked(String shift, String date, String itemName, String itemId, String quantity, String unit) {
         Shift = shift;
         Date = date;
         ItemName = itemName;
         ItemId = itemId;
         Quantity = quantity;
+        Unit = unit;
     }
 
     public String getItemId() {
@@ -50,5 +51,13 @@ public class ItemPicked {
 
     public void setQuantity(String quantity) {
         Quantity = quantity;
+    }
+
+    public String getUnit() {
+        return Unit;
+    }
+
+    public void setUnit(String unit) {
+        Unit = unit;
     }
 }

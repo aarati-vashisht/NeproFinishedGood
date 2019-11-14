@@ -185,6 +185,7 @@ public class PickingListFragment extends Fragment implements IPickingListView {
                     ProductionJournal.getInstance().addedPickingListDatumList.get(updatePosition).setItemName(itemName);
                     ProductionJournal.getInstance().addedPickingListDatumList.get(updatePosition).setItemId(itemId);
                     ProductionJournal.getInstance().addedPickingListDatumList.get(updatePosition).setQuantity(editTextQuantity.getText().toString());
+                    ProductionJournal.getInstance().addedPickingListDatumList.get(updatePosition).setUnit(textViewUnit.getText().toString());
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
@@ -193,7 +194,13 @@ public class PickingListFragment extends Fragment implements IPickingListView {
             }
 
             if (!dataInserted) {
-                ProductionJournal.getInstance().addedPickingListDatumList.add(new ItemPicked(shift, editTextDate.getText().toString(), itemName, itemId, editTextQuantity.getText().toString()));
+                ProductionJournal.getInstance().addedPickingListDatumList.add(new
+                        ItemPicked(shift,
+                        editTextDate.getText().toString(),
+                        itemName,
+                        itemId,
+                        editTextQuantity.getText().toString(),
+                        textViewUnit.getText().toString()));
                 updatePosition = -1;
             }
             adapter.notifyDataSetChanged();
