@@ -230,5 +230,7 @@
     <string name="transfer_order_process">Transfer Order</string>
     <string name="data_error">Data Error!</string>
     <string name="confirm_end_pick">Confirm End Pick</string>
+    <string name="reserved_quantity">Reserved Qty:</string>
+    <string name="unreserved_quantity">Unreserved Qty:</string>
 
 </resources>
