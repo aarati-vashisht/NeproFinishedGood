@@ -166,7 +166,7 @@
     <string name="ok">OK</string>
     <string name="work_order_number">Work Order Number:</string>
     <string name="item_name">Item Name:</string>
-    <string name="workorder_start_end">WorkOrder Start/End</string>
+    <string name="workorder_start_end">Work Order Start/End</string>
     <string name="scan_type_lot">Scan/Type Lot</string>
     <string name="production_line">Production Line:</string>
     <string name="warehouse_">Warehouse:</string>

@@ -367,6 +367,7 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="1"
                                 android:maxLines="1"
+                                android:paddingStart="2dp"
                                 android:text="Report As Finished"
                                 android:textColor="@color/gray_color"
                                 android:textSize="10sp" />
