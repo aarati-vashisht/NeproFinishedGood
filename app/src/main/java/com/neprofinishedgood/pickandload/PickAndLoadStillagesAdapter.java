@@ -153,11 +153,9 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
         @BindView(R.id.textViewLocation)
         TextView textViewLocation;
         @BindView(R.id.cardView)
-        public
-        CardView cardView;
+        public CardView cardView;
         @BindView(R.id.view_background)
-        public
-        LinearLayout view_background;
+        public LinearLayout view_background;
 
         @BindView(R.id.swipeRevealLayout)
         SwipeRevealLayout swipeRevealLayout;
@@ -273,7 +271,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
 
 
             List<LoadingPlanList> tempLoadingPlanDetailLists = new ArrayList<>();
-            for (int i = 0; i<loadingPlanDetailLists.size(); i++) {
+            for (int i = 0; i < loadingPlanDetailLists.size(); i++) {
                 if (loadingPlanDetailLists.get(i).getStillageNO().equals(stillageDatumListFiltered.get(position).getStillageNO())) {
                     tempLoadingPlanDetailLists.add(loadingPlanDetailLists.get(i));
                 }
@@ -281,8 +279,6 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             loadingPlanDetailLists.removeAll(tempLoadingPlanDetailLists);
             tempLoadingPlanDetailLists.clear();
             SharedPref.saveLoadinGplanDetailList(new Gson().toJson(loadingPlanDetailLists));
-
-
 
 
             PickAndLoadStillageActivity.getInstance().showSuccessDialog(stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.stillage_unpicked));
