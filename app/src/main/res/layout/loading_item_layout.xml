@@ -231,6 +231,62 @@
                         android:paddingStart="5dp"
                         android:paddingTop="8dp"
                         android:paddingEnd="5dp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/reserved_quantity"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/textViewResQuantity"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_weight=".20"
+                                android:maxLines="1"
+                                android:text="50.2554"
+                                android:textColor="@color/gray_color"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:singleLine="true"
+                                android:text="@string/unreserved_quantity"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/textViewUnResQuantity"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_weight=".20"
+                                android:maxLines="1"
+                                android:text="50.265655"
+                                android:textColor="@color/gray_color"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="5dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="5dp"
                         android:paddingBottom="8dp">
 
                         <LinearLayout
@@ -250,7 +306,7 @@
                                 android:id="@+id/textViewQuantity"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
+                                android:layout_marginStart="5dp"
                                 android:layout_weight=".20"
                                 android:maxLines="1"
                                 android:text="20sdfsdfsdf"
@@ -271,7 +327,7 @@
                                 android:id="@+id/textViewStdQuatity"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
+                                android:layout_marginStart="5dp"
                                 android:layout_weight=".20"
                                 android:maxLines="1"
                                 android:text="20dffsf"
