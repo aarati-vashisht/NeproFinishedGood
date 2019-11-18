@@ -54,7 +54,7 @@ public class PickingListAdapter extends RecyclerView.Adapter<PickingListAdapter.
         viewBinderHelper.setOpenOnlyOne(true);
 
         holder.textViewItemName.setText(pickingListDatumListFiltered.get(position).getItemName());
-        holder.textViewQuantity.setText(pickingListDatumListFiltered.get(position).getQuantity());
+        holder.textViewQuantity.setText(pickingListDatumListFiltered.get(position).getQuantity()+" "+pickingListDatumListFiltered.get(position).getUnit());
     }
 
     @Override
