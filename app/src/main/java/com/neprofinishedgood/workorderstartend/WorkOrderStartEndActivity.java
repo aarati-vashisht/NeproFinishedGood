@@ -3,8 +3,8 @@ package com.neprofinishedgood.workorderstartend;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
@@ -18,9 +18,7 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
-import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
-import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.Utils;
 import com.neprofinishedgood.workorderstartend.Presenter.IWorkOrderStartEndInterface;
@@ -218,7 +216,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
 //            CustomToast.showToast(getApplicationContext(), body.getMessage());
                 editTextScanWorkOrder.setText("");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             showSuccessDialog(getString(R.string.data_error));
             editTextScanWorkOrder.setText("");
@@ -261,7 +259,15 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                 textViewQtyStarted.setText("0");
             }
 
-            if (body.getStatusId().equals("1") || body.getStatusId().equals("4")) {
+            if (body.getStatusId().equals("3") || body.getStatusId().equals("4")) {
+                if (body.getStatusId().equals("3")) {
+                    textViewStatus.setTextColor(this.getResources().getColor(R.color.blue));
+                    textViewStatus.setTypeface(Typeface.DEFAULT_BOLD);
+                }
+                if (body.getStatusId().equals("4")) {
+                    textViewStatus.setTextColor(this.getResources().getColor(R.color.green));
+                    textViewStatus.setTypeface(Typeface.DEFAULT_BOLD);
+                }
                 if (maxStartQty != 0) {
                     if (maxStartQty != woQty) {
                         radioButtonFullQty.setVisibility(View.GONE);
@@ -455,11 +461,15 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         linearLayoutRoutePick.setVisibility(View.GONE);
         linearLayoutStartQty.setVisibility(View.GONE);
         editTextPartialQty.setText("");
+        textViewStatus.setBackgroundColor(this.getResources().getColor(R.color.white));
+        textViewStatus.setTextColor(this.getResources().getColor(R.color.gray_color));
+        textViewStatus.setTypeface(Typeface.DEFAULT);
 
         linearLayoutButtons.setVisibility(View.GONE);
         linearLayoutWorkOrderScanDetail.setVisibility(View.GONE);
         editTextScanWorkOrder.setEnabled(true);
         editTextScanWorkOrder.setText("");
+        editTextScanWorkOrder.requestFocus();
     }
 
     public void imageButtonHomeClick(View view) {
