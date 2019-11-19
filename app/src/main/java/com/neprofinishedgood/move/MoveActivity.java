@@ -3,7 +3,6 @@ package com.neprofinishedgood.move;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
@@ -15,7 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.custom_views.CustomToast;
+import com.neprofinishedgood.login.model.UserSiteInfo;
 import com.neprofinishedgood.move.adapter.MoveAdapter;
 import com.neprofinishedgood.move.model.AllAssignedDataInput;
 import com.neprofinishedgood.move.model.AssignedStillages;
@@ -118,21 +117,25 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            if (body.getStandardQty() > 0) {
-                Gson gson = new Gson();
-                String putExtraData = gson.toJson(body);
-                startActivity(new Intent(this, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+            if (isLocationMatched(body.getWareHouseID())) {
+                if (body.getStandardQty() > 0) {
+                    Gson gson = new Gson();
+                    String putExtraData = gson.toJson(body);
+                    startActivity(new Intent(this, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+                    editTextScanStillage.setText("");
+                    overridePendingTransition(0, 0);
+                } else {
+                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                    editTextScanStillage.setText("");
+                }
+            } else {
                 editTextScanStillage.setText("");
-                overridePendingTransition(0, 0);
-            }else{
-                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
-                editTextScanStillage.setText("");
+                showSuccessDialog(getResources().getString(R.string.user_not_assigned));
             }
         } else {
             editTextScanStillage.setText("");
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(getApplicationContext(), body.getMessage());
-
         }
 
     }

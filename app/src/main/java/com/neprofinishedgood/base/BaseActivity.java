@@ -25,6 +25,7 @@ import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.login.LoginActivity;
 import com.neprofinishedgood.login.model.LoginResponse;
+import com.neprofinishedgood.login.model.UserSiteInfo;
 import com.neprofinishedgood.mergestillage.MergeStillageActivity;
 import com.neprofinishedgood.productionjournal.ProductionJournal;
 import com.neprofinishedgood.qualitycheck.rejectcompletestillage.RejectCompleteStillage;
@@ -55,6 +56,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<UniversalSpinner> fltList = new ArrayList<>();
     public List<UniversalSpinner> warehouseList = new ArrayList<>();
     public List<LocationList> locationList = new ArrayList<>();
+    public List<UserSiteInfo> userSiteInfoList = new ArrayList<>();
 
     public int scanStillageLength = 8;
 //    public int scanStillageLength = 13;
@@ -84,6 +86,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         LoginResponse loginResponse = gson.fromJson(SharedPref.getLoginUser(), LoginResponse.class);
         if (loginResponse != null) {
             userId = loginResponse.getUserLoginResponse().get(0).getUserId();
+            userSiteInfoList = loginResponse.getUserSiteInfo();
         } else {
             userId = "";
         }
@@ -92,6 +95,15 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         getMAsterData(gson);
 
 
+    }
+
+    public boolean isLocationMatched(String wareHouseId){
+        for (UserSiteInfo userSiteInfo : userSiteInfoList) {
+            if (userSiteInfo.getWareHouse().equals(wareHouseId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void getMAsterData(Gson gson) {
