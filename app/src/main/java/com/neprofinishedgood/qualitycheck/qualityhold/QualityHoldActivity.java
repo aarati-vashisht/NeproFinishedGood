@@ -134,13 +134,18 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            if (body.getStandardQty() > 0) {
-                isScanned = true;
-                setData(body);
+            if (isLocationMatched(body.getWareHouseID())) {
+                if (body.getStandardQty() > 0) {
+                    isScanned = true;
+                    setData(body);
+                } else {
+                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                    editTextScanStillage.setText("");
+                }
             }
-            else{
-                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+            else {
                 editTextScanStillage.setText("");
+                showSuccessDialog(getResources().getString(R.string.user_not_assigned));
             }
         } else {
             showSuccessDialog(body.getMessage());
@@ -218,7 +223,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
         }
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         if (isScanned) {
             showBackAlert(null, false);
         } else {
