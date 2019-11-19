@@ -180,7 +180,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
             stillageLayout.textViewitemDesc.setText(body.getDescription());
 
             editTextQuantity.setText(stillageLayout.textViewQuantity.getText().toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             showSuccessDialog(e.getMessage());
             cancelClick();
         }
@@ -195,7 +195,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
             if (stillageLayout.textViewQuantity.getText().toString().length() > 0) {
                 stillageQty = Float.parseFloat(stillageLayout.textViewQuantity.getText().toString());
             }
-            textViewVariance.setText(editQty-stillageQty+"");
+            textViewVariance.setText(editQty - stillageQty + "");
             buttonConfirm.setEnabled(true);
 //            if (stillageLayout.textViewStdQuantity.getText().toString().length() > 0) {
 //                stillageStdQty = Float.parseFloat(stillageLayout.textViewStdQuantity.getText().toString());
@@ -246,7 +246,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         showCancelAlert(7);
     }
 
-    public void cancelClick(){
+    public void cancelClick() {
         isScanned = false;
         linearLayoutScanDetail.setVisibility(View.GONE);
         linearLayoutScanDetail.setAnimation(fadeOut);
@@ -274,15 +274,18 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     public void onSuccess(ScanStillageResponse body) {
         hideProgress();
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-
-            if (body.getStandardQty() > 0) {
-                isScanned = true;
-                editTextScanStillage.setEnabled(false);
-                setData(body);
-            }
-            else{
-                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+            if (isLocationMatched(body.getWareHouseID())) {
+                if (body.getStandardQty() > 0) {
+                    isScanned = true;
+                    editTextScanStillage.setEnabled(false);
+                    setData(body);
+                } else {
+                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                    editTextScanStillage.setText("");
+                }
+            } else {
                 editTextScanStillage.setText("");
+                showSuccessDialog(getResources().getString(R.string.user_not_assigned));
             }
 
         } else {
@@ -345,7 +348,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         }
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         if (isScanned) {
             showBackAlert(null, false);
         } else {

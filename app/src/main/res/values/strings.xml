@@ -232,5 +232,6 @@
     <string name="confirm_end_pick">Confirm End Pick</string>
     <string name="reserved_quantity">Reserved Qty:</string>
     <string name="unreserved_quantity">Unreserved Qty:</string>
+    <string name="user_not_assigned">You are not assigned to this warehouse</string>
 
 </resources>
