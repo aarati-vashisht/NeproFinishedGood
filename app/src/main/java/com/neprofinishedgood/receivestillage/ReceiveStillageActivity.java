@@ -124,7 +124,7 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
         showCancelAlert(6);
     }
 
-    public void cancelClick(){
+    public void cancelClick() {
         isScanned = false;
         editTextScanStillage.setText("");
         editTextScanStillage.setEnabled(true);
@@ -143,27 +143,30 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
 
     @Override
     public void onSuccess(ScanStillageResponse body) {
+        hideProgress();
         if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-            hideProgress();
-            if (body.getIsRecieved() == 1) {
-                editTextScanStillage.setText("");
-                editTextScanStillage.setEnabled(true);
-                showSuccessDialog(getString(R.string.this_stillage_already_recieved));
-//                CustomToast.showToast(this, getString(R.string.this_stillage_already_recieved));
-            } else {
-                if (body.getStandardQty() > 0) {
-                    isScanned = true;
-                    setData(body);
-                    editTextScanStillage.setEnabled(false);
-                }
-                else{
-                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+            if (isLocationMatched(body.getWareHouseID())) {
+                if (body.getIsRecieved() == 1) {
                     editTextScanStillage.setText("");
                     editTextScanStillage.setEnabled(true);
+                    showSuccessDialog(getString(R.string.this_stillage_already_recieved));
+//                CustomToast.showToast(this, getString(R.string.this_stillage_already_recieved));
+                } else {
+                    if (body.getStandardQty() > 0) {
+                        isScanned = true;
+                        setData(body);
+                        editTextScanStillage.setEnabled(false);
+                    } else {
+                        showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                        editTextScanStillage.setText("");
+                        editTextScanStillage.setEnabled(true);
+                    }
                 }
+            } else {
+                editTextScanStillage.setText("");
+                showSuccessDialog(getResources().getString(R.string.user_not_assigned));
             }
         } else {
-            hideProgress();
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(this, body.getMessage());
             editTextScanStillage.setText("");
@@ -216,7 +219,7 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
         }
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         if (isScanned) {
             showBackAlert(null, false);
         } else {
