@@ -163,7 +163,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
             kProgressHUD = KProgressHUD.create(activity)
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                     .setLabel("Please wait")
-                    .setCancellable(true)
+                    .setCancellable(false)
                     .setAnimationSpeed(2)
                     .setDimAmount(0.5f);
             kProgressHUD.show();

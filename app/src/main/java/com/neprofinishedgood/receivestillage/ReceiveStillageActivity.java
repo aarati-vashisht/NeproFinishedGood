@@ -110,10 +110,13 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
 
     @OnClick(R.id.buttonReceive)
     public void onButtonReceiveClick() {
-        showProgress(this);
-        iRecieveTransferInterface.callUpdateRecieveTransferStillage(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
-        //CustomToast.showToast(ReceiveStillageActivity.this, getResources().getString(R.string.item_received_successfully));
-
+        if (NetworkChangeReceiver.isInternetConnected(ReceiveStillageActivity.this)) {
+            showProgress(this);
+            iRecieveTransferInterface.callUpdateRecieveTransferStillage(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+            //CustomToast.showToast(ReceiveStillageActivity.this, getResources().getString(R.string.item_received_successfully));
+        } else {
+            showSuccessDialog(getString(R.string.no_internet));
+        }
     }
 
     @OnClick(R.id.buttonCancel)

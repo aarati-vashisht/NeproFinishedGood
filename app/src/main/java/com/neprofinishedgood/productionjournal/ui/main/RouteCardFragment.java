@@ -25,6 +25,7 @@ import com.neprofinishedgood.productionjournal.adapter.RouteCardAdapter;
 import com.neprofinishedgood.productionjournal.adapter.SpinnerOperationAdapter;
 import com.neprofinishedgood.productionjournal.model.ProductionJournalRouteDataInput;
 import com.neprofinishedgood.productionjournal.model.RouteCardPicked;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -215,7 +216,7 @@ public class RouteCardFragment extends Fragment {
             editTextQuantity.setError(getString(R.string.enter_quantity));
             editTextQuantity.requestFocus();
             return false;
-        }else if (!editTextQuantity.getText().toString().equals("") || !editTextQuantity.getText().toString().equals(".")) {
+        } else if (!editTextQuantity.getText().toString().equals("") || !editTextQuantity.getText().toString().equals(".")) {
             float qty = Float.parseFloat(editTextQuantity.getText().toString());
             if (qty <= 0) {
                 editTextQuantity.setError(getString(R.string.enter_quantity));
@@ -227,7 +228,7 @@ public class RouteCardFragment extends Fragment {
             editTextHours.setError(getString(R.string.enter_hours));
             editTextHours.requestFocus();
             return false;
-        }else if (!editTextHours.getText().toString().equals("") || !editTextHours.getText().toString().equals(".")) {
+        } else if (!editTextHours.getText().toString().equals("") || !editTextHours.getText().toString().equals(".")) {
             float qty = Float.parseFloat(editTextHours.getText().toString());
             if (qty <= 0) {
                 editTextHours.setError(getString(R.string.enter_hours));
@@ -265,14 +266,18 @@ public class RouteCardFragment extends Fragment {
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ProductionJournalRouteDataInput productionJournalRouteDataInput = new ProductionJournalRouteDataInput(
-                                ProductionJournal.getInstance().workOrderNo, ProductionJournal.getInstance().userId,
-                                ProductionJournal.getInstance().textViewItemId.getText().toString(),
-                                ProductionJournal.getInstance().addedRoutingListDatumList);
+                        if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.getInstance())) {
+                            ProductionJournalRouteDataInput productionJournalRouteDataInput = new ProductionJournalRouteDataInput(
+                                    ProductionJournal.getInstance().workOrderNo, ProductionJournal.getInstance().userId,
+                                    ProductionJournal.getInstance().textViewItemId.getText().toString(),
+                                    ProductionJournal.getInstance().addedRoutingListDatumList);
 
-                        ProductionJournal.getInstance().showProgress(getActivity());
-                        ProductionJournal.getInstance().iProductionJournalInterface.callSubmitProductionJournalRouteService(productionJournalRouteDataInput);
-                        dialog.cancel();
+                            ProductionJournal.getInstance().showProgress(getActivity());
+                            ProductionJournal.getInstance().iProductionJournalInterface.callSubmitProductionJournalRouteService(productionJournalRouteDataInput);
+                            dialog.cancel();
+                        } else {
+                            ProductionJournal.getInstance().showSuccessDialog(getString(R.string.no_internet));
+                        }
                     }
                 })
                 .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {

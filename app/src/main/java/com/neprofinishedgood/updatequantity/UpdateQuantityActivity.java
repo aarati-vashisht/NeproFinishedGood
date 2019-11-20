@@ -121,7 +121,8 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
                     showProgress(UpdateQuantityActivity.this);
                     iUpdateQtyInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                 } else {
-                    setDataOffline();
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    setDataOffline();
                 }
             }
         }
@@ -225,9 +226,13 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         String variance = textViewVariance.getText().toString();
         if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
             if (isValidated()) {
-                showProgress(this);
-                UpdateQtyInput updateQtyInput = new UpdateQtyInput(editTextScanStillage.getText().toString(), editTextQuantity.getText().toString(), reason, userId, variance);
-                iUpdateQtyInterface.callUpdateQtyStillageService(updateQtyInput);
+                if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
+                    showProgress(this);
+                    UpdateQtyInput updateQtyInput = new UpdateQtyInput(editTextScanStillage.getText().toString(), editTextQuantity.getText().toString(), reason, userId, variance);
+                    iUpdateQtyInterface.callUpdateQtyStillageService(updateQtyInput);
+                }else {
+                    showSuccessDialog(getString(R.string.no_internet));
+                }
             }
         } else {
             if (isOfflineValidated()) {

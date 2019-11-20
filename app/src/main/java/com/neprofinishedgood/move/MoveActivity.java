@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.lookup.LookUpActivity;
 import com.neprofinishedgood.move.adapter.MoveAdapter;
 import com.neprofinishedgood.move.model.AllAssignedDataInput;
 import com.neprofinishedgood.move.model.AssignedStillages;
@@ -66,8 +67,12 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     }
 
     public void getAllAssignedData() {
-        showProgress(this);
-        iPlannedUnplannedPresenter.callGetAllAssignedData(new AllAssignedDataInput(userId));
+        if (NetworkChangeReceiver.isInternetConnected(MoveActivity.this)) {
+            showProgress(this);
+            iPlannedUnplannedPresenter.callGetAllAssignedData(new AllAssignedDataInput(userId));
+        } else {
+            showSuccessDialog(getString(R.string.no_internet));
+        }
     }
 
 
@@ -81,7 +86,8 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
                     String stillageTxt = editTextScanStillage.getText().toString().trim();
                     iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(stillageTxt, userId));
                 } else {
-                    offlineProcess();
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    offlineProcess();
                 }
             }
         }
