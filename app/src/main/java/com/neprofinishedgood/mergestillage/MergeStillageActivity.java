@@ -6,16 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
@@ -24,19 +21,13 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
-import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
 import com.neprofinishedgood.mergestillage.presenter.IMergeStillageInterface;
 import com.neprofinishedgood.mergestillage.presenter.IMergeStillageView;
 import com.neprofinishedgood.mergestillage.presenter.MergeStillagePresenter;
-import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
-import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
-import com.neprofinishedgood.transferstillage.TransferStillageActivity;
-import com.neprofinishedgood.transferstillage.model.TransferInput;
-import com.neprofinishedgood.transferstillage.model.WareHouseInput;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.StillageLayout;
 
@@ -556,7 +547,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                 } else {
                     editTextScanParentStillage.setText("");
                 }
-                showSuccessDialog(getResources().getString(R.string.user_not_assigned));
+                showSuccessDialog(getResources().getString(R.string.stillage_not_found));
             }
         } else {
             showSuccessDialog(body.getMessage());

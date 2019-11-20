@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
@@ -30,14 +29,12 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomButton;
-import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.LocationData;
 import com.neprofinishedgood.move.model.LocationInput;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
-import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
@@ -159,6 +156,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     public List<UniversalSpinner> rackList = new ArrayList<>();
     public List<UniversalSpinner> binList = new ArrayList<>();
     public ArrayList<UniversalSpinner> zoneList = new ArrayList<>();
+    public List<UniversalSpinner> fltList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,7 +189,6 @@ public class AssignActivity extends BaseActivity implements IAssignView {
                 setSpinnerZoneData(response.getZone());
             }
         }
-        setSpinnerFLtData();
 
     }
 
@@ -282,10 +279,10 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         }
     }
 
-    @OnItemSelected(R.id.spinnerAssignFlt)
-    public void spinnerAssignFltSelected(Spinner spinner, int position) {
-        flt = fltList.get(position).getId();
-    }
+//    @OnItemSelected(R.id.spinnerAssignFlt)
+//    public void spinnerAssignFltSelected(Spinner spinner, int position) {
+//        flt = fltList.get(position).getId();
+//    }
 
     @OnItemSelected(R.id.spinnerAisle)
     public void spinnerAisleSelected(Spinner spinner, int position) {
@@ -359,7 +356,8 @@ public class AssignActivity extends BaseActivity implements IAssignView {
                         iAssAndUAssInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                     }
                 } else {
-                    setDataOffline();
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    setDataOffline();
                 }
             }
 
@@ -397,7 +395,8 @@ public class AssignActivity extends BaseActivity implements IAssignView {
                     showProgress(AssignActivity.this);
                     iAssAndUAssInterface.callLocationService(new LocationInput(editTextScanLocation.getText().toString(), userId, wareHouseID));
                 } else {
-                    setLocationOffline();
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    setLocationOffline();
                 }
             }
         }
@@ -441,6 +440,9 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     }
 
     void setData(ScanStillageResponse body) {
+        fltList = body.getfLTList();
+        fltList.add(0, new UniversalSpinner("Select FLT", "000"));
+        setSpinnerFLtData();
         relativeLayoutScanDetail.setVisibility(View.VISIBLE);
         linearLayoutAssignLocationButtons.setVisibility(View.VISIBLE);
 
@@ -490,13 +492,17 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         } else if (isFLTValidated() && !isButtonInAssignLocation) {
             //for flt Assign
             if (linearLayoutOfflineData.getVisibility() == View.GONE) {
-                showProgress(this);
-                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt, wareHouseID, zone);
-                iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
+                if (NetworkChangeReceiver.isInternetConnected(AssignActivity.this)) {
+                    showProgress(this);
+                    AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt, wareHouseID, zone);
+                    iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
 
-                frameAssignFlt.setVisibility(View.GONE);
-                frameAssignLocation.setVisibility(View.VISIBLE);
-                isButtonInAssignLocation = true;
+                    frameAssignFlt.setVisibility(View.GONE);
+                    frameAssignLocation.setVisibility(View.VISIBLE);
+                    isButtonInAssignLocation = true;
+                } else {
+                    showSuccessDialog(getString(R.string.no_internet));
+                }
             } else {
                 if (isOfflineValidated()) {
                     AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt, wareHouseID, zone);
@@ -523,13 +529,17 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         } else if (!isButtonInAssignLocation) {
             flt = "";
             if (linearLayoutOfflineData.getVisibility() == View.GONE) {
-                showProgress(this);
-                AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt, wareHouseID, zone);
-                iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
+                if (NetworkChangeReceiver.isInternetConnected(AssignActivity.this)) {
+                    showProgress(this);
+                    AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt, wareHouseID, zone);
+                    iAssAndUAssInterface.callAssigneUnassignedServcie(assignedUnAssignedInput);
 
-                frameAssignFlt.setVisibility(View.GONE);
-                frameAssignLocation.setVisibility(View.VISIBLE);
-                isButtonInAssignLocation = true;
+                    frameAssignFlt.setVisibility(View.GONE);
+                    frameAssignLocation.setVisibility(View.VISIBLE);
+                    isButtonInAssignLocation = true;
+                }else{
+                    showSuccessDialog(getString(R.string.no_internet));
+                }
             } else {
                 AssignedUnAssignedInput assignedUnAssignedInput = new AssignedUnAssignedInput(editTextScanStillage.getText().toString().trim(), aisle, rack, bin, userId, flt, wareHouseID, zone);
                 saveDataOffline(assignedUnAssignedInput);
@@ -552,6 +562,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         if (position > 0) {
             buttonAssign.setEnabled(true);
         }
+        flt = fltList.get(position).getId();
     }
 
     @OnClick(R.id.imageViewLoacationCancel)
@@ -627,12 +638,17 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            if (body.getStandardQty() > 0) {
-                isScanned = true;
-                setData(body);
+            if (isLocationMatched(body.getWareHouseID())) {
+                if (body.getStandardQty() > 0) {
+                    isScanned = true;
+                    setData(body);
+                } else {
+                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                    editTextScanStillage.setText("");
+                }
             } else {
-                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                 editTextScanStillage.setText("");
+                showSuccessDialog(getResources().getString(R.string.stillage_not_found));
             }
         } else {
             showSuccessDialog(body.getMessage());
@@ -797,7 +813,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         }
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         if (isScanned) {
             showBackAlert(null, false);
         } else {

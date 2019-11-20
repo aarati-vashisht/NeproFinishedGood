@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.login.model.UserSiteInfo;
 import com.neprofinishedgood.move.adapter.MoveAdapter;
 import com.neprofinishedgood.move.model.AllAssignedDataInput;
 import com.neprofinishedgood.move.model.AssignedStillages;
@@ -130,7 +129,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
                 }
             } else {
                 editTextScanStillage.setText("");
-                showSuccessDialog(getResources().getString(R.string.user_not_assigned));
+                showSuccessDialog(getResources().getString(R.string.stillage_not_found));
             }
         } else {
             editTextScanStillage.setText("");

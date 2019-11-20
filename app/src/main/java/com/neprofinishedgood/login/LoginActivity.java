@@ -9,6 +9,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.chaos.view.PinView;
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.assign.AssignActivity;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
@@ -17,6 +18,7 @@ import com.neprofinishedgood.login.model.LoginUser;
 import com.neprofinishedgood.login.presenter.ILoginInterface;
 import com.neprofinishedgood.login.presenter.ILoginPresenter;
 import com.neprofinishedgood.login.presenter.ILoginView;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 
 import butterknife.BindView;
@@ -52,9 +54,14 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     @OnClick(R.id.buttonLogin)
     public void onLoginButtonClick() {
         if (isValidate()) {
-            showProgress(this);
-            LoginUser loginUser = new LoginUser(pinViewLogin.getText().toString());
-            iLoginInterface.callLoginService(loginUser);
+            if (NetworkChangeReceiver.isInternetConnected(LoginActivity.this)) {
+                showProgress(this);
+                LoginUser loginUser = new LoginUser(pinViewLogin.getText().toString());
+                iLoginInterface.callLoginService(loginUser);
+            }
+            else{
+                showSuccessDialog(getString(R.string.no_internet));
+            }
         }
 
     }

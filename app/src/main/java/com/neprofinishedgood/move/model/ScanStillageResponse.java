@@ -162,6 +162,10 @@ public class ScanStillageResponse {
     @Expose
     private String isTJ;
 
+    @SerializedName("FLTList")
+    @Expose
+    private List<UniversalSpinner> fLTList = null;
+
     public String getIsShiped() {
         return isShiped;
     }
@@ -464,5 +468,13 @@ public class ScanStillageResponse {
 
     public void setIsTJ(String isTJ) {
         this.isTJ = isTJ;
+    }
+
+    public List<UniversalSpinner> getfLTList() {
+        return fLTList;
+    }
+
+    public void setfLTList(List<UniversalSpinner> fLTList) {
+        this.fLTList = fLTList;
     }
 }
