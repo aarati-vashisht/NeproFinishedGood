@@ -139,8 +139,7 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
                     showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                     editTextScanStillage.setText("");
                 }
-            }
-            else {
+            } else {
                 editTextScanStillage.setText("");
                 showSuccessDialog(getResources().getString(R.string.stillage_not_found));
             }
@@ -191,16 +190,24 @@ public class QualityHoldActivity extends BaseActivity implements IHoldView {
 
     @OnClick(R.id.buttonHold)
     public void onButtonHoldClick() {
-        showProgress(this);
-        QualityInput qualityInput = new QualityInput(stillageLayout.textViewNumber.getText().toString().trim(), userId, "1");
-        iHoldPresenter.callHoldUnholdService(qualityInput);
+        if (NetworkChangeReceiver.isInternetConnected(QualityHoldActivity.this)) {
+            showProgress(this);
+            QualityInput qualityInput = new QualityInput(stillageLayout.textViewNumber.getText().toString().trim(), userId, "1");
+            iHoldPresenter.callHoldUnholdService(qualityInput);
+        } else {
+            showSuccessDialog(getString(R.string.no_internet));
+        }
     }
 
     @OnClick(R.id.buttonUnhold)
     public void onButtonUnholdClick() {
-        showProgress(this);
-        QualityInput qualityInput = new QualityInput(stillageLayout.textViewNumber.getText().toString().trim(), userId, "0");
-        iHoldPresenter.callHoldUnholdService(qualityInput);
+        if (NetworkChangeReceiver.isInternetConnected(QualityHoldActivity.this)) {
+            showProgress(this);
+            QualityInput qualityInput = new QualityInput(stillageLayout.textViewNumber.getText().toString().trim(), userId, "0");
+            iHoldPresenter.callHoldUnholdService(qualityInput);
+        } else {
+            showSuccessDialog(getString(R.string.no_internet));
+        }
     }
 
     public void imageButtonHomeClick(View view) {

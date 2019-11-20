@@ -208,14 +208,18 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     public void onButtonConfirmClick() {
         UpdateMoveLocationInput updateMoveLocationInput;
         if (offlineData == null) {
-            if (isValidated()) {
-                if (linearLayoutPutAwayLocation.getVisibility() != View.VISIBLE) {
-                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), "", "", "", userId, loadingAreaId, wareHouseID, zone);
-                } else {
-                    updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), aisle, rack, bin, userId, loadingAreaId, wareHouseID, zone);
+            if (NetworkChangeReceiver.isInternetConnected(MoveStillageActivity.this)) {
+                if (isValidated()) {
+                    if (linearLayoutPutAwayLocation.getVisibility() != View.VISIBLE) {
+                        updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), "", "", "", userId, loadingAreaId, wareHouseID, zone);
+                    } else {
+                        updateMoveLocationInput = new UpdateMoveLocationInput(stillageLayout.textViewNumber.getText().toString(), aisle, rack, bin, userId, loadingAreaId, wareHouseID, zone);
+                    }
+                    showProgress(this);
+                    movePresenter.callMoveServcie(updateMoveLocationInput);
                 }
-                showProgress(this);
-                movePresenter.callMoveServcie(updateMoveLocationInput);
+            } else {
+                showSuccessDialog(getString(R.string.no_internet));
             }
         } else {
             if (isOfflineValidated()) {
@@ -242,7 +246,8 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
                     showProgress(MoveStillageActivity.this);
                     movePresenter.callLocationService(new LocationInput(editTextDropLocation.getText().toString(), userId, wareHouseID));
                 } else {
-                    setLocationOffline();
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    setLocationOffline();
                 }
             }
         }
@@ -292,10 +297,14 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     public void spinnerAisleSelected(Spinner spinner, int position) {
         aisle = aisleList.get(position).getId();
         if (position > 0) {
-            zone = "";
-            spinnerZone.setSelection(0);
-            showProgress(this);
-            movePresenter.callAisleSelectionService(new AisleInput(aisle, wareHouseID, ""));
+            if (NetworkChangeReceiver.isInternetConnected(MoveStillageActivity.this)) {
+                zone = "";
+                spinnerZone.setSelection(0);
+                showProgress(this);
+                movePresenter.callAisleSelectionService(new AisleInput(aisle, wareHouseID, ""));
+            } else {
+                showSuccessDialog(getString(R.string.no_internet));
+            }
         }
         if (position == 0) {
             spinner.setBackgroundResource(R.drawable.first_spinner);
@@ -308,10 +317,14 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
     public void spinnerRackSelected(Spinner spinner, int position) {
         rack = rackList.get(position).getId();
         if (position > 0) {
-            zone = "";
-            spinnerZone.setSelection(0);
-            showProgress(this);
-            movePresenter.callRackSelectionService(new AisleInput(aisle, wareHouseID, rack));
+            if (NetworkChangeReceiver.isInternetConnected(MoveStillageActivity.this)) {
+                zone = "";
+                spinnerZone.setSelection(0);
+                showProgress(this);
+                movePresenter.callRackSelectionService(new AisleInput(aisle, wareHouseID, rack));
+            } else {
+                showSuccessDialog(getString(R.string.no_internet));
+            }
         }
     }
 

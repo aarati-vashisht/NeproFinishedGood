@@ -29,6 +29,7 @@ import com.neprofinishedgood.productionjournal.model.ProductionJournalPickinngDa
 import com.neprofinishedgood.productionjournal.presenter.IPickingListInterface;
 import com.neprofinishedgood.productionjournal.presenter.IPickingListPresenter;
 import com.neprofinishedgood.productionjournal.presenter.IPickingListView;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -283,13 +284,17 @@ public class PickingListFragment extends Fragment implements IPickingListView {
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ProductionJournalPickinngDataInput productionJournalPickinngDataInput = new ProductionJournalPickinngDataInput(
-                                workOrderNo, userId, ProductionJournal.getInstance().textViewItemId.getText().toString(),
-                                ProductionJournal.getInstance().addedPickingListDatumList);
+                        if (NetworkChangeReceiver.isInternetConnected(ProductionJournal.getInstance())) {
+                            ProductionJournalPickinngDataInput productionJournalPickinngDataInput = new ProductionJournalPickinngDataInput(
+                                    workOrderNo, userId, ProductionJournal.getInstance().textViewItemId.getText().toString(),
+                                    ProductionJournal.getInstance().addedPickingListDatumList);
 
-                        ProductionJournal.getInstance().showProgress(getActivity());
-                        ProductionJournal.getInstance().iProductionJournalInterface.callSubmitProductionJournalPickingService(productionJournalPickinngDataInput);
-                        dialog.cancel();
+                            ProductionJournal.getInstance().showProgress(getActivity());
+                            ProductionJournal.getInstance().iProductionJournalInterface.callSubmitProductionJournalPickingService(productionJournalPickinngDataInput);
+                            dialog.cancel();
+                        } else {
+                            ProductionJournal.getInstance().showSuccessDialog(getString(R.string.no_internet));
+                        }
                     }
                 })
                 .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {

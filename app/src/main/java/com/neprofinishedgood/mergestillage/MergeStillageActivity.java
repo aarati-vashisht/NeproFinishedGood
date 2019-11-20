@@ -156,26 +156,29 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
         if (!text.toString().trim().equals("")) {
 //            scanStillagehandler2.postDelayed(stillageRunnable2, delay);
             if (text.toString().trim().length() == scanStillageLength) {
-                if (!editTextScanParentStillage.getText().toString().trim().equalsIgnoreCase(text.toString().trim())) {
-                    isChild = true;
-                    if (childToSend == null) {
-                        childToSend = "";
-                    }
-                    if (childToSend.length() > 0) {
-                        if (!childToSend.contains(editTextScanChildStillage.getText().toString().trim())) {
+                if (NetworkChangeReceiver.isInternetConnected(MergeStillageActivity.this)) {
+                    if (!editTextScanParentStillage.getText().toString().trim().equalsIgnoreCase(text.toString().trim())) {
+                        isChild = true;
+                        if (childToSend == null) {
+                            childToSend = "";
+                        }
+                        if (childToSend.length() > 0) {
+                            if (!childToSend.contains(editTextScanChildStillage.getText().toString().trim())) {
+                                showProgress(MergeStillageActivity.this);
+                                iMergeStillageInterface.callScanStillageService(new MoveInput(editTextScanChildStillage.getText().toString().trim(), userId));
+                            } else {
+                                showSuccessDialog(getString(R.string.this_stillage_already_merged));
+                            }
+                        } else {
                             showProgress(MergeStillageActivity.this);
                             iMergeStillageInterface.callScanStillageService(new MoveInput(editTextScanChildStillage.getText().toString().trim(), userId));
-                        } else {
-                            showSuccessDialog(getString(R.string.this_stillage_already_merged));
                         }
                     } else {
-                        showProgress(MergeStillageActivity.this);
-                        iMergeStillageInterface.callScanStillageService(new MoveInput(editTextScanChildStillage.getText().toString().trim(), userId));
+                        showSuccessDialog(getString(R.string.child_and_parent_cannot_be_same));
+                        editTextScanChildStillage.setText("");
                     }
                 } else {
-                    showSuccessDialog(getString(R.string.child_and_parent_cannot_be_same));
-//                    CustomToast.showToast(this, getString(R.string.child_and_parent_cannot_be_same));
-                    editTextScanChildStillage.setText("");
+                    showSuccessDialog(getString(R.string.no_internet));
                 }
             }
 
@@ -379,11 +382,15 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 /// call merge service
-                childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim() + ",";
-                showProgress(MergeStillageActivity.this);
-                UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString(), "3");
-                iMergeStillageInterface.callUpdateMergeStillage(upgradeMergeInput);
-                dialogInterface.dismiss();
+                if (NetworkChangeReceiver.isInternetConnected(MergeStillageActivity.this)) {
+                    childToSend += editTextScanChildStillage.getText().toString() + ":" + editTextMergeQuantity.getText().toString().trim() + ",";
+                    showProgress(MergeStillageActivity.this);
+                    UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString(), "3");
+                    iMergeStillageInterface.callUpdateMergeStillage(upgradeMergeInput);
+                    dialogInterface.dismiss();
+                } else {
+                    showSuccessDialog("No internet, stillges will not merge.");
+                }
             }
         });
 
@@ -423,9 +430,13 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
 
     @OnClick(R.id.buttonFinish)
     public void onButtonFinishClick() {
-        showProgress(MergeStillageActivity.this);
-        UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString(), "3");
-        iMergeStillageInterface.callUpdateMergeStillage(upgradeMergeInput);
+        if (NetworkChangeReceiver.isInternetConnected(MergeStillageActivity.this)) {
+            showProgress(MergeStillageActivity.this);
+            UpgradeMergeInput upgradeMergeInput = new UpgradeMergeInput(editTextScanParentStillage.getText().toString().trim(), userId, childToSend, textViewQuantitySum.getText().toString(), "3");
+            iMergeStillageInterface.callUpdateMergeStillage(upgradeMergeInput);
+        } else {
+            showSuccessDialog("No internet, stillges will not merge.");
+        }
     }
 
     public void imageButtonHomeClick(View view) {

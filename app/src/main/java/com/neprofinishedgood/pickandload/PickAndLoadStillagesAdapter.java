@@ -30,6 +30,7 @@ import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
 import com.neprofinishedgood.pickandload.model.UpdateLoadInput;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 
 import java.util.ArrayList;
@@ -366,15 +367,19 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
             } else if (Float.parseFloat(editTextLoadQuantity.getText().toString().trim()) < stillageDatumListFiltered.get(position).getPickingQty() && spinnerRejectReason.getSelectedItemPosition() == 0) {
                 PickAndLoadStillageActivity.getInstance().showSuccessDialog("Select reason!");
             } else {
-                dialog.cancel();
-                notifyDataSetChanged();
-                PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
-                stillageDatumListFiltered.get(position).setStatus("-2");
-                PickAndLoadStillageActivity.getInstance().stillageNoToDelete = stillageDatumListFiltered.get(position).getStillageNO();
-                PickAndLoadStillageActivity.getInstance().showProgress(PickAndLoadStillageActivity.getInstance());
-                UpdateLoadInput updateLoadInput = new UpdateLoadInput(stillageDatumListFiltered.get(position).getStillageNO(), PickAndLoadStillageActivity.getInstance().userId, PickAndLoadStillageActivity.getInstance().scanLoadingPlanList.getTLPHID() + "", reason, stillageDatumListFiltered.get(position).getItemId() + "", editTextLoadQuantity.getText().toString().trim(), PickAndLoadStillageActivity.getInstance().isCompleted);
-                PickAndLoadStillageActivity.getInstance().iPickAndLoadItemInterFace.callUpdateLoadService(updateLoadInput);
+                if (NetworkChangeReceiver.isInternetConnected(PickAndLoadStillageActivity.getInstance())) {
+                    dialog.cancel();
+                    notifyDataSetChanged();
+                    PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
+                    stillageDatumListFiltered.get(position).setStatus("-2");
+                    PickAndLoadStillageActivity.getInstance().stillageNoToDelete = stillageDatumListFiltered.get(position).getStillageNO();
+                    PickAndLoadStillageActivity.getInstance().showProgress(PickAndLoadStillageActivity.getInstance());
+                    UpdateLoadInput updateLoadInput = new UpdateLoadInput(stillageDatumListFiltered.get(position).getStillageNO(), PickAndLoadStillageActivity.getInstance().userId, PickAndLoadStillageActivity.getInstance().scanLoadingPlanList.getTLPHID() + "", reason, stillageDatumListFiltered.get(position).getItemId() + "", editTextLoadQuantity.getText().toString().trim(), PickAndLoadStillageActivity.getInstance().isCompleted);
+                    PickAndLoadStillageActivity.getInstance().iPickAndLoadItemInterFace.callUpdateLoadService(updateLoadInput);
 //                    CustomToast.showToast(context, context.getString(R.string.stillage_loaded_successfully));
+                }else {
+                    PickAndLoadStillageActivity.getInstance().showSuccessDialog(context.getResources().getString(R.string.no_internet));
+                }
             }
         });
         buttonCancel.setOnClickListener(v -> {

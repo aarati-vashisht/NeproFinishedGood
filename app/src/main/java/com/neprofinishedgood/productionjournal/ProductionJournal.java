@@ -127,7 +127,6 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
                     }
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
-//                    CustomToast.showToast(ProductionJournal.this, getString(R.string.no_internet));
                 }
             }
         }

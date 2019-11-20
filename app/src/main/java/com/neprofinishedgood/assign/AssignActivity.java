@@ -288,10 +288,14 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     public void spinnerAisleSelected(Spinner spinner, int position) {
         aisle = aisleList.get(position).getId();
         if (position > 0) {
-            zone = "";
-            spinnerZone.setSelection(0);
-            showProgress(this);
-            iAssAndUAssInterface.callAisleSelectionService(new AisleInput(aisle, wareHouseID, ""));
+            if (NetworkChangeReceiver.isInternetConnected(AssignActivity.this)) {
+                zone = "";
+                spinnerZone.setSelection(0);
+                showProgress(this);
+                iAssAndUAssInterface.callAisleSelectionService(new AisleInput(aisle, wareHouseID, ""));
+            } else {
+                showSuccessDialog(getString(R.string.no_internet));
+            }
         }
         if (position == 0) {
             spinner.setBackgroundResource(R.drawable.first_spinner);
@@ -305,10 +309,14 @@ public class AssignActivity extends BaseActivity implements IAssignView {
     public void spinnerRackSelected(Spinner spinner, int position) {
         rack = rackList.get(position).getId();
         if (position > 0) {
-            zone = "";
-            spinnerZone.setSelection(0);
-            showProgress(this);
-            iAssAndUAssInterface.callRackSelectionService(new AisleInput(aisle, wareHouseID, rack));
+            if (NetworkChangeReceiver.isInternetConnected(AssignActivity.this)) {
+                zone = "";
+                spinnerZone.setSelection(0);
+                showProgress(this);
+                iAssAndUAssInterface.callRackSelectionService(new AisleInput(aisle, wareHouseID, rack));
+            } else {
+                showSuccessDialog(getString(R.string.no_internet));
+            }
         }
     }
 
@@ -537,7 +545,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
                     frameAssignFlt.setVisibility(View.GONE);
                     frameAssignLocation.setVisibility(View.VISIBLE);
                     isButtonInAssignLocation = true;
-                }else{
+                } else {
                     showSuccessDialog(getString(R.string.no_internet));
                 }
             } else {

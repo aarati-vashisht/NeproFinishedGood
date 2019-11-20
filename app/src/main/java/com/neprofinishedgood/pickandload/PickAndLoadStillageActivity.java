@@ -32,6 +32,7 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
+import com.neprofinishedgood.lookup.LookUpActivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.pickandload.model.LoadingPlanDetails;
 import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
@@ -42,6 +43,7 @@ import com.neprofinishedgood.pickandload.presenter.IPickLoadItemView;
 import com.neprofinishedgood.pickandload.presenter.PickAndLoadItemPresenter;
 import com.neprofinishedgood.move.model.AllAssignedDataInput;
 import com.neprofinishedgood.utils.Constants;
+import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.Utils;
 
@@ -244,7 +246,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
 //                }
 
                 List<LoadingPlanList> tempLoadingPlanDetailLists = new ArrayList<>();
-                for (int i = 0; i<loadingPlanDetailLists.size(); i++) {
+                for (int i = 0; i < loadingPlanDetailLists.size(); i++) {
                     if (loadingPlanDetailLists.get(i).getStillageNO().equals(stillageNoToDelete)) {
                         tempLoadingPlanDetailLists.add(loadingPlanDetailLists.get(i));
                     }
@@ -273,8 +275,12 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (isAfterLoading) {
-                            showProgress(PickAndLoadStillageActivity.this);
-                            iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId, ""));
+                            if (NetworkChangeReceiver.isInternetConnected(PickAndLoadStillageActivity.this)) {
+                                showProgress(PickAndLoadStillageActivity.this);
+                                iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId, ""));
+                            } else {
+                                showSuccessDialog(getString(R.string.no_internet));
+                            }
                         } else {
                             finish();
                         }
@@ -348,10 +354,13 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
         saveLoadingPlanList = SharedPref.getLoadinGplanList();
         loadingPlan = scanLoadingPlanList.getLoadingPlanNo();
 //        textViewLoadingPlan.setText(loadingPlan);
-        showProgress(this);
-        setTitle(loadingPlan);
-        iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId, ""));
-
+        if (NetworkChangeReceiver.isInternetConnected(PickAndLoadStillageActivity.this)) {
+            showProgress(this);
+            setTitle(loadingPlan);
+            iPickAndLoadItemInterFace.callGetLoadingPlanDetails(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId, ""));
+        } else {
+            showSuccessDialog(getString(R.string.no_internet));
+        }
     }
 
     @OnClick(R.id.buttonEndPick)
@@ -395,13 +404,17 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
 //            if(spinnerEndPickReason.getSelectedItemPosition() <=0 ) {
 //
 //            }else{
+            if (NetworkChangeReceiver.isInternetConnected(PickAndLoadStillageActivity.this)) {
                 showProgress(this);
                 dialog.cancel();
                 iPickAndLoadItemInterFace.callEndPickService(new LoadingPlanInput(scanLoadingPlanList.getTLPHID() + "", userId, endPickReason));
 //            }
+            } else {
+                showSuccessDialog(getString(R.string.no_internet));
+            }
         });
 
-        buttonCancel.setOnClickListener(v->{
+        buttonCancel.setOnClickListener(v -> {
             dialog.cancel();
         });
 
@@ -435,7 +448,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
 //            }
 
             List<LoadingPlanList> tempLoadingPlanDetailLists = new ArrayList<>();
-            for (int i = 0; i<loadingPlanDetailLists.size(); i++) {
+            for (int i = 0; i < loadingPlanDetailLists.size(); i++) {
                 if (loadingPlanDetailLists.get(i).getLoadingNumber().equals(loadingPlan)) {
                     tempLoadingPlanDetailLists.add(loadingPlanDetailLists.get(i));
                 }

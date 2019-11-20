@@ -119,7 +119,8 @@ public class RAFActivity extends BaseActivity implements IRAFView {
                         irafInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                     }
                 } else {
-                    setDataOffline();
+                    showSuccessDialog(getString(R.string.no_internet));
+//                    setDataOffline();
                 }
             }
         }
@@ -256,9 +257,13 @@ public class RAFActivity extends BaseActivity implements IRAFView {
                 textView.setError(getString(R.string.select_shift));
                 textView.requestFocus();
             } else {
-                showProgress(this);
-                RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, quantity, autoPick, autoRoute);
-                irafInterface.callRAFServcie(rafInput);
+                if (NetworkChangeReceiver.isInternetConnected(RAFActivity.this)) {
+                    showProgress(this);
+                    RafInput rafInput = new RafInput(editTextScanStillage.getText().toString().trim(), userId, shift, quantity, autoPick, autoRoute);
+                    irafInterface.callRAFServcie(rafInput);
+                } else {
+                    showSuccessDialog(getString(R.string.no_internet));
+                }
             }
         } else {
             if (isOfflineValidated()) {
