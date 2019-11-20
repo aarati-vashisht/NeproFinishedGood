@@ -208,9 +208,15 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         hideProgress();
         try {
             if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-                isScanned = true;
-                setData(body);
-                editTextScanWorkOrder.setEnabled(false);
+               if(isLocationMatched(body.getWareHouseID())) {
+                   isScanned = true;
+                   setData(body);
+                   editTextScanWorkOrder.setEnabled(false);
+               }
+               else {
+                   editTextScanWorkOrder.setText("");
+                   showSuccessDialog(getResources().getString(R.string.wo_not_found));
+               }
             } else {
                 showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(getApplicationContext(), body.getMessage());
