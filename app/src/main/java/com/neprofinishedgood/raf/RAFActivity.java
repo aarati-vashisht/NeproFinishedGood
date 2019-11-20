@@ -120,6 +120,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
                     }
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
+                    editTextScanStillage.setText("");
 //                    setDataOffline();
                 }
             }

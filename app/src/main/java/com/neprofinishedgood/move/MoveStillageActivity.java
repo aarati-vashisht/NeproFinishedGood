@@ -247,6 +247,7 @@ public class MoveStillageActivity extends BaseActivity implements IMoveView {
                     movePresenter.callLocationService(new LocationInput(editTextDropLocation.getText().toString(), userId, wareHouseID));
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
+                    editTextDropLocation.setText("");
 //                    setLocationOffline();
                 }
             }

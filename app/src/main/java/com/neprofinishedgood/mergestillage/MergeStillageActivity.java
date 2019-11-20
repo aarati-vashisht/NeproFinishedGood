@@ -122,6 +122,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
 
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
+                    editTextScanParentStillage.setText("");
 //                    CustomToast.showToast(MergeStillageActivity.this, getString(R.string.no_internet));
                 }
             }
@@ -178,6 +179,7 @@ public class MergeStillageActivity extends BaseActivity implements IMergeStillag
                         editTextScanChildStillage.setText("");
                     }
                 } else {
+                    editTextScanChildStillage.setText("");
                     showSuccessDialog(getString(R.string.no_internet));
                 }
             }
