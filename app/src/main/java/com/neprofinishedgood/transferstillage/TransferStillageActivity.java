@@ -3,7 +3,6 @@ package com.neprofinishedgood.transferstillage;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -36,8 +34,6 @@ import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
-import com.neprofinishedgood.pickandload.PickAndLoadStillageActivity;
-import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferStillageDetail;
@@ -439,7 +435,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                     }
                 } else {
                     editTextScanStillage.setText("");
-                    showSuccessDialog(getResources().getString(R.string.user_not_assigned));
+                    showSuccessDialog(getResources().getString(R.string.stillage_not_found));
                 }
             } else {
                 showSuccessDialog(body.getMessage());

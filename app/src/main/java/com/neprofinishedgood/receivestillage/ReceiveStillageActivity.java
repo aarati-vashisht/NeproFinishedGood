@@ -2,7 +2,6 @@ package com.neprofinishedgood.receivestillage;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
@@ -13,11 +12,9 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
-import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.receivestillage.presenter.IRecieveTransferInterface;
 import com.neprofinishedgood.receivestillage.presenter.IRecieveTransferView;
 import com.neprofinishedgood.receivestillage.presenter.RecieveTransferPresenter;
@@ -164,7 +161,7 @@ public class ReceiveStillageActivity extends BaseActivity implements IRecieveTra
                 }
             } else {
                 editTextScanStillage.setText("");
-                showSuccessDialog(getResources().getString(R.string.user_not_assigned));
+                showSuccessDialog(getResources().getString(R.string.stillage_not_found));
             }
         } else {
             showSuccessDialog(body.getMessage());

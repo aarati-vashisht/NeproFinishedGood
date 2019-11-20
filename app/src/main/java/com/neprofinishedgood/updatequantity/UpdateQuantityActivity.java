@@ -2,10 +2,8 @@ package com.neprofinishedgood.updatequantity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -19,12 +17,10 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
-import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
-import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
 import com.neprofinishedgood.raf.model.StillageDatum;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 import com.neprofinishedgood.updatequantity.presenter.IUpdateQtyInterface;
@@ -285,7 +281,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
                 }
             } else {
                 editTextScanStillage.setText("");
-                showSuccessDialog(getResources().getString(R.string.user_not_assigned));
+                showSuccessDialog(getResources().getString(R.string.stillage_not_found));
             }
 
         } else {

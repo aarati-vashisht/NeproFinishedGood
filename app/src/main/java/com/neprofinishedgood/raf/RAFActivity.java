@@ -2,7 +2,6 @@ package com.neprofinishedgood.raf;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
@@ -19,9 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
-import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
-import com.neprofinishedgood.move.MoveStillageActivity;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.raf.model.RafInput;
@@ -172,7 +169,7 @@ public class RAFActivity extends BaseActivity implements IRAFView {
                 }
             } else {
                 editTextScanStillage.setText("");
-                showSuccessDialog(getResources().getString(R.string.user_not_assigned));
+                showSuccessDialog(getResources().getString(R.string.stillage_not_found));
             }
         } else {
             showSuccessDialog(body.getMessage());

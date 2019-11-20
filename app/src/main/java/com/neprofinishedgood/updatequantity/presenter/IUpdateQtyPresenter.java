@@ -57,7 +57,6 @@ public class IUpdateQtyPresenter implements IUpdateQtyInterface{
 
     @Override
     public void callUpdateQtyStillageService(UpdateQtyInput updateQtyInput) {
-        Log.d("afghsd",new Gson().toJson(updateQtyInput));
         UpdateQuantityActivity.i++;
         ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
         Call<UniversalResponse> call = apiInterface.updateStillageDetails(updateQtyInput);
