@@ -127,6 +127,7 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
                     }
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
+                    editTextScanWorkOrder.setText("");
                 }
             }
         }

@@ -168,6 +168,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                     }
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
+                    editTextScanWorkOrder.setText("");
 //                    CustomToast.showToast(WorkOrderStartEndActivity.this, getString(R.string.no_internet));
                 }
             }

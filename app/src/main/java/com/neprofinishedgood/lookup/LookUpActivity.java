@@ -59,6 +59,7 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
                     iLookUpInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
+                    editTextScanStillage.setText("");
                 }
             }
         }

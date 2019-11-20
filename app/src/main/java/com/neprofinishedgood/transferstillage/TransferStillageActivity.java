@@ -311,6 +311,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                             iTransferInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                         } else {
                             showSuccessDialog(getString(R.string.no_internet));
+                            editTextScanStillage.setText("");
                         }
 //                        } else {
 //                            setDataOffline();

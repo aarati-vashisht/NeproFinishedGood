@@ -365,6 +365,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
                     }
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
+                    editTextScanStillage.setText("");
 //                    setDataOffline();
                 }
             }
@@ -404,6 +405,7 @@ public class AssignActivity extends BaseActivity implements IAssignView {
                     iAssAndUAssInterface.callLocationService(new LocationInput(editTextScanLocation.getText().toString(), userId, wareHouseID));
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
+                    editTextScanLocation.setText("");
 //                    setLocationOffline();
                 }
             }

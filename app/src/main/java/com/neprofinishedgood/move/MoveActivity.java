@@ -87,6 +87,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
                     iPlannedUnplannedPresenter.callScanStillageService(new MoveInput(stillageTxt, userId));
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
+                    editTextScanStillage.setText("");
 //                    offlineProcess();
                 }
             }
