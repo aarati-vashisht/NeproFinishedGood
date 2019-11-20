@@ -218,7 +218,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:maxLines="2"
-                                android:text="S00001"
+                                android:text=""
                                 android:textColor="@color/gray_color"
                                 android:textSize="10sp" />
 

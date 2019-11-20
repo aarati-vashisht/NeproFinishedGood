@@ -208,7 +208,12 @@ public class ProductionJournal extends BaseActivity implements IProductionJourna
     public void onSuccess(WorkOrderResponse body) {
         hideProgress();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            setData(body);
+            if(isLocationMatched(body.getWareHouseId())){
+                setData(body);
+            }else{
+                editTextScanWorkOrder.setText("");
+                showSuccessDialog(getResources().getString(R.string.wo_not_found));
+            }
         } else {
             showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(getApplicationContext(), body.getMessage());

@@ -32,6 +32,12 @@ public class WorkOrderResponse {
     @SerializedName("Message")
     @Expose
     private String message;
+    @SerializedName("WareHouseId")
+    @Expose
+    private String wareHouseId;
+    @SerializedName("SiteID")
+    @Expose
+    private String siteID;
 
     public ArrayList<PickingListDatum> getPickingListData() {
         return pickingListData;
@@ -97,4 +103,19 @@ public class WorkOrderResponse {
         this.message = message;
     }
 
+    public String getWareHouseId() {
+        return wareHouseId;
+    }
+
+    public void setWareHouseId(String wareHouseId) {
+        this.wareHouseId = wareHouseId;
+    }
+
+    public String getSiteID() {
+        return siteID;
+    }
+
+    public void setSiteID(String siteID) {
+        this.siteID = siteID;
+    }
 }

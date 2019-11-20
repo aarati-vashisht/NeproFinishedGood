@@ -50,6 +50,12 @@ public class WorkOrderScanResponse {
     @SerializedName("StartedQty")
     @Expose
     private String startedQty;
+    @SerializedName("WareHouseId")
+    @Expose
+    private String wareHouseId;
+    @SerializedName("SiteID")
+    @Expose
+    private String siteID;
 
     public String getBalanceQuantity() {
         return balanceQuantity;
@@ -169,5 +175,21 @@ public class WorkOrderScanResponse {
 
     public void setStartedQty(String startedQty) {
         this.startedQty = startedQty;
+    }
+
+    public String getWareHouseID() {
+        return wareHouseId;
+    }
+
+    public void setWareHouseID(String wareHouseID) {
+        this.wareHouseId = wareHouseID;
+    }
+
+    public String getSiteID() {
+        return siteID;
+    }
+
+    public void setSiteID(String siteID) {
+        this.siteID = siteID;
     }
 }
