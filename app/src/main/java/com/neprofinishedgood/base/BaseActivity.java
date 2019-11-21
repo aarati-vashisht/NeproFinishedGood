@@ -333,4 +333,10 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         return bd.floatValue();
     }
 
+    public static float roundWithPlace(float number, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(number);
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
+
 }
