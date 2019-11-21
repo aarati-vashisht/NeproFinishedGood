@@ -19,6 +19,7 @@ import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
+import com.neprofinishedgood.utils.DecimalDigitsInputFilter;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.Utils;
 import com.neprofinishedgood.workorderstartend.Presenter.IWorkOrderStartEndInterface;
@@ -141,6 +142,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         ButterKnife.bind(this);
         editTextScanWorkOrder.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         iWorkOrderStartEndInterface = new IWorkOrderStartEndPresenter(this, this);
+        editTextPartialQty.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(9,3)});
 
         radioGroupStartQty.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == radioButtonFullQty.getId()) {
@@ -209,15 +211,14 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         hideProgress();
         try {
             if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
-               if(isLocationMatched(body.getWareHouseID())) {
-                   isScanned = true;
-                   setData(body);
-                   editTextScanWorkOrder.setEnabled(false);
-               }
-               else {
-                   editTextScanWorkOrder.setText("");
-                   showSuccessDialog(getResources().getString(R.string.wo_not_found));
-               }
+                if (isLocationMatched(body.getWareHouseID())) {
+                    isScanned = true;
+                    setData(body);
+                    editTextScanWorkOrder.setEnabled(false);
+                } else {
+                    editTextScanWorkOrder.setText("");
+                    showSuccessDialog(getResources().getString(R.string.wo_not_found));
+                }
             } else {
                 showSuccessDialog(body.getMessage());
 //            CustomToast.showToast(getApplicationContext(), body.getMessage());
@@ -238,7 +239,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
             textViewitem.setText(body.getItemId());
             textViewProductionLine.setText(body.getProductionLine());
             textViewWarehouse.setText(body.getWareHouse());
-            textViewQuantity.setText(body.getQuantity());
+
             textViewSite.setText(body.getSite());
             textViewStatus.setText(body.getWOStatus());
             textViewitemDesc.setText(body.getItemDescription());
@@ -252,11 +253,14 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
             } else {
                 woQty = 0;
             }
+            woQty = roundWithPlace(woQty, 3);
+            textViewQuantity.setText(String.format("%s", woQty));
 
             if (body.getStartedQty() != null) {
                 if (!body.getStartedQty().equals("")) {
-                    maxStartQty = woQty - Float.parseFloat(body.getStartedQty());
-                    textViewQtyStarted.setText(body.getStartedQty());
+                    float startedQty = Float.parseFloat(body.getStartedQty());
+                    maxStartQty = woQty - startedQty;
+                    textViewQtyStarted.setText(String.format("%s", roundWithPlace(startedQty,3)));
                 } else {
                     maxStartQty = woQty;
                     textViewQtyStarted.setText("0");
@@ -265,6 +269,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                 maxStartQty = woQty;
                 textViewQtyStarted.setText("0");
             }
+            maxStartQty = roundWithPlace(maxStartQty,3);
 
             if (body.getStatusId().equals("3") || body.getStatusId().equals("4")) {
                 if (body.getStatusId().equals("3")) {
@@ -289,7 +294,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                     linearLayoutStartQty.setVisibility(View.VISIBLE);
                     checkBoxAutoPicking.setChecked(false);
                     checkBoxAutoRoute.setChecked(false);
-                    editTextPartialQty.setText(maxStartQty + "");
+                    editTextPartialQty.setText(String.format("%s", maxStartQty));
                     getStartQty = body.getQuantity();
                     buttonEnd.setEnabled(false);
                     buttonStart.setEnabled(true);
@@ -352,7 +357,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
 
     @OnTextChanged(value = R.id.editTextPartialQty, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextPartialQtyChanged(Editable text) {
-        if (!text.toString().equals("")) {
+        if (!text.toString().equals("") && !text.toString().equals(".")) {
             if (Float.parseFloat(text.toString().trim()) > maxStartQty) {
                 editTextPartialQty.setText("");
                 showSuccessDialog(getResources().getString(R.string.qty_exceeded));
