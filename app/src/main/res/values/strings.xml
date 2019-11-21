@@ -234,5 +234,7 @@
     <string name="unreserved_quantity">Unreserved Qty:</string>
     <string name="stillage_not_found">This stillage is not in your warehouse.</string>
     <string name="wo_not_found">This work order is not in your warehouse.</string>
+    <string name="strp">STRP</string>
+    <string name="fend">F. End</string>
 
 </resources>
