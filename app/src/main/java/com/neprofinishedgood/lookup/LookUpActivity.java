@@ -112,8 +112,7 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
             if (body.getStandardQty() > 0) {
                 setData(body);
                 editTextScanStillage.setEnabled(false);
-            }
-            else{
+            } else {
                 showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                 editTextScanStillage.setText("");
             }
@@ -136,14 +135,20 @@ public class LookUpActivity extends BaseActivity implements ILookUpView {
         stillageLayout.textViewLocation.setText(body.getLocation());
 
         stillageLayout.linearLayoutRafCheckbox.setVisibility(View.VISIBLE);
-        if(body.getIsCounted().equals("1")){
+
+        if (body.getSTRP().equals("1")) {
+            stillageLayout.checkboxStrp.setChecked(true);
+        } else {
+            stillageLayout.checkboxStrp.setChecked(false);
+        }
+        if (body.getIsCounted().equals("1")) {
             stillageLayout.checkboxRaf.setChecked(true);
-        }else{
+        } else {
             stillageLayout.checkboxRaf.setChecked(false);
         }
-        if(body.getIsHold().equals("1")){
+        if (body.getIsHold().equals("1")) {
             stillageLayout.checkboxQcHold.setChecked(true);
-        }else{
+        } else {
             stillageLayout.checkboxQcHold.setChecked(false);
         }
     }

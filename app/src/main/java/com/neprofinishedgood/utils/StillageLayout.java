@@ -64,6 +64,9 @@ public class StillageLayout {
     @BindView(R.id.checkboxRafStatus)
     public CheckBox checkboxRafStatus;
 
+    @BindView(R.id.checkboxStrp)
+    public CheckBox checkboxStrp;
+
     @BindView(R.id.textViewWorkOrderStatus)
     public TextView textViewWorkOrderStatus;
 }
