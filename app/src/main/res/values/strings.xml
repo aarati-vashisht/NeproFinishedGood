@@ -236,5 +236,6 @@
     <string name="wo_not_found">This work order is not in your warehouse.</string>
     <string name="strp">STRP</string>
     <string name="fend">F. End</string>
+    <string name="logout_confirmation">Are you sure to you want to logout?</string>
 
 </resources>

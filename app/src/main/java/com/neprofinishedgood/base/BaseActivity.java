@@ -59,7 +59,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<UserSiteInfo> userSiteInfoList = new ArrayList<>();
 
     public int scanStillageLength = 8;
-//    public int scanStillageLength = 13;
+    //    public int scanStillageLength = 13;
     public int scanWorkOrderLength = 9;
     public int scanLocationLength = 11;
 
@@ -97,7 +97,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
 
     }
 
-    public boolean isLocationMatched(String wareHouseId){
+    public boolean isLocationMatched(String wareHouseId) {
         for (UserSiteInfo userSiteInfo : userSiteInfoList) {
             if (userSiteInfo.getWareHouse().equals(wareHouseId)) {
                 return true;
@@ -191,14 +191,31 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
 ////                CustomToast.showToast(this, "Clicked On Settings");
 //                return true;
             case R.id.logout_menu:
-                SharedPref.clearPrefs();
-                CustomToast.showToast(this, getResources().getString(R.string.logout_successfully));
-                startActivity(new Intent(this, LoginActivity.class));
-                finishAffinity();
+                logout();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    void logout() {
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.logout_confirmation));
+        builder.setTitle("Confirm Logout");
+        builder.setIcon(R.drawable.ic_logout);
+        builder.setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
+                    SharedPref.clearPrefs();
+                    CustomToast.showToast(this, getResources().getString(R.string.logout_successfully));
+                    startActivity(new Intent(this, LoginActivity.class));
+                    finishAffinity();
+                    dialog.cancel();
+                })
+                .setNegativeButton(getString(R.string.no), (dialog, id) -> {
+                    dialog.cancel();
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     public void showNoInternetAlert() {
