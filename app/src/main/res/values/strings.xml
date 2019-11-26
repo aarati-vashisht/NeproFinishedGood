@@ -39,7 +39,8 @@
     <string name="aisle">Aisle:</string>
     <string name="bin">Bin:</string>
     <string name="rack">Rack:</string>
-    <string name="reject_quantity">QC Process Rejection</string>
+    <string name="reject_quantity_pcs">QC Process Rejection Pcs</string>
+    <string name="reject_quantity_kg">QC Process Rejection Kg</string>
     <string name="reject_quantity_">Reject Quantity</string>
     <string name="reject_complete_stillage">Reject Complete Stillage</string>
     <string name="quality_hold_and_move"><![CDATA[Quality Hold]]></string>
@@ -237,5 +238,9 @@
     <string name="strp">STRP</string>
     <string name="fend">F. End</string>
     <string name="logout_confirmation">Are you sure to you want to logout?</string>
+    <string name="raf_not_posted_reject">RAF is not posted of this stillage.</string>
+    <string name="wo_ended">Work order of this stillage is ended.</string>
+    <string name="create_sticker">Send to Create Sticker</string>
+    <string name="rejection_list">Rejection list to be posted</string>
 
 </resources>
