@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
@@ -71,8 +73,22 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     @BindView(R.id.linearLayoutOfflineData)
     LinearLayout linearLayoutOfflineData;
 
+    @BindView(R.id.linearLayoutAutoPicking)
+    LinearLayout linearLayoutAutoPicking;
+
+    @BindView(R.id.linearLayoutAutoRoute)
+    LinearLayout linearLayoutAutoRoute;
+
     @BindView(R.id.textViewNumberOffline)
     TextView textViewNumberOffline;
+
+    @BindView(R.id.checkBoxAutoPicking)
+    CheckBox checkBoxAutoPicking;
+
+    @BindView(R.id.checkBoxAutoRoute)
+    CheckBox checkBoxAutoRoute;
+
+    String autoRoute = "0", autoPick = "0";
 
     long delay = 1000;
     long scanStillageLastTexxt = 0;
@@ -162,7 +178,12 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
             linearLayoutEnterQuantity.setAnimation(fadeIn);
             linearLayoutButtons.setVisibility(View.VISIBLE);
             linearLayoutButtons.setAnimation(fadeIn);
-
+            if (!body.getwOStatusId().equals("7")) {
+                linearLayoutAutoPicking.setVisibility(View.VISIBLE);
+                linearLayoutAutoPicking.setAnimation(fadeIn);
+                linearLayoutAutoRoute.setVisibility(View.VISIBLE);
+                linearLayoutAutoRoute.setAnimation(fadeIn);
+            }
             stillageLayout.linearLayoutStatus.setVisibility(View.VISIBLE);
             stillageLayout.textViewWorkOrderStatus.setText(body.getWoStatus());
             if (body.getIsCounted().equals("1")) {
@@ -222,25 +243,43 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         reason = reasonList.get(position).getId();
     }
 
+    @OnCheckedChanged(R.id.checkBoxAutoPicking)
+    public void onCheckBoxAutoPickingChanged() {
+        if (checkBoxAutoPicking.isChecked()) {
+            autoPick = "1";
+        } else {
+            autoPick = "0";
+        }
+    }
+
+    @OnCheckedChanged(R.id.checkBoxAutoRoute)
+    public void onCheckBoxAutoRouteChanged() {
+        if (checkBoxAutoRoute.isChecked()) {
+            autoRoute = "1";
+        } else {
+            autoRoute = "0";
+        }
+    }
+
     @OnClick(R.id.buttonConfirm)
     public void onButtonConfirmClick() {
         String variance = textViewVariance.getText().toString();
-        if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
-            if (isValidated()) {
-                if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
-                    showProgress(this);
-                    UpdateQtyInput updateQtyInput = new UpdateQtyInput(editTextScanStillage.getText().toString(), editTextQuantity.getText().toString(), reason, userId, variance);
-                    iUpdateQtyInterface.callUpdateQtyStillageService(updateQtyInput);
-                }else {
-                    showSuccessDialog(getString(R.string.no_internet));
-                }
-            }
-        } else {
-            if (isOfflineValidated()) {
-                UpdateQtyInput updateQtyInput = new UpdateQtyInput(editTextScanStillage.getText().toString(), editTextQuantity.getText().toString(), reason, userId, variance);
-                saveDataOffline(updateQtyInput);
+//        if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
+        if (isValidated()) {
+            if (NetworkChangeReceiver.isInternetConnected(UpdateQuantityActivity.this)) {
+                showProgress(this);
+                UpdateQtyInput updateQtyInput = new UpdateQtyInput(editTextScanStillage.getText().toString(), editTextQuantity.getText().toString(), reason, userId, variance, autoPick, autoRoute);
+                iUpdateQtyInterface.callUpdateQtyStillageService(updateQtyInput);
+            } else {
+                showSuccessDialog(getString(R.string.no_internet));
             }
         }
+//        } else {
+//            if (isOfflineValidated()) {
+//                UpdateQtyInput updateQtyInput = new UpdateQtyInput(editTextScanStillage.getText().toString(), editTextQuantity.getText().toString(), reason, userId, variance);
+//                saveDataOffline(updateQtyInput);
+//            }
+//        }
     }
 
     @OnClick(R.id.buttonCancel)
@@ -260,6 +299,12 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
         linearLayoutEnterQuantity.setAnimation(fadeOut);
         linearLayoutButtons.setVisibility(View.GONE);
         linearLayoutButtons.setAnimation(fadeOut);
+
+        linearLayoutAutoPicking.setVisibility(View.GONE);
+        linearLayoutAutoPicking.setAnimation(fadeOut);
+        linearLayoutAutoRoute.setVisibility(View.GONE);
+        linearLayoutAutoRoute.setAnimation(fadeOut);
+
         editTextScanStillage.setEnabled(true);
         editTextScanStillage.setText("");
         editTextScanStillage.requestFocus();

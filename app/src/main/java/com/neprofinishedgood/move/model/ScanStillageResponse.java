@@ -170,6 +170,10 @@ public class ScanStillageResponse {
     @Expose
     private String sTRP;
 
+    @SerializedName("Prodstatus")
+    @Expose
+    private String wOStatusId;
+
     public String getIsShiped() {
         return isShiped;
     }
@@ -488,5 +492,13 @@ public class ScanStillageResponse {
 
     public void setSTRP(String sTRP) {
         this.sTRP = sTRP;
+    }
+
+    public String getwOStatusId() {
+        return wOStatusId;
+    }
+
+    public void setwOStatusId(String wOStatusId) {
+        this.wOStatusId = wOStatusId;
     }
 }
