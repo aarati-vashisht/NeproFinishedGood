@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -33,6 +34,7 @@ import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
+import com.neprofinishedgood.qualitycheck.model.RejectionListInput;
 import com.neprofinishedgood.qualitycheck.rejectquantity.adapter.RejectionListAdapter;
 import com.neprofinishedgood.qualitycheck.rejectquantity.presenter.IQAPresenter;
 import com.neprofinishedgood.qualitycheck.rejectquantity.presenter.IQAView;
@@ -275,7 +277,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
                 linearLayoutScanDetail.setVisibility(View.GONE);
                 editTextScanStillage.setEnabled(true);
                 editTextScanStillage.setText("");
-
+                cancelClick();
                 if (isKg.equals("0")) {
                     saveRejectionDataListPcs(rejectedInput);
                 } else {
@@ -398,12 +400,13 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         CustomButton buttonRejectPost = dialog.findViewById(R.id.buttonRejectPost);
         RecyclerView recyclerViewLoadingPlans = dialog.findViewById(R.id.recyclerViewRejectionList);
         recyclerViewLoadingPlans.setVisibility(View.VISIBLE);
-
+        ArrayList<RejectedInput> rejectionList;
         if (isKg.equals("0")) {
-            adapter = new RejectionListAdapter(SharedPref.getRejectionDataListPcs());
+            rejectionList = SharedPref.getRejectionDataListPcs();
         } else {
-            adapter = new RejectionListAdapter(SharedPref.getRejectionDataListKg());
+            rejectionList = SharedPref.getRejectionDataListKg();
         }
+        adapter = new RejectionListAdapter(rejectionList);
 
         recyclerViewLoadingPlans.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerViewLoadingPlans.setAdapter(adapter);
@@ -414,11 +417,19 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         });
 
         buttonRejectPost.setOnClickListener(v -> {
+            sendRejectionDataList(rejectionList);
             dialog.cancel();
         });
 
         dialog.show();
 
+    }
+
+    void sendRejectionDataList(ArrayList<RejectedInput> rejectionList){
+        RejectionListInput rejectionListInput = new RejectionListInput(rejectionList, isKg);
+        Gson gson = new Gson();
+        String jsonData = gson.toJson(rejectionListInput);
+        Log.d("json", jsonData);
     }
 
     public void cancelClick() {

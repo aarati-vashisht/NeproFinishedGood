@@ -140,6 +140,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         LayoutInflater mInflater = LayoutInflater.from(this);
         View view = mInflater.inflate(R.layout.action_bar_layout, null);
         textViewTitle = view.findViewById(R.id.textViewTitle);
+        textViewTitle.setSelected(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setCustomView(view);

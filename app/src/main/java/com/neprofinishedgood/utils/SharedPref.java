@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.neprofinishedgood.MyApplication.editor;
+import static com.neprofinishedgood.MyApplication.editor_data;
 import static com.neprofinishedgood.MyApplication.editor_master;
 
 public class SharedPref {
@@ -199,14 +200,14 @@ public class SharedPref {
     public static void saveRejectionDataListPcs(ArrayList<RejectedInput> rejectList) {
         Gson gson = new Gson();
         String jsonData = gson.toJson(rejectList);
-        editor.putString(REJECTION_DATA_LIST_PCS, jsonData);
-        editor.apply();
+        editor_data.putString(REJECTION_DATA_LIST_PCS, jsonData);
+        editor_data.apply();
     }
 
     public static ArrayList<RejectedInput> getRejectionDataListPcs() {
         ArrayList<RejectedInput> rejectList = new ArrayList<>();
         Gson gson = new Gson();
-        String rejectData = MyApplication.sharedPreferences.getString(REJECTION_DATA_LIST_PCS, "");
+        String rejectData = MyApplication.sharedPreferencesData.getString(REJECTION_DATA_LIST_PCS, "");
         if (!rejectData.equals("")) {
             Type type = new TypeToken<ArrayList<RejectedInput>>() {
             }.getType();
@@ -218,14 +219,14 @@ public class SharedPref {
     public static void saveRejectionDataListKg(ArrayList<RejectedInput> rejectList) {
         Gson gson = new Gson();
         String jsonData = gson.toJson(rejectList);
-        editor.putString(REJECTION_DATA_LIST_KG, jsonData);
-        editor.apply();
+        editor_data.putString(REJECTION_DATA_LIST_KG, jsonData);
+        editor_data.apply();
     }
 
     public static ArrayList<RejectedInput> getRejectionDataListKg() {
         ArrayList<RejectedInput> rejectList = new ArrayList<>();
         Gson gson = new Gson();
-        String rejectData = MyApplication.sharedPreferences.getString(REJECTION_DATA_LIST_KG, "");
+        String rejectData = MyApplication.sharedPreferencesData.getString(REJECTION_DATA_LIST_KG, "");
         if (!rejectData.equals("")) {
             Type type = new TypeToken<ArrayList<RejectedInput>>() {
             }.getType();
