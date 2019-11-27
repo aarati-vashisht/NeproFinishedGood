@@ -26,17 +26,18 @@ public class QualityCheckDashboardActivity extends BaseActivity {
         setTitle(getString(R.string.quality_check));
     }
 
-    @OnClick(R.id.linearLayoutRejectQuantity)
+    @OnClick(R.id.linearLayoutRejectPcs)
     public void onLinearLayoutRejectQuantityClick() {
-        startActivity(new Intent(QualityCheckDashboardActivity.this, UpdateQuantityActivity.class)
-                .putExtra(REJECT_TITLE, getString(R.string.reject_quantity)));
-//        startActivity(new Intent(QualityCheckDashboardActivity.this, RejectQuantityActivity.class)
-//                .putExtra(REJECT_TITLE, getString(R.string.reject_quantity)));
+        startActivity(new Intent(QualityCheckDashboardActivity.this, RejectQuantityActivity.class)
+                .putExtra(REJECT_TITLE, getString(R.string.reject_quantity_pcs))
+                .putExtra("IsKg", "0"));
     }
 
-    @OnClick(R.id.linearLayoutRejectCompleteStillage)
+    @OnClick(R.id.linearLayoutRejectKg)
     public void onLinearLayoutRejectCompleteStillageClick() {
-            startActivity(new Intent(QualityCheckDashboardActivity.this, RejectCompleteStillage.class));
+        startActivity(new Intent(QualityCheckDashboardActivity.this, RejectQuantityActivity.class)
+                .putExtra(REJECT_TITLE, getString(R.string.reject_quantity_kg))
+                .putExtra("IsKg", "1"));
     }
 
     @OnClick(R.id.linearLayoutQualityHoldAndMove)

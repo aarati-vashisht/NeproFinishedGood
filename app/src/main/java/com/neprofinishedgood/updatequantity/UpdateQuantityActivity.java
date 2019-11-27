@@ -178,7 +178,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
             linearLayoutEnterQuantity.setAnimation(fadeIn);
             linearLayoutButtons.setVisibility(View.VISIBLE);
             linearLayoutButtons.setAnimation(fadeIn);
-            if (!body.getwOStatusId().equals("7")) {
+            if (body.getwOStatusId()!= 7) {
                 linearLayoutAutoPicking.setVisibility(View.VISIBLE);
                 linearLayoutAutoPicking.setAnimation(fadeIn);
                 linearLayoutAutoRoute.setVisibility(View.VISIBLE);

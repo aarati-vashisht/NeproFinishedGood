@@ -1,18 +1,28 @@
 package com.neprofinishedgood.qualitycheck.rejectquantity;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,11 +37,15 @@ import com.neprofinishedgood.move.MoveStillageActivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.pickandload.PickAndLoadStillageActivity;
+import com.neprofinishedgood.pickandload.model.UpdateLoadInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
+import com.neprofinishedgood.qualitycheck.rejectquantity.adapter.RejectionListAdapter;
 import com.neprofinishedgood.qualitycheck.rejectquantity.presenter.IQAPresenter;
 import com.neprofinishedgood.qualitycheck.rejectquantity.presenter.IQAView;
 import com.neprofinishedgood.qualitycheck.qualityhold.QualityHoldActivity;
 import com.neprofinishedgood.raf.model.StillageList;
+import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
@@ -40,6 +54,7 @@ import com.neprofinishedgood.utils.StillageLayout;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,6 +90,9 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     @BindView(R.id.linearLayout2)
     LinearLayout linearLayoutShift;
 
+    @BindView(R.id.linearLayoutRejectQtyButtons)
+    LinearLayout linearLayoutRejectQtyButtons;
+
     @BindView(R.id.frameEnterQuantity)
     FrameLayout frameEnterQuantity;
 
@@ -91,7 +109,12 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     ScanStillageResponse body;
     private ArrayList<String> shiftList;
 
+    String isKg = "0";
+
     static RejectQuantityActivity instance;
+
+    List<ScanStillageResponse> rejectionDataList;
+    RejectionListAdapter adapter;
 
     public static RejectQuantityActivity getInstance() {
         return instance;
@@ -107,9 +130,11 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         ButterKnife.bind(stillageLayout, stillageDetail);
         String title = getIntent().getStringExtra("REJECT_TITLE");
         setTitle(title);
+        isKg = getIntent().getStringExtra("IsKg");
         iqaInterface = new IQAPresenter(this, this);
         initData();
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+        rejectionDataList = new ArrayList<>();
         callService();
     }
 
@@ -130,7 +155,9 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
                         iqaInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
                     }
                 } else {
-                    setDataOffline();
+                    showSuccessDialog(getString(R.string.no_internet));
+                    editTextScanStillage.setText("");
+//                    setDataOffline();
                 }
             }
         }
@@ -171,12 +198,27 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         hideProgress();
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
-            if (body.getStandardQty() > 0) {
-                isScanned = true;
-                setData(body);
-            }else{
-                showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+            if (isLocationMatched(body.getWareHouseID())) {
+                if (body.getStandardQty() > 0) {
+                    if (body.getwOStatusId() != 7) {
+                        if (body.getIsCounted().equals("1")) {
+                            isScanned = true;
+                            setData(body);
+                        } else {
+                            showSuccessDialog(getResources().getString(R.string.raf_not_posted_reject));
+                            editTextScanStillage.setText("");
+                        }
+                    } else {
+                        showSuccessDialog(getResources().getString(R.string.wo_ended));
+                        editTextScanStillage.setText("");
+                    }
+                } else {
+                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                    editTextScanStillage.setText("");
+                }
+            } else {
                 editTextScanStillage.setText("");
+                showSuccessDialog(getResources().getString(R.string.stillage_not_found));
             }
         } else {
             showSuccessDialog(body.getMessage());
@@ -228,6 +270,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         this.body = body;
         isHold = body.getIsHold();
         linearLayoutScanDetail.setVisibility(View.VISIBLE);
+        linearLayoutRejectQtyButtons.setVisibility(View.VISIBLE);
         editTextScanStillage.setEnabled(false);
         stillageLayout.textViewitem.setText(body.getItemId());
         stillageLayout.textViewQuantity.setText(body.getStandardQty() + "");
@@ -243,20 +286,23 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
 
     @OnTextChanged(value = R.id.editTextRejectQuantity, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextRejectQuantityChanged(Editable text) {
-        if (!text.toString().equals("") && !text.toString().equals(".")) {
-            float rejectQty = round(Float.parseFloat(text.toString().trim()));
-            float stillageQty = round(Float.parseFloat((this.body.getStandardQty() + "").trim()));
-            if (rejectQty > stillageQty) {
-                editTextRejectQuantity.setText("");
-                showSuccessDialog("Reject quantity must be less than stillage quantity!");
-                editTextRejectQuantity.requestFocus();
+        try {
+            if (!text.toString().equals("") && !text.toString().equals(".")) {
+                float rejectQty = round(Float.parseFloat(text.toString().trim()));
+                float stillageQty = round(Float.parseFloat((this.body.getStandardQty() + "").trim()));
+                if (rejectQty > stillageQty) {
+                    editTextRejectQuantity.setText("");
+                    showSuccessDialog("Reject quantity must be less than stillage quantity!");
+                    editTextRejectQuantity.requestFocus();
+                    buttonReject.setEnabled(false);
+                } else {
+                    buttonReject.setEnabled(true);
+                }
+            } else {
                 buttonReject.setEnabled(false);
-            }else {
-                buttonReject.setEnabled(true);
             }
-        }
-        else{
-            buttonReject.setEnabled(false);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
     }
 
@@ -282,10 +328,46 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         showCancelAlert(2);
     }
 
-    public void cancelClick(){
+    @OnClick(R.id.buttonViewList)
+    public void onButtonViewListClick() {
+        alertDialogForQuantity(this);
+    }
+
+    public void alertDialogForQuantity(Context context) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.custom_alert_rejection_list);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        ImageView imgCloseList = dialog.findViewById(R.id.imgCloseList);
+        CustomButton buttonRejectPost = dialog.findViewById(R.id.buttonRejectPost);
+        RecyclerView recyclerViewLoadingPlans = dialog.findViewById(R.id.recyclerViewRejectionList);
+        recyclerViewLoadingPlans.setVisibility(View.VISIBLE);
+
+        adapter = new RejectionListAdapter(rejectionDataList);
+        recyclerViewLoadingPlans.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerViewLoadingPlans.setAdapter(adapter);
+        recyclerViewLoadingPlans.setHasFixedSize(true);
+
+        imgCloseList.setOnClickListener(v -> {
+            dialog.cancel();
+        });
+
+        buttonRejectPost.setOnClickListener(v -> {
+            dialog.cancel();
+        });
+
+        dialog.show();
+
+    }
+
+    public void cancelClick() {
         isScanned = false;
         linearLayoutScanDetail.setVisibility(View.GONE);
         linearLayoutScanDetail.setAnimation(fadeOut);
+        linearLayoutRejectQtyButtons.setVisibility(View.GONE);
+        linearLayoutRejectQtyButtons.setAnimation(fadeOut);
         editTextScanStillage.setText("");
         editTextScanStillage.setEnabled(true);
         spinnerRejectReason.setSelection(0);
@@ -346,7 +428,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         }
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         if (isScanned) {
             showBackAlert(null, false);
         } else {
