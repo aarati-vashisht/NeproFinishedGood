@@ -4,21 +4,19 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
+import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,29 +28,21 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
-import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
-import com.neprofinishedgood.move.MoveActivity;
-import com.neprofinishedgood.move.MoveStillageActivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
-import com.neprofinishedgood.pickandload.PickAndLoadStillageActivity;
-import com.neprofinishedgood.pickandload.model.UpdateLoadInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.rejectquantity.adapter.RejectionListAdapter;
 import com.neprofinishedgood.qualitycheck.rejectquantity.presenter.IQAPresenter;
 import com.neprofinishedgood.qualitycheck.rejectquantity.presenter.IQAView;
 import com.neprofinishedgood.qualitycheck.qualityhold.QualityHoldActivity;
-import com.neprofinishedgood.raf.model.StillageList;
-import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,16 +95,16 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     long scanStillageLastTexxt = 0;
     long delay = 1500;
     private IQAPresenter iqaInterface;
-    private String isHold, reason, shift;
+    private String isHold, reason, shift, reasonName;
     ScanStillageResponse body;
     private ArrayList<String> shiftList;
 
-    String isKg = "0";
+    String isKg = "0", workOrderNo = "";
 
     static RejectQuantityActivity instance;
 
-    List<ScanStillageResponse> rejectionDataList;
     RejectionListAdapter adapter;
+    RejectedInput rejectedInput;
 
     public static RejectQuantityActivity getInstance() {
         return instance;
@@ -134,7 +124,13 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         iqaInterface = new IQAPresenter(this, this);
         initData();
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
-        rejectionDataList = new ArrayList<>();
+
+        if (isKg.equals("0")) {
+            editTextRejectQuantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
+        } else {
+            editTextRejectQuantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        }
+
         callService();
     }
 
@@ -150,9 +146,11 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
 //            scanStillagehandler.postDelayed(stillageRunnable, delay);
             if (text.toString().trim().length() == scanStillageLength) {
                 if (NetworkChangeReceiver.isInternetConnected(RejectQuantityActivity.this)) {
-                    showProgress(RejectQuantityActivity.this);
-                    if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
-                        iqaInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                    if (isScanValidated(editTextScanStillage.getText().toString().trim())) {
+                        showProgress(RejectQuantityActivity.this);
+                        if (System.currentTimeMillis() > (scanStillageLastTexxt + delay - 500)) {
+                            iqaInterface.callScanStillageService(new MoveInput(editTextScanStillage.getText().toString().trim(), userId));
+                        }
                     }
                 } else {
                     showSuccessDialog(getString(R.string.no_internet));
@@ -162,6 +160,37 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
             }
         }
 
+    }
+
+    boolean isScanValidated(String stillageNo) {
+        ArrayList<RejectedInput> rejectedInputsPcs = SharedPref.getRejectionDataListPcs();
+        ArrayList<RejectedInput> rejectedInputsKg = SharedPref.getRejectionDataListKg();
+
+        if (isKg.equals("0")) {
+            if (rejectedInputsPcs.size() >= 50) {
+                showSuccessDialog(getResources().getString(R.string.rejection_list_full));
+                return false;
+            }
+        } else {
+            if (rejectedInputsKg.size() >= 50) {
+                showSuccessDialog(getResources().getString(R.string.rejection_list_full));
+                return false;
+            }
+        }
+
+        for (RejectedInput rejectedInput : rejectedInputsPcs) {
+            if (rejectedInput.getStickerNo().equals(stillageNo)) {
+                showSuccessDialog(getResources().getString(R.string.rejected_in_pcs));
+                return false;
+            }
+        }
+        for (RejectedInput rejectedInput : rejectedInputsKg) {
+            if (rejectedInput.getStickerNo().equals(stillageNo)) {
+                showSuccessDialog(getResources().getString(R.string.rejected_in_kg));
+                return false;
+            }
+        }
+        return true;
     }
 
 //    @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.TEXT_CHANGED)
@@ -184,7 +213,6 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
 //            }
 //        }
 //    };
-
 
     @Override
     public void onFailure(String message) {
@@ -244,10 +272,16 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
             if (body.getStatus().equals(getResources().getString(R.string.success))) {
                 isScanned = false;
                 showSuccessDialog(body.getMessage());
-//                CustomToast.showToast(getApplicationContext(), getString(R.string.items_rejected_successfully));
                 linearLayoutScanDetail.setVisibility(View.GONE);
                 editTextScanStillage.setEnabled(true);
                 editTextScanStillage.setText("");
+
+                if (isKg.equals("0")) {
+                    saveRejectionDataListPcs(rejectedInput);
+                } else {
+                    saveRejectionDataListKg(rejectedInput);
+                }
+
                 if (isHold.equals("1")) {
                     String SELECTED_STILLAGE = new Gson().toJson(this.body, ScanStillageResponse.class);
                     startActivity(new Intent(this, QualityHoldActivity.class).putExtra(Constants.SELECTED_STILLAGE, SELECTED_STILLAGE));
@@ -261,12 +295,27 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         spinnerRejectReason.setSelection(0);
     }
 
+    void saveRejectionDataListPcs(RejectedInput data) {
+        ArrayList<RejectedInput> rejectList = SharedPref.getRejectionDataListPcs();
+        rejectList.add(data);
+        SharedPref.saveRejectionDataListPcs(rejectList);
+    }
+
+    void saveRejectionDataListKg(RejectedInput data) {
+        ArrayList<RejectedInput> rejectList = SharedPref.getRejectionDataListKg();
+        rejectList.add(data);
+        SharedPref.saveRejectionDataListKg(rejectList);
+    }
+
     @OnItemSelected(R.id.spinnerReason)
     public void spinnerBinSelected(Spinner spinner, int position) {
         reason = reasonList.get(position).getId();
+        reasonName = reasonList.get(position).getName();
     }
 
     void setData(ScanStillageResponse body) {
+        workOrderNo = body.getWorkOrderNo();
+
         this.body = body;
         isHold = body.getIsHold();
         linearLayoutScanDetail.setVisibility(View.VISIBLE);
@@ -277,8 +326,14 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         stillageLayout.textViewitemDesc.setText(body.getDescription());
         stillageLayout.textViewStdQuantity.setText(body.getItemStdQty() + "");
         stillageLayout.textViewNumber.setText(body.getStickerID());
-        editTextRejectQuantity.setText(body.getStandardQty() + "");
-        editTextRejectQuantity.setSelection((body.getStandardQty() + "").length());
+        if (isKg.equals("0")) {
+            int standardQty = (int) body.getStandardQty();
+            editTextRejectQuantity.setText(standardQty + "");
+            editTextRejectQuantity.setSelection((standardQty + "").length());
+        } else {
+            editTextRejectQuantity.setText(body.getStandardQty() + "");
+            editTextRejectQuantity.setSelection((body.getStandardQty() + "").length());
+        }
         editTextRejectQuantity.requestFocus();
         setSpinnerShiftData();
 
@@ -311,16 +366,15 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         if (linearLayoutOfflineData.getVisibility() == View.GONE) {
             if (isValidated()) {
                 showProgress(this);
-                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, editTextRejectQuantity.getText().toString().trim(), reason, shift);
+                rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, editTextRejectQuantity.getText().toString().trim(), reason, reasonName, shift, isKg, workOrderNo);
                 iqaInterface.callUpdateRejectedService(rejectedInput);
             }
         } else {
             if (isOfflineValidated()) {
-                RejectedInput rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, editTextRejectQuantity.getText().toString().trim(), reason, shift);
+                rejectedInput = new RejectedInput(editTextScanStillage.getText().toString().trim(), userId, editTextRejectQuantity.getText().toString().trim(), reason, reasonName, shift, isKg, workOrderNo);
                 saveDataOffline(rejectedInput);
             }
         }
-
     }
 
     @OnClick(R.id.buttonCancel)
@@ -345,7 +399,12 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         RecyclerView recyclerViewLoadingPlans = dialog.findViewById(R.id.recyclerViewRejectionList);
         recyclerViewLoadingPlans.setVisibility(View.VISIBLE);
 
-        adapter = new RejectionListAdapter(rejectionDataList);
+        if (isKg.equals("0")) {
+            adapter = new RejectionListAdapter(SharedPref.getRejectionDataListPcs());
+        } else {
+            adapter = new RejectionListAdapter(SharedPref.getRejectionDataListKg());
+        }
+
         recyclerViewLoadingPlans.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerViewLoadingPlans.setAdapter(adapter);
         recyclerViewLoadingPlans.setHasFixedSize(true);

@@ -6,6 +6,7 @@ import com.neprofinishedgood.MyApplication;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
 import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.productionjournal.model.PickingListDatum;
+import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.updatequantity.model.UpdateQtyInput;
 
 import java.lang.reflect.Type;
@@ -29,6 +30,8 @@ public class SharedPref {
     private static String LOADING_PLAN_DETAIL_LIST = "LOADING_PLAN_DETAIL_LIST";
     private static String UPDATE_DATA = "UPDATE_DATA";
     private static String PICKING_LIST_DATA = "PICKING_LIST_DATA";
+    private static String REJECTION_DATA_LIST_PCS = "REJECTION_DATA_LIST_PCS";
+    private static String REJECTION_DATA_LIST_KG = "REJECTION_DATA_LIST_KG";
 
 
     public static void saveLoginUSer(String loginData) {
@@ -192,4 +195,43 @@ public class SharedPref {
         }
         return pickingLists;
     }
+
+    public static void saveRejectionDataListPcs(ArrayList<RejectedInput> rejectList) {
+        Gson gson = new Gson();
+        String jsonData = gson.toJson(rejectList);
+        editor.putString(REJECTION_DATA_LIST_PCS, jsonData);
+        editor.apply();
+    }
+
+    public static ArrayList<RejectedInput> getRejectionDataListPcs() {
+        ArrayList<RejectedInput> rejectList = new ArrayList<>();
+        Gson gson = new Gson();
+        String rejectData = MyApplication.sharedPreferences.getString(REJECTION_DATA_LIST_PCS, "");
+        if (!rejectData.equals("")) {
+            Type type = new TypeToken<ArrayList<RejectedInput>>() {
+            }.getType();
+            rejectList = gson.fromJson(rejectData, type);
+        }
+        return rejectList;
+    }
+
+    public static void saveRejectionDataListKg(ArrayList<RejectedInput> rejectList) {
+        Gson gson = new Gson();
+        String jsonData = gson.toJson(rejectList);
+        editor.putString(REJECTION_DATA_LIST_KG, jsonData);
+        editor.apply();
+    }
+
+    public static ArrayList<RejectedInput> getRejectionDataListKg() {
+        ArrayList<RejectedInput> rejectList = new ArrayList<>();
+        Gson gson = new Gson();
+        String rejectData = MyApplication.sharedPreferences.getString(REJECTION_DATA_LIST_KG, "");
+        if (!rejectData.equals("")) {
+            Type type = new TypeToken<ArrayList<RejectedInput>>() {
+            }.getType();
+            rejectList = gson.fromJson(rejectData, type);
+        }
+        return rejectList;
+    }
+
 }
