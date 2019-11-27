@@ -39,6 +39,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/header"
         android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="50dp">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -48,7 +50,7 @@
             android:background="@android:color/transparent"
             android:layoutAnimation="@anim/layout_animation_fall_down"
             app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/stillage_layout" />
+            tools:listitem="@layout/rejection_list_layout" />
 
     </LinearLayout>
 
