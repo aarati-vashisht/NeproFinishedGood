@@ -93,6 +93,9 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @BindView(R.id.buttonStart)
     CustomButton buttonStart;
 
+    @BindView(R.id.buttonFinEnd)
+    CustomButton buttonFinEnd;
+
     @BindView(R.id.buttonEnd)
     CustomButton buttonEnd;
 
@@ -297,6 +300,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                     checkBoxAutoRoute.setChecked(false);
                     editTextPartialQty.setText(String.format("%s", maxStartQty));
                     getStartQty = body.getQuantity();
+                    buttonFinEnd.setEnabled(false);
                     buttonEnd.setEnabled(false);
                     buttonStart.setEnabled(true);
                     linearLayoutEndQuantities.setVisibility(View.GONE);
@@ -306,6 +310,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
 
                     linearLayoutEndQuantities.setVisibility(View.GONE);
                     buttonStart.setEnabled(false);
+                    buttonFinEnd.setEnabled(false);
                     buttonEnd.setEnabled(false);
                 }
             } else if ((body.getStatusId().equals("5"))) {
@@ -313,6 +318,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                 linearLayoutRoutePick.setVisibility(View.GONE);
                 linearLayoutStartQty.setVisibility(View.GONE);
 
+                buttonFinEnd.setEnabled(true);
                 buttonEnd.setEnabled(true);
                 buttonStart.setEnabled(false);
 
@@ -347,6 +353,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
 
                 linearLayoutEndQuantities.setVisibility(View.GONE);
                 buttonStart.setEnabled(false);
+                buttonFinEnd.setEnabled(false);
                 buttonEnd.setEnabled(false);
             }
         } catch (Exception e) {
@@ -418,11 +425,20 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         }
     }
 
-    @OnClick(R.id.buttonEnd)
-    public void onButtonEndClick() {
+    @OnClick(R.id.buttonFinEnd)
+    public void onButtonFinEndClick() {
         if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
             showProgress(this);
             iWorkOrderStartEndInterface.callWorkOrderEndService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, "", "", ""));
+        } else {
+            showSuccessDialog(getString(R.string.no_internet));
+        }
+    }
+
+    @OnClick(R.id.buttonEnd)
+    public void onButtonEndClick() {
+        if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
+
         } else {
             showSuccessDialog(getString(R.string.no_internet));
         }
