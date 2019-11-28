@@ -249,5 +249,7 @@
     <string name="rejection_list_full">Please send rejection list to create sticker as \'Rejection List\' is full</string>
     <string name="view_rejection_list">View Rejection List</string>
     <string name="fin_end">Fin. End</string>
+    <string name="assign_planned_transfer">Assign Planned Transfer</string>
+    <string name="assign_flt_">Assign Flt</string>
 
 </resources>
