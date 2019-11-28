@@ -236,17 +236,18 @@
     <string name="stillage_not_found">This stillage is not in your warehouse.</string>
     <string name="wo_not_found">This work order is not in your warehouse.</string>
     <string name="strp">STRP</string>
-    <string name="fend">F. End</string>
     <string name="logout_confirmation">Are you sure to you want to logout?</string>
     <string name="raf_not_posted_reject">RAF is not posted of this stillage.</string>
     <string name="wo_ended">Work order of this stillage is ended.</string>
-    <string name="create_sticker">Send to Create Sticker</string>
+    <string name="create_sticker">Send List to Create Stickers</string>
     <string name="rejection_list">Rejection list to be posted</string>
     <string name="shift_">Shift:</string>
     <string name="reason_">Reason:</string>
-    <string name="reject_quantity">Reject Quantity:</string>
+    <string name="reject_quantity">Rejected Quantity:</string>
     <string name="rejected_in_pcs">This stillage is already rejected in \'QC Process Rejection Pcs.\' but not sent to create stickers</string>
     <string name="rejected_in_kg">This stillage is already rejected in \'QC Process Rejection Kg\' but not sent to create stickers</string>
     <string name="rejection_list_full">Please send rejection list to create sticker as \'Rejection List\' is full</string>
+    <string name="view_rejection_list">View Rejection List</string>
+    <string name="fin_end">Fin. End</string>
 
 </resources>

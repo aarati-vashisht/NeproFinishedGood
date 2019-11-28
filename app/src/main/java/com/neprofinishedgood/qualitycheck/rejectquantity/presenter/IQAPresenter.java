@@ -9,6 +9,7 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
+import com.neprofinishedgood.qualitycheck.model.RejectionListInput;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,6 +72,33 @@ public class IQAPresenter implements IQAInterface {
 
     @Override
     public void getUpdateRejectedResponse(UniversalResponse body) {
+        if (body == null) {
+            iqaView.onUpdateRejectedFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            iqaView.onUpdateRejectedSuccess(body);
+        }
+    }
+
+    @Override
+    public void callUpdateRejectedListService(RejectionListInput rejectionListInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.updateCompleteRejectedStillage(rejectionListInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getUpdateRejectedListResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getUpdateRejectedListResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getUpdateRejectedListResponse(UniversalResponse body) {
         if (body == null) {
             iqaView.onUpdateRejectedFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {

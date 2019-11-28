@@ -282,7 +282,7 @@
         android:layout_marginEnd="30dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
-        android:text="View Rejections List"
+        android:text="@string/view_rejection_list"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="12sp" />

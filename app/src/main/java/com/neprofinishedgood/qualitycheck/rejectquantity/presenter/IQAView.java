@@ -11,4 +11,8 @@ public interface IQAView {
     void onUpdateRejectedFailure(String message);
 
     void onUpdateRejectedSuccess(UniversalResponse body);
+
+    void onUpdateRejectionListFailure(String message);
+
+    void onUpdateRejectionListSuccess(UniversalResponse body);
 }

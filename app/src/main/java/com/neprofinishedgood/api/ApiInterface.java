@@ -27,6 +27,7 @@ import com.neprofinishedgood.productionjournal.model.WorkOrderResponse;
 import com.neprofinishedgood.qualitycheck.model.QualityInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedCompleteInput;
 import com.neprofinishedgood.qualitycheck.model.RejectedInput;
+import com.neprofinishedgood.qualitycheck.model.RejectionListInput;
 import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
 import com.neprofinishedgood.raf.model.RafInput;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
@@ -172,4 +173,8 @@ public interface ApiInterface {
 
     @POST("ScanTransferStillage")
     Call<ScanStillageResponse> scanTransferStillage(@Body MoveInput moveInput);
+
+    @POST("CompleteRejectedStillage")
+    Call<UniversalResponse> updateCompleteRejectedStillage(@Body RejectionListInput rejectionListInput);
+
 }
