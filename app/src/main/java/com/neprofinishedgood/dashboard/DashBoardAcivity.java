@@ -7,6 +7,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.assign.AssignActivity;
+import com.neprofinishedgood.assigntransfer.AssignTransferActivity;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.productionjournal.ProductionJournal;
 import com.neprofinishedgood.qualitycheck.rejectquantity.RejectQuantityActivity;
@@ -103,6 +104,15 @@ public class DashBoardAcivity extends BaseActivity {
 //            CustomToast.showToast(getApplicationContext(), "You Don't Have right to Access It");
         } else {
             startActivity(new Intent(this, PickAndLoadActivity.class));
+        }
+    }
+
+    @OnClick(R.id.linearLayoutAssignTransfer)
+    public void onlinearLayoutAssignTransferClick() {
+        if (loginResponse.getUserLoginResponse().get(0).getIsReturnStillage() == 0) {
+            showSuccessDialog("You don't have right to access it");
+        } else {
+            startActivity(new Intent(this, AssignTransferActivity.class));
         }
     }
 

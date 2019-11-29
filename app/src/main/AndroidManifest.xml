@@ -11,14 +11,17 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
+            android:name=".assigntransfer.AssignTransferActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".workorderstartend.WorkOrderStartEndActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".productionjournal.ProductionJournal"
             android:screenOrientation="portrait" />
@@ -69,8 +72,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".dashboard.DashBoardAcivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait" />
