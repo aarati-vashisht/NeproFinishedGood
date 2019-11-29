@@ -100,9 +100,9 @@ public class IQAPresenter implements IQAInterface {
     @Override
     public void getUpdateRejectedListResponse(UniversalResponse body) {
         if (body == null) {
-            iqaView.onUpdateRejectedFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+            iqaView.onUpdateRejectionListFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
-            iqaView.onUpdateRejectedSuccess(body);
+            iqaView.onUpdateRejectionListSuccess(body);
         }
     }
 

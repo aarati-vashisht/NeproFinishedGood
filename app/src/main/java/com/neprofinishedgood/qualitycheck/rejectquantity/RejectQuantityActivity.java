@@ -306,18 +306,17 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     @Override
     public void onUpdateRejectionListSuccess(UniversalResponse body) {
         hideProgress();
-        if (linearLayoutScanDetail.getVisibility() == View.VISIBLE) {
-            if (body.getStatus().equals(getResources().getString(R.string.success))) {
-                showSuccessDialog(body.getMessage());
-                if(isKg.equals("0")){
-                    deleteRejectionDataListPcs();
-                }else{
-                    deleteRejectionDataListKg();
-                }
+        if (body.getStatus().equals(getResources().getString(R.string.success))) {
+            showSuccessDialog(body.getMessage());
+            if (isKg.equals("0")) {
+                deleteRejectionDataListPcs();
             } else {
-                showSuccessDialog(body.getMessage());
+                deleteRejectionDataListKg();
             }
+        } else {
+            showSuccessDialog(body.getMessage());
         }
+
     }
 
     void deleteRejectionDataListPcs() {
@@ -447,6 +446,12 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         recyclerViewLoadingPlans.setAdapter(adapter);
         recyclerViewLoadingPlans.setHasFixedSize(true);
 
+        if (rejectionList.size() == 0) {
+            buttonRejectPost.setEnabled(false);
+        } else {
+            buttonRejectPost.setEnabled(true);
+        }
+
         imgCloseList.setOnClickListener(v -> {
             dialog.cancel();
         });
@@ -462,11 +467,11 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
 
     void sendRejectionDataList(ArrayList<RejectedInput> rejectionList) {
         RejectionListInput rejectionListInput = new RejectionListInput(rejectionList, isKg);
-//        showProgress(this);
-//        iqaInterface.callUpdateRejectedListService(rejectionListInput);
-        Gson gson = new Gson();
-        String jsonData = gson.toJson(rejectionListInput);
-        Log.d("json", jsonData);
+        showProgress(this);
+        iqaInterface.callUpdateRejectedListService(rejectionListInput);
+//        Gson gson = new Gson();
+//        String jsonData = gson.toJson(rejectionListInput);
+//        Log.d("json", jsonData);
     }
 
     public void cancelClick() {

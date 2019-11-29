@@ -132,13 +132,13 @@ public class SharedPref {
     }
 
     public static void saveLoadinGplanList(String saveLoadingPlanListData) {
-        editor.putString(LOADING_PLAN_LIST, saveLoadingPlanListData);
-        editor.apply();
+        editor_data.putString(LOADING_PLAN_LIST, saveLoadingPlanListData);
+        editor_data.apply();
     }
 
     public static List<ScanLoadingPlanList> getLoadinGplanList() {
         List<ScanLoadingPlanList> scanLoadingPlanList = new ArrayList<>();
-        String data = MyApplication.sharedPreferences.getString(LOADING_PLAN_LIST, "");
+        String data = MyApplication.sharedPreferencesData.getString(LOADING_PLAN_LIST, "");
         if (!data.equals("")) {
             Type type = new TypeToken<ArrayList<ScanLoadingPlanList>>() {
             }.getType();
@@ -148,13 +148,13 @@ public class SharedPref {
     }
 
     public static void saveLoadinGplanDetailList(String saveLoadingPlanListData) {
-        editor.putString(LOADING_PLAN_DETAIL_LIST, saveLoadingPlanListData);
-        editor.apply();
+        editor_data.putString(LOADING_PLAN_DETAIL_LIST, saveLoadingPlanListData);
+        editor_data.apply();
     }
 
     public static List<LoadingPlanList> getLoadinGplanDetailList() {
         List<LoadingPlanList> loadingPlanLists = new ArrayList<>();
-        String data = MyApplication.sharedPreferences.getString(LOADING_PLAN_DETAIL_LIST, "");
+        String data = MyApplication.sharedPreferencesData.getString(LOADING_PLAN_DETAIL_LIST, "");
         if (!data.equals("")) {
             Type type = new TypeToken<ArrayList<LoadingPlanList>>() {
             }.getType();
