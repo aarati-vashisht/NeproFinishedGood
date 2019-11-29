@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.assigntransfer.AssignTransferActivity;
+import com.neprofinishedgood.assigntransfer.model.AssignTransInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.transferstillage.TransferStillageActivity;
 
@@ -30,10 +32,17 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
 
     public boolean lockDelete = false;
+    boolean isAssignTrans = false;
 
     public TransferAdapter(List<ScanStillageResponse> pickingListDatumList) {
         this.stillageDetailsList = pickingListDatumList;
         this.stillageDetailsListFiltered = pickingListDatumList;
+    }
+
+    public TransferAdapter(List<ScanStillageResponse> pickingListDatumList, boolean isAssign) {
+        this.stillageDetailsList = pickingListDatumList;
+        this.stillageDetailsListFiltered = pickingListDatumList;
+        isAssignTrans = isAssign;
     }
 
     @Override
@@ -124,7 +133,11 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
             if (v == cardView) {
 
             } else if (v == back_layout) {
-                TransferStillageActivity.getInstance().deleteAddedData(getAdapterPosition());
+                if (isAssignTrans) {
+                    AssignTransferActivity.getInstance().deleteAddedData(getAdapterPosition());
+                } else {
+                    TransferStillageActivity.getInstance().deleteAddedData(getAdapterPosition());
+                }
             }
         }
     }

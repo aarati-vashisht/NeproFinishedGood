@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
     android:background="@color/background_color"
     android:orientation="vertical"
@@ -41,6 +41,114 @@
 
         </LinearLayout>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cardview_background"
+            android:elevation="2dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cardview_background"
+                android:elevation="2dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/transfer_details"
+                    android:textStyle="bold"
+                    android:padding="5dp"
+                    android:textAlignment="center"
+                    android:background="@color/colorPrimaryDark"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/transfer_type"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textViewTransType"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/to_site"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textViewToSite"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/to_warehouse_"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/textViewToWarehouse"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
         <RelativeLayout
             android:id="@+id/relativeLayoutScanDetail"
             android:layout_width="match_parent"
@@ -52,7 +160,6 @@
                 android:id="@+id/linearLayoutRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
                 android:layout_marginBottom="50dp">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -81,11 +188,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:background="@drawable/button_ripple_effect"
+                    android:enabled="false"
                     android:gravity="center"
                     android:text="@string/assign_flt_"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:enabled="false"
                     android:textSize="12sp" />
 
                 <com.neprofinishedgood.custom_views.CustomButton
@@ -94,9 +201,9 @@
                     android:layout_height="35dp"
                     android:layout_marginStart="20dp"
                     android:background="@drawable/button_ripple_effect"
+                    android:enabled="false"
                     android:gravity="center"
                     android:text="@string/cancel"
-                    android:enabled="false"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="12sp" />

@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">FG Tracking App</string>
-    <string name="enter_pin">Enter Pin:</string>
+    <string name="app_name">FG Tracking</string>
+    <string name="enter_pin">Please enter user login pin:</string>
     <string name="login">Login</string>
-    <string name="plz_enter_pin">Please Enter Login Pin</string>
+    <string name="plz_enter_pin">Please enter user login pin.</string>
     <string name="invalid_pin">Invalid Pin</string>
-    <string name="login_successfully">Logged in successfully</string>
+    <string name="login_successfully">Logged in successfully!!!</string>
     <string name="move">Move</string>
     <string name="reportasfinished">RAF</string>
     <string name="quality_check">Quality Check</string>
@@ -93,7 +93,7 @@
     <string name="put_away_location">Move Location</string>
     <string name="loading_plan">Loading Plan:</string>
     <string name="customer">Customer:</string>
-    <string name="logout_successfully">Logout Successfully</string>
+    <string name="logout_successfully">Logged Out Successfully!!!</string>
     <string name="scan_loading_plan">Scan Loading Plan:</string>
     <string name="trucknumber">Truck Number:</string>
     <string name="truckdriver">Truck Driver:</string>
@@ -236,7 +236,7 @@
     <string name="stillage_not_found">This stillage is not in your warehouse.</string>
     <string name="wo_not_found">This work order is not in your warehouse.</string>
     <string name="strp">STRP</string>
-    <string name="logout_confirmation">Are you sure to you want to logout?</string>
+    <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="raf_not_posted_reject">RAF is not posted of this stillage.</string>
     <string name="wo_ended">Work order of this stillage is ended.</string>
     <string name="create_sticker">Send List to Create Stickers</string>
@@ -250,6 +250,10 @@
     <string name="view_rejection_list">View Rejection List</string>
     <string name="fin_end">Fin. End</string>
     <string name="assign_planned_transfer">Assign Planned Transfer</string>
-    <string name="assign_flt_">Assign Flt</string>
+    <string name="assign_flt_">Assign FLT</string>
+    <string name="transfer_details">Transfer Details</string>
+    <string name="transfer_type">Transfer Type:</string>
+    <string name="to_site">To Site:</string>
+    <string name="to_warehouse_">To WareHouse:</string>
 
 </resources>

@@ -30,12 +30,23 @@
             android:layout_marginTop="135dp"
             android:background="@mipmap/app_logo" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/welcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="10sp"
             android:layout_below="@+id/imageViewAppLogo"
-            android:layout_centerInParent="true"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Welcome to NEPROPLAST FG Tracking Application"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/welcome"
+            android:layout_centerInParent="true"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:orientation="vertical">
@@ -49,31 +60,57 @@
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <com.chaos.view.PinView
-                android:id="@+id/pinViewLogin"
-                style="@style/PinWidget.PinView"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:cursorVisible="true"
-                android:gravity="center"
-                android:hint=""
-                android:inputType="number"
-                android:itemBackground="@drawable/right_side_drawable"
-                android:padding="3dp"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:cursorColor="@color/colorPrimary"
-                app:cursorWidth="2dp"
-                app:hideLineWhenFilled="true"
-                app:itemCount="4"
-                app:itemHeight="30dp"
-                app:itemRadius="2dp"
-                app:itemSpacing="2dp"
-                app:itemWidth="30dp"
-                app:lineColor="@color/transparentbuttonColor"
-                app:lineWidth="2dp"
-                app:viewType="rectangle" />
+                android:layout_marginTop="10dp">
+
+                <com.chaos.view.PinView
+                    android:id="@+id/pinViewLogin"
+                    style="@style/PinWidget.PinView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="true"
+                    android:gravity="center"
+                    android:hint=""
+                    android:inputType="numberPassword"
+                    android:itemBackground="@drawable/right_side_drawable"
+                    android:padding="3dp"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:cursorColor="@color/colorPrimary"
+                    app:cursorWidth="2dp"
+                    app:hideLineWhenFilled="true"
+                    app:itemCount="4"
+                    app:itemHeight="30dp"
+                    app:itemRadius="2dp"
+                    app:itemSpacing="2dp"
+                    app:itemWidth="30dp"
+                    android:layout_centerHorizontal="true"
+                    app:lineColor="@color/transparentbuttonColor"
+                    app:lineWidth="2dp"
+                    app:viewType="rectangle" />
+
+                <ImageView
+                    android:id="@+id/imgShowPass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/show_password"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@+id/pinViewLogin"
+                    android:layout_centerVertical="true"/>
+
+                <ImageView
+                    android:id="@+id/imgHidePass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/hide_password"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@+id/pinViewLogin"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/buttonLogin"

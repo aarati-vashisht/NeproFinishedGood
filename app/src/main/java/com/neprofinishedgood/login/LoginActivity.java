@@ -2,7 +2,10 @@ package com.neprofinishedgood.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -33,6 +36,10 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     PinView pinViewLogin;
     @BindView(R.id.coordinateLayout)
     CoordinatorLayout coordinateLayout;
+    @BindView(R.id.imgShowPass)
+    ImageView imgShowPass;
+    @BindView(R.id.imgHidePass)
+    ImageView imgHidePass;
     ILoginInterface iLoginInterface;
 
     public static LoginActivity getInstance() {
@@ -74,6 +81,20 @@ public class LoginActivity extends BaseActivity implements ILoginView {
         }
         return true;
 
+    }
+
+    @OnClick(R.id.imgShowPass)
+    void onShowPassClick(){
+        pinViewLogin.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
+        imgShowPass.setVisibility(View.GONE);
+        imgHidePass.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.imgHidePass)
+    void onHidePassClick(){
+        pinViewLogin.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        imgShowPass.setVisibility(View.VISIBLE);
+        imgHidePass.setVisibility(View.GONE);
     }
 
     @Override

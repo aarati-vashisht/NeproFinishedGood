@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.neprofinishedgood.R;
+import com.neprofinishedgood.assigntransfer.AssignTransferActivity;
 import com.neprofinishedgood.base.model.LocationList;
 import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalSpinner;
@@ -57,6 +58,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<UniversalSpinner> warehouseList = new ArrayList<>();
     public List<LocationList> locationList = new ArrayList<>();
     public List<UserSiteInfo> userSiteInfoList = new ArrayList<>();
+    public List<UniversalSpinner> siteList = new ArrayList<>();
 
     public int scanStillageLength = 8;
     //    public int scanStillageLength = 13;
@@ -122,6 +124,8 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                 fltList.add(0, new UniversalSpinner("Select FLT", "000"));
                 warehouseList = masterData.getWareHouseList();
                 warehouseList.add(0, new UniversalSpinner("Select WareHouse", "000"));
+                siteList = masterData.getSiteListData();
+                siteList.add(0, new UniversalSpinner("Select Site", "000"));
                 locationList = masterData.getLocationList();
             }
         } else {
@@ -131,6 +135,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
             reasonList = new ArrayList<>();
             fltList = new ArrayList<>();
             warehouseList = new ArrayList<>();
+            siteList = new ArrayList<>();
             locationList = new ArrayList<>();
         }
 
@@ -212,7 +217,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                     finishAffinity();
                     dialog.cancel();
                 })
-                .setNegativeButton(getString(R.string.no), (dialog, id) -> {
+                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                     dialog.cancel();
                 });
         AlertDialog alert = builder.create();
@@ -318,6 +323,8 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
                             UpdateQuantityActivity.getInstance().cancelClick();
                         } else if (activity == 8) {
                             ProductionJournal.getInstance().cancelClick();
+                        } else if (activity == 9) {
+                            AssignTransferActivity.getInstance().cancelClick();
                         }
                         dialog.cancel();
                     }

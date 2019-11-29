@@ -169,27 +169,29 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         if (isKg.equals("0")) {
             if (rejectedInputsPcs.size() >= 50) {
                 showSuccessDialog(getResources().getString(R.string.rejection_list_full));
+                editTextScanStillage.setText("");
                 return false;
             }
         } else {
             if (rejectedInputsKg.size() >= 50) {
                 showSuccessDialog(getResources().getString(R.string.rejection_list_full));
+                editTextScanStillage.setText("");
                 return false;
             }
         }
 
-        for (RejectedInput rejectedInput : rejectedInputsPcs) {
-            if (rejectedInput.getStickerNo().equals(stillageNo)) {
-                showSuccessDialog(getResources().getString(R.string.rejected_in_pcs));
-                return false;
-            }
-        }
-        for (RejectedInput rejectedInput : rejectedInputsKg) {
-            if (rejectedInput.getStickerNo().equals(stillageNo)) {
-                showSuccessDialog(getResources().getString(R.string.rejected_in_kg));
-                return false;
-            }
-        }
+//        for (RejectedInput rejectedInput : rejectedInputsPcs) {
+//            if (rejectedInput.getStickerNo().equals(stillageNo)) {
+//                showSuccessDialog(getResources().getString(R.string.rejected_in_pcs));
+//                return false;
+//            }
+//        }
+//        for (RejectedInput rejectedInput : rejectedInputsKg) {
+//            if (rejectedInput.getStickerNo().equals(stillageNo)) {
+//                showSuccessDialog(getResources().getString(R.string.rejected_in_kg));
+//                return false;
+//            }
+//        }
         return true;
     }
 
@@ -469,9 +471,9 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         RejectionListInput rejectionListInput = new RejectionListInput(rejectionList, isKg);
         showProgress(this);
         iqaInterface.callUpdateRejectedListService(rejectionListInput);
-//        Gson gson = new Gson();
-//        String jsonData = gson.toJson(rejectionListInput);
-//        Log.d("json", jsonData);
+        Gson gson = new Gson();
+        String jsonData = gson.toJson(rejectionListInput);
+        Log.d("json", jsonData);
     }
 
     public void cancelClick() {
