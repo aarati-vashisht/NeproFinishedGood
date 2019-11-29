@@ -384,7 +384,8 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                     /*if (body.getIsTJ().equals("1")) {
                         showSuccessDialog(getString(R.string.this_stillage_already_tj_transfred));
                         editTextScanStillage.setText("");
-                    } else */if (!body.getTransferId().equals("") && body.getIsShiped().equals("1")) {
+                    } else */
+                    if (!body.getTransferId().equals("") && body.getIsShiped().equals("1")) {
                         showSuccessDialog(getString(R.string.this_stillage_already_to_transfred));
                         editTextScanStillage.setText("");
                     } else if (body.getIsCounted().equals("0")) {
@@ -796,12 +797,16 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         spinnerWarehouseDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                warehouseId = warehouseList.get(position).getId().trim();
-                if (warehouseId.equalsIgnoreCase(stillageWarehouseId)) {
-                    showSuccessDialog(getResources().getString(R.string.cannot_transfer));
+                if (position > 0) {
+                    warehouseId = warehouseList.get(position).getId().trim();
+                    if (warehouseId.equalsIgnoreCase(stillageWarehouseId)) {
+                        showSuccessDialog(getResources().getString(R.string.cannot_transfer));
+                        buttonTransfer.setEnabled(false);
+                    } else {
+                        buttonTransfer.setEnabled(true);
+                    }
+                }else{
                     buttonTransfer.setEnabled(false);
-                } else {
-                    buttonTransfer.setEnabled(true);
                 }
             }
 

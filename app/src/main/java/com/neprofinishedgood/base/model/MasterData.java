@@ -22,6 +22,9 @@ public class MasterData {
     @SerializedName("FLTList")
     @Expose
     private List<UniversalSpinner> fLTList = null;
+    @SerializedName("SiteListData")
+    @Expose
+    private List<UniversalSpinner> siteListData = null;
 
     public List<UniversalSpinner> getfLTList() {
         return fLTList;
@@ -118,4 +121,11 @@ public class MasterData {
         this.locationList = locationList;
     }
 
+    public List<UniversalSpinner> getSiteListData() {
+        return siteListData;
+    }
+
+    public void setSiteListData(List<UniversalSpinner> siteListData) {
+        this.siteListData = siteListData;
+    }
 }
