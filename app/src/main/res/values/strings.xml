@@ -255,5 +255,8 @@
     <string name="transfer_type">Transfer Type:</string>
     <string name="to_site">To Site:</string>
     <string name="to_warehouse_">To WareHouse:</string>
+    <string name="with_in_warehouse">Within Warehouse</string>
+    <string name="activity_id">Activity Id:</string>
+    <string name="stillage_count">Stillge Count:</string>
 
 </resources>
