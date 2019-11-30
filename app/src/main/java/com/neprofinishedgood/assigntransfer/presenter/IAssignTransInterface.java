@@ -1,5 +1,7 @@
 package com.neprofinishedgood.assigntransfer.presenter;
 
+import com.neprofinishedgood.assigntransfer.model.AssignTransInput;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.transferstillage.model.WareHouseInput;
@@ -14,4 +16,8 @@ public interface IAssignTransInterface {
     void callGetWareHouse(WareHouseInput wareHouseInput);
 
     void getWareHouseResponse(WareHouseResponse body);
+
+    void callUpdateAssignTransfer(AssignTransInput assignTransInput);
+
+    void getUpdateAssignTransferResponse(UniversalResponse body);
 }

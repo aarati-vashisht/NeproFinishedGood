@@ -2,11 +2,15 @@ package com.neprofinishedgood.api;
 
 import com.neprofinishedgood.assign.model.AisleInput;
 import com.neprofinishedgood.assign.model.AssignedUnAssignedInput;
+import com.neprofinishedgood.assigntransfer.model.AssignTransInput;
 import com.neprofinishedgood.base.model.MasterData;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.login.model.LoginUser;
 import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
+import com.neprofinishedgood.move.model.TransferDetailInputModel;
+import com.neprofinishedgood.move.model.TransferDetailResponseModel;
+import com.neprofinishedgood.move.model.TransferListResponseModel;
 import com.neprofinishedgood.pickandload.model.LoadingPlanDetails;
 import com.neprofinishedgood.pickandload.model.LoadingPlanInput;
 import com.neprofinishedgood.pickandload.model.LoadingPlanResponse;
@@ -176,5 +180,14 @@ public interface ApiInterface {
 
     @POST("CompleteRejectedStillage")
     Call<UniversalResponse> updateCompleteRejectedStillage(@Body RejectionListInput rejectionListInput);
+
+    @POST("AssignTransfer")
+    Call<UniversalResponse> callAssignTransferService(@Body AssignTransInput assignTransInput);
+
+    @POST("GetAssignTransferHeader")
+    Call<TransferListResponseModel> callGetAssignTransferHeader(@Body AllAssignedDataInput moveInput);
+
+    @POST("GetAssignTransferDetails")
+    Call<TransferDetailResponseModel> callGetAssignTransferDetail(@Body TransferDetailInputModel transferDetailInputModel);
 
 }

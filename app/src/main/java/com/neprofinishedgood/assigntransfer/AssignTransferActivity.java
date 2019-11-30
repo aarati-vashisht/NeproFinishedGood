@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -28,6 +29,7 @@ import com.neprofinishedgood.assigntransfer.presenter.IAssignTransInterface;
 import com.neprofinishedgood.assigntransfer.presenter.IAssignTransPresenter;
 import com.neprofinishedgood.assigntransfer.presenter.IAssignTransView;
 import com.neprofinishedgood.base.BaseActivity;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
@@ -41,6 +43,7 @@ import com.neprofinishedgood.transferstillage.model.WareHouseResponse;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,7 +83,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
 
     Spinner spinnerWarehouseDialog;
     ArrayList<UniversalSpinner> warehouseList;
-    ArrayList<UniversalSpinner> fltList;
+    List<UniversalSpinner> fltList;
 
     static AssignTransferActivity instance;
 
@@ -99,6 +102,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
         setTitle(getString(R.string.assign_planned_transfer));
         iAssignTransInterface = new IAssignTransPresenter(this, this);
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+        fltList = new ArrayList<>();
         initAlert(this);
         setRecyclerViewAdapter();
     }
@@ -300,6 +304,23 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
         }
     }
 
+    void setData(ScanStillageResponse body) {
+        buttonAssign.setEnabled(true);
+        buttonCancel.setEnabled(true);
+        editTextScanStillage.setText("");
+        if (fltList.isEmpty()) {
+            fltList = body.getfLTList();
+            if (fltList != null) {
+                fltList.add(new UniversalSpinner("Select Flt", "000"));
+            } else {
+                fltList = new ArrayList<>();
+            }
+        }
+        assignTransList.add(body);
+        stickersList.add(new TransferStillageDetail(body.getStickerID(), ""));
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onGetWareHouseFailure(String message) {
         hideProgress();
@@ -325,39 +346,48 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
         }
     }
 
-    void setData(ScanStillageResponse body) {
-        buttonAssign.setEnabled(true);
-        buttonCancel.setEnabled(true);
-        editTextScanStillage.setText("");
-        assignTransList.add(body);
-        stickersList.add(new TransferStillageDetail(body.getStickerID(), ""));
-        adapter.notifyDataSetChanged();
+    @Override
+    public void onUpdateAssignTransFailure(String message) {
+        hideProgress();
+        showSuccessDialog(message);
+    }
+
+    @Override
+    public void onUpdateAssignTransSuccess(UniversalResponse body) {
+        hideProgress();
+        showSuccessDialog(body.getMessage());
+        if (body.getStatus().equals(getString(R.string.success))) {
+            cancelClick();
+        }
     }
 
     @OnClick(R.id.buttonAssign)
     public void onButtonAssignClick() {
-        fltSelectionAlert(this);
+        if (!stickersList.isEmpty()) {
+            fltSelectionAlert(this);
+        }
     }
 
     public void fltSelectionAlert(Context context) {
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.setContentView(R.layout.custom_alert_flt_selection);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         CustomButton buttonOk = dialog.findViewById(R.id.buttonOk);
+        ImageView imgCloseList = dialog.findViewById(R.id.imgCloseList);
         Spinner spinnerFlt = dialog.findViewById(R.id.spinnerFlt);
 
         if (fltList != null) {
-            fltList.add(new UniversalSpinner("Select Flt", "000"));
-            SpinnerAdapter siteAdapter = new SpinnerAdapter(AssignTransferActivity.getInstance(), R.layout.spinner_layout, siteList);
+            SpinnerAdapter siteAdapter = new SpinnerAdapter(AssignTransferActivity.getInstance(), R.layout.spinner_layout, fltList);
             spinnerFlt.setAdapter(siteAdapter);
         } else {
             fltList = new ArrayList<>();
             SpinnerAdapter siteAdapter = new SpinnerAdapter(AssignTransferActivity.getInstance(), R.layout.spinner_layout, fltList);
             spinnerFlt.setAdapter(siteAdapter);
         }
+
         buttonOk.setEnabled(false);
 
         spinnerFlt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -377,10 +407,22 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
         });
 
         buttonOk.setOnClickListener(v -> {
-            AssignTransInput assignTransInput = new AssignTransInput(userId, makeTJ, toSiteId, toWareHouseId, flt, fromWareHouseId, stickersList);
-            Gson gson = new Gson();
-            String jsonData = gson.toJson(assignTransInput);
-            Log.d("json", jsonData);
+            if (spinnerFlt.getSelectedItemPosition() > 0) {
+                showProgress(this);
+                if (NetworkChangeReceiver.isInternetConnected(AssignTransferActivity.this)) {
+                    AssignTransInput assignTransInput = new AssignTransInput(userId, makeTJ, toSiteId, toWareHouseId, flt, fromWareHouseId, stickersList);
+                    iAssignTransInterface.callUpdateAssignTransfer(assignTransInput);
+                    Gson gson = new Gson();
+                    String jsonData = gson.toJson(assignTransInput);
+                    Log.d("json", jsonData);
+                    dialog.cancel();
+                }else {
+                    showSuccessDialog(getString(R.string.no_internet));
+                }
+            }
+        });
+
+        imgCloseList.setOnClickListener(v -> {
             dialog.cancel();
         });
 
@@ -393,10 +435,12 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
     }
 
     public void cancelClick() {
+        flt = "";
         toSiteId = "";
         toWareHouseId = "";
         fromWareHouseId = "";
         warehouseList = new ArrayList<>();
+        fltList = new ArrayList<>();
         adapter.lockDelete = false;
         buttonAssign.setVisibility(View.VISIBLE);
         warehouseList = new ArrayList<>();

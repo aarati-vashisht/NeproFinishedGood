@@ -5,6 +5,8 @@ import android.app.Activity;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.api.Api;
 import com.neprofinishedgood.api.ApiInterface;
+import com.neprofinishedgood.assigntransfer.model.AssignTransInput;
+import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.transferstillage.model.WareHouseInput;
@@ -76,6 +78,33 @@ public class IAssignTransPresenter implements IAssignTransInterface {
             iAssignTransView.onGetWareHouseFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iAssignTransView.onGetWareHouseSuccess(body);
+        }
+    }
+
+    @Override
+    public void callUpdateAssignTransfer(AssignTransInput assignTransInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.callAssignTransferService(assignTransInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getUpdateAssignTransferResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getUpdateAssignTransferResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getUpdateAssignTransferResponse(UniversalResponse body) {
+        if (body == null) {
+            iAssignTransView.onUpdateAssignTransFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            iAssignTransView.onUpdateAssignTransSuccess(body);
         }
     }
 }

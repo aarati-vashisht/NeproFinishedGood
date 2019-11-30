@@ -6,8 +6,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -16,13 +20,18 @@ import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.lookup.LookUpActivity;
 import com.neprofinishedgood.move.adapter.MoveAdapter;
+import com.neprofinishedgood.move.adapter.TransferListAdapter;
 import com.neprofinishedgood.move.model.AllAssignedDataInput;
 import com.neprofinishedgood.move.model.AssignedStillages;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.move.model.TransferDetailResponseModel;
+import com.neprofinishedgood.move.model.TransferList;
+import com.neprofinishedgood.move.model.TransferListResponseModel;
 import com.neprofinishedgood.move.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.move.presenter.IPlannedAndUnPlannedView;
 import com.neprofinishedgood.move.presenter.IPlannedUnplannedPresenter;
+import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
@@ -33,6 +42,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedView {
@@ -43,12 +53,25 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     AppCompatEditText editTextScanStillage;
     @BindView(R.id.recyclerViewStillage)
     RecyclerView recyclerViewStillage;
-
+    @BindView(R.id.recyclerViewTransferList)
+    RecyclerView recyclerViewTransferList;
+    @BindView(R.id.tvTransfer)
+    TextView tvTransfer;
+    @BindView(R.id.tvWithinWareHouse)
+    TextView tvWithinWareHouse;
+    @BindView(R.id.frameMove)
+    FrameLayout frameMove;
+    @BindView(R.id.frameTransfer)
+    FrameLayout frameTransfer;
 
     public IPlannedUnplannedPresenter iPlannedUnplannedPresenter;
     long delay = 1500;
     long scanStillageLastTexxt = 0;
     private MoveAdapter adapter;
+    private List<TransferList> transferList;
+    public TransferList transferData = new TransferList();
+
+    private TransferListAdapter transferListAdapter;
 
     public static MoveActivity getInstance() {
         return instance;
@@ -64,6 +87,26 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
         iPlannedUnplannedPresenter = new IPlannedUnplannedPresenter(this, this);
         callService();
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+    }
+
+    @OnClick(R.id.tvWithinWareHouse)
+    void tvWithinWareHouseClick() {
+        tvTransfer.setBackgroundResource(R.drawable.tab_unselected_drawable);
+        tvWithinWareHouse.setBackgroundResource(R.drawable.tab_selected_drawable);
+        tvTransfer.setTextColor(getResources().getColor(R.color.colorPrimary));
+        tvWithinWareHouse.setTextColor(getResources().getColor(R.color.white));
+        frameMove.setVisibility(View.VISIBLE);
+        frameTransfer.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.tvTransfer)
+    void tvTransferClick() {
+        if (NetworkChangeReceiver.isInternetConnected(MoveActivity.this)) {
+            showProgress(MoveActivity.this);
+            iPlannedUnplannedPresenter.callGetAssignTransferHeader(new AllAssignedDataInput(userId));
+        } else {
+            showSuccessDialog(getString(R.string.no_internet));
+        }
     }
 
     public void getAllAssignedData() {
@@ -207,5 +250,54 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
             }
             getAllAssignedData();
         }
+    }
+
+
+    @Override
+    public void onGetTransListHeaderSuccess(TransferListResponseModel body) {
+        hideProgress();
+        if (body.getStatus().equals(getResources().getString(R.string.success))) {
+            tvTransfer.setBackgroundResource(R.drawable.tab_selected_drawable);
+            tvWithinWareHouse.setBackgroundResource(R.drawable.tab_unselected_drawable);
+            tvTransfer.setTextColor(getResources().getColor(R.color.white));
+            tvWithinWareHouse.setTextColor(getResources().getColor(R.color.colorPrimary));
+            frameMove.setVisibility(View.GONE);
+            frameTransfer.setVisibility(View.VISIBLE);
+            transferList = body.getTransferList();
+            setTransferListAdapter(transferList);
+        } else {
+            showSuccessDialog(body.getMessage());
+        }
+    }
+
+    @Override
+    public void onGetTransListHeaderFailure(String message) {
+        hideProgress();
+        showSuccessDialog(message);
+    }
+
+    private void setTransferListAdapter(List<TransferList> transferList) {
+        transferListAdapter = new TransferListAdapter(transferList);
+        recyclerViewTransferList.setVisibility(View.VISIBLE);
+        recyclerViewTransferList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerViewTransferList.setAdapter(transferListAdapter);
+        recyclerViewTransferList.setHasFixedSize(true);
+    }
+
+    @Override
+    public void onGetTransListDetailSuccess(TransferDetailResponseModel body) {
+        hideProgress();
+        if (body.getStatus().equals(getResources().getString(R.string.success))) {
+            Gson gson = new Gson();
+            showSuccessDialog(gson.toJson(body)+"\n"+gson.toJson(transferData));
+        }else {
+            showSuccessDialog(body.getMessage());
+        }
+    }
+
+    @Override
+    public void onGetTransListDetailFailure(String message) {
+        hideProgress();
+        showSuccessDialog(message);
     }
 }

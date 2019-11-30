@@ -6,7 +6,7 @@ import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 
 public interface IMergeStillageInterface {
-        void callScanStillageService(MoveInput moveInput);
+    void callScanStillageService(MoveInput moveInput);
 
     void getScanMergeStillageResponse(ScanStillageResponse body);
 

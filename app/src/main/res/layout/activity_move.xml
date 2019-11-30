@@ -4,57 +4,134 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
     android:background="@color/background_color"
     android:orientation="vertical"
     tools:context=".move.MoveActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayoutTopButtons"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="5dp">
 
+        <TextView
+            android:id="@+id/tvWithinWareHouse"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/tab_selected_drawable"
+            android:gravity="center"
+            android:text="@string/with_in_warehouse"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/scan_stillage"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/editTextScanStillage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/edittext_drawable"
-                android:maxLines="1"
-                android:padding="5dp"
-                android:textSize="10sp" />
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewStillage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:background="@android:color/transparent"
-            android:layoutAnimation="@anim/layout_animation_fall_down"
-            android:visibility="gone"
-            app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/stillage_layout" />
-
+        <TextView
+            android:id="@+id/tvTransfer"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/tab_unselected_drawable"
+            android:gravity="center"
+            android:text="@string/transfer"
+            android:textColor="@color/colorPrimary"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayoutTopButtons"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp">
+
+        <FrameLayout
+            android:id="@+id/frameMove"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scan_stillage"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editTextScanStillage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/edittext_drawable"
+                        android:maxLines="1"
+                        android:padding="5dp"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewStillage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:layoutAnimation="@anim/layout_animation_fall_down"
+                    android:visibility="gone"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:listitem="@layout/stillage_layout" />
+
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frameTransfer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/frameMove"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTransferList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:layoutAnimation="@anim/layout_animation_fall_down"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:listitem="@layout/transfer_list_layout" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>
 
