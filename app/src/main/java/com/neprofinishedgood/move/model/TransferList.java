@@ -3,6 +3,8 @@ package com.neprofinishedgood.move.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class TransferList {
 
     @SerializedName("IsTj")
@@ -81,6 +83,17 @@ public class TransferList {
 
     public void setFromWareHouseId(String fromWareHouseId) {
         this.fromWareHouseId = fromWareHouseId;
+    }
+
+
+    List<TransferStillageList> stillageList = null;
+
+    public List<TransferStillageList> getStillageList() {
+        return stillageList;
+    }
+
+    public void setStillageList(List<TransferStillageList> stillageList) {
+        this.stillageList = stillageList;
     }
 
 }

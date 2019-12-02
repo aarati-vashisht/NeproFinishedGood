@@ -547,7 +547,8 @@
                     android:text="@string/end"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -564,7 +565,7 @@
                     android:layout_height="35dp"
                     android:background="@drawable/button_ripple_effect"
                     android:gravity="center"
-                    android:text="@string/fin_end"
+                    android:text="@string/end"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="12sp" />

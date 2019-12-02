@@ -3,6 +3,7 @@ package com.neprofinishedgood.utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.MyApplication;
+import com.neprofinishedgood.move.model.TransferList;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
 import com.neprofinishedgood.pickandload.model.ScanLoadingPlanList;
 import com.neprofinishedgood.productionjournal.model.PickingListDatum;
@@ -33,6 +34,7 @@ public class SharedPref {
     private static String PICKING_LIST_DATA = "PICKING_LIST_DATA";
     private static String REJECTION_DATA_LIST_PCS = "REJECTION_DATA_LIST_PCS";
     private static String REJECTION_DATA_LIST_KG = "REJECTION_DATA_LIST_KG";
+    private static String TRANSFER_DETAIL_LIST = "TRANSFER_DETAIL_LIST";
 
 
     public static void saveLoginUSer(String loginData) {
@@ -233,6 +235,23 @@ public class SharedPref {
             rejectList = gson.fromJson(rejectData, type);
         }
         return rejectList;
+    }
+
+
+    public static void saveTransferDetailList(String saveTransferDetailListData) {
+        editor_data.putString(TRANSFER_DETAIL_LIST, saveTransferDetailListData);
+        editor_data.apply();
+    }
+
+    public static List<TransferList> getTransferDetailList() {
+        List<TransferList> transferLists = new ArrayList<>();
+        String data = MyApplication.sharedPreferencesData.getString(TRANSFER_DETAIL_LIST, "");
+        if (!data.equals("")) {
+            Type type = new TypeToken<ArrayList<TransferList>>() {
+            }.getType();
+            transferLists = new Gson().fromJson(data, type);
+        }
+        return transferLists;
     }
 
 }

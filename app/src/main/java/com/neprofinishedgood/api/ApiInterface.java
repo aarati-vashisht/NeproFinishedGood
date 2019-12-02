@@ -8,6 +8,7 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.login.model.LoginResponse;
 import com.neprofinishedgood.login.model.LoginUser;
 import com.neprofinishedgood.mergestillage.model.UpgradeMergeInput;
+import com.neprofinishedgood.move.model.TransDoneInputModel;
 import com.neprofinishedgood.move.model.TransferDetailInputModel;
 import com.neprofinishedgood.move.model.TransferDetailResponseModel;
 import com.neprofinishedgood.move.model.TransferListResponseModel;
@@ -189,5 +190,8 @@ public interface ApiInterface {
 
     @POST("GetAssignTransferDetails")
     Call<TransferDetailResponseModel> callGetAssignTransferDetail(@Body TransferDetailInputModel transferDetailInputModel);
+
+    @POST("PostAssignTransfer")
+    Call<UniversalResponse> callPostAssignTransfer(@Body TransDoneInputModel transDoneInputModel);
 
 }
