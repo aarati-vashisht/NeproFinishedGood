@@ -17,6 +17,16 @@ public class TransferStillageList {
     @Expose
     private String stillageQty;
 
+    String Status = "";
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
     public String getStillageID() {
         return stillageID;
     }

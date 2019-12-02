@@ -261,7 +261,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
             if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
                 if (isLocationMatched(body.getWareHouseID())) {
                     if (!body.getTransferId().equals("") || body.getIsShiped().equals("1")) {
-                        showSuccessDialog(getString(R.string.this_stillage_already_to_transfred));
+                        showSuccessDialog(getString(R.string.already_transfred));
                         editTextScanStillage.setText("");
                     } else if (body.getIsCounted().equals("0")) {
                         showSuccessDialog(getString(R.string.raf_not_posted));

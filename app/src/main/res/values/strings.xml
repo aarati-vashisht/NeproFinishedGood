@@ -227,6 +227,7 @@
     <string name="transferred_to_another_wh">This stillage already has Transfer Order ID created but not shipped yet.</string>
     <string name="this_stillage_already_tj_transfred">This stillage is already transferred through TJ process.</string>
     <string name="this_stillage_already_to_transfred">This stillage is already transferred through TO process.</string>
+    <string name="already_transfred">This stillage is already transferred</string>
     <string name="transfer_journal_process">Transfer Journal</string>
     <string name="transfer_order_process">Transfer Order</string>
     <string name="data_error">Data Error!</string>
@@ -258,5 +259,8 @@
     <string name="with_in_warehouse">Within Warehouse</string>
     <string name="activity_id">Activity Id:</string>
     <string name="stillage_count">Stillge Count:</string>
+    <string name="done">Done</string>
+    <string name="from_warehouse">From Warehouse:</string>
+    <string name="already_ransferred">Already Transferred</string>
 
 </resources>

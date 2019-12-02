@@ -16,6 +16,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".move.MoveTransferActivity"></activity>
         <activity
             android:name=".assigntransfer.AssignTransferActivity"
             android:screenOrientation="portrait" />

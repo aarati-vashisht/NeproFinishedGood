@@ -73,6 +73,8 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
 
     private TransferListAdapter transferListAdapter;
 
+    String TRANSFERDATA = "TRANSFERDATA", TRANSFERDETAILDATA  = "TRANSFERDETAILDATA";
+
     public static MoveActivity getInstance() {
         return instance;
     }
@@ -289,7 +291,9 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
         hideProgress();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             Gson gson = new Gson();
-            showSuccessDialog(gson.toJson(body)+"\n"+gson.toJson(transferData));
+            startActivity(new Intent(this, MoveTransferActivity.class)
+                    .putExtra(TRANSFERDETAILDATA,gson.toJson(body))
+                    .putExtra(TRANSFERDATA,gson.toJson(transferData)));
         }else {
             showSuccessDialog(body.getMessage());
         }
