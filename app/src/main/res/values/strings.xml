@@ -111,7 +111,7 @@
     <string name="stillage_loading_plan_doesnt_match_with_tar">Stillage Loading Plan Doesn\'t Match With Truck Assignment Report</string>
     <string name="do_you_want_to_pick_this_stillage">Do you want to pick this stillage ?</string>
     <string name="stillage_loaded_successfully">Stillage Loaded Successfully</string>
-    <string name="picked_successfullt">Is Picked Successfully</string>
+    <string name="picked_successfully">is Picked Successfully</string>
     <string name="itemDesc">Item Description:</string>
     <string name="lookUp">Look Up</string>
     <string name="update_quantity">Update Quantity</string>
@@ -136,6 +136,7 @@
     <string name="select_warehouse">Select Warehouse</string>
     <string name="transfer_stillage">Transfer Stillage</string>
     <string name="item_transferred_successfully">Item Transferred Successfully</string>
+    <string name="transferred_successfully">transferred Successfully</string>
     <string name="discard">Discard</string>
     <string name="nodiscard">No Discard</string>
     <string name="this_stillage_already_merged">This stillage is already merged</string>
@@ -262,5 +263,6 @@
     <string name="done">Done</string>
     <string name="from_warehouse">From Warehouse:</string>
     <string name="already_ransferred">Already Transferred</string>
+    <string name="welcome">Welcome to NEPROPLAST FG Tracking Application</string>
 
 </resources>

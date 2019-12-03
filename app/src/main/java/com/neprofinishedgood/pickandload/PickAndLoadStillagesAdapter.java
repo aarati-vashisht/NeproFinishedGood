@@ -26,7 +26,6 @@ import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.custom_views.CustomButton;
-import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.pickandload.model.LoadingPlanList;
 import com.neprofinishedgood.pickandload.model.UpdateLoadInput;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
@@ -242,7 +241,7 @@ public class PickAndLoadStillagesAdapter extends RecyclerView.Adapter<PickAndLoa
                         SharedPref.saveLoadinGplanDetailList(saveLoadingPlanListData);
                         notifyDataSetChanged();
                         PickAndLoadStillageActivity.getInstance().editTextScanLoadingPlan.setText("");
-                        PickAndLoadStillageActivity.getInstance().showSuccessDialog(stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.picked_successfullt));
+                        PickAndLoadStillageActivity.getInstance().showSuccessDialog(stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.picked_successfully));
 //                        CustomToast.showToast(context, stillageDatumListFiltered.get(position).getStillageNO() + " " + context.getString(R.string.picked_successfullt));
                     }
                 })

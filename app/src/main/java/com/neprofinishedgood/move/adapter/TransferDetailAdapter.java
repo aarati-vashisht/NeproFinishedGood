@@ -6,23 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chauthai.swipereveallayout.SwipeRevealLayout;
-import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.neprofinishedgood.R;
-import com.neprofinishedgood.assigntransfer.AssignTransferActivity;
 import com.neprofinishedgood.move.MoveTransferActivity;
-import com.neprofinishedgood.move.model.TransferList;
 import com.neprofinishedgood.move.model.TransferStillageList;
-import com.neprofinishedgood.pickandload.model.LoadingPlanList;
-import com.neprofinishedgood.transferstillage.TransferStillageActivity;
-import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
-import com.neprofinishedgood.utils.SharedPref;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,11 +63,11 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
 //        }
         if (stillageDetailsListFiltered.get(position).getStatus().equalsIgnoreCase("1")) {
             pickStillage(position);
-            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.card_background_light));
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.card_background_dark));
         }
         if (stillageDetailsListFiltered.get(position).getStatus().equalsIgnoreCase("2")) {
             transferStillge(position);
-            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.blue_light));
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.card_background_light));
         }
 
     }
@@ -120,8 +111,12 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
                         if (row.getStillageID().equalsIgnoreCase(charSequence.toString())) {
                             if (row.getStatus().equalsIgnoreCase("")) {
                                 row.setStatus("1");
+                                MoveTransferActivity.getInstance().showSuccessDialog(row.getStillageID() + " " +
+                                        context.getResources().getString(R.string.picked_successfully));
                             } else if (row.getStatus().equalsIgnoreCase("1")) {
                                 row.setStatus("2");
+                                MoveTransferActivity.getInstance().showSuccessDialog(row.getStillageID() + " " +
+                                        context.getResources().getString(R.string.transferred_successfully));
                             } else if (row.getStatus().equalsIgnoreCase("2")) {
                                 MoveTransferActivity.getInstance().showSuccessDialog(context.getResources().getString(R.string.already_ransferred));
                             }

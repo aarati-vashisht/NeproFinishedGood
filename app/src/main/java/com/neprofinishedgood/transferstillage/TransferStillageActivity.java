@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -168,7 +169,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
         RadioGroup radioGroupTransferType = dialog.findViewById(R.id.radioGroupTransferType);
         RadioButton radioButtonTJ = dialog.findViewById(R.id.radioButtonTJ);
         RadioButton radioButtonTO = dialog.findViewById(R.id.radioButtonTO);
-
+        ImageView imgBackButton = dialog.findViewById(R.id.imgBackButton);
         radioGroupTransferType.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == radioButtonTJ.getId()) {
                 makeTJ = "1";
@@ -183,6 +184,11 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
 
         buttonOk.setOnClickListener(v -> {
             dialog.cancel();
+        });
+
+        imgBackButton.setOnClickListener(v -> {
+            dialog.cancel();
+            finish();
         });
 
         dialog.show();
@@ -805,7 +811,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                     } else {
                         buttonTransfer.setEnabled(true);
                     }
-                }else{
+                } else {
                     buttonTransfer.setEnabled(false);
                 }
             }

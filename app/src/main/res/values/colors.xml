@@ -17,7 +17,7 @@
     <color name="green">#32CD32</color>
     <color name="blue">#0000FF</color>
     <color name="blue_light">#00B7FF</color>
-    <color name="card_background_dark">#26DDA4</color>
-    <color name="card_background_light">#37FF20</color>
+    <color name="card_background_dark">#ffd47d</color>
+    <color name="card_background_light">#99fa96</color>
 
 </resources>
