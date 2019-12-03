@@ -7,8 +7,13 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -32,6 +37,7 @@ import com.neprofinishedgood.pickandload.PickAndLoadStillageActivity;
 import com.neprofinishedgood.transferstillage.presenter.ITransferView;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
+import com.neprofinishedgood.utils.ViewAnimationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,9 +70,15 @@ public class MoveTransferActivity extends BaseActivity implements IMoveTransferV
     @BindView(R.id.editTextScanStillage)
     EditText editTextScanStillage;
 
+    @BindView(R.id.imgDetail)
+    FrameLayout imgDetail;
+
+    @BindView(R.id.linearLayoutDetails)
+    LinearLayout linearLayoutDetails;
+
     static MoveTransferActivity instance;
 
-    boolean doneSuccess = false;
+    boolean doneSuccess = false, isDetailExpanded = false;
 
     String TRANSFERDATA = "TRANSFERDATA", TRANSFERDETAILDATA = "TRANSFERDETAILDATA";
 
@@ -94,6 +106,7 @@ public class MoveTransferActivity extends BaseActivity implements IMoveTransferV
         setTitle(getString(R.string.move));
         initLayout();
         iMoveTransferInterface = new IMoveTransferPresenter(this, this);
+        editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 
     }
 
@@ -101,7 +114,7 @@ public class MoveTransferActivity extends BaseActivity implements IMoveTransferV
         Gson gson = new Gson();
         transferData = gson.fromJson(getIntent().getStringExtra(TRANSFERDATA), TransferList.class);
         body = gson.fromJson(getIntent().getStringExtra(TRANSFERDETAILDATA), TransferDetailResponseModel.class);
-        if (transferData.getIsTj().equals("1")) {
+        if (transferData.getIsTj() == 1) {
             textViewTransType.setText(getResources().getString(R.string.transfer_journal_process));
         } else {
             textViewTransType.setText(getResources().getString(R.string.transfer_order_process));
@@ -109,7 +122,8 @@ public class MoveTransferActivity extends BaseActivity implements IMoveTransferV
         textViewToSite.setText(transferData.getSiteId());
         textViewToWarehouse.setText(transferData.getWareHouseId());
         textViewFromWarehouse.setText(transferData.getFromWareHouseId());
-
+        ViewAnimationUtils.collapse(linearLayoutDetails);
+        isDetailExpanded = false;
     }
 
     @Override
@@ -143,6 +157,23 @@ public class MoveTransferActivity extends BaseActivity implements IMoveTransferV
         recyclerViewTransferStillageList.setHasFixedSize(true);
     }
 
+    @OnClick(R.id.imgDetail)
+    public void onImgDetailClick() {
+        if (imgDetail.getRotation() != 0) {
+            imgDetail.animate().setDuration(100).rotation(0).start();
+        } else {
+            imgDetail.animate().setDuration(100).rotation(180).start();
+        }
+
+        if (isDetailExpanded) {
+            ViewAnimationUtils.collapse(linearLayoutDetails);
+            isDetailExpanded = false;
+        } else {
+            ViewAnimationUtils.expand(linearLayoutDetails);
+            isDetailExpanded = true;
+        }
+    }
+
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onEditTextScanStillageChanged(Editable text) {
         if (!text.toString().trim().equals("")) {
@@ -164,6 +195,9 @@ public class MoveTransferActivity extends BaseActivity implements IMoveTransferV
         if (NetworkChangeReceiver.isInternetConnected(MoveTransferActivity.this)) {
             showProgress(this);
             TransDoneInputModel transDoneInputModel = new TransDoneInputModel(transferData.getIsTj() + "", transferData.getTATHID(), userId);
+            Gson gson = new Gson();
+            String json = gson.toJson(transDoneInputModel);
+            Log.d("json", json);
             iMoveTransferInterface.callPostAssignTransfer(transDoneInputModel);
         } else {
             showSuccessDialog(getString(R.string.no_internet));
@@ -198,11 +232,13 @@ public class MoveTransferActivity extends BaseActivity implements IMoveTransferV
         hideProgress();
         if (body.getStatus().equals(getString(R.string.success))) {
             showDialog(body.getMessage());
-            transferLists.remove(positionOfActivity);
-            Gson gson = new Gson();
-            SharedPref.saveTransferDetailList(gson.toJson(transferLists));
+            if (positionOfActivity > -1) {
+                transferLists.remove(positionOfActivity);
+                Gson gson = new Gson();
+                SharedPref.saveTransferDetailList(gson.toJson(transferLists));
+            }
             doneSuccess = true;
-        }else{
+        } else {
             showSuccessDialog(body.getMessage());
         }
     }

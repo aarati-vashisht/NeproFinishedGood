@@ -16,7 +16,7 @@ public class IMoveTransferPresenter implements IMoveTransferInterface {
     IMoveTransferView iMoveTransferView;
     Activity activity;
 
-    public IMoveTransferPresenter(IMoveTransferView iMoveTransferView, Activity activity) {
+    public  IMoveTransferPresenter(IMoveTransferView iMoveTransferView, Activity activity) {
         this.iMoveTransferView = iMoveTransferView;
         this.activity = activity;
     }
@@ -30,7 +30,7 @@ public class IMoveTransferPresenter implements IMoveTransferInterface {
             @Override
             public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
                 getPostAssignTransfer(response.body());
-            }
+                }
 
             @Override
             public void onFailure(Call<UniversalResponse> call, Throwable t) {

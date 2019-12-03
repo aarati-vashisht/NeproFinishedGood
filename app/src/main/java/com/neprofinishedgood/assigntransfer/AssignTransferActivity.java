@@ -73,6 +73,9 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
     @BindView(R.id.textViewToWarehouse)
     TextView textViewToWarehouse;
 
+    @BindView(R.id.imgReset)
+    ImageView imgReset;
+
     private String makeTJ = "1";
     IAssignTransInterface iAssignTransInterface;
     private String toSiteId = "", toWareHouseId = "", fromWareHouseId = "", flt = "";
@@ -80,6 +83,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
     ArrayList<ScanStillageResponse> assignTransList = new ArrayList<>();
     private ArrayList<TransferStillageDetail> stickersList = new ArrayList<>();
     private TransferAdapter adapter;
+    boolean isReset = false;
 
     Spinner spinnerWarehouseDialog;
     ArrayList<UniversalSpinner> warehouseList;
@@ -103,8 +107,15 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
         iAssignTransInterface = new IAssignTransPresenter(this, this);
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         fltList = new ArrayList<>();
+        isReset = false;
         initAlert(this);
         setRecyclerViewAdapter();
+    }
+
+    @OnClick(R.id.imgReset)
+    void onImgResetClick(){
+        isReset = true;
+        initAlert(this);
     }
 
     public void initAlert(Context context) {
@@ -121,6 +132,10 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
         LinearLayout linearLayoutTransType = dialog.findViewById(R.id.linearLayoutTransType);
         LinearLayout linearLayoutLocationSelection = dialog.findViewById(R.id.linearLayoutLocationSelection);
         TextView textViewHead = dialog.findViewById(R.id.textViewHead);
+        ImageView imgBackButton = dialog.findViewById(R.id.imgBackButton);
+        if(isReset){
+            imgBackButton.setVisibility(View.GONE);
+        }
 
         radioGroupTransferType.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == radioButtonTJ.getId()) {
@@ -193,6 +208,13 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
                 buttonOk.setEnabled(false);
             } else {
                 dialog.cancel();
+            }
+        });
+
+        imgBackButton.setOnClickListener(v -> {
+            dialog.cancel();
+            if(!isReset){
+                finish();
             }
         });
 
@@ -305,13 +327,14 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
     }
 
     void setData(ScanStillageResponse body) {
+        imgReset.setEnabled(false);
         buttonAssign.setEnabled(true);
         buttonCancel.setEnabled(true);
         editTextScanStillage.setText("");
         if (fltList.isEmpty()) {
             fltList = body.getfLTList();
             if (fltList != null) {
-                fltList.add(new UniversalSpinner("Select Flt", "000"));
+                fltList.add(0,new UniversalSpinner("Select Flt", "000"));
             } else {
                 fltList = new ArrayList<>();
             }
@@ -366,6 +389,11 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
         if (!stickersList.isEmpty()) {
             fltSelectionAlert(this);
         }
+    }
+
+    boolean isValidated(){
+
+        return true;
     }
 
     public void fltSelectionAlert(Context context) {
@@ -435,9 +463,10 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
     }
 
     public void cancelClick() {
+        imgReset.setEnabled(true);
         flt = "";
-        toSiteId = "";
-        toWareHouseId = "";
+//        toSiteId = "";
+//        toWareHouseId = "";
         fromWareHouseId = "";
         warehouseList = new ArrayList<>();
         fltList = new ArrayList<>();
