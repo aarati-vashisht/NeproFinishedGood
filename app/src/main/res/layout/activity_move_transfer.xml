@@ -99,7 +99,8 @@
                     android:id="@+id/linearLayoutDetails"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="#F5F5F5">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -110,9 +111,10 @@
                         android:paddingEnd="5dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="@string/transfer_type"
+                            android:layout_weight="2.5"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
 
@@ -120,8 +122,8 @@
                             android:id="@+id/textViewTransType"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="5"
                             android:textSize="10sp" />
                     </LinearLayout>
 
@@ -134,9 +136,10 @@
                         android:paddingEnd="5dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="@string/from_warehouse"
+                            android:layout_weight="2.5"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
 
@@ -144,8 +147,8 @@
                             android:id="@+id/textViewFromWarehouse"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="5"
                             android:textSize="10sp" />
                     </LinearLayout>
 
@@ -158,9 +161,10 @@
                         android:paddingEnd="5dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="@string/to_site"
+                            android:layout_weight="2.5"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
 
@@ -168,8 +172,8 @@
                             android:id="@+id/textViewToSite"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="5"
                             android:textSize="10sp" />
                     </LinearLayout>
 
@@ -182,9 +186,10 @@
                         android:paddingEnd="5dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="@string/to_warehouse_"
+                            android:layout_weight="2.5"
                             android:textColor="@color/black"
                             android:textSize="10sp" />
 
@@ -192,8 +197,8 @@
                             android:id="@+id/textViewToWarehouse"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="5"
                             android:textSize="10sp" />
                     </LinearLayout>
 
@@ -208,33 +213,57 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_gravity="center_vertical"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="3dp"/>
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:paddingStart="5dp"
                             android:text="Nothing done"
-                            android:textAlignment="center"
                             android:textSize="10sp"
                             android:padding="2dp"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="5dp"
+                            android:background="@color/card_background_dark"
+                            app:cardBackgroundColor="@color/card_background_dark"
+                            app:cardCornerRadius="3dp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Picked"
-                            android:textAlignment="center"
+                            android:paddingStart="5dp"
                             android:textSize="10sp"
-                            android:background="@color/card_background_dark"
                             android:padding="2dp"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/card_background_light"
+                            app:cardBackgroundColor="@color/card_background_light"
+                            app:cardCornerRadius="3dp"/>
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Transferred"
-                            android:textAlignment="center"
+                            android:paddingStart="5dp"
                             android:textSize="10sp"
-                            android:background="@color/card_background_light"
                             android:padding="2dp"/>
 
                     </LinearLayout>

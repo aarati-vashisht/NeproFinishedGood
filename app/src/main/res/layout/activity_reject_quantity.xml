@@ -26,7 +26,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.3"
+                    android:layout_weight="1"
                     android:text="@string/scan_stillage"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
@@ -41,6 +41,22 @@
                     android:maxLines="1"
                     android:padding="5dp"
                     android:textSize="10sp" />
+
+                <FrameLayout
+                    android:id="@+id/frameViewList"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".6"
+                    android:layout_marginStart="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/ic_rejection_list"
+                        android:padding="2dp"/>
+
+                </FrameLayout>
 
             </LinearLayout>
 
