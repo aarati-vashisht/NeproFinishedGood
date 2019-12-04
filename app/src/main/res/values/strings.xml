@@ -264,5 +264,7 @@
     <string name="from_warehouse">From Warehouse:</string>
     <string name="already_ransferred">Already Transferred</string>
     <string name="welcome">Welcome to NEPROPLAST FG Tracking Application</string>
+    <string name="rejected">Rejected</string>
+    <string name="user_info">User Info</string>
 
 </resources>

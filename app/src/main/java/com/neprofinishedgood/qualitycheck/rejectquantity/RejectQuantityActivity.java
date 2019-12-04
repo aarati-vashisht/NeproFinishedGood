@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -425,6 +426,11 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         alertDialogRejectionList(this);
     }
 
+   @OnClick(R.id.frameViewList)
+    public void onframeViewListClick() {
+        alertDialogRejectionList(this);
+    }
+
     public void alertDialogRejectionList(Context context) {
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -432,7 +438,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         dialog.setContentView(R.layout.custom_alert_rejection_list);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        ImageView imgCloseList = dialog.findViewById(R.id.imgCloseList);
+        CardView cardViewCloseList = dialog.findViewById(R.id.cardViewCloseList);
         CustomButton buttonRejectPost = dialog.findViewById(R.id.buttonRejectPost);
         RecyclerView recyclerViewLoadingPlans = dialog.findViewById(R.id.recyclerViewRejectionList);
         recyclerViewLoadingPlans.setVisibility(View.VISIBLE);
@@ -454,7 +460,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
             buttonRejectPost.setEnabled(true);
         }
 
-        imgCloseList.setOnClickListener(v -> {
+        cardViewCloseList.setOnClickListener(v -> {
             dialog.cancel();
         });
 

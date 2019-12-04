@@ -103,7 +103,7 @@ public class MoveTransferActivity extends BaseActivity implements IMoveTransferV
         setContentView(R.layout.activity_move_transfer);
         ButterKnife.bind(this);
         instance = this;
-        setTitle(getString(R.string.move));
+        setTitle(getString(R.string.transfer));
         initLayout();
         iMoveTransferInterface = new IMoveTransferPresenter(this, this);
         editTextScanStillage.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
