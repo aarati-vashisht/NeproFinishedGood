@@ -649,11 +649,16 @@ public class AssignActivity extends BaseActivity implements IAssignView {
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (isLocationMatched(body.getWareHouseID())) {
-                if (body.getStandardQty() > 0) {
-                    isScanned = true;
-                    setData(body);
+                if (body.getIsAssignTransfer() == 0) {
+                    if (body.getStandardQty() > 0) {
+                        isScanned = true;
+                        setData(body);
+                    } else {
+                        showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                        editTextScanStillage.setText("");
+                    }
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                    showSuccessDialog(getResources().getString(R.string.stillage_assigned_for_transfer));
                     editTextScanStillage.setText("");
                 }
             } else {

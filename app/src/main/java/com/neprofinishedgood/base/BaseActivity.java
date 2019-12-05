@@ -47,7 +47,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     TextView textViewTitle;
     Gson gson = new Gson();
     private KProgressHUD kProgressHUD;
-    public String userId;
+    public String userId, userName, userEmail;
     public Animation fadeOut;
     public Animation fadeIn;
     public List<UniversalSpinner> aisleList = new ArrayList<>();
@@ -60,8 +60,10 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     public List<UserSiteInfo> userSiteInfoList = new ArrayList<>();
     public List<UniversalSpinner> siteList = new ArrayList<>();
 
+    public boolean isUserInfo = false;
+
     public int scanStillageLength = 8;
-//    public int scanStillageLength = 13;
+    //    public int scanStillageLength = 13;
     public int scanWorkOrderLength = 9;
     public int scanLocationLength = 11;
 
@@ -89,6 +91,8 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
         if (loginResponse != null) {
             userId = loginResponse.getUserLoginResponse().get(0).getUserId();
             userSiteInfoList = loginResponse.getUserSiteInfo();
+            userName = loginResponse.getUserLoginResponse().get(0).getUserName();
+            userEmail = loginResponse.getUserLoginResponse().get(0).getEmailId();
         } else {
             userId = "";
         }
@@ -193,15 +197,21 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.settings_menu:
-////                CustomToast.showToast(this, "Clicked On Settings");
-//                return true;
+            case R.id.user_details:
+                if (!isUserInfo) {
+                    userInfo();
+                }
+                return true;
             case R.id.logout_menu:
                 logout();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    void userInfo() {
+        startActivity(new Intent(this, UserInfoActivity.class));
     }
 
     void logout() {

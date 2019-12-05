@@ -170,6 +170,10 @@ public class ScanStillageResponse {
     @Expose
     private String sTRP;
 
+    @SerializedName("IsAssignTransfer")
+    @Expose
+    private Integer isAssignTransfer;
+
     @SerializedName("Prodstatus")
     @Expose
     private Integer wOStatusId;
@@ -500,5 +504,13 @@ public class ScanStillageResponse {
 
     public void setwOStatusId(Integer wOStatusId) {
         this.wOStatusId = wOStatusId;
+    }
+
+    public Integer getIsAssignTransfer() {
+        return isAssignTransfer;
+    }
+
+    public void setIsAssignTransfer(Integer isAssignTransfer) {
+        this.isAssignTransfer = isAssignTransfer;
     }
 }

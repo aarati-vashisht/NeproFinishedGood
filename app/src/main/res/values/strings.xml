@@ -266,5 +266,6 @@
     <string name="welcome">Welcome to NEPROPLAST FG Tracking Application</string>
     <string name="rejected">Rejected</string>
     <string name="user_info">User Info</string>
+    <string name="stillage_assigned_for_transfer">This stillage is assigned for transfer.</string>
 
 </resources>
