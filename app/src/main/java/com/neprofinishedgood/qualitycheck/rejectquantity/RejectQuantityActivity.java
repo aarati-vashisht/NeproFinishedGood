@@ -230,21 +230,26 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         // initData();
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (isLocationMatched(body.getWareHouseID())) {
-                if (body.getStandardQty() > 0) {
-                    if (body.getwOStatusId() != 7) {
-                        if (body.getIsCounted().equals("1")) {
-                            isScanned = true;
-                            setData(body);
+                if (body.getIsAssignTransfer() == 0) {
+                    if (body.getStandardQty() > 0) {
+                        if (body.getwOStatusId() != 7) {
+                            if (body.getIsCounted().equals("1")) {
+                                isScanned = true;
+                                setData(body);
+                            } else {
+                                showSuccessDialog(getResources().getString(R.string.raf_not_posted_reject));
+                                editTextScanStillage.setText("");
+                            }
                         } else {
-                            showSuccessDialog(getResources().getString(R.string.raf_not_posted_reject));
+                            showSuccessDialog(getResources().getString(R.string.wo_ended));
                             editTextScanStillage.setText("");
                         }
                     } else {
-                        showSuccessDialog(getResources().getString(R.string.wo_ended));
+                        showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                         editTextScanStillage.setText("");
                     }
                 } else {
-                    showSuccessDialog(getResources().getString(R.string.stillage_discarded));
+                    showSuccessDialog(getResources().getString(R.string.stillage_assigned_for_transfer));
                     editTextScanStillage.setText("");
                 }
             } else {
@@ -426,7 +431,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
         alertDialogRejectionList(this);
     }
 
-   @OnClick(R.id.frameViewList)
+    @OnClick(R.id.frameViewList)
     public void onframeViewListClick() {
         alertDialogRejectionList(this);
     }

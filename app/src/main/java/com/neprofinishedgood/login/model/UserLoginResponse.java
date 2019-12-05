@@ -50,6 +50,14 @@ public class UserLoginResponse {
     @Expose
     private Integer isWorkOrderStartEnd;
 
+    @SerializedName("UserName")
+    @Expose
+    private String userName;
+
+    @SerializedName("EmailId")
+    @Expose
+    private String emailId;
+
     public String getUserId() {
         return userId;
     }
@@ -160,5 +168,21 @@ public class UserLoginResponse {
 
     public void setIsWorkOrderStartEnd(Integer isWorkOrderStartEnd) {
         this.isWorkOrderStartEnd = isWorkOrderStartEnd;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 }

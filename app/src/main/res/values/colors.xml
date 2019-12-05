@@ -8,6 +8,7 @@
     <color name="transparent_black">#99000000</color>
     <color name="gray">#eeeeee</color>
     <color name="background_color">#fffaf1</color>
+    <color name="background_user_info">#F9F2E5</color>
     <color name="buttonColor">#26a59a</color>
     <color name="transparentbuttonColor">#9026a59a</color>>
     <color name="lightbuttonColor">#D1FBF7</color>

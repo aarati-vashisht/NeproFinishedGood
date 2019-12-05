@@ -8,7 +8,6 @@ import android.text.InputFilter;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
-import com.neprofinishedgood.lookup.LookUpActivity;
 import com.neprofinishedgood.move.adapter.MoveAdapter;
 import com.neprofinishedgood.move.adapter.TransferListAdapter;
 import com.neprofinishedgood.move.model.AllAssignedDataInput;
@@ -31,7 +29,6 @@ import com.neprofinishedgood.move.model.TransferListResponseModel;
 import com.neprofinishedgood.move.model.UpdateMoveLocationInput;
 import com.neprofinishedgood.move.presenter.IPlannedAndUnPlannedView;
 import com.neprofinishedgood.move.presenter.IPlannedUnplannedPresenter;
-import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
 import com.neprofinishedgood.utils.Constants;
 import com.neprofinishedgood.utils.NetworkChangeReceiver;
 import com.neprofinishedgood.utils.SharedPref;
@@ -73,7 +70,9 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
 
     private TransferListAdapter transferListAdapter;
 
-    String TRANSFERDATA = "TRANSFERDATA", TRANSFERDETAILDATA  = "TRANSFERDETAILDATA";
+    String TRANSFERDATA = "TRANSFERDATA", TRANSFERDETAILDATA = "TRANSFERDETAILDATA";
+
+    public boolean isAfterTransfer = false;
 
     public static MoveActivity getInstance() {
         return instance;
@@ -170,11 +169,16 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             if (isLocationMatched(body.getWareHouseID())) {
                 if (body.getStandardQty() > 0) {
-                    Gson gson = new Gson();
-                    String putExtraData = gson.toJson(body);
-                    startActivity(new Intent(this, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
-                    editTextScanStillage.setText("");
-                    overridePendingTransition(0, 0);
+                    if (body.getIsAssignTransfer() == 0) {
+                        Gson gson = new Gson();
+                        String putExtraData = gson.toJson(body);
+                        startActivity(new Intent(this, MoveStillageActivity.class).putExtra(Constants.SELECTED_STILLAGE, putExtraData));
+                        editTextScanStillage.setText("");
+                        overridePendingTransition(0, 0);
+                    } else {
+                        showSuccessDialog(getResources().getString(R.string.stillage_assigned_for_transfer));
+                        editTextScanStillage.setText("");
+                    }
                 } else {
                     showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                     editTextScanStillage.setText("");
@@ -258,6 +262,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     @Override
     public void onGetTransListHeaderSuccess(TransferListResponseModel body) {
         hideProgress();
+        isAfterTransfer = false;
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             tvTransfer.setBackgroundResource(R.drawable.tab_selected_drawable);
             tvWithinWareHouse.setBackgroundResource(R.drawable.tab_unselected_drawable);
@@ -292,9 +297,9 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
         if (body.getStatus().equals(getResources().getString(R.string.success))) {
             Gson gson = new Gson();
             startActivity(new Intent(this, MoveTransferActivity.class)
-                    .putExtra(TRANSFERDETAILDATA,gson.toJson(body))
-                    .putExtra(TRANSFERDATA,gson.toJson(transferData)));
-        }else {
+                    .putExtra(TRANSFERDETAILDATA, gson.toJson(body))
+                    .putExtra(TRANSFERDATA, gson.toJson(transferData)));
+        } else {
             showSuccessDialog(body.getMessage());
         }
     }
@@ -303,5 +308,14 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     public void onGetTransListDetailFailure(String message) {
         hideProgress();
         showSuccessDialog(message);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isAfterTransfer){
+            showProgress(this);
+            iPlannedUnplannedPresenter.callGetAssignTransferHeader(new AllAssignedDataInput(userId));
+        }
     }
 }

@@ -24,6 +24,7 @@ import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.TransferDetailAdapter;
+import com.neprofinishedgood.move.model.AllAssignedDataInput;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.TransDoneInputModel;
 import com.neprofinishedgood.move.model.TransferDetailResponseModel;
@@ -249,6 +250,7 @@ public class MoveTransferActivity extends BaseActivity implements IMoveTransferV
         builder.setCancelable(false)
                 .setPositiveButton(getString(R.string.ok), (dialog, id) -> {
                     dialog.cancel();
+                    MoveActivity.getInstance().isAfterTransfer = true;
                     finish();
                 });
         AlertDialog alert = builder.create();
