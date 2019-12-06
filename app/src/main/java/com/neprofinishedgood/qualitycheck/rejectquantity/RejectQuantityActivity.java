@@ -232,7 +232,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
             if (isLocationMatched(body.getWareHouseID())) {
                 if (body.getIsAssignTransfer() == 0) {
                     if (body.getStandardQty() > 0) {
-                        if (body.getwOStatusId() != 7) {
+//                        if (body.getwOStatusId() != 7) {
                             if (body.getIsCounted().equals("1")) {
                                 isScanned = true;
                                 setData(body);
@@ -240,10 +240,10 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
                                 showSuccessDialog(getResources().getString(R.string.raf_not_posted_reject));
                                 editTextScanStillage.setText("");
                             }
-                        } else {
-                            showSuccessDialog(getResources().getString(R.string.wo_ended));
-                            editTextScanStillage.setText("");
-                        }
+//                        } else {
+//                            showSuccessDialog(getResources().getString(R.string.wo_ended));
+//                            editTextScanStillage.setText("");
+//                        }
                     } else {
                         showSuccessDialog(getResources().getString(R.string.stillage_discarded));
                         editTextScanStillage.setText("");
