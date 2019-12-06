@@ -1,19 +1,25 @@
 package com.neprofinishedgood.move.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.move.MoveTransferActivity;
 import com.neprofinishedgood.move.model.TransferStillageList;
+import com.neprofinishedgood.pickandload.PickAndLoadStillageActivity;
+import com.neprofinishedgood.utils.SharedPref;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAdapter.ViewHolder> implements Filterable {
-    private List<TransferStillageList> stillageDetailsList;
+//    private List<TransferStillageList> stillageDetailsList;
     private List<TransferStillageList> stillageDetailsListFiltered;
     private Context context;
     private View view;
@@ -30,7 +36,7 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
     private List<TransferStillageList> stillageList;
 
     public TransferDetailAdapter(List<TransferStillageList> pickingListDatumList) {
-        this.stillageDetailsList = pickingListDatumList;
+//        this.stillageDetailsList = pickingListDatumList;
         this.stillageDetailsListFiltered = pickingListDatumList;
     }
 
@@ -103,32 +109,64 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
                 TransferStillageList beforFilerRow;
                 charString = charSequence.toString();
                 if (charString.isEmpty()) {
-                    stillageDetailsListFiltered = stillageDetailsList;
+//                    stillageDetailsListFiltered = stillageDetailsList;
                 } else {
                     List<TransferStillageList> filteredList = new ArrayList<>();
-                    for (TransferStillageList row : stillageDetailsList) {
-                        beforFilerRow = row;
-                        if (row.getStillageID().equalsIgnoreCase(charSequence.toString())) {
-                            if (row.getStatus().equalsIgnoreCase("")) {
-                                row.setStatus("1");
-                                MoveTransferActivity.getInstance().showSuccessDialog(row.getStillageID() + " " +
-                                        context.getResources().getString(R.string.picked_successfully));
-                            } else if (row.getStatus().equalsIgnoreCase("1")) {
-                                row.setStatus("2");
-                                MoveTransferActivity.getInstance().showSuccessDialog(row.getStillageID() + " " +
-                                        context.getResources().getString(R.string.transferred_successfully));
-                            } else if (row.getStatus().equalsIgnoreCase("2")) {
-                                MoveTransferActivity.getInstance().showSuccessDialog(context.getResources().getString(R.string.already_ransferred));
+
+
+//                    for (TransferStillageList row : stillageDetailsList) {
+//                        beforFilerRow = row;
+//                        if (row.getStillageID().equalsIgnoreCase(charSequence.toString())) {
+//                            if (row.getStatus().equalsIgnoreCase("")) {
+//                                row.setStatus("1");
+//                                Toast.makeText(context, "Stillage Picked", Toast.LENGTH_SHORT).show();
+////                                showCustomAlert(context,row.getStillageID() + " " +context.getResources().getString(R.string.picked_successfully));
+//                            } else if (row.getStatus().equalsIgnoreCase("1")) {
+//                                row.setStatus("2");
+//                                Toast.makeText(context, "Stillage Transferred", Toast.LENGTH_SHORT).show();
+////                                showCustomAlert(context,row.getStillageID() + " " +context.getResources().getString(R.string.transferred_successfully));
+//                            } else if (row.getStatus().equalsIgnoreCase("2")) {
+//                                Toast.makeText(context, "Already Transferred", Toast.LENGTH_SHORT).show();
+////                                showCustomAlert(context,context.getResources().getString(R.string.already_ransferred));
+//                            }
+//                            filteredList.add(row);
+//                            stillageDetailsList.remove(beforFilerRow);
+//                            stillageDetailsListFiltered.remove(row);
+//                            break;
+//                        }
+//                    }
+
+                    int indexToDelete = -1;
+                    for (int i = 0; i < stillageDetailsListFiltered.size(); i++) {
+                        beforFilerRow = stillageDetailsListFiltered.get(i);
+                        if (beforFilerRow.getStillageID().equalsIgnoreCase(charSequence.toString())) {
+                            if (beforFilerRow.getStatus().equalsIgnoreCase("")) {
+                                beforFilerRow.setStatus("1");
+                                Toast.makeText(context, "Stillage Picked", Toast.LENGTH_SHORT).show();
+//                                showCustomAlert(context,row.getStillageID() + " " +context.getResources().getString(R.string.picked_successfully));
+                            } else if (beforFilerRow.getStatus().equalsIgnoreCase("1")) {
+                                beforFilerRow.setStatus("2");
+                                Toast.makeText(context, "Stillage Transferred", Toast.LENGTH_SHORT).show();
+//                                showCustomAlert(context,row.getStillageID() + " " +context.getResources().getString(R.string.transferred_successfully));
+                            } else if (beforFilerRow.getStatus().equalsIgnoreCase("2")) {
+                                Toast.makeText(context, "Already Transferred", Toast.LENGTH_SHORT).show();
+//                                showCustomAlert(context,context.getResources().getString(R.string.already_ransferred));
                             }
-                            filteredList.add(row);
-                            stillageDetailsList.remove(beforFilerRow);
-                            stillageDetailsListFiltered.remove(row);
+                            filteredList.add(beforFilerRow);
+                            indexToDelete = i;
                             break;
                         }
                     }
+
+                    if (indexToDelete != -1) {
+//                        stillageDetailsList.remove(indexToDelete);
+                        stillageDetailsListFiltered.remove(indexToDelete);
+                    }
+
+
                     filteredList.addAll(stillageDetailsListFiltered);
                     stillageDetailsListFiltered = filteredList;
-                    stillageDetailsList = filteredList;
+//                    stillageDetailsList = filteredList;
                 }
 
                 FilterResults filterResults = new FilterResults();
@@ -192,4 +230,16 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
             }
         }
     }
+
+//    public void showCustomAlert(Context context, String message) {
+//        AlertDialog.Builder builder;
+//        builder = new AlertDialog.Builder(context);
+//        builder.setMessage(message)
+//                .setCancelable(true)
+//                .setPositiveButton("Ok", (dialog, id) -> {
+//                    dialog.cancel();
+//                });
+//        AlertDialog alert = builder.create();
+//        alert.show();
+//    }
 }
