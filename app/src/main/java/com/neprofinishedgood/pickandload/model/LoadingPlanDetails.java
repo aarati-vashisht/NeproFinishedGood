@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.neprofinishedgood.base.model.UniversalSpinner;
 
 public class LoadingPlanDetails {
 
@@ -35,6 +36,9 @@ public class LoadingPlanDetails {
     @SerializedName("Message")
     @Expose
     private String message;
+    @SerializedName("ReasonList")
+    @Expose
+    private List<UniversalSpinner> reasonList = null;
 
     public List<LoadingPlanList> getLoadingPlanList1() {
         return loadingPlanList1;
@@ -106,6 +110,14 @@ public class LoadingPlanDetails {
 
     public void setTruckNo(String truckNo) {
         this.truckNo = truckNo;
+    }
+
+    public List<UniversalSpinner> getReasonList() {
+        return reasonList;
+    }
+
+    public void setReasonList(List<UniversalSpinner> reasonList) {
+        this.reasonList = reasonList;
     }
 }
 

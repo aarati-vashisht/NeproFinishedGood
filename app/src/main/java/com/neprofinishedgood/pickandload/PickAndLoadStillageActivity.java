@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
+import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.custom_views.CustomToast;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
@@ -94,6 +95,7 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     private List<LoadingPlanList> loadingPlanDetailLists = new ArrayList<>();
     List<LoadingPlanList> loadingPlanList;
     private String endPickReason = "0";
+    public List<UniversalSpinner> reasonList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,22 +203,30 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
     @Override
     public void onSuccess(LoadingPlanDetails body) {
         hideProgress();
-        if (body.getDriverName() == null || body.getGateNo() == null || body.getLoadingPlanList1() == null ||
-                body.getLoadingPlanNo() == null || body.getTruckID() == null) {
-            showSuccessDialog("There is no more stillage in this loading plan", false);
+        if (body.getStatus().equals(getString(R.string.success))) {
+            if (body.getDriverName() == null || body.getGateNo() == null || body.getLoadingPlanList1() == null ||
+                    body.getLoadingPlanNo() == null || body.getTruckID() == null) {
+                showSuccessDialog("There is no more stillage in this loading plan", false);
+                textViewGateNumber.setText("");
+//            textViewLoadingPlan.setText("");
+                textViewTruckDriver.setText("");
+                textViewTruckNumber.setText("");
+
+//            PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
+            } else {
+                if (body.getLoadingPlanList1().size() <= 1) {
+                    isCompleted = "1";
+                } else {
+                    isCompleted = "0";
+                }
+                setData(body);
+            }
+        }else{
+            showSuccessDialog(body.getMessage(), false);
             textViewGateNumber.setText("");
 //            textViewLoadingPlan.setText("");
             textViewTruckDriver.setText("");
             textViewTruckNumber.setText("");
-
-//            PickAndLoadActivity.getInstance().iPickAndLoadInterFace.callGetLoadingPlan(new AllAssignedDataInput(userId));
-        } else {
-            if (body.getLoadingPlanList1().size() <= 1) {
-                isCompleted = "1";
-            } else {
-                isCompleted = "0";
-            }
-            setData(body);
         }
 
     }
@@ -293,6 +303,8 @@ public class PickAndLoadStillageActivity extends BaseActivity implements IPickLo
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setData(LoadingPlanDetails body) {
+        reasonList = body.getReasonList();
+        reasonList.add(0, new UniversalSpinner("Select Reason", "000"));
         textViewGateNumber.setText(body.getGateNo() + "");
 //        textViewLoadingPlan.setText(body.getLoadingPlanNo());
         textViewTruckDriver.setText(body.getDriverName() + " " + body.getDriverID());

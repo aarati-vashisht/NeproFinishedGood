@@ -178,6 +178,10 @@ public class ScanStillageResponse {
     @Expose
     private Integer wOStatusId;
 
+    @SerializedName("ReasonList")
+    @Expose
+    private List<UniversalSpinner> reasonList = null;
+
     public String getIsShiped() {
         return isShiped;
     }
@@ -512,5 +516,13 @@ public class ScanStillageResponse {
 
     public void setIsAssignTransfer(Integer isAssignTransfer) {
         this.isAssignTransfer = isAssignTransfer;
+    }
+
+    public List<UniversalSpinner> getReasonList() {
+        return reasonList;
+    }
+
+    public void setReasonList(List<UniversalSpinner> reasonList) {
+        this.reasonList = reasonList;
     }
 }
