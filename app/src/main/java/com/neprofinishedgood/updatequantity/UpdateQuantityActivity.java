@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.base.BaseActivity;
 import com.neprofinishedgood.base.model.UniversalResponse;
+import com.neprofinishedgood.base.model.UniversalSpinner;
 import com.neprofinishedgood.custom_views.CustomButton;
 import com.neprofinishedgood.dashboard.DashBoardAcivity;
 import com.neprofinishedgood.move.adapter.SpinnerAdapter;
@@ -32,6 +33,7 @@ import com.neprofinishedgood.utils.SharedPref;
 import com.neprofinishedgood.utils.StillageLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,6 +97,7 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
     IUpdateQtyInterface iUpdateQtyInterface;
     private String reason;
+    public List<UniversalSpinner> reasonList = new ArrayList<>();
 
     public static int i = 0;
 
@@ -123,8 +126,6 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
     void initData() {
         stillageLayout = new StillageLayout();
         ButterKnife.bind(stillageLayout, stillageDetail);
-        SpinnerAdapter reasonListAdapter = new SpinnerAdapter(UpdateQuantityActivity.this, R.layout.spinner_layout, reasonList);
-        spinnerReason.setAdapter(reasonListAdapter);
     }
 
     @OnTextChanged(value = R.id.editTextScanStillage, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -168,6 +169,10 @@ public class UpdateQuantityActivity extends BaseActivity implements IUpdateQtyVi
 
     void setData(ScanStillageResponse body) {
         try {
+            reasonList = body.getReasonList();
+            reasonList.add(0, new UniversalSpinner("Select Reason", "000"));
+            SpinnerAdapter reasonListAdapter = new SpinnerAdapter(UpdateQuantityActivity.this, R.layout.spinner_layout, reasonList);
+            spinnerReason.setAdapter(reasonListAdapter);
             linearLayoutScanDetail.setVisibility(View.VISIBLE);
             linearLayoutScanDetail.setAnimation(fadeIn);
             linearLayoutReason.setVisibility(View.VISIBLE);
