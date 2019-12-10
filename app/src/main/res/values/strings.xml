@@ -267,5 +267,9 @@
     <string name="rejected">Rejected</string>
     <string name="user_info">User Info</string>
     <string name="stillage_assigned_for_transfer">This stillage is assigned for transfer.</string>
+    <string name="pcs">pcs</string>
+    <string name="kg">kg</string>
+    <string name="uom">UOM: </string>
+    <string name="max_reject_qty_in_kg">Max reject qty. in kg: </string>
 
 </resources>

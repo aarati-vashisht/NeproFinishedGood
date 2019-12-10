@@ -182,6 +182,18 @@ public class ScanStillageResponse {
     @Expose
     private List<UniversalSpinner> reasonList = null;
 
+    @SerializedName("UOM")
+    @Expose
+    private Float uOM;
+
+    public Float getUOM() {
+        return uOM;
+    }
+
+    public void setUOM(Float uOM) {
+        this.uOM = uOM;
+    }
+
     public String getIsShiped() {
         return isShiped;
     }
