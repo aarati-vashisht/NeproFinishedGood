@@ -62,8 +62,8 @@ public class BaseActivity extends AppCompatActivity implements IBaseInterface {
 
     public boolean isUserInfo = false;
 
-//    public int scanStillageLength = 8;
-        public int scanStillageLength = 13;
+    public int scanStillageLength = 8;
+//        public int scanStillageLength = 13;
     public int scanWorkOrderLength = 9;
     public int scanLocationLength = 11;
 

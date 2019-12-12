@@ -113,7 +113,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
     }
 
     @OnClick(R.id.imgReset)
-    void onImgResetClick(){
+    void onImgResetClick() {
         isReset = true;
         initAlert(this);
     }
@@ -133,7 +133,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
         LinearLayout linearLayoutLocationSelection = dialog.findViewById(R.id.linearLayoutLocationSelection);
         TextView textViewHead = dialog.findViewById(R.id.textViewHead);
         ImageView imgBackButton = dialog.findViewById(R.id.imgBackButton);
-        if(isReset){
+        if (isReset) {
             imgBackButton.setVisibility(View.GONE);
         }
 
@@ -205,16 +205,33 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
                 linearLayoutTransType.setVisibility(View.GONE);
                 linearLayoutLocationSelection.setVisibility(View.VISIBLE);
                 textViewHead.setText(getResources().getString(R.string.select_site_warehouse));
-                buttonOk.setEnabled(false);
+                if (spinnerWarehouseDialog.getSelectedItemPosition() > 0)
+                {
+                    buttonOk.setEnabled(true);
+                }else{
+                    buttonOk.setEnabled(false);
+                }
+                imgBackButton.setVisibility(View.VISIBLE);
             } else {
                 dialog.cancel();
             }
         });
 
         imgBackButton.setOnClickListener(v -> {
-            dialog.cancel();
-            if(!isReset){
-                finish();
+            if (linearLayoutTransType.getVisibility() == View.VISIBLE) {
+                if (!isReset) {
+                    dialog.cancel();
+                    finish();
+                }
+            } else if (linearLayoutTransType.getVisibility() == View.GONE) {
+                if (!isReset) {
+                    imgBackButton.setVisibility(View.VISIBLE);
+                }else{
+                    imgBackButton.setVisibility(View.GONE);
+                }
+                buttonOk.setEnabled(true);
+                linearLayoutTransType.setVisibility(View.VISIBLE);
+                linearLayoutLocationSelection.setVisibility(View.GONE);
             }
         });
 
@@ -334,7 +351,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
         if (fltList.isEmpty()) {
             fltList = body.getfLTList();
             if (fltList != null) {
-                fltList.add(0,new UniversalSpinner("Select Flt", "000"));
+                fltList.add(0, new UniversalSpinner("Select Flt", "000"));
             } else {
                 fltList = new ArrayList<>();
             }
@@ -391,7 +408,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
         }
     }
 
-    boolean isValidated(){
+    boolean isValidated() {
 
         return true;
     }
@@ -444,7 +461,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
                     String jsonData = gson.toJson(assignTransInput);
                     Log.d("json", jsonData);
                     dialog.cancel();
-                }else {
+                } else {
                     showSuccessDialog(getString(R.string.no_internet));
                 }
             }

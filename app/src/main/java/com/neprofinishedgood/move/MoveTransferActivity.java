@@ -136,6 +136,7 @@ public class MoveTransferActivity extends BaseActivity implements IMoveTransferV
     private void setRecyclerViewAdapter() {
         transferLists = SharedPref.getTransferDetailList();
         boolean isDetailSaved = false;
+        positionOfActivity = -1;
         for (int i = 0; i < transferLists.size(); i++) {
             if (transferLists.get(i).getActivityId().equals(transferData.getActivityId())) {
                 savedTransferData = transferLists.get(i);

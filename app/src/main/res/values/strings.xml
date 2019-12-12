@@ -86,7 +86,7 @@
     <string name="change_quantity">Change Quantity</string>
     <string name="button_receive">Receive</string>
     <string name="item_received_successfully">Item Received Successfully</string>
-    <string name="logout">LogOut</string>
+    <string name="logout">Logout</string>
     <string name="settings">Settings</string>
     <string name="add_more">Add More</string>
     <string name="assigned_location">Assigned Location</string>
