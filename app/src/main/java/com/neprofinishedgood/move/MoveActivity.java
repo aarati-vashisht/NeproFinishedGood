@@ -274,6 +274,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
             setTransferListAdapter(transferList);
         } else {
             showSuccessDialog(body.getMessage());
+            tvWithinWareHouseClick();
         }
     }
 
@@ -281,6 +282,7 @@ public class MoveActivity extends BaseActivity implements IPlannedAndUnPlannedVi
     public void onGetTransListHeaderFailure(String message) {
         hideProgress();
         showSuccessDialog(message);
+        tvWithinWareHouseClick();
     }
 
     private void setTransferListAdapter(List<TransferList> transferList) {
