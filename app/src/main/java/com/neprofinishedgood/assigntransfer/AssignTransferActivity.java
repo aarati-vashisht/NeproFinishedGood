@@ -37,6 +37,8 @@ import com.neprofinishedgood.move.adapter.SpinnerAdapter;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
 import com.neprofinishedgood.transferstillage.adapter.TransferAdapter;
+import com.neprofinishedgood.transferstillage.model.LocationResponse;
+import com.neprofinishedgood.transferstillage.model.LocationsInput;
 import com.neprofinishedgood.transferstillage.model.TransferStillageDetail;
 import com.neprofinishedgood.transferstillage.model.WareHouseInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseResponse;
@@ -73,12 +75,15 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
     @BindView(R.id.textViewToWarehouse)
     TextView textViewToWarehouse;
 
+    @BindView(R.id.textViewToLocation)
+    TextView textViewToLocation;
+
     @BindView(R.id.imgReset)
     ImageView imgReset;
 
     private String makeTJ = "1";
     IAssignTransInterface iAssignTransInterface;
-    private String toSiteId = "", toWareHouseId = "", fromWareHouseId = "", flt = "";
+    private String toSiteId = "", toWareHouseId = "", toLocationId = "", fromWareHouseId = "", flt = "";
 
     ArrayList<ScanStillageResponse> assignTransList = new ArrayList<>();
     private ArrayList<TransferStillageDetail> stickersList = new ArrayList<>();
@@ -86,7 +91,9 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
     boolean isReset = false;
 
     Spinner spinnerWarehouseDialog;
+    Spinner spinnerLocationDialog;
     ArrayList<UniversalSpinner> warehouseList;
+    List<UniversalSpinner> locationList;
     List<UniversalSpinner> fltList;
 
     static AssignTransferActivity instance;
@@ -151,6 +158,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
 
         Spinner spinnerSite = dialog.findViewById(R.id.spinnerSite);
         spinnerWarehouseDialog = dialog.findViewById(R.id.spinnerWarehouse);
+        spinnerLocationDialog = dialog.findViewById(R.id.spinnerLocation);
 
         if (siteList != null) {
             SpinnerAdapter siteAdapter = new SpinnerAdapter(AssignTransferActivity.getInstance(), R.layout.spinner_layout, siteList);
@@ -163,6 +171,8 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
                 if (position <= 0) {
                     warehouseList = new ArrayList<>();
                     spinnerWarehouseDialog.setAdapter(new SpinnerAdapter(AssignTransferActivity.this, R.layout.spinner_layout, warehouseList));
+                    locationList = new ArrayList<>();
+                    spinnerLocationDialog.setAdapter(new SpinnerAdapter(AssignTransferActivity.this, R.layout.spinner_layout, locationList));
                     textViewToSite.setText("");
                     buttonOk.setEnabled(false);
                 } else {
@@ -188,9 +198,34 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
                 if (position > 0) {
                     toWareHouseId = warehouseList.get(position).getId().trim();
                     textViewToWarehouse.setText(warehouseList.get(position).getName());
+                    if (NetworkChangeReceiver.isInternetConnected(AssignTransferActivity.this)) {
+                        showProgress(AssignTransferActivity.getInstance());
+                        iAssignTransInterface.callGetLocation(new LocationsInput(toWareHouseId, userId));
+                    } else {
+                        showSuccessDialog(getString(R.string.no_internet));
+                    }
+                } else {
+                    locationList = new ArrayList<>();
+                    spinnerLocationDialog.setAdapter(new SpinnerAdapter(AssignTransferActivity.this, R.layout.spinner_layout, locationList));
+                    textViewToWarehouse.setText("");
+                    buttonOk.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        spinnerLocationDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    toLocationId = locationList.get(position).getId().trim();
+                    textViewToLocation.setText(locationList.get(position).getName() + " | " + locationList.get(position).getName());
                     buttonOk.setEnabled(true);
                 } else {
-                    textViewToWarehouse.setText("");
+                    textViewToLocation.setText("");
                     buttonOk.setEnabled(false);
                 }
             }
@@ -205,10 +240,9 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
                 linearLayoutTransType.setVisibility(View.GONE);
                 linearLayoutLocationSelection.setVisibility(View.VISIBLE);
                 textViewHead.setText(getResources().getString(R.string.select_site_warehouse));
-                if (spinnerWarehouseDialog.getSelectedItemPosition() > 0)
-                {
+                if (spinnerWarehouseDialog.getSelectedItemPosition() > 0) {
                     buttonOk.setEnabled(true);
-                }else{
+                } else {
                     buttonOk.setEnabled(false);
                 }
                 imgBackButton.setVisibility(View.VISIBLE);
@@ -226,7 +260,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
             } else if (linearLayoutTransType.getVisibility() == View.GONE) {
                 if (!isReset) {
                     imgBackButton.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     imgBackButton.setVisibility(View.GONE);
                 }
                 buttonOk.setEnabled(true);
@@ -387,6 +421,31 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
     }
 
     @Override
+    public void onGetLocationFailure(String message) {
+        hideProgress();
+        showSuccessDialog(message);
+    }
+
+    @Override
+    public void onGetLocationSuccess(LocationResponse body) {
+        hideProgress();
+        SpinnerAdapter locationListAdapter;
+        if (body.getStatus().equals(getString(R.string.success))) {
+            if (body.getLocationData() != null) {
+                locationList = body.getLocationData();
+            } else {
+                locationList = new ArrayList<>();
+            }
+            locationList.add(0, new UniversalSpinner("Select Location", "0"));
+            locationListAdapter = new SpinnerAdapter(AssignTransferActivity.this, R.layout.spinner_layout, locationList);
+            spinnerLocationDialog.setAdapter(locationListAdapter);
+
+        } else {
+            showSuccessDialog(body.getMessage());
+        }
+    }
+
+    @Override
     public void onUpdateAssignTransFailure(String message) {
         hideProgress();
         showSuccessDialog(message);
@@ -403,13 +462,19 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
 
     @OnClick(R.id.buttonAssign)
     public void onButtonAssignClick() {
-        if (!stickersList.isEmpty()) {
+        if (isValidated()) {
             fltSelectionAlert(this);
         }
     }
 
     boolean isValidated() {
-
+        if (stickersList.isEmpty()) {
+            return false;
+        }
+        if (toSiteId.isEmpty() || toWareHouseId.isEmpty() || toLocationId.isEmpty() || fromWareHouseId.isEmpty()) {
+            showSuccessDialog("Please reset transfer details.");
+            return false;
+        }
         return true;
     }
 
@@ -455,7 +520,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
             if (spinnerFlt.getSelectedItemPosition() > 0) {
                 showProgress(this);
                 if (NetworkChangeReceiver.isInternetConnected(AssignTransferActivity.this)) {
-                    AssignTransInput assignTransInput = new AssignTransInput(userId, makeTJ, toSiteId, toWareHouseId, flt, fromWareHouseId, stickersList);
+                    AssignTransInput assignTransInput = new AssignTransInput(userId, makeTJ, toSiteId, toWareHouseId, toLocationId, flt, fromWareHouseId, stickersList);
                     iAssignTransInterface.callUpdateAssignTransfer(assignTransInput);
                     Gson gson = new Gson();
                     String jsonData = gson.toJson(assignTransInput);

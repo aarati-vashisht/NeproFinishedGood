@@ -8,12 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.google.gson.Gson;
 import com.neprofinishedgood.R;
 import com.neprofinishedgood.move.MoveTransferActivity;
@@ -35,6 +39,9 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
     private String charString = "";
     private List<TransferStillageList> stillageList;
 
+    private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+    ViewHolder viewHolder;
+
     public TransferDetailAdapter(List<TransferStillageList> pickingListDatumList) {
 //        this.stillageDetailsList = pickingListDatumList;
         this.stillageDetailsListFiltered = pickingListDatumList;
@@ -50,6 +57,14 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        viewBinderHelper.bind(holder.swipeRevealLayout, stillageDetailsListFiltered.get(position).getStillageID());
+
+        viewHolder = holder;
+        holder.swipeRevealLayout.close(true);
+
+        viewBinderHelper.setOpenOnlyOne(true);
+
+
         holder.textViewNumber.setText(stillageDetailsListFiltered.get(position).getStillageID());
         holder.textViewitem.setText(stillageDetailsListFiltered.get(position).getItemID());
         holder.textViewitemDesc.setText(stillageDetailsListFiltered.get(position).getItemDesc());
@@ -63,6 +78,7 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
         }
 
         holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.white));
+        holder.swipeRevealLayout.setLockDrag(true);
 
 //        if (stillageDetailsListFiltered.get(position).getStatus().equalsIgnoreCase("-2")) {
 //            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.blue_light));
@@ -70,10 +86,12 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
         if (stillageDetailsListFiltered.get(position).getStatus().equalsIgnoreCase("1")) {
             pickStillage(position);
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.card_background_dark));
+            holder.swipeRevealLayout.setLockDrag(false);
         }
         if (stillageDetailsListFiltered.get(position).getStatus().equalsIgnoreCase("2")) {
             transferStillge(position);
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.card_background_light));
+            holder.swipeRevealLayout.setLockDrag(true);
         }
 
     }
@@ -206,6 +224,15 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
         @BindView(R.id.cardView)
         CardView cardView;
 
+        @BindView(R.id.view_background)
+        public LinearLayout view_background;
+
+        @BindView(R.id.back_layout)
+        public FrameLayout back_layout;
+
+        @BindView(R.id.swipeRevealLayout)
+        SwipeRevealLayout swipeRevealLayout;
+
         public ViewHolder(View view) {
             super(view);
             mView = view;
@@ -213,8 +240,14 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
             mView.setOnClickListener(this);
             textViewStdQtyHead.setVisibility(View.GONE);
             textViewStdQuatity.setVisibility(View.GONE);
+            back_layout.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = back_layout.getLayoutParams();
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            back_layout.setLayoutParams(params);
 
             cardView.setOnClickListener(this);
+            view_background.setOnClickListener(this);
         }
 
         @Override
@@ -227,6 +260,11 @@ public class TransferDetailAdapter extends RecyclerView.Adapter<TransferDetailAd
         public void onClick(View v) {
             if (v == cardView) {
 
+            }
+            else if(v == view_background){
+                stillageDetailsListFiltered.get(getAdapterPosition()).setStatus("");
+                Toast.makeText(context, "Stillage UnPicked", Toast.LENGTH_SHORT).show();
+                notifyDataSetChanged();
             }
         }
     }

@@ -57,6 +57,10 @@ public class WorkOrderScanResponse {
     @Expose
     private String siteID;
 
+   @SerializedName("IsFinancialEnd")
+    @Expose
+    private String IsFinancialEnd;
+
     public String getBalanceQuantity() {
         return balanceQuantity;
     }
@@ -191,5 +195,13 @@ public class WorkOrderScanResponse {
 
     public void setSiteID(String siteID) {
         this.siteID = siteID;
+    }
+
+    public String getIsFinancialEnd() {
+        return IsFinancialEnd;
+    }
+
+    public void setIsFinancialEnd(String isFinancialEnd) {
+        IsFinancialEnd = isFinancialEnd;
     }
 }

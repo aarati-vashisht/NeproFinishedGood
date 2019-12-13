@@ -9,6 +9,8 @@ import com.neprofinishedgood.assigntransfer.model.AssignTransInput;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.transferstillage.model.LocationResponse;
+import com.neprofinishedgood.transferstillage.model.LocationsInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseResponse;
 import com.neprofinishedgood.transferstillage.presenter.ITransferView;
@@ -78,6 +80,33 @@ public class IAssignTransPresenter implements IAssignTransInterface {
             iAssignTransView.onGetWareHouseFailure(activity.getString(R.string.something_went_wrong_please_try_again));
         } else {
             iAssignTransView.onGetWareHouseSuccess(body);
+        }
+    }
+
+    @Override
+    public void callGetLocation(LocationsInput locationsInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<LocationResponse> call = apiInterface.getLocation(locationsInput);
+        call.enqueue(new Callback<LocationResponse>() {
+            @Override
+            public void onResponse(Call<LocationResponse> call, Response<LocationResponse> response) {
+                getLocationResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<LocationResponse> call, Throwable t) {
+                getLocationResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getLocationResponse(LocationResponse body) {
+        if (body == null) {
+            iAssignTransView.onGetLocationFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            iAssignTransView.onGetLocationSuccess(body);
         }
     }
 

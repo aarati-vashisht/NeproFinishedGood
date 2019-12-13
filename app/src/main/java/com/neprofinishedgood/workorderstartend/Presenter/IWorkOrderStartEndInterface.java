@@ -17,4 +17,6 @@ public interface IWorkOrderStartEndInterface {
     void callWorkOrderEndService(WorkOrderScanInput workOrderScanInput);
 
     void getWorkOrderEndResponse(UniversalResponse body);
+
+    void callWorkOrderFinEndService(WorkOrderScanInput workOrderScanInput);
 }

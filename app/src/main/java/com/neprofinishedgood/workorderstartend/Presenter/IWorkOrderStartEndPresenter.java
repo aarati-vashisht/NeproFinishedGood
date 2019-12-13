@@ -106,4 +106,22 @@ public class IWorkOrderStartEndPresenter implements IWorkOrderStartEndInterface 
             iWorkOrderStartEndView.onWorkOrderEndSuccess(body);
         }
     }
+
+    @Override
+    public void callWorkOrderFinEndService(WorkOrderScanInput workOrderScanInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<UniversalResponse> call = apiInterface.workOrderFinEndService(workOrderScanInput);
+        call.enqueue(new Callback<UniversalResponse>() {
+            @Override
+            public void onResponse(Call<UniversalResponse> call, Response<UniversalResponse> response) {
+                getWorkOrderEndResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UniversalResponse> call, Throwable t) {
+                getWorkOrderEndResponse(null);
+
+            }
+        });
+    }
 }
