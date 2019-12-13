@@ -35,6 +35,8 @@ import com.neprofinishedgood.qualitycheck.model.RejectedInput;
 import com.neprofinishedgood.qualitycheck.model.RejectionListInput;
 import com.neprofinishedgood.qualitycheck.model.ScanLotInput;
 import com.neprofinishedgood.raf.model.RafInput;
+import com.neprofinishedgood.transferstillage.model.LocationResponse;
+import com.neprofinishedgood.transferstillage.model.LocationsInput;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseInput;
@@ -153,6 +155,9 @@ public interface ApiInterface {
     @POST("WorkOrderEndService")
     Call<UniversalResponse> workOrderEndService(@Body WorkOrderScanInput workOrderScanInput);
 
+    @POST("WorkOrderFinancialEnd")
+    Call<UniversalResponse> workOrderFinEndService(@Body WorkOrderScanInput workOrderScanInput);
+
     @POST("SubmitPickingJournalData")
     Call<UniversalResponse> submitPickingJournalData(@Body ProductionJournalPickinngDataInput productionJournalPickinngDataInput);
 
@@ -172,6 +177,8 @@ public interface ApiInterface {
     @POST("WareHouseData")
     Call<WareHouseResponse> getWareHouse(@Body WareHouseInput wareHouseInput);
 
+    @POST("GetLocationFromWarehouse")
+    Call<LocationResponse> getLocation(@Body LocationsInput locationsInput);
 
     @POST("NewTranferStillage")
     Call<UniversalResponse> callNewTranferStillage(@Body TransferInput moveInput);

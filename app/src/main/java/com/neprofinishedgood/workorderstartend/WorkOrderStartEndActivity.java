@@ -146,7 +146,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         ButterKnife.bind(this);
         editTextScanWorkOrder.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         iWorkOrderStartEndInterface = new IWorkOrderStartEndPresenter(this, this);
-        editTextPartialQty.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(9,3)});
+        editTextPartialQty.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(9, 3)});
 
         radioGroupStartQty.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == radioButtonFullQty.getId()) {
@@ -216,9 +216,14 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         try {
             if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
                 if (isLocationMatched(body.getWareHouseID())) {
-                    isScanned = true;
-                    setData(body);
-                    editTextScanWorkOrder.setEnabled(false);
+                    if (body.getIsFinancialEnd().equals("0")) {
+                        isScanned = true;
+                        setData(body);
+                        editTextScanWorkOrder.setEnabled(false);
+                    }else{
+                        editTextScanWorkOrder.setText("");
+                        showSuccessDialog(getResources().getString(R.string.financialy_ended));
+                    }
                 } else {
                     editTextScanWorkOrder.setText("");
                     showSuccessDialog(getResources().getString(R.string.wo_not_found));
@@ -264,7 +269,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                 if (!body.getStartedQty().equals("")) {
                     float startedQty = Float.parseFloat(body.getStartedQty());
                     maxStartQty = woQty - startedQty;
-                    textViewQtyStarted.setText(String.format("%s", roundWithPlace(startedQty,3)));
+                    textViewQtyStarted.setText(String.format("%s", roundWithPlace(startedQty, 3)));
                 } else {
                     maxStartQty = woQty;
                     textViewQtyStarted.setText("0");
@@ -273,7 +278,7 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                 maxStartQty = woQty;
                 textViewQtyStarted.setText("0");
             }
-            maxStartQty = roundWithPlace(maxStartQty,3);
+            maxStartQty = roundWithPlace(maxStartQty, 3);
 
             if (body.getStatusId().equals("3") || body.getStatusId().equals("4")) {
                 if (body.getStatusId().equals("3")) {
@@ -429,7 +434,8 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     public void onButtonFinEndClick() {
         if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
             showProgress(this);
-            iWorkOrderStartEndInterface.callWorkOrderEndService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, "", "", ""));
+            WorkOrderScanInput workOrderScanInput = new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, "", "", "");
+            iWorkOrderStartEndInterface.callWorkOrderFinEndService(workOrderScanInput);
         } else {
             showSuccessDialog(getString(R.string.no_internet));
         }
@@ -438,7 +444,8 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @OnClick(R.id.buttonEnd)
     public void onButtonEndClick() {
         if (NetworkChangeReceiver.isInternetConnected(WorkOrderStartEndActivity.this)) {
-
+            showProgress(this);
+            iWorkOrderStartEndInterface.callWorkOrderEndService(new WorkOrderScanInput(editTextScanWorkOrder.getText().toString().trim(), userId, "", "", ""));
         } else {
             showSuccessDialog(getString(R.string.no_internet));
         }
