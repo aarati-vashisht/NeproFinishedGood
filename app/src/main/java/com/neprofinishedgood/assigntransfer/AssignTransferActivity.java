@@ -222,7 +222,7 @@ public class AssignTransferActivity extends BaseActivity implements IAssignTrans
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     toLocationId = locationList.get(position).getId().trim();
-                    textViewToLocation.setText(locationList.get(position).getName() + " | " + locationList.get(position).getName());
+                    textViewToLocation.setText(locationList.get(position).getId() + " | " + locationList.get(position).getName());
                     buttonOk.setEnabled(true);
                 } else {
                     textViewToLocation.setText("");

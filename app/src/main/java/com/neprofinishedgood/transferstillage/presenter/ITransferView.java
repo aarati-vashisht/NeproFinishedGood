@@ -2,6 +2,7 @@ package com.neprofinishedgood.transferstillage.presenter;
 
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.transferstillage.model.LocationResponse;
 import com.neprofinishedgood.transferstillage.model.WareHouseResponse;
 
 public interface ITransferView {
@@ -20,4 +21,8 @@ public interface ITransferView {
     void onGetWareHouseFailure(String message);
 
     void onGetWareHouseSuccess(WareHouseResponse body);
+
+    void onGetLocationFailure(String message);
+
+    void onGetLocationSuccess(LocationResponse body);
 }

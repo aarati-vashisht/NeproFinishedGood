@@ -154,6 +154,10 @@ public class ScanStillageResponse {
     @Expose
     private String toBeTransferWHID;
 
+   @SerializedName("ToBeTransferLocationId")
+    @Expose
+    private String toBeTransferLocationId;
+
     @SerializedName("WoStatus")
     @Expose
     private String woStatus;
@@ -536,5 +540,13 @@ public class ScanStillageResponse {
 
     public void setReasonList(List<UniversalSpinner> reasonList) {
         this.reasonList = reasonList;
+    }
+
+    public String getToBeTransferLocationId() {
+        return toBeTransferLocationId;
+    }
+
+    public void setToBeTransferLocationId(String toBeTransferLocationId) {
+        this.toBeTransferLocationId = toBeTransferLocationId;
     }
 }
