@@ -141,7 +141,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:gravity="start"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingStart="5dp"
                             android:paddingEnd="5dp">
@@ -199,7 +199,6 @@
                             android:id="@+id/linearLayoutDetailStartedQty"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:gravity="start"
                             android:orientation="horizontal"
                             android:paddingStart="5dp"
@@ -208,15 +207,33 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@string/fin_end_"
+                                android:textColor="@color/black"
+                                android:textSize="12sp" />
+
+                            <CheckBox
+                                android:id="@+id/checkboxFinEnd"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".49"
+                                android:scaleX=".8"
+                                android:scaleY=".8"
+                                android:layout_marginStart="15dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:text="@string/quantity_already"
+                                android:layout_marginStart="5dp"
                                 android:textColor="@color/black"
                                 android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/textViewQtyStarted"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
+                                android:layout_weight=".38"
                                 android:maxLines="2"
                                 android:text=""
                                 android:textColor="@color/gray_color"
@@ -227,7 +244,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:gravity="start"
                             android:orientation="horizontal"
                             android:paddingStart="5dp"

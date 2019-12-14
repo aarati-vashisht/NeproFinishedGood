@@ -8,6 +8,8 @@ import com.neprofinishedgood.api.ApiInterface;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.transferstillage.model.LocationResponse;
+import com.neprofinishedgood.transferstillage.model.LocationsInput;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseInput;
@@ -156,6 +158,33 @@ public class TransferPresenter implements ITransferInterface {
 
             }
         });
+    }
+
+    @Override
+    public void callGetLocation(LocationsInput locationsInput) {
+        ApiInterface apiInterface = Api.getClient().create(ApiInterface.class);
+        Call<LocationResponse> call = apiInterface.getLocation(locationsInput);
+        call.enqueue(new Callback<LocationResponse>() {
+            @Override
+            public void onResponse(Call<LocationResponse> call, Response<LocationResponse> response) {
+                getLocationResponse(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<LocationResponse> call, Throwable t) {
+                getLocationResponse(null);
+
+            }
+        });
+    }
+
+    @Override
+    public void getLocationResponse(LocationResponse body) {
+        if (body == null) {
+            iTransferView.onGetLocationFailure(activity.getString(R.string.something_went_wrong_please_try_again));
+        } else {
+            iTransferView.onGetLocationSuccess(body);
+        }
     }
 
 }

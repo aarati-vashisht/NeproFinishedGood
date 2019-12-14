@@ -3,6 +3,8 @@ package com.neprofinishedgood.transferstillage.presenter;
 import com.neprofinishedgood.base.model.UniversalResponse;
 import com.neprofinishedgood.move.model.MoveInput;
 import com.neprofinishedgood.move.model.ScanStillageResponse;
+import com.neprofinishedgood.transferstillage.model.LocationResponse;
+import com.neprofinishedgood.transferstillage.model.LocationsInput;
 import com.neprofinishedgood.transferstillage.model.ShipInput;
 import com.neprofinishedgood.transferstillage.model.TransferInput;
 import com.neprofinishedgood.transferstillage.model.WareHouseInput;
@@ -26,4 +28,8 @@ public interface ITransferInterface {
     void getWareHouseResponse(WareHouseResponse body);
 
     void callNewTranferStillage(TransferInput transferInput);
+
+    void callGetLocation(LocationsInput locationsInput);
+
+    void getLocationResponse(LocationResponse body);
 }

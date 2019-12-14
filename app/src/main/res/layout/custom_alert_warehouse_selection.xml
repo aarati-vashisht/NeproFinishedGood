@@ -80,6 +80,34 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/linearLayoutToLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.1"
+                android:text="@string/location_"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <Spinner
+                android:id="@+id/spinnerLocation"
+                style="@style/AppTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="3"
+                android:background="@drawable/spinner_background" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

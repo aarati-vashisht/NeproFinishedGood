@@ -120,6 +120,9 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
     @BindView(R.id.checkBoxAutoPicking)
     CheckBox checkBoxAutoPicking;
 
+    @BindView(R.id.checkboxFinEnd)
+    CheckBox checkboxFinEnd;
+
     private String autoRoute = "0";
     private String autoPick = "0";
 
@@ -216,14 +219,9 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
         try {
             if (body.getStatus().equalsIgnoreCase(getString(R.string.success))) {
                 if (isLocationMatched(body.getWareHouseID())) {
-                    if (body.getIsFinancialEnd().equals("0")) {
-                        isScanned = true;
-                        setData(body);
-                        editTextScanWorkOrder.setEnabled(false);
-                    }else{
-                        editTextScanWorkOrder.setText("");
-                        showSuccessDialog(getResources().getString(R.string.financialy_ended));
-                    }
+                    isScanned = true;
+                    setData(body);
+                    editTextScanWorkOrder.setEnabled(false);
                 } else {
                     editTextScanWorkOrder.setText("");
                     showSuccessDialog(getResources().getString(R.string.wo_not_found));
@@ -252,6 +250,12 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
             textViewSite.setText(body.getSite());
             textViewStatus.setText(body.getWOStatus());
             textViewitemDesc.setText(body.getItemDescription());
+
+            if (body.getIsFinancialEnd().equals("1")) {
+                checkboxFinEnd.setChecked(true);
+            } else {
+                checkboxFinEnd.setChecked(false);
+            }
 
             if (body.getQuantity() != null) {
                 if (!body.getQuantity().equals("")) {
@@ -323,10 +327,15 @@ public class WorkOrderStartEndActivity extends BaseActivity implements IWorkOrde
                 linearLayoutRoutePick.setVisibility(View.GONE);
                 linearLayoutStartQty.setVisibility(View.GONE);
 
-                buttonFinEnd.setEnabled(true);
-                buttonEnd.setEnabled(true);
-                buttonStart.setEnabled(false);
-
+                if (body.getIsFinancialEnd().equals("0")) {
+                    buttonFinEnd.setEnabled(true);
+                    buttonEnd.setEnabled(true);
+                    buttonStart.setEnabled(false);
+                }else{
+                    buttonFinEnd.setEnabled(false);
+                    buttonEnd.setEnabled(true);
+                    buttonStart.setEnabled(false);
+                }
                 linearLayoutEndQuantities.setVisibility(View.VISIBLE);
 
                 if (body.getRafQuantity().equals("")) {

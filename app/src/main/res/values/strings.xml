@@ -217,7 +217,7 @@
     <string name="wo_status">WO Status:</string>
     <string name="qty_exceeded">Entered quantity is more than the work order quantity.</string>
     <string name="enter_qty">Enter Partial Quantity!</string>
-    <string name="quantity_already">Quantity Started :</string>
+    <string name="quantity_already">Quantity Started:</string>
     <string name="full">Full</string>
     <string name="zero">Zero</string>
     <string name="partial">Partial</string>
@@ -274,5 +274,6 @@
     <string name="max_reject_qty_in_kg">Max reject qty. in kg: </string>
     <string name="to_location">To Location:</string>
     <string name="financialy_ended">This work order is financially ended.</string>
+    <string name="fin_end_">Fin. Ended:</string>
 
 </resources>
