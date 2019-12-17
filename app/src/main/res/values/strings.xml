@@ -101,7 +101,7 @@
     <string name="dialog_message">Are You Sure To Pick?</string>
     <string name="please_add_load_quantity">Please Add Load Quantity</string>
     <string name="location">Location:</string>
-    <string name="location_">Location</string>
+    <string name="location_">Zone/Location</string>
     <string name="stillage_merge_message">Stillage Merged Successfully</string>
     <string name="confirmation">Confirmation</string>
     <string name="exit">Exit</string>
@@ -146,7 +146,7 @@
     <string name="data_saved_offline">Data Saved Offline</string>
     <string name="child_and_parent_cannot_be_same">Child And Parent Stillage Can\'t  Be Same</string>
     <string name="no_internet">No Internet!</string>
-    <string name="scan_type_loading_plan">Scan/Type Truck Assignment Report:</string>
+    <string name="scan_type_loading_plan">Scan/Type Driver Assignment Report:</string>
     <string name="scan_type">Scan/Type</string>
     <string name="loading_plan_not_matched_with_tar">Loading Plan didn\'t matched with TAR</string>
     <string name="load_quantiy_must_be_lower_than_tobeload">Load Quantity Must Not Greater Than \'To Be Load Quantity\'</string>
@@ -251,7 +251,7 @@
     <string name="rejected_in_kg">This stillage is already rejected in \'QC Process Rejection Kg\' but not sent to create stickers</string>
     <string name="rejection_list_full">Please send rejection list to create sticker as \'Rejection List\' is full</string>
     <string name="view_rejection_list">View Rejection List</string>
-    <string name="fin_end">Fin. End</string>
+    <string name="fin_end">End Job</string>
     <string name="assign_planned_transfer">Assign Planned Transfer</string>
     <string name="assign_flt_">Assign FLT</string>
     <string name="transfer_details">Transfer Details</string>
@@ -274,6 +274,6 @@
     <string name="max_reject_qty_in_kg">Max reject qty. in kg: </string>
     <string name="to_location">To Location:</string>
     <string name="financialy_ended">This work order is financially ended.</string>
-    <string name="fin_end_">Fin. Ended:</string>
+    <string name="fin_end_">End Job:</string>
 
 </resources>

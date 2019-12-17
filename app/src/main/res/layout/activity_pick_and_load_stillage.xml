@@ -102,8 +102,9 @@
 
                         <TextView
                             android:id="@+id/textViewTruckDriver"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_marginStart="5dp"
                             android:maxLines="1"
                             android:text=""
@@ -121,9 +122,8 @@
                     android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.1"
                             android:text="@string/trucknumber"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
@@ -133,16 +133,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:layout_weight=".9"
+                        android:layout_weight="1"
                         android:maxLines="1"
                         android:text=""
                         android:textColor="@color/white"
                         android:textSize="10sp" />
 
                     <TextView
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.1"
                             android:text="@string/gatenumber"
                             android:textColor="@color/white"
                             android:textSize="12sp"
@@ -152,7 +151,7 @@
                             android:id="@+id/textViewGateNumber"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".3"
+                            android:layout_weight=".5"
                             android:layout_marginStart="5dp"
                             android:maxLines="1"
                             android:text=""
