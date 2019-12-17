@@ -36,7 +36,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1.1"
+                android:layout_weight="1.4"
                 android:text="@string/site"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
@@ -64,7 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1.1"
+                android:layout_weight="1.4"
                 android:text="@string/warehouse"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
@@ -92,7 +92,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1.1"
+                android:layout_weight="1.4"
                 android:text="@string/location_"
                 android:textColor="@color/black"
                 android:textSize="12sp" />

@@ -109,7 +109,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
     long scanStillageLastTexxt = 0;
     long delay = 1500;
     private IQAPresenter iqaInterface;
-    private String isHold, reason, shift, reasonName;
+    private String isHold, reason = "", shift, reasonName;
     ScanStillageResponse body;
     private ArrayList<String> shiftList;
 
@@ -248,8 +248,8 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
                     if (body.getStandardQty() > 0) {
 //                        if (body.getwOStatusId() != 7) {
 //                        if (body.getIsCounted().equals("1")) {
-                            isScanned = true;
-                            setData(body);
+                        isScanned = true;
+                        setData(body);
 //                        } else {
 //                            showSuccessDialog(getResources().getString(R.string.raf_not_posted_reject));
 //                            editTextScanStillage.setText("");
@@ -394,7 +394,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
                 Float maxQty = body.getStandardQty() * body.getUOM();
                 maxRejectQtyInKg = roundWithPlace(maxQty, 2);
                 linearLayoutKgDetails.setVisibility(View.VISIBLE);
-                textViewUom.setText(getString(R.string.uom)+ body.getUOM());
+                textViewUom.setText(getString(R.string.uom) + body.getUOM());
                 textViewMaxReject.setText(getString(R.string.max_reject_qty_in_kg) + maxRejectQtyInKg);
 
                 editTextRejectQuantity.setText(maxRejectQtyInKg + "");
@@ -416,7 +416,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
             if (!text.toString().equals("") && !text.toString().equals(".")) {
                 float rejectQty = round(Float.parseFloat(text.toString().trim()));
                 float stillageQty = round(Float.parseFloat((this.body.getStandardQty() + "").trim()));
-                if(isKg.equals("0")){
+                if (isKg.equals("0")) {
                     if (rejectQty > stillageQty) {
                         editTextRejectQuantity.setText("");
                         showSuccessDialog("Reject quantity must be less than stillage quantity!");
@@ -425,8 +425,8 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
                     } else {
                         buttonReject.setEnabled(true);
                     }
-                }else{
-                    if(rejectQty>maxRejectQtyInKg){
+                } else {
+                    if (rejectQty > maxRejectQtyInKg) {
                         editTextRejectQuantity.setText("");
                         showSuccessDialog("Reject quantity must be less than max reject quantity!");
                         editTextRejectQuantity.requestFocus();
@@ -527,6 +527,7 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
 
     public void cancelClick() {
         isScanned = false;
+        reason = "";
         linearLayoutScanDetail.setVisibility(View.GONE);
         linearLayoutScanDetail.setAnimation(fadeOut);
         linearLayoutRejectQtyButtons.setVisibility(View.GONE);
@@ -551,6 +552,12 @@ public class RejectQuantityActivity extends BaseActivity implements IQAView {
             return false;
         }
         if (spinnerRejectReason.getSelectedItemPosition() == 0) {
+            TextView textView = (TextView) spinnerRejectReason.getSelectedView();
+            textView.setError(getString(R.string.select_reason));
+            textView.requestFocus();
+            return false;
+        }
+        if (reason.isEmpty()) {
             TextView textView = (TextView) spinnerRejectReason.getSelectedView();
             textView.setError(getString(R.string.select_reason));
             textView.requestFocus();
