@@ -211,6 +211,7 @@
                         android:orientation="horizontal"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp"
+                        android:gravity="center_vertical"
                         android:visibility="gone">
 
 
@@ -227,8 +228,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_weight=".20"
-                            android:maxLines="1"
-                            android:text="Location: Site 1 WareHouse 2 Aisle 1 Rack 2 Bin 3"
+                            android:maxLines="2"
+                            android:text="Location: Site 1 WareHouse 2 Aisle 1 Rack 2 Bin 3Location: Site 1 WareHouse 2 Aisle 1 Rack 2 Bin 3"
                             android:textColor="@color/gray_color"
                             android:textSize="10sp" />
 
