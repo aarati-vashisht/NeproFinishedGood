@@ -910,6 +910,7 @@ public class TransferStillageActivity extends BaseActivity implements ITransferV
                 if (NetworkChangeReceiver.isInternetConnected(TransferStillageActivity.this)) {
                     showProgress(this);
                     TransferInput transferInput = new TransferInput("", stickersList, warehouseId, userId, makeTJ, siteId, locationId);
+                    String json= new Gson().toJson(transferInput);
                     iTransferInterface.callNewTranferStillage(transferInput);
                     dialog.cancel();
                 } else {
